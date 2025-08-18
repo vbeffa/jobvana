@@ -17,13 +17,11 @@ function App() {
   const [users, setUsers] = useState<Array<User>>([]);
 
   useEffect(() => {
-    console.log("effect");
     if (users.length > 0) {
       return;
     }
     (async () => {
       const { data: users } = await supabase.from("users").select();
-      console.log(users);
       if (users === null) {
         return;
       }
