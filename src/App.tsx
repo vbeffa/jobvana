@@ -24,6 +24,9 @@ function App() {
     (async () => {
       const { data: users } = await supabase.from("users").select();
       console.log(users);
+      if (users === null) {
+        return;
+      }
       setUsers(users);
     })();
   }, [users.length]);
