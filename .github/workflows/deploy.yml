@@ -23,7 +23,6 @@ concurrency:
 env:
   VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
   VITE_SUPABASE_ANON_KEY: ${{ secrets. VITE_SUPABASE_ANON_KEY }}
-  TEST: ${{ secrets.FOO }}
 
 jobs:
   # Single deploy job since we're just deploying
@@ -35,8 +34,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Test
-        run: echo "${{ secrets.VITE_SUPABASE_URL }}"
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
