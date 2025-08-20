@@ -17,6 +17,14 @@ type Skill = {
   skill_type_id: number;
   description?: string;
   reference?: string;
+  versions: Array<SkillVersion>;
+};
+
+type SkillVersion = {
+  id: number;
+  skill_id: number;
+  version: string;
+  notes: string;
 };
 
 type SkillType = {
@@ -27,9 +35,10 @@ type SkillType = {
 function App() {
   const [skills, setSkills] = useState<Array<Skill>>([]);
   const [skillTypes, setSkillTypes] = useState<Array<SkillType>>([]);
+  const [skillVersions, setSkillVersions] = useState<Array<SkillVersion>>([]);
 
   useEffect(() => {
-    if (skills.length > 0) {
+    if (skills.length > 0 || skillVersions.length === 0) {
       return;
     }
     (async () => {
@@ -40,9 +49,15 @@ function App() {
       if (skills === null) {
         return;
       }
+      for (const skill of skills as Array<Skill>) {
+        const versionsForSkill = skillVersions.filter(
+          (skillVersion) => skillVersion.skill_id === skill.id
+        );
+        skill.versions = versionsForSkill;
+      }
       setSkills(skills);
     })();
-  }, [skills.length]);
+  }, [skillVersions, skillVersions.length, skills.length]);
 
   useEffect(() => {
     if (skillTypes.length > 0) {
@@ -56,6 +71,21 @@ function App() {
       setSkillTypes(skillTypes);
     })();
   }, [skillTypes.length]);
+
+  useEffect(() => {
+    if (skillVersions.length > 0) {
+      return;
+    }
+    (async () => {
+      const { data: skillVersions } = await supabase
+        .from("skill_versions")
+        .select();
+      if (skillVersions === null) {
+        return;
+      }
+      setSkillVersions(skillVersions);
+    })();
+  }, [skillVersions.length]);
 
   return (
     <>
@@ -75,7 +105,16 @@ function App() {
             {skills.map((skill) => {
               return (
                 <tr key={skill.id}>
-                  <td className="p-1 border text-left">{skill.name}</td>
+                  <td className="p-1 border text-left">
+                    {skill.name}
+                    {skill.versions.length > 0 && (
+                      <ul className="list-inside list-disc">
+                        {skill.versions.map((skillVersion) => (
+                          <li key={skillVersion.id}>{skillVersion.version}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
                   <td className="p-1 border text-left">{skill.abbreviation}</td>
                   <td className="p-1 border text-left">
                     {
