@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import supabase from "./utils/supabase";
 
 import "./App.css";
+import type { Database } from "./utils/types";
 
 export type User = {
   id: number;
@@ -10,27 +11,13 @@ export type User = {
   last_name: string;
 };
 
-type Skill = {
-  id: number;
-  name: string;
-  abbreviation: string;
-  skill_type_id: number;
-  description?: string;
-  reference?: string;
+type Skill = Database["public"]["Tables"]["skills"]["Row"] & {
   versions: Array<SkillVersion>;
 };
 
-type SkillVersion = {
-  id: number;
-  skill_id: number;
-  version: string;
-  notes: string;
-};
+type SkillVersion = Database["public"]["Tables"]["skill_versions"]["Row"];
 
-type SkillType = {
-  id: number;
-  name: string;
-};
+type SkillType = Database["public"]["Tables"]["skill_types"]["Row"];
 
 function App() {
   const [skills, setSkills] = useState<Array<Skill>>([]);
@@ -38,26 +25,45 @@ function App() {
   const [skillVersions, setSkillVersions] = useState<Array<SkillVersion>>([]);
 
   useEffect(() => {
-    if (skills.length > 0 || skillVersions.length === 0) {
+    if (
+      skills.length > 0 ||
+      skillVersions.length === 0 ||
+      skillTypes.length === 0
+    ) {
       return;
     }
     (async () => {
-      const { data: skills } = await supabase
-        .from("skills")
-        .select()
-        .order("name");
-      if (skills === null) {
+      const { data } = await supabase.from("skills").select();
+      if (data === null) {
         return;
       }
-      for (const skill of skills as Array<Skill>) {
+      const skills: Array<Skill> = data.map((skill) => ({
+        ...skill,
+        versions: skillVersions.filter(
+          (skillVersion) => skillVersion.skill_id === skill.id
+        )
+      }));
+      for (const skill of skills) {
         const versionsForSkill = skillVersions.filter(
           (skillVersion) => skillVersion.skill_id === skill.id
         );
         skill.versions = versionsForSkill;
       }
+      skills.sort((skill1, skill2) => {
+        if (skill1.skill_type_id === skill2.skill_type_id) {
+          return skill1.name.localeCompare(skill2.name);
+        }
+        const skillType1 = skillTypes.find(
+          (skillType) => skillType.id === skill1.skill_type_id
+        );
+        const skillType2 = skillTypes.find(
+          (skillType) => skillType.id === skill2.skill_type_id
+        );
+        return skillType1!.name.localeCompare(skillType2!.name);
+      });
       setSkills(skills);
     })();
-  }, [skillVersions, skillVersions.length, skills.length]);
+  }, [skillTypes, skillVersions, skillVersions.length, skills.length]);
 
   useEffect(() => {
     if (skillTypes.length > 0) {
