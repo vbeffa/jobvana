@@ -15,8 +15,8 @@ type Skill = {
   name: string;
   abbreviation: string;
   skill_type_id: number;
-  notes?: string;
-  parent_skill_id?: number;
+  description?: string;
+  reference?: string;
 };
 
 type SkillType = {
@@ -67,8 +67,8 @@ function App() {
               <th className="p-1 border">Skill</th>
               <th className="p-1 border">Abbreviation</th>
               <th className="p-1 border">Skill Type</th>
-              <th className="p-1 border">Notes</th>
-              <th className="p-1 border">Parent Skill</th>
+              <th className="p-1 border">Description</th>
+              <th className="p-1 border">Reference</th>
             </tr>
           </thead>
           <tbody>
@@ -84,9 +84,13 @@ function App() {
                       )?.name
                     }
                   </td>
-                  <td className="p-1 border text-left">{skill.notes}</td>
+                  <td className="p-1 border text-left">{skill.description}</td>
                   <td className="p-1 border text-left">
-                    {skills.find((s) => s.id === skill.parent_skill_id)?.name}
+                    {skill.reference && (
+                      <a target="_blank" href={skill.reference}>
+                        {skill.reference}
+                      </a>
+                    )}
                   </td>
                 </tr>
               );
