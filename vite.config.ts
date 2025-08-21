@@ -14,7 +14,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-        skills: resolve(__dirname, "skills/index.html")
+        skills: resolve(__dirname, "skills/index.html"),
+        jobs: resolve(__dirname, "jobs/index.html")
       }
     }
   }
