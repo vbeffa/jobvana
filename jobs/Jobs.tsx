@@ -2,24 +2,24 @@ import { useEffect, useState } from "react";
 import supabase from "../src/utils/supabase";
 
 import "../src/App.css";
-import type { Database } from "../src/utils/types";
 import Header from "../src/Header";
+import useSkills, { Skill } from "../src/hooks/useSkills";
+import type { Database } from "../src/utils/types";
 
 type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
   skills: Array<Skill>;
 };
 type Company = Database["public"]["Tables"]["companies"]["Row"];
 type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
-type Skill = Database["public"]["Tables"]["skills"]["Row"];
 
 function Skills() {
   const [jobs, setJobs] = useState<Array<Job>>([]);
   const [companies, setCompanies] = useState<Array<Company>>([]);
   const [jobSkills, setJobSkills] = useState<Array<JobSkill>>([]);
-  const [skills, setSkills] = useState<Array<Skill>>([]);
+  const skills = useSkills();
 
   useEffect(() => {
-    if (jobs.length > 0 || jobSkills.length === 0 || skills.length === 0) {
+    if (jobs.length > 0 || jobSkills.length === 0 || skills.all.length === 0) {
       return;
     }
     (async () => {
@@ -29,7 +29,7 @@ function Skills() {
       }
       const jobs: Array<Job> = data.map((job) => ({
         ...job,
-        skills: skills.filter((skill) =>
+        skills: skills.all.filter((skill) =>
           jobSkills
             .filter((jobSkill) => jobSkill.job_id === job.id)
             .map((jobSkill) => jobSkill.skill_id)
@@ -65,19 +65,6 @@ function Skills() {
       setJobSkills(jobSkills);
     })();
   }, [jobSkills.length]);
-
-  useEffect(() => {
-    if (skills.length > 0) {
-      return;
-    }
-    (async () => {
-      const { data: skills } = await supabase.from("skills").select();
-      if (skills === null) {
-        return;
-      }
-      setSkills(skills);
-    })();
-  }, [skills.length]);
 
   if (jobs.length === 0) {
     return <div>Loading...</div>;
