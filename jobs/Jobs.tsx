@@ -88,7 +88,7 @@ function Skills() {
       <Header />
       <h1>Jobs</h1>
       <div className="card">
-        <table className="border-1">
+        <table className="border-1 w-full">
           <thead>
             <tr key={0}>
               <th className="p-1 border">Company</th>
