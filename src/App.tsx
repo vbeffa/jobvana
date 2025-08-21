@@ -93,6 +93,10 @@ function App() {
     })();
   }, [skillVersions.length]);
 
+  if (skills.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <h1>Skills</h1>
@@ -116,7 +120,14 @@ function App() {
                     {skill.versions.length > 0 && (
                       <ul className="list-inside list-disc">
                         {skill.versions.map((skillVersion) => (
-                          <li key={skillVersion.id}>{skillVersion.version}</li>
+                          <li key={skillVersion.id}>
+                            {skillVersion.reference && (
+                              <a target="_blank" href={skillVersion.reference}>
+                                {skillVersion.version}
+                              </a>
+                            )}
+                            {!skillVersion.reference && skillVersion.version}
+                          </li>
                         ))}
                       </ul>
                     )}

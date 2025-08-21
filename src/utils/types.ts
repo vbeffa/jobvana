@@ -181,19 +181,19 @@ export type Database = {
       skill_versions: {
         Row: {
           id: number
-          notes: string | null
+          reference: string | null
           skill_id: number
           version: string
         }
         Insert: {
           id?: number
-          notes?: string | null
+          reference?: string | null
           skill_id: number
           version: string
         }
         Update: {
           id?: number
-          notes?: string | null
+          reference?: string | null
           skill_id?: number
           version?: string
         }
