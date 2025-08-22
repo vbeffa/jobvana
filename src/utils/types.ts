@@ -161,6 +161,7 @@ export type Database = {
           id: number
           notes: string | null
           reference: string | null
+          release_date: string | null
           skill_id: number
           version: string
         }
@@ -168,6 +169,7 @@ export type Database = {
           id?: number
           notes?: string | null
           reference?: string | null
+          release_date?: string | null
           skill_id: number
           version: string
         }
@@ -175,6 +177,7 @@ export type Database = {
           id?: number
           notes?: string | null
           reference?: string | null
+          release_date?: string | null
           skill_id?: number
           version?: string
         }

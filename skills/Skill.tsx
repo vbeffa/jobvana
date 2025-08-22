@@ -1,6 +1,7 @@
 import "../src/App.css";
 import Header from "../src/Header";
 import useSkills from "../src/hooks/useSkills";
+import SkillVersionLink from "./SkillVersionLink";
 
 function Skill({ id }: { id: number }) {
   const skills = useSkills();
@@ -33,19 +34,14 @@ function Skill({ id }: { id: number }) {
           <ul className="list-inside list-disc">
             {skill.versions.map((skillVersion) => (
               <li key={skillVersion.id}>
-                {skillVersion.reference && (
-                  <a target="_blank" href={skillVersion.reference}>
-                    {skillVersion.version}
-                  </a>
-                )}
-                {!skillVersion.reference && skillVersion.version}
+                <SkillVersionLink skillVersion={skillVersion} />
               </li>
             ))}
           </ul>
         )}
       </div>
       <h2>Notes</h2>
-      <div className="card text-left">{skill.notes}</div>
+      <div className="card text-left whitespace-pre-wrap">{skill.notes}</div>
       <h2>Reference</h2>
       <div className="card text-left">
         {skill.reference && (

@@ -15,6 +15,7 @@ export type SkillsHook = {
   all: Array<Skill>;
   types: Array<SkillType>;
   skill: (id: number) => Skill | undefined;
+  version: (versionId: number) => SkillVersion | undefined;
 };
 
 const useSkills = (): SkillsHook => {
@@ -96,6 +97,11 @@ const useSkills = (): SkillsHook => {
     types: skillTypes,
     skill: (id: number) => {
       return skills.find((skill) => skill.id === id);
+    },
+    version: (versionId: number) => {
+      return skillVersions.find(
+        (skillVersion) => skillVersion.id === versionId
+      );
     }
   };
 };

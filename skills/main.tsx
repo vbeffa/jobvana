@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "../src/index.css";
 import Skill from "./Skill.tsx";
 import Skills from "./Skills.tsx";
+import SkillVersion from "./SkillVersion.tsx";
 
 const location = window.location.toString();
 if (location.includes("?id=")) {
@@ -10,6 +11,13 @@ if (location.includes("?id=")) {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <Skill id={parseInt(skillId)} />
+    </StrictMode>
+  );
+} else if (location.includes("version_id")) {
+  const versionId = location.substring(location.indexOf("?version_id=") + 12);
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <SkillVersion versionId={parseInt(versionId)} />
     </StrictMode>
   );
 } else {
