@@ -15,7 +15,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         skills: resolve(__dirname, "skills/index.html"),
-        jobs: resolve(__dirname, "jobs/index.html")
+        jobs: resolve(__dirname, "jobs/index.html"),
+        companies: resolve(__dirname, "companies/index.html")
       }
     }
   }
