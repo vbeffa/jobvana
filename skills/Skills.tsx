@@ -1,13 +1,82 @@
+import { useMemo, useState } from "react";
 import "../src/App.css";
 import Header from "../src/Header";
 import useSkills from "../src/hooks/useSkills";
 
+type SortCol = "skill" | "skill_type";
+
+type SortDir = "up" | "down";
+
 function Skills() {
+  const [sortCol, setSortCol] = useState<SortCol>("skill_type");
+  const [sortDir, setSortDir] = useState<SortDir>("down");
+  const [skillsFilter, setSkillsFilter] = useState<string>();
+  const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
+
   const skills = useSkills();
-  const all = skills.all;
   const skillTypes = skills.types;
 
-  if (all.length === 0) {
+  const filteredSkills = useMemo(() => {
+    return skills.all.filter((skill) => {
+      let pass = true;
+      console.log(skillsFilter);
+      if (skillsFilter) {
+        pass =
+          skill.name
+            .toLocaleLowerCase()
+            .includes(skillsFilter.toLocaleLowerCase()) ||
+          (skill.abbreviation !== null &&
+            skill.abbreviation
+              .toLocaleLowerCase()
+              .includes(skillsFilter.toLocaleLowerCase()));
+      }
+      if (skillTypesFilter) {
+        console.log(skillTypesFilter);
+        const skillType = skillTypes.find(
+          (skillType) => skillType.id === skill.skill_type_id
+        )?.name;
+        pass =
+          skillType !== undefined &&
+          skillType
+            ?.toLocaleLowerCase()
+            .includes(skillTypesFilter.toLocaleLowerCase());
+      }
+      return pass;
+    });
+  }, [skillTypes, skillTypesFilter, skills.all, skillsFilter]);
+
+  const setSort = (col: SortCol) => {
+    const newSortCol = col;
+    const newSortDir =
+      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "down";
+    if (newSortCol === sortCol) {
+      setSortDir(newSortDir);
+    } else {
+      setSortCol(newSortCol);
+      setSortDir(newSortDir);
+    }
+    filteredSkills.sort((skill1, skill2) => {
+      if (newSortCol === "skill") {
+        return newSortDir === "down"
+          ? skill1.name.localeCompare(skill2.name)
+          : skill2.name.localeCompare(skill1.name);
+      }
+      if (skill1.skill_type_id === skill2.skill_type_id) {
+        return skill1.name.localeCompare(skill2.name);
+      }
+      const skillType1 = skillTypes.find(
+        (skillType) => skillType.id === skill1.skill_type_id
+      );
+      const skillType2 = skillTypes.find(
+        (skillType) => skillType.id === skill2.skill_type_id
+      );
+      return newSortDir === "down"
+        ? skillType1!.name.localeCompare(skillType2!.name)
+        : skillType2!.name.localeCompare(skillType1!.name);
+    });
+  };
+
+  if (skills.all.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -16,38 +85,61 @@ function Skills() {
       <Header />
       <h1>Skills</h1>
       <div className="card">
-        <table className="border-1 w-full">
+        <table className="w-full">
           <thead>
+            <tr>
+              <td className="text-left pb-2 w-[50%]">
+                <input
+                  type="text"
+                  className="border pl-1"
+                  placeholder="Search for skill"
+                  onChange={(e) => {
+                    setSkillsFilter(e.target.value);
+                  }}
+                />
+              </td>
+              <td className="text-left pb-2">
+                <input
+                  type="text"
+                  className="border pl-1"
+                  placeholder="Filter by skill type"
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setSkillTypesFilter(e.target.value);
+                  }}
+                />
+              </td>
+            </tr>
             <tr key={0}>
-              <th className="p-1 border">Skill</th>
-              <th className="p-1 border">Abbreviation</th>
-              <th className="p-1 border">Skill Type</th>
-              <th className="p-1 border">Description</th>
-              <th className="p-1 border">Reference</th>
+              <th
+                className="p-1 border cursor-pointer"
+                onClick={() => setSort("skill")}
+              >
+                Skill {sortCol === "skill" && (sortDir === "up" ? "↑" : "↓")}
+              </th>
+              <th
+                className="p-1 border cursor-pointer"
+                onClick={() => setSort("skill_type")}
+              >
+                Skill Type{" "}
+                {sortCol === "skill_type" && (sortDir === "up" ? "↑" : "↓")}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {all.map((skill) => {
+            {filteredSkills.map((skill) => {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
                     <a href={`/jobvana/skills/?id=${skill.id}`}>{skill.name}</a>
+                    {skill.abbreviation && ` (${skill.abbreviation})`}
                   </td>
-                  <td className="p-1 border text-left">{skill.abbreviation}</td>
                   <td className="p-1 border text-left">
                     {
                       skillTypes.find(
                         (skillType) => skillType.id === skill.skill_type_id
                       )?.name
                     }
-                  </td>
-                  <td className="p-1 border text-left">{skill.description}</td>
-                  <td className="p-1 border text-left">
-                    {skill.reference && (
-                      <a target="_blank" href={skill.reference}>
-                        {skill.reference}
-                      </a>
-                    )}
                   </td>
                 </tr>
               );
