@@ -1,3 +1,4 @@
+import CompanyLink from "../companies/CompanyLink";
 import SkillLink from "../skills/SkillLink";
 import "../src/App.css";
 import Header from "../src/Header";
@@ -34,10 +35,11 @@ function Skills() {
           </thead>
           <tbody>
             {jobs.all.map((job) => {
+              const company = companies.company(job.company_id);
               return (
                 <tr key={job.id}>
                   <td className="p-1 border text-left align-top">
-                    {companies.company(job.company_id)?.name}
+                    {company && <CompanyLink company={company} />}
                   </td>
                   <td className="p-1 border text-left align-top">
                     <a href={`/jobvana/jobs/?id=${job.id}`}>{job.title}</a>

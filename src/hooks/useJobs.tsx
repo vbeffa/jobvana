@@ -12,6 +12,7 @@ export type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
 export type JobsQ = {
   all: Array<Job>;
   job: (id: number) => Job | undefined;
+  forCompany: (companyId: number) => Array<Job>;
 };
 
 const useJobs = (): JobsQ => {
@@ -58,6 +59,9 @@ const useJobs = (): JobsQ => {
     all: jobs,
     job: (id: number) => {
       return jobs.find((job) => job.id === id);
+    },
+    forCompany: (companyId: number) => {
+      return jobs.filter((job) => job.company_id === companyId);
     }
   };
 };
