@@ -21,7 +21,11 @@ const useCompanies = (): CompaniesQ => {
       if (companies === null) {
         return;
       }
-      setCompanies(companies);
+      setCompanies(
+        companies.sort((company1, company2) =>
+          company1.name.localeCompare(company2.name)
+        )
+      );
     })();
   }, [companies.length]);
 

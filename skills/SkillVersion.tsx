@@ -11,13 +11,17 @@ function SkillVersion({ versionId }: { versionId: number }) {
   const skill = skills.skill(skillVersion.skill_id);
 
   if (!skill || !skillVersion) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Header currPage="skill_version" />
+        Loading...
+      </div>
+    );
   }
-  console.log(skill.reference);
 
   return (
     <>
-      <Header />
+      <Header currPage="skill_version" />
       <h1>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`} -{" "}

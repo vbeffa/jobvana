@@ -9,12 +9,17 @@ function Skill({ id }: { id: number }) {
   const skillTypes = skills.types;
 
   if (!skill) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Header currPage="skill" />
+        Loading...
+      </div>
+    );
   }
 
   return (
     <>
-      <Header />
+      <Header currPage="skill" />
       <h1>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`}

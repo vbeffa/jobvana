@@ -10,12 +10,17 @@ function Job({ id }: { id: number }) {
   const job = jobs.job(id);
 
   if (!job) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Header currPage="job" />
+        Loading...
+      </div>
+    );
   }
 
   return (
     <>
-      <Header />
+      <Header currPage="job" />
       <h1>
         {companies.company(job.company_id)?.name} - {job.title}
       </h1>

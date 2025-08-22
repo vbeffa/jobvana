@@ -9,12 +9,17 @@ function Skills() {
   const jobs = useJobs();
 
   if (jobs.all.length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Header currPage="jobs" />
+        Loading...
+      </div>
+    );
   }
 
   return (
     <>
-      <Header />
+      <Header currPage="jobs" />
       <h1>Jobs</h1>
       <div className="card">
         <table className="border-1 w-full">

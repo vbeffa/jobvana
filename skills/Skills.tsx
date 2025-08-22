@@ -78,12 +78,17 @@ function Skills() {
   };
 
   if (skills.all.length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Header currPage="skills" />
+        Loading...
+      </div>
+    );
   }
 
   return (
     <>
-      <Header />
+      <Header currPage="skills" />
       <h1>Skills</h1>
       <div className="card">
         <table className="w-full">
