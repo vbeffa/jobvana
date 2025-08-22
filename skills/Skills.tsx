@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import "../src/App.css";
 import Header from "../src/Header";
 import useSkills from "../src/hooks/useSkills";
+import SkillLink from "./SkillLink";
 
 type SortCol = "skill" | "skill_type";
 
@@ -131,8 +132,7 @@ function Skills() {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
-                    <a href={`/jobvana/skills/?id=${skill.id}`}>{skill.name}</a>
-                    {skill.abbreviation && ` (${skill.abbreviation})`}
+                    <SkillLink skill={skill} />
                   </td>
                   <td className="p-1 border text-left">
                     {

@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       companies: {
@@ -100,6 +75,7 @@ export type Database = {
         Row: {
           company_id: number
           created_at: string
+          description: string | null
           id: number
           status: Database["public"]["Enums"]["job_status"]
           title: string
@@ -107,6 +83,7 @@ export type Database = {
         Insert: {
           company_id: number
           created_at?: string
+          description?: string | null
           id?: number
           status?: Database["public"]["Enums"]["job_status"]
           title: string
@@ -114,6 +91,7 @@ export type Database = {
         Update: {
           company_id?: number
           created_at?: string
+          description?: string | null
           id?: number
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
@@ -181,18 +159,21 @@ export type Database = {
       skill_versions: {
         Row: {
           id: number
+          notes: string | null
           reference: string | null
           skill_id: number
           version: string
         }
         Insert: {
           id?: number
+          notes?: string | null
           reference?: string | null
           skill_id: number
           version: string
         }
         Update: {
           id?: number
+          notes?: string | null
           reference?: string | null
           skill_id?: number
           version?: string
@@ -413,9 +394,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       job_status: ["open", "filled", "closed"],

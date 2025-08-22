@@ -11,13 +11,13 @@ export type SkillVersion =
 
 export type SkillType = Database["public"]["Tables"]["skill_types"]["Row"];
 
-export type SkillsQ = {
+export type SkillsHook = {
   all: Array<Skill>;
   types: Array<SkillType>;
   skill: (id: number) => Skill | undefined;
 };
 
-const useSkills = (): SkillsQ => {
+const useSkills = (): SkillsHook => {
   const [skills, setSkills] = useState<Array<Skill>>([]);
   const [skillTypes, setSkillTypes] = useState<Array<SkillType>>([]);
   const [skillVersions, setSkillVersions] = useState<Array<SkillVersion>>([]);

@@ -2,9 +2,20 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "../src/index.css";
 import Jobs from "./Jobs.tsx";
+import Job from "./Job.tsx";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Jobs />
-  </StrictMode>
-);
+const location = window.location.toString();
+if (location.includes("?id=")) {
+  const jobId = location.substring(location.indexOf("?id=") + 4);
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Job id={parseInt(jobId)} />
+    </StrictMode>
+  );
+} else {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Jobs />
+    </StrictMode>
+  );
+}
