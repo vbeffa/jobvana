@@ -64,6 +64,12 @@ const useJobs = (): JobsQ => {
           salaryHigh
         };
       });
+      jobs.sort((job1, job2) => {
+        return (
+          new Date(job2.created_at).getTime() -
+          new Date(job1.created_at).getTime()
+        );
+      });
       setJobs(jobs);
     })();
   }, [

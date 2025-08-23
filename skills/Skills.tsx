@@ -5,7 +5,6 @@ import useSkills from "../src/hooks/useSkills";
 import SkillLink from "./SkillLink";
 
 type SortCol = "skill" | "skill_type";
-
 type SortDir = "up" | "down";
 
 const Skills = () => {
@@ -18,31 +17,58 @@ const Skills = () => {
   const skillTypes = skills.types;
 
   const filteredSkills = useMemo(() => {
-    return skills.all.filter((skill) => {
-      let pass = true;
-      if (skillsFilter) {
-        pass =
-          skill.name
-            .toLocaleLowerCase()
-            .includes(skillsFilter.toLocaleLowerCase()) ||
-          (skill.abbreviation !== null &&
-            skill.abbreviation
+    return skills.all
+      .filter((skill) => {
+        let pass = true;
+        if (skillsFilter) {
+          pass =
+            skill.name
               .toLocaleLowerCase()
-              .includes(skillsFilter.toLocaleLowerCase()));
-      }
-      if (skillTypesFilter) {
-        const skillType = skillTypes.find(
-          (skillType) => skillType.id === skill.skill_type_id
-        )?.name;
-        pass =
-          skillType !== undefined &&
-          skillType
-            ?.toLocaleLowerCase()
-            .includes(skillTypesFilter.toLocaleLowerCase());
-      }
-      return pass;
-    });
-  }, [skillTypes, skillTypesFilter, skills.all, skillsFilter]);
+              .includes(skillsFilter.toLocaleLowerCase()) ||
+            (skill.abbreviation !== null &&
+              skill.abbreviation
+                .toLocaleLowerCase()
+                .includes(skillsFilter.toLocaleLowerCase()));
+        }
+        if (skillTypesFilter) {
+          const skillType = skillTypes.find(
+            (skillType) => skillType.id === skill.skill_type_id
+          )?.name;
+          pass =
+            skillType !== undefined &&
+            skillType
+              ?.toLocaleLowerCase()
+              .includes(skillTypesFilter.toLocaleLowerCase());
+        }
+        return pass;
+      })
+      .sort((skill1, skill2) => {
+        if (sortCol === "skill") {
+          return sortDir === "down"
+            ? skill1.name.localeCompare(skill2.name)
+            : skill2.name.localeCompare(skill1.name);
+        }
+        if (skill1.skill_type_id === skill2.skill_type_id) {
+          return skill1.name.localeCompare(skill2.name);
+        }
+        const skillType1 = skillTypes.find(
+          (skillType) => skillType.id === skill1.skill_type_id
+        );
+        const skillType2 = skillTypes.find(
+          (skillType) => skillType.id === skill2.skill_type_id
+        );
+        return sortDir === "down"
+          ? skillType1!.name.localeCompare(skillType2!.name)
+          : skillType2!.name.localeCompare(skillType1!.name);
+      });
+  }, [
+    skillTypes,
+    skillTypesFilter,
+    skills.all,
+    skillsFilter,
+    sortCol,
+    sortDir
+  ]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
@@ -54,25 +80,6 @@ const Skills = () => {
       setSortCol(newSortCol);
       setSortDir(newSortDir);
     }
-    filteredSkills.sort((skill1, skill2) => {
-      if (newSortCol === "skill") {
-        return newSortDir === "down"
-          ? skill1.name.localeCompare(skill2.name)
-          : skill2.name.localeCompare(skill1.name);
-      }
-      if (skill1.skill_type_id === skill2.skill_type_id) {
-        return skill1.name.localeCompare(skill2.name);
-      }
-      const skillType1 = skillTypes.find(
-        (skillType) => skillType.id === skill1.skill_type_id
-      );
-      const skillType2 = skillTypes.find(
-        (skillType) => skillType.id === skill2.skill_type_id
-      );
-      return newSortDir === "down"
-        ? skillType1!.name.localeCompare(skillType2!.name)
-        : skillType2!.name.localeCompare(skillType1!.name);
-    });
   };
 
   if (skills.all.length === 0) {
