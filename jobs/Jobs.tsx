@@ -4,6 +4,7 @@ import "../src/App.css";
 import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
+import Salary from "./Salary";
 
 function Skills() {
   const companies = useCompanies();
@@ -30,6 +31,7 @@ function Skills() {
               <th className="p-1 border">Title</th>
               <th className="p-1 border">Created</th>
               <th className="p-1 border">Status</th>
+              <th className="p-1 border">Salary</th>
               <th className="p-1 border">Skills</th>
             </tr>
           </thead>
@@ -49,6 +51,9 @@ function Skills() {
                   </td>
                   <td className="p-1 border text-left align-top">
                     {job.status}
+                  </td>
+                  <td className="p-1 border text-left align-top">
+                    <Salary job={job} />
                   </td>
                   <td className="p-1 border text-left">
                     <ul className="list-inside list-disc">

@@ -20,7 +20,6 @@ function Skills() {
   const filteredSkills = useMemo(() => {
     return skills.all.filter((skill) => {
       let pass = true;
-      console.log(skillsFilter);
       if (skillsFilter) {
         pass =
           skill.name
@@ -32,7 +31,6 @@ function Skills() {
               .includes(skillsFilter.toLocaleLowerCase()));
       }
       if (skillTypesFilter) {
-        console.log(skillTypesFilter);
         const skillType = skillTypes.find(
           (skillType) => skillType.id === skill.skill_type_id
         )?.name;
@@ -110,7 +108,6 @@ function Skills() {
                   className="border pl-1"
                   placeholder="Filter by skill type"
                   onChange={(e) => {
-                    console.log(e.target.value);
                     setSkillTypesFilter(e.target.value);
                   }}
                 />

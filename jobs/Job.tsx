@@ -3,6 +3,7 @@ import "../src/App.css";
 import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
+import Salary from "./Salary";
 
 function Job({ id }: { id: number }) {
   const companies = useCompanies();
@@ -32,6 +33,11 @@ function Job({ id }: { id: number }) {
       </div>
       <h2>Status</h2>
       <div className="card text-left">{job.status}</div>
+      <h2>Salary</h2>
+      <div className="card text-left">
+        <Salary job={job} />
+      </div>
+
       <h2>Skills</h2>
       <div className="card text-left">
         <ul className="list-inside list-disc">

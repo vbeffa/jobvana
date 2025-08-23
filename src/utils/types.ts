@@ -77,6 +77,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
+          salary_range: unknown
           status: Database["public"]["Enums"]["job_status"]
           title: string
         }
@@ -85,6 +86,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          salary_range: unknown
           status?: Database["public"]["Enums"]["job_status"]
           title: string
         }
@@ -93,12 +95,13 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          salary_range?: unknown
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
         }
         Relationships: [
           {
-            foreignKeyName: "jobs_company_id_fkey"
+            foreignKeyName: "jobs2_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"

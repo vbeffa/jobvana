@@ -5,6 +5,8 @@ import useSkills, { type Skill } from "./useSkills";
 
 export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
   skills: Array<Skill>;
+  salaryLow: number;
+  salaryHigh: number;
 };
 export type Company = Database["public"]["Tables"]["companies"]["Row"];
 export type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
@@ -29,15 +31,22 @@ const useJobs = (): JobsQ => {
       if (data === null) {
         return;
       }
-      const jobs: Array<Job> = data.map((job) => ({
-        ...job,
-        skills: skills.all.filter((skill) =>
-          jobSkills
-            .filter((jobSkill) => jobSkill.job_id === job.id)
-            .map((jobSkill) => jobSkill.skill_id)
-            .includes(skill.id)
-        )
-      }));
+      const jobs: Array<Job> = data.map((job) => {
+        const salaryRange = (job.salary_range as string).split(",");
+        const salaryLow = parseInt(salaryRange[0].substring(1));
+        const salaryHigh = parseInt(salaryRange[1].substring(0)) - 1;
+        return {
+          ...job,
+          skills: skills.all.filter((skill) =>
+            jobSkills
+              .filter((jobSkill) => jobSkill.job_id === job.id)
+              .map((jobSkill) => jobSkill.skill_id)
+              .includes(skill.id)
+          ),
+          salaryLow,
+          salaryHigh
+        };
+      });
       setJobs(jobs);
     })();
   }, [jobSkills, jobSkills.length, jobs.length, skills]);
