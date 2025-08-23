@@ -1,17 +1,27 @@
 import { useMemo, useState } from "react";
 import CompanyLink from "../companies/CompanyLink";
-import "../src/App.css";
-import Header from "../src/Header";
-import useCompanies from "../src/hooks/useCompanies";
-import useJobs from "../src/hooks/useJobs";
-import useSkills from "../src/hooks/useSkills";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
+import useCompanies from "../hooks/useCompanies";
+import useJobs from "../hooks/useJobs";
+import useSkills from "../hooks/useSkills";
+import Loading from "../Loading";
+import JobLink from "./JobLink";
 
 type SortCol = "company" | "title" | "created";
 type SortDir = "up" | "down";
 
-const Jobs = () => {
+const Jobs = ({
+  gotoCompany,
+  gotoJob,
+  gotoSkill,
+  gotoSkillVersion
+}: {
+  gotoCompany: (companyId: number) => void;
+  gotoJob: (jobId: number) => void;
+  gotoSkill: (skillId: number) => void;
+  gotoSkillVersion: (skillVersionId: number) => void;
+}) => {
   const [sortCol, setSortCol] = useState<SortCol>("created");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [companyFilter, setCompanyFilter] = useState<string>();
@@ -73,18 +83,8 @@ const Jobs = () => {
     }
   };
 
-  if (jobs.all.length === 0) {
-    return (
-      <div>
-        <Header currPage="jobs" />
-        Loading...
-      </div>
-    );
-  }
-
   return (
     <>
-      <Header currPage="jobs" />
       <h1>Jobs</h1>
       <div className="card">
         <table className="w-full">
@@ -138,15 +138,21 @@ const Jobs = () => {
             </tr>
           </thead>
           <tbody>
+            <Loading waitFor={jobs.all} colSpan={6} />
             {filteredJobs.map((job) => {
               const company = companies.company(job.company_id);
               return (
                 <tr key={job.id}>
                   <td className="p-1 border text-left align-top">
-                    {company && <CompanyLink company={company} />}
+                    {company && (
+                      <CompanyLink
+                        company={company}
+                        gotoCompany={gotoCompany}
+                      />
+                    )}
                   </td>
                   <td className="p-1 border text-left align-top">
-                    <a href={`/jobvana/jobs/?id=${job.id}`}>{job.title}</a>
+                    <JobLink job={job} gotoJob={gotoJob} />
                   </td>
                   <td className="p-1 border text-left align-top">
                     {new Date(job.created_at).toDateString()}
@@ -158,7 +164,12 @@ const Jobs = () => {
                     <Salary job={job} />
                   </td>
                   <td className="p-1 border text-left">
-                    <JobSkills job={job} skills={skills} />
+                    <JobSkills
+                      job={job}
+                      skills={skills}
+                      gotoSkill={gotoSkill}
+                      gotoSkillVersion={gotoSkillVersion}
+                    />
                   </td>
                 </tr>
               );

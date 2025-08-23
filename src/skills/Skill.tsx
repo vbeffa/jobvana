@@ -1,26 +1,26 @@
-import "../src/App.css";
-import Header from "../src/Header";
-import useSkills from "../src/hooks/useSkills";
+import useSkills from "../hooks/useSkills";
 import SkillLink from "./SkillLink";
 import SkillVersionLink from "./SkillVersionLink";
 
-const Skill = ({ id }: { id: number }) => {
+const Skill = ({
+  id,
+  gotoSkill,
+  gotoSkillVersion
+}: {
+  id: number;
+  gotoSkill: (skillId: number) => void;
+  gotoSkillVersion: (skillVersionId: number) => void;
+}) => {
   const skills = useSkills();
   const skill = skills.skill(id);
   const skillTypes = skills.types;
 
   if (!skill) {
-    return (
-      <div>
-        <Header currPage="skill" />
-        Loading...
-      </div>
-    );
+    return null;
   }
 
   return (
     <>
-      <Header currPage="skill" />
       <h1>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`}
@@ -40,7 +40,11 @@ const Skill = ({ id }: { id: number }) => {
           <ul className="list-inside list-disc">
             {skill.versions.map((skillVersion) => (
               <li key={skillVersion.id}>
-                <SkillVersionLink skill={skill} skillVersion={skillVersion} />
+                <SkillVersionLink
+                  skill={skill}
+                  skillVersion={skillVersion}
+                  gotoSkillVersion={gotoSkillVersion}
+                />
               </li>
             ))}
           </ul>
@@ -53,7 +57,7 @@ const Skill = ({ id }: { id: number }) => {
         <ul className="list-inside list-disc">
           {skill.relatedSkills.map((skill) => (
             <li key={skill.id}>
-              <SkillLink skill={skill} />
+              <SkillLink skill={skill} gotoSkill={gotoSkill} />
             </li>
           ))}
         </ul>

@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react";
-import "../src/App.css";
-import Header from "../src/Header";
-import useSkills from "../src/hooks/useSkills";
+import useSkills from "../hooks/useSkills";
 import SkillLink from "./SkillLink";
+import Loading from "../Loading";
 
 type SortCol = "skill" | "skill_type";
 type SortDir = "up" | "down";
 
-const Skills = () => {
+const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_type");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [skillsFilter, setSkillsFilter] = useState<string>();
@@ -82,18 +81,8 @@ const Skills = () => {
     }
   };
 
-  if (skills.all.length === 0) {
-    return (
-      <div>
-        <Header currPage="skills" />
-        Loading...
-      </div>
-    );
-  }
-
   return (
     <>
-      <Header currPage="skills" />
       <h1>Skills</h1>
       <div className="card">
         <table className="w-full">
@@ -137,11 +126,12 @@ const Skills = () => {
             </tr>
           </thead>
           <tbody>
+            <Loading waitFor={skills.all} colSpan={2} />
             {filteredSkills.map((skill) => {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
-                    <SkillLink skill={skill} />
+                    <SkillLink skill={skill} gotoSkill={gotoSkill} />
                   </td>
                   <td className="p-1 border text-left">
                     {

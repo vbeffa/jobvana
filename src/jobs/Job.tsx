@@ -1,29 +1,29 @@
-import "../src/App.css";
-import Header from "../src/Header";
-import useCompanies from "../src/hooks/useCompanies";
-import useJobs from "../src/hooks/useJobs";
-import useSkills from "../src/hooks/useSkills";
-import JobSkills from "./JobSkills";
 import Salary from "./Salary";
+import useCompanies from "../hooks/useCompanies";
+import useJobs from "../hooks/useJobs";
+import useSkills from "../hooks/useSkills";
+import JobSkills from "../jobs/JobSkills";
 
-const Job = ({ id }: { id: number }) => {
+const Job = ({
+  id,
+  gotoSkill,
+  gotoSkillVersion
+}: {
+  id: number;
+  gotoSkill: (skillId: number) => void;
+  gotoSkillVersion: (skillVersionId: number) => void;
+}) => {
   const companies = useCompanies();
   const jobs = useJobs();
   const job = jobs.job(id);
   const skills = useSkills();
 
   if (!job) {
-    return (
-      <div>
-        <Header currPage="job" />
-        Loading...
-      </div>
-    );
+    return null;
   }
 
   return (
     <>
-      <Header currPage="job" />
       <h1>
         {companies.company(job.company_id)?.name} - {job.title}
       </h1>
@@ -42,7 +42,12 @@ const Job = ({ id }: { id: number }) => {
 
       <h2>Skills</h2>
       <div className="card text-left">
-        <JobSkills job={job} skills={skills} />
+        <JobSkills
+          job={job}
+          skills={skills}
+          gotoSkill={gotoSkill}
+          gotoSkillVersion={gotoSkillVersion}
+        />
       </div>
     </>
   );

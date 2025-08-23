@@ -1,8 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "../src/index.css";
-import Jobs from "./Jobs.tsx";
-import Job from "./Job.tsx";
+import Jobs from "../src/jobs/Jobs.tsx";
+import Job from "../src/jobs/Job.tsx";
 
 const location = window.location.toString();
 if (location.includes("?id=")) {

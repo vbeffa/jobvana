@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "../src/index.css";
-import Skill from "./Skill.tsx";
-import Skills from "./Skills.tsx";
-import SkillVersion from "./SkillVersion.tsx";
+import Skill from "../src/skills/Skill.tsx";
+import Skills from "../src/skills/Skills.tsx";
+import SkillVersion from "../src/skills/SkillVersion.tsx";
 
 const location = window.location.toString();
 if (location.includes("?id=")) {

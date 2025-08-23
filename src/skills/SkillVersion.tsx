@@ -1,6 +1,4 @@
-import "../src/App.css";
-import Header from "../src/Header";
-import useSkills from "../src/hooks/useSkills";
+import useSkills from "../hooks/useSkills";
 
 const SkillVersion = ({ versionId }: { versionId: number }) => {
   const skills = useSkills();
@@ -11,17 +9,11 @@ const SkillVersion = ({ versionId }: { versionId: number }) => {
   const skill = skills.skill(skillVersion.skill_id);
 
   if (!skill || !skillVersion) {
-    return (
-      <div>
-        <Header currPage="skill_version" />
-        Loading...
-      </div>
-    );
+    return null;
   }
 
   return (
     <>
-      <Header currPage="skill_version" />
       <h1>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`} -{" "}

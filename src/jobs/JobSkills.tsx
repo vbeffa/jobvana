@@ -1,10 +1,19 @@
 import SkillLink from "../skills/SkillLink";
 import SkillVersionLink from "../skills/SkillVersionLink";
-import "../src/App.css";
-import { Job } from "../src/hooks/useJobs";
-import { SkillsHook } from "../src/hooks/useSkills";
+import { type Job } from "../hooks/useJobs";
+import { type SkillsHook } from "../hooks/useSkills";
 
-const JobSkills = ({ job, skills }: { job: Job; skills: SkillsHook }) => {
+const JobSkills = ({
+  job,
+  skills,
+  gotoSkill,
+  gotoSkillVersion
+}: {
+  job: Job;
+  skills: SkillsHook;
+  gotoSkill: (skillId: number) => void;
+  gotoSkillVersion: (skillVersionId: number) => void;
+}) => {
   if (!job || !skills) {
     return null;
   }
@@ -13,7 +22,7 @@ const JobSkills = ({ job, skills }: { job: Job; skills: SkillsHook }) => {
     <ul className="list-inside list-disc">
       {job.skills.map((skill) => (
         <li key={skill.id}>
-          <SkillLink skill={skill} />
+          <SkillLink skill={skill} gotoSkill={gotoSkill} />
         </li>
       ))}
       {job.skillVersions.map((skillVersion) => (
@@ -21,6 +30,7 @@ const JobSkills = ({ job, skills }: { job: Job; skills: SkillsHook }) => {
           <SkillVersionLink
             skill={skills.skill(skillVersion.skill_id)!}
             skillVersion={skillVersion}
+            gotoSkillVersion={gotoSkillVersion}
           />
         </li>
       ))}
