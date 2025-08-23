@@ -113,7 +113,7 @@ function Skills() {
                 />
               </td>
             </tr>
-            <tr key={0}>
+            <tr>
               <th
                 className="p-1 border cursor-pointer"
                 onClick={() => setSort("skill")}

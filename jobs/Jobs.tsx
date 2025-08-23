@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import CompanyLink from "../companies/CompanyLink";
 import SkillLink from "../skills/SkillLink";
 import "../src/App.css";
@@ -6,9 +7,31 @@ import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
 import Salary from "./Salary";
 
-function Skills() {
+function Jobs() {
   const companies = useCompanies();
   const jobs = useJobs();
+  const [companyFilter, setCompanyFilter] = useState<string>();
+  const [jobTitleFilter, setJobTitleFilter] = useState<string>();
+
+  const filteredJobs = useMemo(() => {
+    return jobs.all.filter((job) => {
+      let pass = true;
+      if (companyFilter) {
+        const company = companies.company(job.company_id);
+        pass =
+          company !== undefined &&
+          company?.name
+            .toLocaleLowerCase()
+            .includes(companyFilter.toLocaleLowerCase());
+      }
+      if (jobTitleFilter) {
+        pass = job.title
+          .toLocaleLowerCase()
+          .includes(jobTitleFilter.toLocaleLowerCase());
+      }
+      return pass;
+    });
+  }, [companies, companyFilter, jobTitleFilter, jobs.all]);
 
   if (jobs.all.length === 0) {
     return (
@@ -24,9 +47,31 @@ function Skills() {
       <Header currPage="jobs" />
       <h1>Jobs</h1>
       <div className="card">
-        <table className="border-1 w-full">
+        <table className="w-full">
           <thead>
-            <tr key={0}>
+            <tr>
+              <td className="text-left pb-2 w-[20%]">
+                <input
+                  type="text"
+                  className="border pl-1"
+                  placeholder="Filter by company"
+                  onChange={(e) => {
+                    setCompanyFilter(e.target.value);
+                  }}
+                />
+              </td>
+              <td className="text-left pb-2  w-[20%]">
+                <input
+                  type="text"
+                  className="border pl-1"
+                  placeholder="Filter by job title"
+                  onChange={(e) => {
+                    setJobTitleFilter(e.target.value);
+                  }}
+                />
+              </td>
+            </tr>
+            <tr>
               <th className="p-1 border">Company</th>
               <th className="p-1 border">Title</th>
               <th className="p-1 border">Created</th>
@@ -36,7 +81,7 @@ function Skills() {
             </tr>
           </thead>
           <tbody>
-            {jobs.all.map((job) => {
+            {filteredJobs.map((job) => {
               const company = companies.company(job.company_id);
               return (
                 <tr key={job.id}>
@@ -74,4 +119,4 @@ function Skills() {
   );
 }
 
-export default Skills;
+export default Jobs;
