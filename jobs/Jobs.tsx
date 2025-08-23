@@ -1,12 +1,11 @@
 import { useMemo, useState } from "react";
 import CompanyLink from "../companies/CompanyLink";
-import SkillLink from "../skills/SkillLink";
-import SkillVersionLink from "../skills/SkillVersionLink";
 import "../src/App.css";
 import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
 import useSkills from "../src/hooks/useSkills";
+import JobSkills from "./JobSkills";
 import Salary from "./Salary";
 
 const Jobs = () => {
@@ -104,21 +103,7 @@ const Jobs = () => {
                     <Salary job={job} />
                   </td>
                   <td className="p-1 border text-left">
-                    <ul className="list-inside list-disc">
-                      {job.skills.map((skill) => (
-                        <li key={skill.id}>
-                          <SkillLink skill={skill} />
-                        </li>
-                      ))}
-                      {job.skillVersions.map((skillVersion) => (
-                        <li key={skillVersion.id}>
-                          <SkillVersionLink
-                            skill={skills.skill(skillVersion.skill_id)!}
-                            skillVersion={skillVersion}
-                          />
-                        </li>
-                      ))}
-                    </ul>
+                    <JobSkills job={job} skills={skills} />
                   </td>
                 </tr>
               );

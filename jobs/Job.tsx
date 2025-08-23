@@ -1,14 +1,16 @@
-import SkillLink from "../skills/SkillLink";
 import "../src/App.css";
 import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
+import useSkills from "../src/hooks/useSkills";
+import JobSkills from "./JobSkills";
 import Salary from "./Salary";
 
 const Job = ({ id }: { id: number }) => {
   const companies = useCompanies();
   const jobs = useJobs();
   const job = jobs.job(id);
+  const skills = useSkills();
 
   if (!job) {
     return (
@@ -40,13 +42,7 @@ const Job = ({ id }: { id: number }) => {
 
       <h2>Skills</h2>
       <div className="card text-left">
-        <ul className="list-inside list-disc">
-          {job.skills.map((skill) => (
-            <li key={skill.id}>
-              <SkillLink skill={skill} />
-            </li>
-          ))}
-        </ul>
+        <JobSkills job={job} skills={skills} />
       </div>
     </>
   );
