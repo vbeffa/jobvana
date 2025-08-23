@@ -2,7 +2,7 @@ import "../src/App.css";
 import Header from "../src/Header";
 import useSkills from "../src/hooks/useSkills";
 
-function SkillVersion({ versionId }: { versionId: number }) {
+const SkillVersion = ({ versionId }: { versionId: number }) => {
   const skills = useSkills();
   const skillVersion = skills.version(versionId);
   if (!skillVersion) {
@@ -43,6 +43,6 @@ function SkillVersion({ versionId }: { versionId: number }) {
       </div>
     </>
   );
-}
+};
 
 export default SkillVersion;

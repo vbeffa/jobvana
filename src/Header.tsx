@@ -10,7 +10,7 @@ export type CurrentPage =
   | "companies"
   | "company";
 
-function Header({ currPage }: { currPage: CurrentPage }) {
+const Header = ({ currPage }: { currPage: CurrentPage }) => {
   return (
     <div className="bg-amber-300 w-full h-12 pl-2 pt-2.5 mb-4 top-0 left-0 sticky">
       {currPage === "home" && "Home"}
@@ -23,6 +23,6 @@ function Header({ currPage }: { currPage: CurrentPage }) {
       {currPage !== "companies" && <a href="/jobvana/companies/">Companies</a>}
     </div>
   );
-}
+};
 
 export default Header;

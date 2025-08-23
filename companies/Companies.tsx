@@ -3,7 +3,7 @@ import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import CompanyLink from "./CompanyLink";
 
-function Skills() {
+const Skills = () => {
   const companies = useCompanies();
 
   if (companies.all.length === 0) {
@@ -41,6 +41,6 @@ function Skills() {
       </div>
     </>
   );
-}
+};
 
 export default Skills;

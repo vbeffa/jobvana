@@ -5,7 +5,7 @@ import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
 import Salary from "./Salary";
 
-function Job({ id }: { id: number }) {
+const Job = ({ id }: { id: number }) => {
   const companies = useCompanies();
   const jobs = useJobs();
   const job = jobs.job(id);
@@ -50,6 +50,6 @@ function Job({ id }: { id: number }) {
       </div>
     </>
   );
-}
+};
 
 export default Job;

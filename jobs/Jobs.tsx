@@ -1,15 +1,18 @@
 import { useMemo, useState } from "react";
 import CompanyLink from "../companies/CompanyLink";
 import SkillLink from "../skills/SkillLink";
+import SkillVersionLink from "../skills/SkillVersionLink";
 import "../src/App.css";
 import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
+import useSkills from "../src/hooks/useSkills";
 import Salary from "./Salary";
 
-function Jobs() {
+const Jobs = () => {
   const companies = useCompanies();
   const jobs = useJobs();
+  const skills = useSkills();
   const [companyFilter, setCompanyFilter] = useState<string>();
   const [jobTitleFilter, setJobTitleFilter] = useState<string>();
 
@@ -107,6 +110,14 @@ function Jobs() {
                           <SkillLink skill={skill} />
                         </li>
                       ))}
+                      {job.skillVersions.map((skillVersion) => (
+                        <li key={skillVersion.id}>
+                          <SkillVersionLink
+                            skill={skills.skill(skillVersion.skill_id)!}
+                            skillVersion={skillVersion}
+                          />
+                        </li>
+                      ))}
                     </ul>
                   </td>
                 </tr>
@@ -117,6 +128,6 @@ function Jobs() {
       </div>
     </>
   );
-}
+};
 
 export default Jobs;

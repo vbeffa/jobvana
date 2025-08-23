@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./Header";
 
-function App() {
+const App = () => {
   return (
     <>
       <Header currPage="home" />
@@ -9,6 +9,6 @@ function App() {
       <p>Gamifying the job search process</p>
     </>
   );
-}
+};
 
 export default App;

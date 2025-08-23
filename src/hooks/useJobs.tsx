@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import supabase from "../utils/supabase";
 import type { Database } from "../utils/types";
-import useSkills, { type Skill } from "./useSkills";
+import useSkills, { type Skill, type SkillVersion } from "./useSkills";
 
 export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
   skills: Array<Skill>;
+  skillVersions: Array<SkillVersion>;
   salaryLow: number;
   salaryHigh: number;
 };
 export type Company = Database["public"]["Tables"]["companies"]["Row"];
 export type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
+export type JobSkillVersion =
+  Database["public"]["Tables"]["job_skill_versions"]["Row"];
 
 export type JobsQ = {
   all: Array<Job>;
@@ -20,10 +23,18 @@ export type JobsQ = {
 const useJobs = (): JobsQ => {
   const [jobs, setJobs] = useState<Array<Job>>([]);
   const [jobSkills, setJobSkills] = useState<Array<JobSkill>>([]);
+  const [jobSkillVersions, setJobSkillVersions] = useState<
+    Array<JobSkillVersion>
+  >([]);
   const skills = useSkills();
 
   useEffect(() => {
-    if (jobs.length > 0 || jobSkills.length === 0 || skills.all.length === 0) {
+    if (
+      jobs.length > 0 ||
+      jobSkills.length === 0 ||
+      jobSkillVersions.length === 0 ||
+      skills.all.length === 0
+    ) {
       return;
     }
     (async () => {
@@ -43,13 +54,26 @@ const useJobs = (): JobsQ => {
               .map((jobSkill) => jobSkill.skill_id)
               .includes(skill.id)
           ),
+          skillVersions: jobSkillVersions
+            .filter((jobSkillVersion) => jobSkillVersion.job_id === job.id)
+            .map((jobSkillVersion) =>
+              skills.version(jobSkillVersion.skill_version_id)
+            )
+            .filter((skillVersion) => skillVersion !== undefined),
           salaryLow,
           salaryHigh
         };
       });
       setJobs(jobs);
     })();
-  }, [jobSkills, jobSkills.length, jobs.length, skills]);
+  }, [
+    jobSkillVersions,
+    jobSkillVersions.length,
+    jobSkills,
+    jobSkills.length,
+    jobs.length,
+    skills
+  ]);
 
   useEffect(() => {
     if (jobSkills.length > 0) {
@@ -63,6 +87,21 @@ const useJobs = (): JobsQ => {
       setJobSkills(jobSkills);
     })();
   }, [jobSkills.length]);
+
+  useEffect(() => {
+    if (jobSkillVersions.length > 0) {
+      return;
+    }
+    (async () => {
+      const { data: jobSkillVersions } = await supabase
+        .from("job_skill_versions")
+        .select();
+      if (jobSkillVersions === null) {
+        return;
+      }
+      setJobSkillVersions(jobSkillVersions);
+    })();
+  }, [jobSkillVersions.length]);
 
   return {
     all: jobs,

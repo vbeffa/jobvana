@@ -1,7 +1,7 @@
 import "../src/App.css";
 import type { Job } from "../src/hooks/useJobs";
 
-function Salary({ job }: { job: Job }) {
+const Salary = ({ job }: { job: Job }) => {
   return (
     <>
       {job.salaryLow === job.salaryHigh && `$${job.salaryLow.toLocaleString()}`}
@@ -9,6 +9,6 @@ function Salary({ job }: { job: Job }) {
         `$${job.salaryLow.toLocaleString()} - $${job.salaryHigh.toLocaleString()}`}
     </>
   );
-}
+};
 
 export default Salary;

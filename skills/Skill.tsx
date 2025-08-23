@@ -1,9 +1,10 @@
 import "../src/App.css";
 import Header from "../src/Header";
 import useSkills from "../src/hooks/useSkills";
+import SkillLink from "./SkillLink";
 import SkillVersionLink from "./SkillVersionLink";
 
-function Skill({ id }: { id: number }) {
+const Skill = ({ id }: { id: number }) => {
   const skills = useSkills();
   const skill = skills.skill(id);
   const skillTypes = skills.types;
@@ -39,7 +40,7 @@ function Skill({ id }: { id: number }) {
           <ul className="list-inside list-disc">
             {skill.versions.map((skillVersion) => (
               <li key={skillVersion.id}>
-                <SkillVersionLink skillVersion={skillVersion} />
+                <SkillVersionLink skill={skill} skillVersion={skillVersion} />
               </li>
             ))}
           </ul>
@@ -47,6 +48,16 @@ function Skill({ id }: { id: number }) {
       </div>
       <h2>Notes</h2>
       <div className="card text-left whitespace-pre-wrap">{skill.notes}</div>
+      <h2>Related Skills</h2>
+      <div className="card text-left">
+        <ul className="list-inside list-disc">
+          {skill.relatedSkills.map((skill) => (
+            <li key={skill.id}>
+              <SkillLink skill={skill} />
+            </li>
+          ))}
+        </ul>
+      </div>
       <h2>Reference</h2>
       <div className="card text-left">
         {skill.reference && (
@@ -57,6 +68,6 @@ function Skill({ id }: { id: number }) {
       </div>
     </>
   );
-}
+};
 
 export default Skill;

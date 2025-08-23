@@ -8,7 +8,7 @@ type SortCol = "skill" | "skill_type";
 
 type SortDir = "up" | "down";
 
-function Skills() {
+const Skills = () => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_type");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [skillsFilter, setSkillsFilter] = useState<string>();
@@ -151,6 +151,6 @@ function Skills() {
       </div>
     </>
   );
-}
+};
 
 export default Skills;

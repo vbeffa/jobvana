@@ -4,7 +4,11 @@ import type { Database } from "../utils/types";
 
 export type Skill = Database["public"]["Tables"]["skills"]["Row"] & {
   versions: Array<SkillVersion>;
+  relatedSkills: Array<Skill>;
 };
+
+export type SkillRelation =
+  Database["public"]["Tables"]["skill_relations"]["Row"];
 
 export type SkillVersion =
   Database["public"]["Tables"]["skill_versions"]["Row"];
@@ -16,18 +20,23 @@ export type SkillsHook = {
   types: Array<SkillType>;
   skill: (id: number) => Skill | undefined;
   version: (versionId: number) => SkillVersion | undefined;
+  versions: (skillId: number) => Array<SkillVersion>;
 };
 
 const useSkills = (): SkillsHook => {
   const [skills, setSkills] = useState<Array<Skill>>([]);
   const [skillTypes, setSkillTypes] = useState<Array<SkillType>>([]);
   const [skillVersions, setSkillVersions] = useState<Array<SkillVersion>>([]);
+  const [skillRelations, setSkillRelations] = useState<Array<SkillRelation>>(
+    []
+  );
 
   useEffect(() => {
     if (
       skills.length > 0 ||
       skillVersions.length === 0 ||
-      skillTypes.length === 0
+      skillTypes.length === 0 ||
+      skillRelations.length === 0
     ) {
       return;
     }
@@ -40,8 +49,19 @@ const useSkills = (): SkillsHook => {
         ...skill,
         versions: skillVersions.filter(
           (skillVersion) => skillVersion.skill_id === skill.id
-        )
+        ),
+        relatedSkills: [] // set to empty array
       }));
+      // now that skills is hydrated, can set relatedSkills to satisfy type checker
+      skills.forEach((skill) => {
+        skill.relatedSkills = skillRelations
+          .filter((skillRelation) => skillRelation.skill_id === skill.id)
+          .flatMap((skillRelation) =>
+            skills.filter(
+              (skill) => skill.id === skillRelation.related_skill_id
+            )
+          );
+      });
       for (const skill of skills) {
         const versionsForSkill = skillVersions.filter(
           (skillVersion) => skillVersion.skill_id === skill.id
@@ -62,7 +82,14 @@ const useSkills = (): SkillsHook => {
       });
       setSkills(skills);
     })();
-  }, [skillTypes, skillVersions, skillVersions.length, skills.length]);
+  }, [
+    skillRelations,
+    skillRelations.length,
+    skillTypes,
+    skillVersions,
+    skillVersions.length,
+    skills.length
+  ]);
 
   useEffect(() => {
     if (skillTypes.length > 0) {
@@ -92,6 +119,21 @@ const useSkills = (): SkillsHook => {
     })();
   }, [skillVersions.length]);
 
+  useEffect(() => {
+    if (skillRelations.length > 0) {
+      return;
+    }
+    (async () => {
+      const { data: skillRelations } = await supabase
+        .from("skill_relations")
+        .select();
+      if (skillRelations === null) {
+        return;
+      }
+      setSkillRelations(skillRelations);
+    })();
+  }, [skillRelations.length]);
+
   return {
     all: skills,
     types: skillTypes,
@@ -101,6 +143,11 @@ const useSkills = (): SkillsHook => {
     version: (versionId: number) => {
       return skillVersions.find(
         (skillVersion) => skillVersion.id === versionId
+      );
+    },
+    versions: (skillId: number) => {
+      return skillVersions.filter(
+        (skillVersion) => skillVersion.skill_id === skillId
       );
     }
   };

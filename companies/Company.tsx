@@ -4,7 +4,7 @@ import Header from "../src/Header";
 import useCompanies from "../src/hooks/useCompanies";
 import useJobs from "../src/hooks/useJobs";
 
-function Company({ id }: { id: number }) {
+const Company = ({ id }: { id: number }) => {
   const companies = useCompanies();
   const jobs = useJobs();
   const company = companies.company(id);
@@ -36,6 +36,6 @@ function Company({ id }: { id: number }) {
       </div>
     </>
   );
-}
+};
 
 export default Company;
