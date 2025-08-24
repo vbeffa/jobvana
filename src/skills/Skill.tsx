@@ -1,20 +1,10 @@
+import { Link } from "@tanstack/react-router";
 import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
-import Link from "../Link";
-import SkillLink from "./SkillLink";
-import SkillVersionLink from "./SkillVersionLink";
+import { Route } from "../routes/skills.$id.index";
 
-const Skill = ({
-  id,
-  gotoSkill,
-  gotoSkillType,
-  gotoSkillVersion
-}: {
-  id: number;
-  gotoSkill: (skillId: number) => void;
-  gotoSkillType: (skillTypeId: number) => void;
-  gotoSkillVersion: (skillVersionId: number) => void;
-}) => {
+const Skill = () => {
+  const { id } = Route.useLoaderData();
   const { findSkillType } = useSkills();
   const { skill } = useSkill({ id });
 
@@ -36,22 +26,22 @@ const Skill = ({
       <h2>Description</h2>
       <div className="card text-left">{skill.description}</div>
       <h2>Skill Type</h2>
-      <div className="card text-left">
-        <Link
-          text={skillType.name}
-          onClick={() => gotoSkillType(skillType.id)}
-        />
-      </div>
+      <div className="card text-left">{skillType.name}</div>
       <h2>Versions</h2>
       <div className="card text-left">
         {skill.versions.length > 0 && (
           <ul className="list-inside list-disc">
             {skill.versions.map((skillVersion) => (
               <li key={skillVersion.id}>
-                <SkillVersionLink
-                  skillVersion={skillVersion}
-                  gotoSkillVersion={gotoSkillVersion}
-                />
+                <Link
+                  to="/skills/$id/skill_versions/$skill_version_id"
+                  params={{
+                    id: skill.id.toString(),
+                    skill_version_id: skillVersion.id.toString()
+                  }}
+                >
+                  {skillVersion.version}
+                </Link>
               </li>
             ))}
           </ul>
@@ -64,7 +54,9 @@ const Skill = ({
         <ul className="list-inside list-disc">
           {skill.relatedSkills.map((skill) => (
             <li key={skill.id}>
-              <SkillLink skill={skill} gotoSkill={gotoSkill} />
+              <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+                {skill.name}
+              </Link>
             </li>
           ))}
         </ul>

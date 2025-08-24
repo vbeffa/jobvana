@@ -1,18 +1,13 @@
+import { Link } from "@tanstack/react-router";
 import { type Job } from "../hooks/useJobs";
 import { type Skill } from "../hooks/useSkills";
-import SkillLink from "../skills/SkillLink";
-import SkillVersionLink from "../skills/SkillVersionLink";
 
 const JobSkills = ({
   job,
-  skills,
-  gotoSkill,
-  gotoSkillVersion
+  skills
 }: {
   job: Job;
   skills: Array<Skill> | undefined;
-  gotoSkill: (skillId: number) => void;
-  gotoSkillVersion: (skillVersionId: number) => void;
 }) => {
   if (!job || !skills) {
     return null;
@@ -22,15 +17,23 @@ const JobSkills = ({
     <ul className="list-inside list-disc">
       {job.skills.map((skill) => (
         <li key={skill.id}>
-          <SkillLink skill={skill} gotoSkill={gotoSkill} />
+          <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+            {skill.name}
+          </Link>
         </li>
       ))}
       {job.skillVersions.map((skillVersion) => (
         <li key={skillVersion.id}>
-          <SkillVersionLink
-            skillVersion={skillVersion}
-            gotoSkillVersion={gotoSkillVersion}
-          />
+          <Link
+            to="/skills/$id/skill_versions/$skill_version_id"
+            params={{
+              id: skillVersion.skill_id.toString(),
+              skill_version_id: skillVersion.id.toString()
+            }}
+          >
+            {skills.find((skill) => skill.id === skillVersion.skill_id)?.name}{" "}
+            {skillVersion.version}
+          </Link>
         </li>
       ))}
     </ul>

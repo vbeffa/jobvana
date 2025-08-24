@@ -1,17 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import useSkills from "../hooks/useSkills";
-import Link from "../Link";
-import SkillLink from "./SkillLink";
-import SkillTypeLink from "./SkillTypeLink";
 
-const SkillType = ({
-  skillTypeId,
-  gotoSkillType,
-  gotoSkill
-}: {
-  skillTypeId: number;
-  gotoSkillType: (skillTypeId: number) => void;
-  gotoSkill: (skillId: number) => void;
-}) => {
+const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
   const { findSkillType, findSkills, findChildSkillTypes } = useSkills();
   const skillType = findSkillType(skillTypeId);
   if (!skillType) {
@@ -33,10 +23,9 @@ const SkillType = ({
       <h2>Parent Skill Type</h2>
       <div className="card text-left">
         {parentSkillType && (
-          <Link
-            text={parentSkillType.name}
-            onClick={() => gotoSkillType(parentSkillType.id)}
-          />
+          <Link to="/skills" params={{ parentSkillTypeId: parentSkillType.id }}>
+            {parentSkillType.name}
+          </Link>
         )}
         {!parentSkillType && <>---</>}
       </div>
@@ -46,10 +35,9 @@ const SkillType = ({
           <ul className="list-inside list-disc">
             {childSkillTypes.map((skillType) => (
               <li key={skillType.id}>
-                <SkillTypeLink
-                  skillType={skillType}
-                  gotoSkillType={gotoSkillType}
-                />
+                <Link to="/skills" params={{ skillTypeId: skillType.id }}>
+                  {skillType.name}
+                </Link>
               </li>
             ))}
           </ul>
@@ -62,7 +50,9 @@ const SkillType = ({
           <ul className="list-inside list-disc">
             {skills.map((skill) => (
               <li key={skill.id}>
-                <SkillLink skill={skill} gotoSkill={gotoSkill} />
+                <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+                  {skill.name}
+                </Link>
               </li>
             ))}
           </ul>

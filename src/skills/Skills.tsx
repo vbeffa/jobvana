@@ -1,19 +1,12 @@
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import useSkills from "../hooks/useSkills";
-import SkillLink from "./SkillLink";
 import Loading from "../Loading";
-import Link from "../Link";
 
 type SortCol = "skill" | "skill_type";
 type SortDir = "up" | "down";
 
-const Skills = ({
-  gotoSkill,
-  gotoSkillType
-}: {
-  gotoSkill: (skillId: number) => void;
-  gotoSkillType: (skillTypeId: number) => void;
-}) => {
+const Skills = () => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_type");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [skillsFilter, setSkillsFilter] = useState<string>();
@@ -126,16 +119,12 @@ const Skills = ({
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
-                    <SkillLink skill={skill} gotoSkill={gotoSkill} />
+                    <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+                      {skill.name}
+                    </Link>
+                    {skill.abbreviation && ` (${skill.abbreviation})`}
                   </td>
-                  <td className="p-1 border text-left">
-                    {skillType && (
-                      <Link
-                        text={skillType.name}
-                        onClick={() => gotoSkillType(skillType.id)}
-                      />
-                    )}
-                  </td>
+                  <td className="p-1 border text-left">{skillType?.name}</td>
                 </tr>
               );
             })}

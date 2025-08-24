@@ -1,13 +1,9 @@
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import useCompanies from "../hooks/useCompanies";
 import Loading from "../Loading";
-import CompanyLink from "./CompanyLink";
 
-const Skills = ({
-  gotoCompany
-}: {
-  gotoCompany: (companyId: number) => void;
-}) => {
+const Companies = () => {
   const [companyFilter, setCompanyFilter] = useState<string>();
 
   const companies = useCompanies();
@@ -52,7 +48,12 @@ const Skills = ({
               return (
                 <tr key={company.id}>
                   <td className="p-1 border text-left align-top">
-                    <CompanyLink company={company} gotoCompany={gotoCompany} />
+                    <Link
+                      to="/companies/$id"
+                      params={{ id: company.id.toString() }}
+                    >
+                      {company.name}
+                    </Link>
                   </td>
                   <td className="p-1 border text-left align-top">
                     {company.num_employees}
@@ -67,4 +68,4 @@ const Skills = ({
   );
 };
 
-export default Skills;
+export default Companies;

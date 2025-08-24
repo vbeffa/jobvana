@@ -1,9 +1,11 @@
 import useSkills from "../hooks/useSkills";
 import useSkillVersion from "../hooks/useSkillVersion";
+import { Route } from "../routes/skills.$id.skill_versions.$skill_version_id";
 
-const SkillVersion = ({ versionId }: { versionId: number }) => {
+const SkillVersion = () => {
+  const { skillVersionId } = Route.useLoaderData();
   const { findSkill } = useSkills();
-  const { skillVersion } = useSkillVersion({ id: versionId });
+  const { skillVersion } = useSkillVersion({ id: skillVersionId });
   if (!skillVersion) {
     return null;
   }

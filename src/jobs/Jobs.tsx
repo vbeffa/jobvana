@@ -1,27 +1,16 @@
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import CompanyLink from "../companies/CompanyLink";
-import JobSkills from "./JobSkills";
-import Salary from "./Salary";
 import useCompanies from "../hooks/useCompanies";
 import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
-import JobLink from "./JobLink";
+import JobSkills from "./JobSkills";
+import Salary from "./Salary";
 
 type SortCol = "company" | "title" | "created";
 type SortDir = "up" | "down";
 
-const Jobs = ({
-  gotoCompany,
-  gotoJob,
-  gotoSkill,
-  gotoSkillVersion
-}: {
-  gotoCompany: (companyId: number) => void;
-  gotoJob: (jobId: number) => void;
-  gotoSkill: (skillId: number) => void;
-  gotoSkillVersion: (skillVersionId: number) => void;
-}) => {
+const Jobs = () => {
   const [sortCol, setSortCol] = useState<SortCol>("created");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [companyFilter, setCompanyFilter] = useState<string>();
@@ -149,14 +138,18 @@ const Jobs = ({
                 <tr key={job.id}>
                   <td className="p-1 border text-left align-top">
                     {company && (
-                      <CompanyLink
-                        company={company}
-                        gotoCompany={gotoCompany}
-                      />
+                      <Link
+                        to="/companies/$id"
+                        params={{ id: company.id.toString() }}
+                      >
+                        {company.name}
+                      </Link>
                     )}
                   </td>
                   <td className="p-1 border text-left align-top">
-                    <JobLink job={job} gotoJob={gotoJob} />
+                    <Link to="/jobs/$id" params={{ id: job.id.toString() }}>
+                      {job.title}
+                    </Link>
                   </td>
                   <td className="p-1 border text-left align-top">
                     {new Date(job.created_at).toDateString()}
@@ -168,12 +161,7 @@ const Jobs = ({
                     <Salary job={job} />
                   </td>
                   <td className="p-1 border text-left">
-                    <JobSkills
-                      job={job}
-                      skills={skills}
-                      gotoSkill={gotoSkill}
-                      gotoSkillVersion={gotoSkillVersion}
-                    />
+                    <JobSkills job={job} skills={skills} />
                   </td>
                 </tr>
               );

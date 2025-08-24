@@ -1,17 +1,11 @@
 import useJob from "../hooks/useJob";
 import useSkills from "../hooks/useSkills";
 import JobSkills from "../jobs/JobSkills";
+import { Route } from "../routes/jobs.$id";
 import Salary from "./Salary";
 
-const Job = ({
-  id,
-  gotoSkill,
-  gotoSkillVersion
-}: {
-  id: number;
-  gotoSkill: (skillId: number) => void;
-  gotoSkillVersion: (skillVersionId: number) => void;
-}) => {
+const Job = () => {
+  const { id } = Route.useLoaderData();
   const { job } = useJob({ id });
   const { skills } = useSkills();
 
@@ -39,12 +33,7 @@ const Job = ({
 
       <h2>Skills</h2>
       <div className="card text-left">
-        <JobSkills
-          job={job}
-          skills={skills}
-          gotoSkill={gotoSkill}
-          gotoSkillVersion={gotoSkillVersion}
-        />
+        <JobSkills job={job} skills={skills} />
       </div>
     </>
   );

@@ -1,14 +1,10 @@
+import { Link } from "@tanstack/react-router";
 import useCompany from "../hooks/useCompany";
 import useJobs from "../hooks/useJobs";
-import JobLink from "../jobs/JobLink";
+import { Route } from "../routes/companies.$id";
 
-const Company = ({
-  id,
-  gotoJob
-}: {
-  id: number;
-  gotoJob: (jobId: number) => void;
-}) => {
+const Company = () => {
+  const { id } = Route.useLoaderData();
   const jobs = useJobs();
   const { company } = useCompany({ id });
 
@@ -26,7 +22,9 @@ const Company = ({
         <ul className="list-inside list-disc">
           {jobs.forCompany(id)?.map((job) => (
             <li key={job.id}>
-              <JobLink job={job} gotoJob={gotoJob} />
+              <Link to="/jobs/$id" params={{ id: job.id.toString() }}>
+                {job.title}
+              </Link>
             </li>
           ))}
         </ul>

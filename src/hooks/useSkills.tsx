@@ -55,7 +55,7 @@ const useSkills = (): Skills => {
   });
 
   const { data: skillRelationsData } = useQuery({
-    queryKey: ["skillVersions"],
+    queryKey: ["skillRelations"],
     queryFn: async () => {
       const { data } = await supabase.from("skill_relations").select();
       return data;
