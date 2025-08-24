@@ -17,7 +17,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
 
   const filteredSkills = useMemo(() => {
     return skills.all
-      .filter((skill) => {
+      ?.filter((skill) => {
         let pass = true;
         if (skillsFilter) {
           pass =
@@ -30,7 +30,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
                 .includes(skillsFilter.toLocaleLowerCase()));
         }
         if (skillTypesFilter) {
-          const skillType = skillTypes.find(
+          const skillType = skillTypes?.find(
             (skillType) => skillType.id === skill.skill_type_id
           )?.name;
           pass =
@@ -50,10 +50,10 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
         if (skill1.skill_type_id === skill2.skill_type_id) {
           return skill1.name.localeCompare(skill2.name);
         }
-        const skillType1 = skillTypes.find(
+        const skillType1 = skillTypes?.find(
           (skillType) => skillType.id === skill1.skill_type_id
         );
-        const skillType2 = skillTypes.find(
+        const skillType2 = skillTypes?.find(
           (skillType) => skillType.id === skill2.skill_type_id
         );
         return sortDir === "down"
@@ -127,7 +127,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
           </thead>
           <tbody>
             <Loading waitFor={skills.all} colSpan={2} />
-            {filteredSkills.map((skill) => {
+            {filteredSkills?.map((skill) => {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
@@ -135,7 +135,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
                   </td>
                   <td className="p-1 border text-left">
                     {
-                      skillTypes.find(
+                      skillTypes?.find(
                         (skillType) => skillType.id === skill.skill_type_id
                       )?.name
                     }

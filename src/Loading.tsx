@@ -4,10 +4,10 @@ const Loading = ({
   waitFor,
   colSpan
 }: {
-  waitFor: Array<unknown>;
+  waitFor?: Array<unknown>;
   colSpan: number;
 }) => {
-  if (waitFor.length === 0)
+  if (waitFor?.length === 0)
     return (
       <tr>
         <td colSpan={colSpan} className="border py-4">
