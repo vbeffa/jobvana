@@ -18,8 +18,12 @@ export type SkillType = Database["public"]["Tables"]["skill_types"]["Row"];
 
 export type Skills = {
   skills: Array<Skill> | undefined;
+  findSkill: (id: number) => Skill | undefined;
+
   skillTypes: Array<SkillType> | undefined;
-  skill: (id: number) => Skill | undefined;
+  findSkillType: (id: number) => SkillType | undefined;
+  findSkills: (skillTypeId: number) => Array<Skill> | undefined;
+
   skillVersion: (versionId: number) => SkillVersion | undefined;
   skillVersions: Array<SkillVersion> | undefined;
 };
@@ -112,10 +116,14 @@ const useSkills = (): Skills => {
 
   return {
     skills,
+    findSkill: (id: number) => skills?.find((skill) => skill.id === id),
+
     skillTypes,
-    skill: (id: number) => {
-      return skills?.find((skill) => skill.id === id);
-    },
+    findSkillType: (id: number) =>
+      skillTypes?.find((skillType) => skillType.id === id),
+    findSkills: (skillTypeId: number) =>
+      skills?.filter((skill) => skill.skill_type_id === skillTypeId),
+
     skillVersion: (versionId: number) => {
       return skillVersions?.find(
         (skillVersion) => skillVersion.id === versionId

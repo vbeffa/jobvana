@@ -1,14 +1,14 @@
 import useSkills from "../hooks/useSkills";
+import useSkillVersion from "../hooks/useSkillVersion";
 
 const SkillVersion = ({ versionId }: { versionId: number }) => {
-  const skills = useSkills();
-  const skillVersion = skills.skillVersion(versionId);
+  const { findSkill } = useSkills();
+  const { skillVersion } = useSkillVersion({ id: versionId });
   if (!skillVersion) {
     return null;
   }
-  const skill = skills.skill(skillVersion.skill_id);
-
-  if (!skill || !skillVersion) {
+  const skill = findSkill(skillVersion.skill_id);
+  if (!skill) {
     return null;
   }
 

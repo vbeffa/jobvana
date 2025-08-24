@@ -255,7 +255,6 @@ export type Database = {
           id: number
           name: string
           notes: string | null
-          parent_skill_id: number | null
           reference: string | null
           skill_type_id: number
         }
@@ -265,7 +264,6 @@ export type Database = {
           id?: number
           name: string
           notes?: string | null
-          parent_skill_id?: number | null
           reference?: string | null
           skill_type_id: number
         }
@@ -275,18 +273,10 @@ export type Database = {
           id?: number
           name?: string
           notes?: string | null
-          parent_skill_id?: number | null
           reference?: string | null
           skill_type_id?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "skills_parent_skill_id_fkey"
-            columns: ["parent_skill_id"]
-            isOneToOne: false
-            referencedRelation: "skills"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "skills_skill_type_id_fkey"
             columns: ["skill_type_id"]

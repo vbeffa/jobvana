@@ -9,11 +9,13 @@ import Jobs from "./jobs/Jobs.tsx";
 import Skill from "./skills/Skill.tsx";
 import Skills from "./skills/Skills.tsx";
 import SkillVersion from "./skills/SkillVersion.tsx";
+import SkillType from "./skills/SkillType.tsx";
 
 export type CurrentPage =
   | "jobs"
   | "job"
   | "skills"
+  | "skill_type"
   | "skill"
   | "skill_version"
   | "companies"
@@ -56,6 +58,13 @@ const App = () => {
     });
   };
 
+  const gotoSkillType = (skillTypeId: number) => {
+    setAppState({
+      currPage: "skill_type",
+      id: skillTypeId
+    });
+  };
+
   const gotoSkillVersion = (skillVersionId: number) => {
     setAppState({
       currPage: "skill_version",
@@ -74,7 +83,9 @@ const App = () => {
           gotoSkillVersion={gotoSkillVersion}
         />
       )}
-      {appState.currPage === "skills" && <Skills gotoSkill={gotoSkill} />}
+      {appState.currPage === "skills" && (
+        <Skills gotoSkill={gotoSkill} gotoSkillType={gotoSkillType} />
+      )}
       {appState.currPage === "companies" && (
         <Companies gotoCompany={gotoCompany} />
       )}
@@ -92,7 +103,15 @@ const App = () => {
         <Skill
           id={appState.id}
           gotoSkill={gotoSkill}
+          gotoSkillType={gotoSkillType}
           gotoSkillVersion={gotoSkillVersion}
+        />
+      )}
+      {appState.currPage === "skill_type" && appState.id && (
+        <SkillType
+          skillTypeId={appState.id}
+          gotoSkillType={gotoSkillType}
+          gotoSkill={gotoSkill}
         />
       )}
       {appState.currPage === "skill_version" && appState.id && (

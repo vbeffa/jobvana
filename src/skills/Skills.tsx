@@ -2,21 +2,28 @@ import { useMemo, useState } from "react";
 import useSkills from "../hooks/useSkills";
 import SkillLink from "./SkillLink";
 import Loading from "../Loading";
+import Link from "../Link";
 
 type SortCol = "skill" | "skill_type";
 type SortDir = "up" | "down";
 
-const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
+const Skills = ({
+  gotoSkill,
+  gotoSkillType
+}: {
+  gotoSkill: (skillId: number) => void;
+  gotoSkillType: (skillTypeId: number) => void;
+}) => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_type");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [skillsFilter, setSkillsFilter] = useState<string>();
   const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
 
-  const skills = useSkills();
-  const skillTypes = skills.skillTypes;
+  const { skills, findSkillType } = useSkills();
+  // const skillTypes = skills.skillTypes;
 
   const filteredSkills = useMemo(() => {
-    return skills.skills
+    return skills
       ?.filter((skill) => {
         let pass = true;
         if (skillsFilter) {
@@ -30,9 +37,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
                 .includes(skillsFilter.toLocaleLowerCase()));
         }
         if (skillTypesFilter) {
-          const skillType = skillTypes?.find(
-            (skillType) => skillType.id === skill.skill_type_id
-          )?.name;
+          const skillType = findSkillType(skill.skill_type_id)?.name;
           pass =
             skillType !== undefined &&
             skillType
@@ -50,24 +55,13 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
         if (skill1.skill_type_id === skill2.skill_type_id) {
           return skill1.name.localeCompare(skill2.name);
         }
-        const skillType1 = skillTypes?.find(
-          (skillType) => skillType.id === skill1.skill_type_id
-        );
-        const skillType2 = skillTypes?.find(
-          (skillType) => skillType.id === skill2.skill_type_id
-        );
+        const skillType1 = findSkillType(skill1.skill_type_id);
+        const skillType2 = findSkillType(skill2.skill_type_id);
         return sortDir === "down"
           ? skillType1!.name.localeCompare(skillType2!.name)
           : skillType2!.name.localeCompare(skillType1!.name);
       });
-  }, [
-    skillTypes,
-    skillTypesFilter,
-    skills.skills,
-    skillsFilter,
-    sortCol,
-    sortDir
-  ]);
+  }, [findSkillType, skillTypesFilter, skills, skillsFilter, sortCol, sortDir]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
@@ -126,19 +120,21 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={skills.skills} colSpan={2} />
+            <Loading waitingFor={skills} colSpan={2} />
             {filteredSkills?.map((skill) => {
+              const skillType = findSkillType(skill.skill_type_id);
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
                     <SkillLink skill={skill} gotoSkill={gotoSkill} />
                   </td>
                   <td className="p-1 border text-left">
-                    {
-                      skillTypes?.find(
-                        (skillType) => skillType.id === skill.skill_type_id
-                      )?.name
-                    }
+                    {skillType && (
+                      <Link
+                        text={skillType.name}
+                        onClick={() => gotoSkillType(skillType.id)}
+                      />
+                    )}
                   </td>
                 </tr>
               );

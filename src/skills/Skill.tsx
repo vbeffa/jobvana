@@ -1,21 +1,29 @@
 import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
+import Link from "../Link";
 import SkillLink from "./SkillLink";
 import SkillVersionLink from "./SkillVersionLink";
 
 const Skill = ({
   id,
   gotoSkill,
+  gotoSkillType,
   gotoSkillVersion
 }: {
   id: number;
   gotoSkill: (skillId: number) => void;
+  gotoSkillType: (skillTypeId: number) => void;
   gotoSkillVersion: (skillVersionId: number) => void;
 }) => {
-  const { skillTypes } = useSkills();
+  const { findSkillType } = useSkills();
   const { skill } = useSkill({ id });
 
   if (!skill) {
+    return null;
+  }
+
+  const skillType = findSkillType(skill.skill_type_id);
+  if (!skillType) {
     return null;
   }
 
@@ -29,10 +37,10 @@ const Skill = ({
       <div className="card text-left">{skill.description}</div>
       <h2>Skill Type</h2>
       <div className="card text-left">
-        {
-          skillTypes?.find((skillType) => skillType.id === skill.skill_type_id)
-            ?.name
-        }
+        <Link
+          text={skillType.name}
+          onClick={() => gotoSkillType(skillType.id)}
+        />
       </div>
       <h2>Versions</h2>
       <div className="card text-left">
