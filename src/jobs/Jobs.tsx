@@ -139,7 +139,7 @@ const Jobs = () => {
                   <td className="p-1 border text-left align-top">
                     {company && (
                       <Link
-                        to="/companies/$id"
+                        to="/jobvana/companies/$id"
                         params={{ id: company.id.toString() }}
                       >
                         {company.name}

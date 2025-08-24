@@ -25,7 +25,7 @@ const JobSkills = ({
       {job.skillVersions.map((skillVersion) => (
         <li key={skillVersion.id}>
           <Link
-            to="/skills/$id/skill_versions/$skill_version_id"
+            to="/jobvana/skills/$id/skill_versions/$skill_version_id"
             params={{
               id: skillVersion.skill_id.toString(),
               skill_version_id: skillVersion.id.toString()

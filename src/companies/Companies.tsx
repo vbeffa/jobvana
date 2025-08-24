@@ -49,7 +49,7 @@ const Companies = () => {
                 <tr key={company.id}>
                   <td className="p-1 border text-left align-top">
                     <Link
-                      to="/companies/$id"
+                      to="/jobvana/companies/$id"
                       params={{ id: company.id.toString() }}
                     >
                       {company.name}
