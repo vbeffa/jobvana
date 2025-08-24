@@ -41,7 +41,6 @@ const Skill = ({
             {skill.versions.map((skillVersion) => (
               <li key={skillVersion.id}>
                 <SkillVersionLink
-                  skill={skill}
                   skillVersion={skillVersion}
                   gotoSkillVersion={gotoSkillVersion}
                 />
