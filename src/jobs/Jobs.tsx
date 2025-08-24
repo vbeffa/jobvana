@@ -147,7 +147,10 @@ const Jobs = () => {
                     )}
                   </td>
                   <td className="p-1 border text-left align-top">
-                    <Link to="/jobs/$id" params={{ id: job.id.toString() }}>
+                    <Link
+                      to="/jobvana/jobs/$id"
+                      params={{ id: job.id.toString() }}
+                    >
                       {job.title}
                     </Link>
                   </td>

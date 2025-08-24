@@ -23,7 +23,10 @@ const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
       <h2>Parent Skill Type</h2>
       <div className="card text-left">
         {parentSkillType && (
-          <Link to="/skills" params={{ parentSkillTypeId: parentSkillType.id }}>
+          <Link
+            to="/jobvana/skills"
+            params={{ parentSkillTypeId: parentSkillType.id }}
+          >
             {parentSkillType.name}
           </Link>
         )}
@@ -35,7 +38,10 @@ const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
           <ul className="list-inside list-disc">
             {childSkillTypes.map((skillType) => (
               <li key={skillType.id}>
-                <Link to="/skills" params={{ skillTypeId: skillType.id }}>
+                <Link
+                  to="/jobvana/skills"
+                  params={{ skillTypeId: skillType.id }}
+                >
                   {skillType.name}
                 </Link>
               </li>
@@ -50,7 +56,10 @@ const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
           <ul className="list-inside list-disc">
             {skills.map((skill) => (
               <li key={skill.id}>
-                <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+                <Link
+                  to="/jobvana/skills/$id"
+                  params={{ id: skill.id.toString() }}
+                >
                   {skill.name}
                 </Link>
               </li>

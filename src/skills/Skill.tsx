@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
-import { Route } from "../routes/skills.$id.index";
+import { Route } from "../routes/jobvana.skills.$id.index";
 
 const Skill = () => {
   const { id } = Route.useLoaderData();
@@ -54,7 +54,10 @@ const Skill = () => {
         <ul className="list-inside list-disc">
           {skill.relatedSkills.map((skill) => (
             <li key={skill.id}>
-              <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+              <Link
+                to="/jobvana/skills/$id"
+                params={{ id: skill.id.toString() }}
+              >
                 {skill.name}
               </Link>
             </li>

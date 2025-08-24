@@ -119,7 +119,10 @@ const Skills = () => {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
-                    <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+                    <Link
+                      to="/jobvana/skills/$id"
+                      params={{ id: skill.id.toString() }}
+                    >
                       {skill.name}
                     </Link>
                     {skill.abbreviation && ` (${skill.abbreviation})`}

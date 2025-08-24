@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import useCompany from "../hooks/useCompany";
 import useJobs from "../hooks/useJobs";
-import { Route } from "../routes/companies.$id";
+import { Route } from "../routes/jobvana.companies.$id";
 
 const Company = () => {
   const { id } = Route.useLoaderData();
@@ -22,7 +22,7 @@ const Company = () => {
         <ul className="list-inside list-disc">
           {jobs.forCompany(id)?.map((job) => (
             <li key={job.id}>
-              <Link to="/jobs/$id" params={{ id: job.id.toString() }}>
+              <Link to="/jobvana/jobs/$id" params={{ id: job.id.toString() }}>
                 {job.title}
               </Link>
             </li>

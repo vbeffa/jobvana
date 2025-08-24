@@ -1,6 +1,6 @@
 import useSkills from "../hooks/useSkills";
 import useSkillVersion from "../hooks/useSkillVersion";
-import { Route } from "../routes/skills.$id.skill_versions.$skill_version_id";
+import { Route } from "../routes/jobvana.skills.$id.skill_versions.$skill_version_id";
 
 const SkillVersion = () => {
   const { skillVersionId } = Route.useLoaderData();

@@ -17,7 +17,7 @@ const JobSkills = ({
     <ul className="list-inside list-disc">
       {job.skills.map((skill) => (
         <li key={skill.id}>
-          <Link to="/skills/$id" params={{ id: skill.id.toString() }}>
+          <Link to="/jobvana/skills/$id" params={{ id: skill.id.toString() }}>
             {skill.name}
           </Link>
         </li>

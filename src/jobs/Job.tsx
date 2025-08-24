@@ -1,7 +1,7 @@
 import useJob from "../hooks/useJob";
 import useSkills from "../hooks/useSkills";
 import JobSkills from "../jobs/JobSkills";
-import { Route } from "../routes/jobs.$id";
+import { Route } from "../routes/jobvana.jobs.$id";
 import Salary from "./Salary";
 
 const Job = () => {
