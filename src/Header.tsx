@@ -1,25 +1,17 @@
+import type { AppState, CurrentPage } from "./App";
 import "./App.css";
 
-export type CurrentPage =
-  | "jobs"
-  | "job"
-  | "skills"
-  | "skill"
-  | "skill_version"
-  | "companies"
-  | "company";
-
 const Header = ({
-  currPage,
+  appState,
   setCurrPage
 }: {
-  currPage: CurrentPage;
+  appState: AppState;
   setCurrPage: (page: CurrentPage) => void;
 }) => {
   return (
     <div className="bg-amber-300 w-full h-12 pl-2 pt-2.5 mb-4 top-0 left-0 sticky">
-      {currPage === "jobs" && "Jobs"}
-      {currPage !== "jobs" && (
+      {appState.currPage === "jobs" && "Jobs"}
+      {appState.currPage !== "jobs" && (
         <span
           className="text-blue-600 cursor-pointer"
           onClick={() => setCurrPage("jobs")}
@@ -27,8 +19,9 @@ const Header = ({
           Jobs
         </span>
       )}{" "}
-      • {currPage === "skills" && "Skills"}
-      {currPage !== "skills" && (
+      {appState.currPage === "job" && <></>}•{" "}
+      {appState.currPage === "skills" && "Skills"}
+      {appState.currPage !== "skills" && (
         <span
           className="text-blue-600 cursor-pointer"
           onClick={() => setCurrPage("skills")}
@@ -36,8 +29,8 @@ const Header = ({
           Skills
         </span>
       )}{" "}
-      • {currPage === "companies" && "Companies"}
-      {currPage !== "companies" && (
+      • {appState.currPage === "companies" && "Companies"}
+      {appState.currPage !== "companies" && (
         <span
           className="text-blue-600 cursor-pointer"
           onClick={() => setCurrPage("companies")}

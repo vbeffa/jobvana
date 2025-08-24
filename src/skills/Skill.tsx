@@ -30,7 +30,7 @@ const Skill = ({
       <h2>Skill Type</h2>
       <div className="card text-left">
         {
-          skillTypes.find((skillType) => skillType.id === skill.skill_type_id)
+          skillTypes?.find((skillType) => skillType.id === skill.skill_type_id)
             ?.name
         }
       </div>

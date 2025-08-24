@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import supabase from "../utils/supabase";
 import type { Database } from "../utils/types";
 import useSkills, { type Skill, type SkillVersion } from "./useSkills";
@@ -15,40 +16,59 @@ export type JobSkillVersion =
   Database["public"]["Tables"]["job_skill_versions"]["Row"];
 
 export type JobsQ = {
-  all: Array<Job>;
+  all?: Array<Job>;
   job: (id: number) => Job | undefined;
-  forCompany: (companyId: number) => Array<Job>;
+  forCompany: (companyId: number) => Array<Job> | undefined;
 };
 
 const useJobs = (): JobsQ => {
-  const [jobs, setJobs] = useState<Array<Job>>([]);
-  const [jobSkills, setJobSkills] = useState<Array<JobSkill>>([]);
-  const [jobSkillVersions, setJobSkillVersions] = useState<
-    Array<JobSkillVersion>
-  >([]);
   const skills = useSkills();
 
-  useEffect(() => {
-    if (
-      jobs.length > 0 ||
-      jobSkills.length === 0 ||
-      jobSkillVersions.length === 0 ||
-      skills.all.length === 0
-    ) {
-      return;
-    }
-    (async () => {
+  const { data: jobsData } = useQuery({
+    queryKey: ["jobs"],
+    queryFn: async () => {
       const { data } = await supabase.from("jobs").select();
-      if (data === null) {
-        return;
-      }
-      const jobs: Array<Job> = data.map((job) => {
+      return data;
+    }
+  });
+
+  const { data: jobSkillsData } = useQuery({
+    queryKey: ["jobSkills"],
+    queryFn: async () => {
+      const { data } = await supabase.from("job_skills").select();
+      return data;
+    }
+  });
+
+  const { data: jobSkillVersionsData } = useQuery({
+    queryKey: ["jobSkillVersions"],
+    queryFn: async () => {
+      const { data } = await supabase.from("job_skill_versions").select();
+      return data;
+    }
+  });
+
+  const jobSkills = useMemo(() => {
+    return jobSkillsData;
+  }, [jobSkillsData]);
+
+  const jobSkillVersions = useMemo(() => {
+    return jobSkillVersionsData;
+  }, [jobSkillVersionsData]);
+
+  const jobs = useMemo(() => {
+    if (!jobsData || !jobSkills || !jobSkillVersions || !skills.all) {
+      return undefined;
+    }
+
+    return jobsData
+      .map((job) => {
         const salaryRange = (job.salary_range as string).split(",");
         const salaryLow = parseInt(salaryRange[0].substring(1));
         const salaryHigh = parseInt(salaryRange[1].substring(0)) - 1;
         return {
           ...job,
-          skills: skills.all.filter((skill) =>
+          skills: skills.all!.filter((skill) =>
             jobSkills
               .filter((jobSkill) => jobSkill.job_id === job.id)
               .map((jobSkill) => jobSkill.skill_id)
@@ -63,59 +83,22 @@ const useJobs = (): JobsQ => {
           salaryLow,
           salaryHigh
         };
-      });
-      jobs.sort((job1, job2) => {
+      })
+      .sort((job1, job2) => {
         return (
           new Date(job2.created_at).getTime() -
           new Date(job1.created_at).getTime()
         );
       });
-      setJobs(jobs);
-    })();
-  }, [
-    jobSkillVersions,
-    jobSkillVersions.length,
-    jobSkills,
-    jobSkills.length,
-    jobs.length,
-    skills
-  ]);
-
-  useEffect(() => {
-    if (jobSkills.length > 0) {
-      return;
-    }
-    (async () => {
-      const { data: jobSkills } = await supabase.from("job_skills").select();
-      if (jobSkills === null) {
-        return;
-      }
-      setJobSkills(jobSkills);
-    })();
-  }, [jobSkills.length]);
-
-  useEffect(() => {
-    if (jobSkillVersions.length > 0) {
-      return;
-    }
-    (async () => {
-      const { data: jobSkillVersions } = await supabase
-        .from("job_skill_versions")
-        .select();
-      if (jobSkillVersions === null) {
-        return;
-      }
-      setJobSkillVersions(jobSkillVersions);
-    })();
-  }, [jobSkillVersions.length]);
+  }, [jobSkillVersions, jobSkills, jobsData, skills]);
 
   return {
     all: jobs,
     job: (id: number) => {
-      return jobs.find((job) => job.id === id);
+      return jobs?.find((job) => job.id === id);
     },
     forCompany: (companyId: number) => {
-      return jobs.filter((job) => job.company_id === companyId);
+      return jobs?.filter((job) => job.company_id === companyId);
     }
   };
 };

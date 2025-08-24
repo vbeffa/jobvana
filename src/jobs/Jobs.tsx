@@ -33,7 +33,7 @@ const Jobs = ({
 
   const filteredJobs = useMemo(() => {
     return jobs.all
-      .filter((job) => {
+      ?.filter((job) => {
         let pass = true;
         if (companyFilter) {
           const company = companies.company(job.company_id);
@@ -82,6 +82,10 @@ const Jobs = ({
       setSortDir(newSortDir);
     }
   };
+
+  if (!jobs.all || !filteredJobs || !skills.all) {
+    return null;
+  }
 
   return (
     <>

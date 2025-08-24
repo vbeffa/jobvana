@@ -13,7 +13,7 @@ const Company = ({
   const jobs = useJobs();
   const company = companies.company(id);
 
-  if (!company) {
+  if (!company || !jobs) {
     return null;
   }
 
@@ -25,7 +25,7 @@ const Company = ({
       <h2>Jobs</h2>
       <div className="card text-left">
         <ul className="list-inside list-disc">
-          {jobs.forCompany(id).map((job) => (
+          {jobs.forCompany(id)?.map((job) => (
             <li key={job.id}>
               <JobLink job={job} gotoJob={gotoJob} />
             </li>

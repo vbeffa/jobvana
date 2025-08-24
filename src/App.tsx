@@ -1,65 +1,72 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import "./App.css";
 import Companies from "./companies/Companies.tsx";
 import Company from "./companies/Company.tsx";
-import Header, { type CurrentPage } from "./Header";
+import Header from "./Header";
 import Job from "./jobs/Job.tsx";
 import Jobs from "./jobs/Jobs.tsx";
 import Skill from "./skills/Skill.tsx";
 import Skills from "./skills/Skills.tsx";
 import SkillVersion from "./skills/SkillVersion.tsx";
 
+export type CurrentPage =
+  | "jobs"
+  | "job"
+  | "skills"
+  | "skill"
+  | "skill_version"
+  | "companies"
+  | "company";
+
+export type AppState = {
+  currPage: CurrentPage;
+  id?: number;
+};
+
+const queryClient = new QueryClient();
+
 const App = () => {
-  const [currPage, setCurrPage] = useState<CurrentPage>("jobs");
-  const [companyId, setCompanyId] = useState<number>();
-  const [jobId, setJobId] = useState<number>();
-  const [skillId, setSkillId] = useState<number>();
-  const [skillVersionId, setSkillVersionId] = useState<number>();
+  const [appState, setAppState] = useState<AppState>({ currPage: "jobs" });
 
   const gotoPage = (page: CurrentPage) => {
-    setCurrPage(page);
-    setCompanyId(undefined);
-    setJobId(undefined);
-    setSkillId(undefined);
-    setSkillVersionId(undefined);
+    setAppState({
+      currPage: page
+    });
   };
 
   const gotoCompany = (companyId: number) => {
-    setCurrPage("company");
-    setCompanyId(companyId);
-    setJobId(undefined);
-    setSkillId(undefined);
-    setSkillVersionId(undefined);
+    setAppState({
+      currPage: "company",
+      id: companyId
+    });
   };
 
   const gotoJob = (jobId: number) => {
-    setCurrPage("job");
-    setJobId(jobId);
-    setCompanyId(undefined);
-    setSkillId(undefined);
-    setSkillVersionId(undefined);
+    setAppState({
+      currPage: "job",
+      id: jobId
+    });
   };
 
   const gotoSkill = (skillId: number) => {
-    setCurrPage("skill");
-    setJobId(undefined);
-    setCompanyId(undefined);
-    setSkillId(skillId);
-    setSkillVersionId(undefined);
+    setAppState({
+      currPage: "skill",
+      id: skillId
+    });
   };
 
   const gotoSkillVersion = (skillVersionId: number) => {
-    setCurrPage("skill_version");
-    setJobId(undefined);
-    setCompanyId(undefined);
-    setSkillId(undefined);
-    setSkillVersionId(skillVersionId);
+    setAppState({
+      currPage: "skill_version",
+      id: skillVersionId
+    });
   };
 
   return (
-    <>
-      <Header currPage={currPage} setCurrPage={gotoPage} />
-      {currPage === "jobs" && (
+    <QueryClientProvider client={queryClient}>
+      <Header appState={appState} setCurrPage={gotoPage} />
+      {appState.currPage === "jobs" && (
         <Jobs
           gotoCompany={gotoCompany}
           gotoJob={gotoJob}
@@ -67,25 +74,31 @@ const App = () => {
           gotoSkillVersion={gotoSkillVersion}
         />
       )}
-      {currPage === "skills" && <Skills gotoSkill={gotoSkill} />}
-      {currPage === "companies" && <Companies gotoCompany={gotoCompany} />}
-      {companyId && <Company id={companyId} gotoJob={gotoJob} />}
-      {jobId && (
+      {appState.currPage === "skills" && <Skills gotoSkill={gotoSkill} />}
+      {appState.currPage === "companies" && (
+        <Companies gotoCompany={gotoCompany} />
+      )}
+      {appState.currPage === "company" && appState.id && (
+        <Company id={appState.id} gotoJob={gotoJob} />
+      )}
+      {appState.currPage === "job" && appState.id && (
         <Job
-          id={jobId}
+          id={appState.id}
           gotoSkill={gotoSkill}
           gotoSkillVersion={gotoSkillVersion}
         />
       )}
-      {skillId && (
+      {appState.currPage === "skill" && appState.id && (
         <Skill
-          id={skillId}
+          id={appState.id}
           gotoSkill={gotoSkill}
           gotoSkillVersion={gotoSkillVersion}
         />
       )}
-      {skillVersionId && <SkillVersion versionId={skillVersionId} />}
-    </>
+      {appState.currPage === "skill_version" && appState.id && (
+        <SkillVersion versionId={appState.id} />
+      )}
+    </QueryClientProvider>
   );
 };
 
