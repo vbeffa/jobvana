@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import useCompanies from "../hooks/useCompanies";
 import Loading from "../Loading";
+import CompanyLink from "./CompanyLink";
 
 const Companies = () => {
   const [companyFilter, setCompanyFilter] = useState<string>();
@@ -48,12 +48,7 @@ const Companies = () => {
               return (
                 <tr key={company.id}>
                   <td className="p-1 border text-left align-top">
-                    <Link
-                      to="/jobvana/companies/$id"
-                      params={{ id: company.id.toString() }}
-                    >
-                      {company.name}
-                    </Link>
+                    <CompanyLink company={company} />
                   </td>
                   <td className="p-1 border text-left align-top">
                     {company.num_employees}

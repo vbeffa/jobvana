@@ -1,7 +1,8 @@
-import { Link } from "@tanstack/react-router";
 import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
 import { Route } from "../routes/jobvana.skills.$id.index";
+import SkillsList from "./SkillsList";
+import SkillVersionsList from "./SkillVersionsList";
 
 const Skill = () => {
   const { id } = Route.useLoaderData();
@@ -30,39 +31,14 @@ const Skill = () => {
       <h2>Versions</h2>
       <div className="card text-left">
         {skill.versions.length > 0 && (
-          <ul className="list-inside list-disc">
-            {skill.versions.map((skillVersion) => (
-              <li key={skillVersion.id}>
-                <Link
-                  to="/jobvana/skills/$id/skill_versions/$skill_version_id"
-                  params={{
-                    id: skill.id.toString(),
-                    skill_version_id: skillVersion.id.toString()
-                  }}
-                >
-                  {skillVersion.version}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <SkillVersionsList skillVersions={skill.versions} />
         )}
       </div>
       <h2>Notes</h2>
       <div className="card text-left whitespace-pre-wrap">{skill.notes}</div>
       <h2>Related Skills</h2>
       <div className="card text-left">
-        <ul className="list-inside list-disc">
-          {skill.relatedSkills.map((skill) => (
-            <li key={skill.id}>
-              <Link
-                to="/jobvana/skills/$id"
-                params={{ id: skill.id.toString() }}
-              >
-                {skill.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <SkillsList skills={skill.relatedSkills} />
       </div>
       <h2>Reference</h2>
       <div className="card text-left">

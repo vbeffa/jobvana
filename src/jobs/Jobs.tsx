@@ -1,9 +1,10 @@
-import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import CompanyLink from "../companies/CompanyLink";
 import useCompanies from "../hooks/useCompanies";
 import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
+import JobLink from "./JobLink";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
 
@@ -137,22 +138,10 @@ const Jobs = () => {
               return (
                 <tr key={job.id}>
                   <td className="p-1 border text-left align-top">
-                    {company && (
-                      <Link
-                        to="/jobvana/companies/$id"
-                        params={{ id: company.id.toString() }}
-                      >
-                        {company.name}
-                      </Link>
-                    )}
+                    {company && <CompanyLink company={company} />}
                   </td>
                   <td className="p-1 border text-left align-top">
-                    <Link
-                      to="/jobvana/jobs/$id"
-                      params={{ id: job.id.toString() }}
-                    >
-                      {job.title}
-                    </Link>
+                    <JobLink job={job} />
                   </td>
                   <td className="p-1 border text-left align-top">
                     {new Date(job.created_at).toDateString()}
@@ -164,7 +153,7 @@ const Jobs = () => {
                     <Salary job={job} />
                   </td>
                   <td className="p-1 border text-left">
-                    <JobSkills job={job} skills={skills} />
+                    <JobSkills job={job} />
                   </td>
                 </tr>
               );

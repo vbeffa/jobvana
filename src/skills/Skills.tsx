@@ -1,19 +1,21 @@
-import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
+import SkillLink from "./SkillLink";
+import SkillTypeLink from "./SkillTypeLink";
 
-type SortCol = "skill" | "skill_type";
+type SortCol = "skill" | "skill_type" | "num_jobs";
 type SortDir = "up" | "down";
 
 const Skills = () => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_type");
-  const [sortDir, setSortDir] = useState<SortDir>("down");
+  const [sortDir, setSortDir] = useState<SortDir>("up");
   const [skillsFilter, setSkillsFilter] = useState<string>();
   const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
 
   const { skills, findSkillType } = useSkills();
-  // const skillTypes = skills.skillTypes;
+  const { forSkill } = useJobs();
 
   const filteredSkills = useMemo(() => {
     return skills
@@ -41,25 +43,38 @@ const Skills = () => {
       })
       .sort((skill1, skill2) => {
         if (sortCol === "skill") {
-          return sortDir === "down"
+          return sortDir === "up"
             ? skill1.name.localeCompare(skill2.name)
             : skill2.name.localeCompare(skill1.name);
+        }
+        if (sortCol === "num_jobs") {
+          const numJobs1 = forSkill(skill1.id)!.length;
+          const numJobs2 = forSkill(skill2.id)!.length;
+          return sortDir === "up" ? numJobs1 - numJobs2 : numJobs2 - numJobs1;
         }
         if (skill1.skill_type_id === skill2.skill_type_id) {
           return skill1.name.localeCompare(skill2.name);
         }
         const skillType1 = findSkillType(skill1.skill_type_id);
         const skillType2 = findSkillType(skill2.skill_type_id);
-        return sortDir === "down"
+        return sortDir === "up"
           ? skillType1!.name.localeCompare(skillType2!.name)
           : skillType2!.name.localeCompare(skillType1!.name);
       });
-  }, [findSkillType, skillTypesFilter, skills, skillsFilter, sortCol, sortDir]);
+  }, [
+    findSkillType,
+    forSkill,
+    skillTypesFilter,
+    skills,
+    skillsFilter,
+    sortCol,
+    sortDir
+  ]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
     const newSortDir =
-      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "down";
+      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "up";
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {
@@ -75,7 +90,7 @@ const Skills = () => {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left pb-2 w-[50%]">
+              <td className="text-left pb-2 w-[45%]">
                 <input
                   type="text"
                   className="border pl-1"
@@ -85,11 +100,11 @@ const Skills = () => {
                   }}
                 />
               </td>
-              <td className="text-left pb-2">
+              <td className="text-left pb-2" colSpan={2}>
                 <input
                   type="text"
                   className="border pl-1"
-                  placeholder="Filter by skill type"
+                  placeholder="Filter by category"
                   onChange={(e) => {
                     setSkillTypesFilter(e.target.value);
                   }}
@@ -110,6 +125,13 @@ const Skills = () => {
                 Category{" "}
                 {sortCol === "skill_type" && (sortDir === "up" ? "↑" : "↓")}
               </th>
+              <th
+                className="p-1 border cursor-pointer w-[10%]"
+                onClick={() => setSort("num_jobs")}
+              >
+                # Jobs{" "}
+                {sortCol === "num_jobs" && (sortDir === "up" ? "↑" : "↓")}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -119,25 +141,14 @@ const Skills = () => {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
-                    <Link
-                      to="/jobvana/skills/$id"
-                      params={{ id: skill.id.toString() }}
-                    >
-                      {skill.name}
-                    </Link>
+                    <SkillLink skill={skill} />
                     {skill.abbreviation && ` (${skill.abbreviation})`}
                   </td>
                   <td className="p-1 border text-left">
-                    {skillType && (
-                      <Link
-                        to="/jobvana/skills/skill_types/$skill_type_id"
-                        params={{
-                          skill_type_id: skillType.id.toString()
-                        }}
-                      >
-                        {skillType.name}
-                      </Link>
-                    )}
+                    {skillType && <SkillTypeLink skillType={skillType} />}
+                  </td>
+                  <td className="p-1 border text-left">
+                    {forSkill(skill.id)?.length}
                   </td>
                 </tr>
               );

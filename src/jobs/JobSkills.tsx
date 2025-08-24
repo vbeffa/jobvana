@@ -1,41 +1,29 @@
-import { Link } from "@tanstack/react-router";
 import { type Job } from "../hooks/useJobs";
-import { type Skill } from "../hooks/useSkills";
+import useSkills from "../hooks/useSkills";
+import SkillLink from "../skills/SkillLink";
+import SkillVersionLink from "../skills/SkillVersionLink";
 
-const JobSkills = ({
-  job,
-  skills
-}: {
-  job: Job;
-  skills: Array<Skill> | undefined;
-}) => {
-  if (!job || !skills) {
-    return null;
-  }
+const JobSkills = ({ job }: { job: Job }) => {
+  const { findSkill } = useSkills();
 
   return (
     <ul className="list-inside list-disc">
       {job.skills.map((skill) => (
         <li key={skill.id}>
-          <Link to="/jobvana/skills/$id" params={{ id: skill.id.toString() }}>
-            {skill.name}
-          </Link>
+          <SkillLink skill={skill} />
         </li>
       ))}
-      {job.skillVersions.map((skillVersion) => (
-        <li key={skillVersion.id}>
-          <Link
-            to="/jobvana/skills/$id/skill_versions/$skill_version_id"
-            params={{
-              id: skillVersion.skill_id.toString(),
-              skill_version_id: skillVersion.id.toString()
-            }}
-          >
-            {skills.find((skill) => skill.id === skillVersion.skill_id)?.name}{" "}
-            {skillVersion.version}
-          </Link>
-        </li>
-      ))}
+      {job.skillVersions.map((skillVersion) => {
+        const skill = findSkill(skillVersion.skill_id);
+        return (
+          <li key={skillVersion.id}>
+            {skill && (
+              <SkillVersionLink skill={skill} skillVersion={skillVersion} />
+            )}
+            ;
+          </li>
+        );
+      })}
     </ul>
   );
 };

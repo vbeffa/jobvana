@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import supabase from "../utils/supabase";
 import type { Database } from "../utils/types";
 import useSkills, { type Skill, type SkillVersion } from "./useSkills";
-import useCompanies from "./useCompanies";
+import useCompanies, { type Company } from "./useCompanies";
 
 export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
   company: Company | undefined;
@@ -12,7 +12,6 @@ export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
   salaryLow: number;
   salaryHigh: number;
 };
-export type Company = Database["public"]["Tables"]["companies"]["Row"];
 export type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
 export type JobSkillVersion =
   Database["public"]["Tables"]["job_skill_versions"]["Row"];
@@ -20,6 +19,7 @@ export type JobSkillVersion =
 export type Jobs = {
   jobs: Array<Job> | undefined;
   forCompany: (companyId: number) => Array<Job> | undefined;
+  forSkill: (skillId: number) => Array<Job> | undefined;
 };
 
 const useJobs = (): Jobs => {
@@ -106,6 +106,11 @@ const useJobs = (): Jobs => {
     jobs: jobs,
     forCompany: (companyId: number) => {
       return jobs?.filter((job) => job.company_id === companyId);
+    },
+    forSkill: (skillId: number) => {
+      return jobs?.filter((job) =>
+        job.skills.map((skill) => skill.id).includes(skillId)
+      );
     }
   };
 };

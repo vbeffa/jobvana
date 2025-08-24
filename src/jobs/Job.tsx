@@ -1,5 +1,4 @@
 import useJob from "../hooks/useJob";
-import useSkills from "../hooks/useSkills";
 import JobSkills from "../jobs/JobSkills";
 import { Route } from "../routes/jobvana.jobs.$id";
 import Salary from "./Salary";
@@ -7,7 +6,6 @@ import Salary from "./Salary";
 const Job = () => {
   const { id } = Route.useLoaderData();
   const { job } = useJob({ id });
-  const { skills } = useSkills();
 
   if (!job) {
     return null;
@@ -33,7 +31,7 @@ const Job = () => {
 
       <h2>Skills</h2>
       <div className="card text-left">
-        <JobSkills job={job} skills={skills} />
+        <JobSkills job={job} />
       </div>
     </>
   );

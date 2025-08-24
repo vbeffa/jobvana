@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
+import SkillTypeLink from "./SkillTypeLink";
 
 type SortCol = "skill_type";
 type SortDir = "up" | "down";
@@ -77,14 +77,7 @@ const SkillTypes = () => {
               return (
                 <tr key={skillType.id}>
                   <td className="p-1 border text-left">
-                    <Link
-                      to="/jobvana/skills/skill_types/$skill_type_id"
-                      params={{
-                        skill_type_id: skillType.id.toString()
-                      }}
-                    >
-                      {skillType.name}
-                    </Link>
+                    <SkillTypeLink skillType={skillType} />
                   </td>
                 </tr>
               );

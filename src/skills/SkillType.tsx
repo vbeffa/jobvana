@@ -1,6 +1,8 @@
-import { Link } from "@tanstack/react-router";
 import useSkills from "../hooks/useSkills";
 import { Route } from "../routes/jobvana.skills.skill_types.$skill_type_id";
+import SkillsList from "./SkillsList";
+import SkillTypeLink from "./SkillTypeLink";
+import SkillTypesList from "./SkillTypesList";
 
 const SkillType = () => {
   const { skillTypeId } = Route.useLoaderData();
@@ -24,52 +26,17 @@ const SkillType = () => {
       </div>
       <h2>Parent Category</h2>
       <div className="card text-left">
-        {parentSkillType && (
-          <Link
-            to="/jobvana/skills/skill_types/$skill_type_id"
-            params={{
-              skill_type_id: parentSkillType.id.toString()
-            }}
-          >
-            {parentSkillType.name}
-          </Link>
-        )}
+        {parentSkillType && <SkillTypeLink skillType={parentSkillType} />}
         {!parentSkillType && <>---</>}
       </div>
       <h2>Subcategories</h2>
       <div className="card text-left">
-        {childSkillTypes && (
-          <ul className="list-inside list-disc">
-            {childSkillTypes.map((skillType) => (
-              <li key={skillType.id}>
-                <Link
-                  to="/jobvana/skills/skill_types/$skill_type_id"
-                  params={{ skill_type_id: skillType.id.toString() }}
-                >
-                  {skillType.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        {childSkillTypes && <SkillTypesList skillTypes={childSkillTypes} />}
         {childSkillTypes?.length === 0 && <>---</>}
       </div>
       <h2>Skills</h2>
       <div className="card text-left">
-        {skills && (
-          <ul className="list-inside list-disc">
-            {skills.map((skill) => (
-              <li key={skill.id}>
-                <Link
-                  to="/jobvana/skills/$id"
-                  params={{ id: skill.id.toString() }}
-                >
-                  {skill.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        {skills && <SkillsList skills={skills} />}
       </div>
       <h2>Notes</h2>
       <div className="card text-left whitespace-pre-wrap">
