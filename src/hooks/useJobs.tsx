@@ -18,12 +18,12 @@ export type JobSkillVersion =
 
 export type Jobs = {
   jobs: Array<Job> | undefined;
-  forCompany: (companyId: number) => Array<Job> | undefined;
-  forSkill: (skillId: number) => Array<Job> | undefined;
+  jobsForCompany: (companyId: number) => Array<Job> | undefined;
+  jobsForSkill: (skillId: number) => Array<Job> | undefined;
 };
 
 const useJobs = (): Jobs => {
-  const { skills, skillVersion } = useSkills();
+  const { skills, findSkillVersion } = useSkills();
   const { findCompany } = useCompanies();
 
   const { data: jobsData } = useQuery({
@@ -80,7 +80,7 @@ const useJobs = (): Jobs => {
           skillVersions: jobSkillVersions
             .filter((jobSkillVersion) => jobSkillVersion.job_id === job.id)
             .map((jobSkillVersion) =>
-              skillVersion(jobSkillVersion.skill_version_id)
+              findSkillVersion(jobSkillVersion.skill_version_id)
             )
             .filter((skillVersion) => skillVersion !== undefined),
           salaryLow,
@@ -98,18 +98,22 @@ const useJobs = (): Jobs => {
     jobSkillVersions,
     jobSkills,
     jobsData,
-    skillVersion,
+    findSkillVersion,
     skills
   ]);
 
   return {
     jobs: jobs,
-    forCompany: (companyId: number) => {
+    jobsForCompany: (companyId: number) => {
       return jobs?.filter((job) => job.company_id === companyId);
     },
-    forSkill: (skillId: number) => {
-      return jobs?.filter((job) =>
-        job.skills.map((skill) => skill.id).includes(skillId)
+    jobsForSkill: (skillId: number) => {
+      return jobs?.filter(
+        (job) =>
+          job.skills.map((skill) => skill.id).includes(skillId) ||
+          job.skillVersions
+            .map((skillVersion) => skillVersion.skill_id)
+            .includes(skillId)
       );
     }
   };

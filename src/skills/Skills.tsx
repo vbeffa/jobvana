@@ -9,13 +9,13 @@ type SortCol = "skill" | "skill_type" | "num_jobs";
 type SortDir = "up" | "down";
 
 const Skills = () => {
-  const [sortCol, setSortCol] = useState<SortCol>("skill_type");
-  const [sortDir, setSortDir] = useState<SortDir>("up");
+  const [sortCol, setSortCol] = useState<SortCol>("num_jobs");
+  const [sortDir, setSortDir] = useState<SortDir>("down");
   const [skillsFilter, setSkillsFilter] = useState<string>();
   const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
 
   const { skills, findSkillType } = useSkills();
-  const { forSkill } = useJobs();
+  const { jobsForSkill } = useJobs();
 
   const filteredSkills = useMemo(() => {
     return skills
@@ -48,8 +48,11 @@ const Skills = () => {
             : skill2.name.localeCompare(skill1.name);
         }
         if (sortCol === "num_jobs") {
-          const numJobs1 = forSkill(skill1.id)!.length;
-          const numJobs2 = forSkill(skill2.id)!.length;
+          const numJobs1 = jobsForSkill(skill1.id)!.length;
+          const numJobs2 = jobsForSkill(skill2.id)!.length;
+          if (numJobs1 === numJobs2) {
+            return skill1.name.localeCompare(skill2.name);
+          }
           return sortDir === "up" ? numJobs1 - numJobs2 : numJobs2 - numJobs1;
         }
         if (skill1.skill_type_id === skill2.skill_type_id) {
@@ -63,7 +66,7 @@ const Skills = () => {
       });
   }, [
     findSkillType,
-    forSkill,
+    jobsForSkill,
     skillTypesFilter,
     skills,
     skillsFilter,
@@ -74,7 +77,13 @@ const Skills = () => {
   const setSort = (col: SortCol) => {
     const newSortCol = col;
     const newSortDir =
-      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "up";
+      newSortCol === sortCol
+        ? sortDir === "up"
+          ? "down"
+          : "up"
+        : newSortCol === "num_jobs"
+          ? "down"
+          : "up";
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {
@@ -148,7 +157,7 @@ const Skills = () => {
                     {skillType && <SkillTypeLink skillType={skillType} />}
                   </td>
                   <td className="p-1 border text-left">
-                    {forSkill(skill.id)?.length}
+                    {jobsForSkill(skill.id)?.length}
                   </td>
                 </tr>
               );
