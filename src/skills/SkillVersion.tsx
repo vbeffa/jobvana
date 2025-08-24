@@ -16,7 +16,7 @@ const SkillVersion = ({ versionId }: { versionId: number }) => {
     <>
       <h1>
         {skill.name}
-        {skill.abbreviation && ` (${skill.abbreviation})`} -{" "}
+        {skill.abbreviation && ` (${skill.abbreviation})`}{" "}
         {skillVersion.version}
       </h1>
       <h2>Notes</h2>

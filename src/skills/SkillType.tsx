@@ -1,6 +1,7 @@
 import useSkills from "../hooks/useSkills";
 import Link from "../Link";
 import SkillLink from "./SkillLink";
+import SkillTypeLink from "./SkillTypeLink";
 
 const SkillType = ({
   skillTypeId,
@@ -11,7 +12,7 @@ const SkillType = ({
   gotoSkillType: (skillTypeId: number) => void;
   gotoSkill: (skillId: number) => void;
 }) => {
-  const { findSkillType, findSkills } = useSkills();
+  const { findSkillType, findSkills, findChildSkillTypes } = useSkills();
   const skillType = findSkillType(skillTypeId);
   if (!skillType) {
     return null;
@@ -20,6 +21,7 @@ const SkillType = ({
     skillType.parent_skill_type_id &&
     findSkillType(skillType.parent_skill_type_id);
   const skills = findSkills(skillTypeId);
+  const childSkillTypes = findChildSkillTypes(skillType.id);
 
   return (
     <>
@@ -38,6 +40,22 @@ const SkillType = ({
         )}
         {!parentSkillType && <>---</>}
       </div>
+      <h2>Skill Types</h2>
+      <div className="card text-left">
+        {childSkillTypes && (
+          <ul className="list-inside list-disc">
+            {childSkillTypes.map((skillType) => (
+              <li key={skillType.id}>
+                <SkillTypeLink
+                  skillType={skillType}
+                  gotoSkillType={gotoSkillType}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        {!childSkillTypes && <>---</>}
+      </div>
       <h2>Skills</h2>
       <div className="card text-left">
         {skills && (
@@ -49,6 +67,10 @@ const SkillType = ({
             ))}
           </ul>
         )}
+      </div>
+      <h2>Notes</h2>
+      <div className="card text-left whitespace-pre-wrap">
+        {skillType.notes}
       </div>
       <h2>Reference</h2>
       <div className="card text-left">

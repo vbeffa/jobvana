@@ -23,6 +23,7 @@ export type Skills = {
   skillTypes: Array<SkillType> | undefined;
   findSkillType: (id: number) => SkillType | undefined;
   findSkills: (skillTypeId: number) => Array<Skill> | undefined;
+  findChildSkillTypes: (parentSkillId: number) => Array<SkillType> | undefined;
 
   skillVersion: (versionId: number) => SkillVersion | undefined;
   skillVersions: Array<SkillVersion> | undefined;
@@ -123,6 +124,10 @@ const useSkills = (): Skills => {
       skillTypes?.find((skillType) => skillType.id === id),
     findSkills: (skillTypeId: number) =>
       skills?.filter((skill) => skill.skill_type_id === skillTypeId),
+    findChildSkillTypes: (parentSkillId: number) =>
+      skillTypes?.filter(
+        (skillType) => skillType.parent_skill_type_id === parentSkillId
+      ),
 
     skillVersion: (versionId: number) => {
       return skillVersions?.find(
