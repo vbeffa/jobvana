@@ -1,13 +1,13 @@
 import "./App.css";
 
 const Loading = ({
-  waitFor,
+  waitingFor,
   colSpan
 }: {
-  waitFor?: Array<unknown>;
+  waitingFor?: Array<unknown>;
   colSpan: number;
 }) => {
-  if (waitFor?.length === 0)
+  if (waitingFor?.length === 0)
     return (
       <tr>
         <td colSpan={colSpan} className="border py-4">

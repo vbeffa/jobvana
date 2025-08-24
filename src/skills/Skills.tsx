@@ -126,7 +126,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
             </tr>
           </thead>
           <tbody>
-            <Loading waitFor={skills.all} colSpan={2} />
+            <Loading waitingFor={skills.all} colSpan={2} />
             {filteredSkills?.map((skill) => {
               return (
                 <tr key={skill.id}>

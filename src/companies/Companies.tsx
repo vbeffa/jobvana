@@ -46,7 +46,7 @@ const Skills = ({
             </tr>
           </thead>
           <tbody>
-            <Loading waitFor={companies.all} colSpan={1} />
+            <Loading waitingFor={companies.all} colSpan={1} />
             {filteredCompanies?.map((company) => {
               return (
                 <tr key={company.id}>

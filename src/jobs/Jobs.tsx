@@ -142,7 +142,7 @@ const Jobs = ({
             </tr>
           </thead>
           <tbody>
-            <Loading waitFor={jobs.all} colSpan={6} />
+            <Loading waitingFor={jobs.all} colSpan={6} />
             {filteredJobs.map((job) => {
               const company = companies.company(job.company_id);
               return (
