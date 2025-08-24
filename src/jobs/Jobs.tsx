@@ -44,12 +44,12 @@ const Jobs = () => {
         if (sortCol === "company") {
           const company1 = findCompany(job1.company_id);
           const company2 = findCompany(job2.company_id);
-          return sortDir === "down"
+          return sortDir === "up"
             ? company1!.name.localeCompare(company2!.name)
             : company2!.name.localeCompare(company1!.name);
         }
         if (sortCol === "title") {
-          return sortDir === "down"
+          return sortDir === "up"
             ? job1.title.localeCompare(job2.title)
             : job2.title.localeCompare(job1.title);
         }
@@ -64,7 +64,7 @@ const Jobs = () => {
   const setSort = (col: SortCol) => {
     const newSortCol = col;
     const newSortDir =
-      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "down";
+      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "up";
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {

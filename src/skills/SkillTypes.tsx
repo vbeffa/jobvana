@@ -8,7 +8,7 @@ type SortDir = "up" | "down";
 
 const SkillTypes = () => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_type");
-  const [sortDir, setSortDir] = useState<SortDir>("down");
+  const [sortDir, setSortDir] = useState<SortDir>("up");
   const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
 
   const { skillTypes } = useSkills();
@@ -25,7 +25,7 @@ const SkillTypes = () => {
         return pass;
       })
       .sort((skillType1, skillType2) => {
-        return sortDir === "down"
+        return sortDir === "up"
           ? skillType1.name.localeCompare(skillType2.name)
           : skillType2.name.localeCompare(skillType1.name);
       });
@@ -34,7 +34,7 @@ const SkillTypes = () => {
   const setSort = (col: SortCol) => {
     const newSortCol = col;
     const newSortDir =
-      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "down";
+      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "up";
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {
