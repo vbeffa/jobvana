@@ -3,8 +3,10 @@ import { useMemo } from "react";
 import supabase from "../utils/supabase";
 import type { Database } from "../utils/types";
 import useSkills, { type Skill, type SkillVersion } from "./useSkills";
+import useCompanies from "./useCompanies";
 
 export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
+  company: Company | undefined;
   skills: Array<Skill>;
   skillVersions: Array<SkillVersion>;
   salaryLow: number;
@@ -15,14 +17,14 @@ export type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
 export type JobSkillVersion =
   Database["public"]["Tables"]["job_skill_versions"]["Row"];
 
-export type JobsQ = {
-  all?: Array<Job>;
-  job: (id: number) => Job | undefined;
+export type Jobs = {
+  jobs: Array<Job> | undefined;
   forCompany: (companyId: number) => Array<Job> | undefined;
 };
 
-const useJobs = (): JobsQ => {
-  const skills = useSkills();
+const useJobs = (): Jobs => {
+  const { skills, skillVersion } = useSkills();
+  const { findCompany } = useCompanies();
 
   const { data: jobsData } = useQuery({
     queryKey: ["jobs"],
@@ -57,7 +59,7 @@ const useJobs = (): JobsQ => {
   }, [jobSkillVersionsData]);
 
   const jobs = useMemo(() => {
-    if (!jobsData || !jobSkills || !jobSkillVersions || !skills.all) {
+    if (!jobsData || !jobSkills || !jobSkillVersions || !skills) {
       return undefined;
     }
 
@@ -68,7 +70,8 @@ const useJobs = (): JobsQ => {
         const salaryHigh = parseInt(salaryRange[1].substring(0)) - 1;
         return {
           ...job,
-          skills: skills.all!.filter((skill) =>
+          company: findCompany(job.company_id),
+          skills: skills.filter((skill) =>
             jobSkills
               .filter((jobSkill) => jobSkill.job_id === job.id)
               .map((jobSkill) => jobSkill.skill_id)
@@ -77,7 +80,7 @@ const useJobs = (): JobsQ => {
           skillVersions: jobSkillVersions
             .filter((jobSkillVersion) => jobSkillVersion.job_id === job.id)
             .map((jobSkillVersion) =>
-              skills.version(jobSkillVersion.skill_version_id)
+              skillVersion(jobSkillVersion.skill_version_id)
             )
             .filter((skillVersion) => skillVersion !== undefined),
           salaryLow,
@@ -90,13 +93,17 @@ const useJobs = (): JobsQ => {
           new Date(job1.created_at).getTime()
         );
       });
-  }, [jobSkillVersions, jobSkills, jobsData, skills]);
+  }, [
+    findCompany,
+    jobSkillVersions,
+    jobSkills,
+    jobsData,
+    skillVersion,
+    skills
+  ]);
 
   return {
-    all: jobs,
-    job: (id: number) => {
-      return jobs?.find((job) => job.id === id);
-    },
+    jobs: jobs,
     forCompany: (companyId: number) => {
       return jobs?.filter((job) => job.company_id === companyId);
     }

@@ -13,10 +13,10 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
   const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
 
   const skills = useSkills();
-  const skillTypes = skills.types;
+  const skillTypes = skills.skillTypes;
 
   const filteredSkills = useMemo(() => {
-    return skills.all
+    return skills.skills
       ?.filter((skill) => {
         let pass = true;
         if (skillsFilter) {
@@ -63,7 +63,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
   }, [
     skillTypes,
     skillTypesFilter,
-    skills.all,
+    skills.skills,
     skillsFilter,
     sortCol,
     sortDir
@@ -126,7 +126,7 @@ const Skills = ({ gotoSkill }: { gotoSkill: (skillId: number) => void }) => {
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={skills.all} colSpan={2} />
+            <Loading waitingFor={skills.skills} colSpan={2} />
             {filteredSkills?.map((skill) => {
               return (
                 <tr key={skill.id}>

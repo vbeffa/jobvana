@@ -5,17 +5,17 @@ import type { Database } from "../utils/types";
 
 export type Company = Database["public"]["Tables"]["companies"]["Row"];
 
-export type CompaniesQ = {
-  all?: Array<Company>;
-  company: (id: number) => Company | undefined;
+export type Companies = {
+  companies: Array<Company> | undefined;
+  findCompany: (id: number) => Company | undefined;
 };
 
-const useCompanies = (): CompaniesQ => {
+const useCompanies = (): Companies => {
   const { data: companiesData } = useQuery({
     queryKey: ["companies"],
     queryFn: async () => {
       const { data } = await supabase.from("companies").select();
-      return data ?? undefined;
+      return data;
     }
   });
 
@@ -28,8 +28,8 @@ const useCompanies = (): CompaniesQ => {
   );
 
   return {
-    all: companies,
-    company: (id: number) => {
+    companies: companies,
+    findCompany: (id: number) => {
       return companies?.find((company) => company.id === id);
     }
   };

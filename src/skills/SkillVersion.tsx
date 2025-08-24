@@ -2,7 +2,7 @@ import useSkills from "../hooks/useSkills";
 
 const SkillVersion = ({ versionId }: { versionId: number }) => {
   const skills = useSkills();
-  const skillVersion = skills.version(versionId);
+  const skillVersion = skills.skillVersion(versionId);
   if (!skillVersion) {
     return null;
   }

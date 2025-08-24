@@ -1,7 +1,7 @@
+import { type Job } from "../hooks/useJobs";
+import { type Skill } from "../hooks/useSkills";
 import SkillLink from "../skills/SkillLink";
 import SkillVersionLink from "../skills/SkillVersionLink";
-import { type Job } from "../hooks/useJobs";
-import { type SkillsHook } from "../hooks/useSkills";
 
 const JobSkills = ({
   job,
@@ -10,7 +10,7 @@ const JobSkills = ({
   gotoSkillVersion
 }: {
   job: Job;
-  skills: SkillsHook;
+  skills: Array<Skill> | undefined;
   gotoSkill: (skillId: number) => void;
   gotoSkillVersion: (skillVersionId: number) => void;
 }) => {

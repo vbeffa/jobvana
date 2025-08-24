@@ -13,7 +13,7 @@ const Skills = ({
   const companies = useCompanies();
 
   const filteredCompanies = useMemo(() => {
-    return companies.all?.filter((company) => {
+    return companies.companies?.filter((company) => {
       if (companyFilter) {
         return company.name
           .toLocaleLowerCase()
@@ -21,7 +21,7 @@ const Skills = ({
       }
       return true;
     });
-  }, [companies.all, companyFilter]);
+  }, [companies.companies, companyFilter]);
 
   return (
     <>
@@ -43,15 +43,19 @@ const Skills = ({
             </tr>
             <tr>
               <th className="p-1 border">Name</th>
+              <th className="p-1 border">Size</th>
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={companies.all} colSpan={1} />
+            <Loading waitingFor={companies.companies} colSpan={1} />
             {filteredCompanies?.map((company) => {
               return (
                 <tr key={company.id}>
                   <td className="p-1 border text-left align-top">
                     <CompanyLink company={company} gotoCompany={gotoCompany} />
+                  </td>
+                  <td className="p-1 border text-left align-top">
+                    {company.num_employees}
                   </td>
                 </tr>
               );

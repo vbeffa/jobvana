@@ -1,4 +1,4 @@
-import useCompanies from "../hooks/useCompanies";
+import useCompany from "../hooks/useCompany";
 import useJobs from "../hooks/useJobs";
 import JobLink from "../jobs/JobLink";
 
@@ -9,9 +9,8 @@ const Company = ({
   id: number;
   gotoJob: (jobId: number) => void;
 }) => {
-  const companies = useCompanies();
   const jobs = useJobs();
-  const company = companies.company(id);
+  const { company } = useCompany({ id });
 
   if (!company || !jobs) {
     return null;

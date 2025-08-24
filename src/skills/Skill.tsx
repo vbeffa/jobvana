@@ -1,3 +1,4 @@
+import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
 import SkillLink from "./SkillLink";
 import SkillVersionLink from "./SkillVersionLink";
@@ -11,9 +12,8 @@ const Skill = ({
   gotoSkill: (skillId: number) => void;
   gotoSkillVersion: (skillVersionId: number) => void;
 }) => {
-  const skills = useSkills();
-  const skill = skills.skill(id);
-  const skillTypes = skills.types;
+  const { skillTypes } = useSkills();
+  const { skill } = useSkill({ id });
 
   if (!skill) {
     return null;

@@ -27,16 +27,16 @@ const Jobs = ({
   const [companyFilter, setCompanyFilter] = useState<string>();
   const [jobTitleFilter, setJobTitleFilter] = useState<string>();
 
-  const companies = useCompanies();
-  const jobs = useJobs();
-  const skills = useSkills();
+  const { findCompany } = useCompanies();
+  const { jobs } = useJobs();
+  const { skills } = useSkills();
 
   const filteredJobs = useMemo(() => {
-    return jobs.all
+    return jobs
       ?.filter((job) => {
         let pass = true;
         if (companyFilter) {
-          const company = companies.company(job.company_id);
+          const company = findCompany(job.company_id);
           pass =
             company !== undefined &&
             company?.name
@@ -52,8 +52,8 @@ const Jobs = ({
       })
       .sort((job1, job2) => {
         if (sortCol === "company") {
-          const company1 = companies.company(job1.company_id);
-          const company2 = companies.company(job2.company_id);
+          const company1 = findCompany(job1.company_id);
+          const company2 = findCompany(job2.company_id);
           return sortDir === "down"
             ? company1!.name.localeCompare(company2!.name)
             : company2!.name.localeCompare(company1!.name);
@@ -69,7 +69,7 @@ const Jobs = ({
           : new Date(job1.created_at).getTime() -
               new Date(job2.created_at).getTime();
       });
-  }, [companies, companyFilter, jobTitleFilter, jobs.all, sortCol, sortDir]);
+  }, [companyFilter, findCompany, jobTitleFilter, jobs, sortCol, sortDir]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
@@ -83,7 +83,7 @@ const Jobs = ({
     }
   };
 
-  if (!jobs.all || !filteredJobs || !skills.all) {
+  if (!jobs || !filteredJobs || !skills) {
     return null;
   }
 
@@ -142,9 +142,9 @@ const Jobs = ({
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={jobs.all} colSpan={6} />
+            <Loading waitingFor={jobs} colSpan={6} />
             {filteredJobs.map((job) => {
-              const company = companies.company(job.company_id);
+              const company = findCompany(job.company_id);
               return (
                 <tr key={job.id}>
                   <td className="p-1 border text-left align-top">

@@ -1,8 +1,7 @@
-import Salary from "./Salary";
-import useCompanies from "../hooks/useCompanies";
-import useJobs from "../hooks/useJobs";
+import useJob from "../hooks/useJob";
 import useSkills from "../hooks/useSkills";
 import JobSkills from "../jobs/JobSkills";
+import Salary from "./Salary";
 
 const Job = ({
   id,
@@ -13,10 +12,8 @@ const Job = ({
   gotoSkill: (skillId: number) => void;
   gotoSkillVersion: (skillVersionId: number) => void;
 }) => {
-  const companies = useCompanies();
-  const jobs = useJobs();
-  const job = jobs.job(id);
-  const skills = useSkills();
+  const { job } = useJob({ id });
+  const { skills } = useSkills();
 
   if (!job) {
     return null;
@@ -25,7 +22,7 @@ const Job = ({
   return (
     <>
       <h1>
-        {companies.company(job.company_id)?.name} - {job.title}
+        {job.company?.name} - {job.title}
       </h1>
       <h2>Description</h2>
       <div className="card text-left">{job.description}</div>

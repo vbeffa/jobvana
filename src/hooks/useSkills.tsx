@@ -16,15 +16,15 @@ export type SkillVersion =
 
 export type SkillType = Database["public"]["Tables"]["skill_types"]["Row"];
 
-export type SkillsHook = {
-  all?: Array<Skill>;
-  types?: Array<SkillType>;
+export type Skills = {
+  skills: Array<Skill> | undefined;
+  skillTypes: Array<SkillType> | undefined;
   skill: (id: number) => Skill | undefined;
-  version: (versionId: number) => SkillVersion | undefined;
-  versions: (skillId: number) => Array<SkillVersion> | undefined;
+  skillVersion: (versionId: number) => SkillVersion | undefined;
+  skillVersions: Array<SkillVersion> | undefined;
 };
 
-const useSkills = (): SkillsHook => {
+const useSkills = (): Skills => {
   const { data: skillsData } = useQuery({
     queryKey: ["skills"],
     queryFn: async () => {
@@ -37,7 +37,7 @@ const useSkills = (): SkillsHook => {
     queryKey: ["skillTypes"],
     queryFn: async () => {
       const { data } = await supabase.from("skill_types").select();
-      return data ?? undefined;
+      return data;
     }
   });
 
@@ -45,7 +45,7 @@ const useSkills = (): SkillsHook => {
     queryKey: ["skillVersions"],
     queryFn: async () => {
       const { data } = await supabase.from("skill_versions").select();
-      return data ?? undefined;
+      return data;
     }
   });
 
@@ -53,12 +53,18 @@ const useSkills = (): SkillsHook => {
     queryKey: ["skillVersions"],
     queryFn: async () => {
       const { data } = await supabase.from("skill_relations").select();
-      return data ?? undefined;
+      return data;
     }
   });
 
-  const skillTypes = useMemo(() => skillTypesData, [skillTypesData]);
-  const skillVersions = useMemo(() => skillVersionsData, [skillVersionsData]);
+  const skillTypes = useMemo(
+    () => skillTypesData ?? undefined,
+    [skillTypesData]
+  );
+  const skillVersions = useMemo(
+    () => skillVersionsData ?? undefined,
+    [skillVersionsData]
+  );
   const skillRelations = useMemo(
     () => skillRelationsData,
     [skillRelationsData]
@@ -105,21 +111,17 @@ const useSkills = (): SkillsHook => {
   }, [skillRelations, skillTypes, skillVersions, skillsData]);
 
   return {
-    all: skills,
-    types: skillTypes,
+    skills,
+    skillTypes,
     skill: (id: number) => {
       return skills?.find((skill) => skill.id === id);
     },
-    version: (versionId: number) => {
+    skillVersion: (versionId: number) => {
       return skillVersions?.find(
         (skillVersion) => skillVersion.id === versionId
       );
     },
-    versions: (skillId: number) => {
-      return skillVersions?.filter(
-        (skillVersion) => skillVersion.skill_id === skillId
-      );
-    }
+    skillVersions
   };
 };
 
