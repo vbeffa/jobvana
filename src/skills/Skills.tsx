@@ -107,7 +107,7 @@ const Skills = () => {
                 className="p-1 border cursor-pointer"
                 onClick={() => setSort("skill_type")}
               >
-                Skill Type{" "}
+                Category{" "}
                 {sortCol === "skill_type" && (sortDir === "up" ? "↑" : "↓")}
               </th>
             </tr>
@@ -127,7 +127,18 @@ const Skills = () => {
                     </Link>
                     {skill.abbreviation && ` (${skill.abbreviation})`}
                   </td>
-                  <td className="p-1 border text-left">{skillType?.name}</td>
+                  <td className="p-1 border text-left">
+                    {skillType && (
+                      <Link
+                        to="/jobvana/skills/skill_types/$skill_type_id"
+                        params={{
+                          skill_type_id: skillType.id.toString()
+                        }}
+                      >
+                        {skillType.name}
+                      </Link>
+                    )}
+                  </td>
                 </tr>
               );
             })}

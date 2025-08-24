@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import useSkills from "../hooks/useSkills";
+import { Route } from "../routes/jobvana.skills.skill_types.$skill_type_id";
 
-const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
+const SkillType = () => {
+  const { skillTypeId } = Route.useLoaderData();
   const { findSkillType, findSkills, findChildSkillTypes } = useSkills();
   const skillType = findSkillType(skillTypeId);
   if (!skillType) {
@@ -20,27 +22,29 @@ const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
       <div className="card text-left whitespace-pre-wrap">
         {skillType.description}
       </div>
-      <h2>Parent Skill Type</h2>
+      <h2>Parent Category</h2>
       <div className="card text-left">
         {parentSkillType && (
           <Link
-            to="/jobvana/skills"
-            params={{ parentSkillTypeId: parentSkillType.id }}
+            to="/jobvana/skills/skill_types/$skill_type_id"
+            params={{
+              skill_type_id: parentSkillType.id.toString()
+            }}
           >
             {parentSkillType.name}
           </Link>
         )}
         {!parentSkillType && <>---</>}
       </div>
-      <h2>Skill Types</h2>
+      <h2>Subcategories</h2>
       <div className="card text-left">
         {childSkillTypes && (
           <ul className="list-inside list-disc">
             {childSkillTypes.map((skillType) => (
               <li key={skillType.id}>
                 <Link
-                  to="/jobvana/skills"
-                  params={{ skillTypeId: skillType.id }}
+                  to="/jobvana/skills/skill_types/$skill_type_id"
+                  params={{ skill_type_id: skillType.id.toString() }}
                 >
                   {skillType.name}
                 </Link>
@@ -48,7 +52,7 @@ const SkillType = ({ skillTypeId }: { skillTypeId: number }) => {
             ))}
           </ul>
         )}
-        {!childSkillTypes && <>---</>}
+        {childSkillTypes?.length === 0 && <>---</>}
       </div>
       <h2>Skills</h2>
       <div className="card text-left">

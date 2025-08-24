@@ -19,6 +19,9 @@ const Header = () => {
       <Link to="/jobvana/skills" className="[&.active]:font-bold">
         Skills
       </Link>
+      <Link to="/jobvana/skill_types" className="[&.active]:font-bold">
+        Skill Categories
+      </Link>
     </div>
   );
 };
