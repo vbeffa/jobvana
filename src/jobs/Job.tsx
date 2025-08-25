@@ -1,3 +1,4 @@
+import CompanyLink from "../companies/CompanyLink";
 import useJob from "../hooks/useJob";
 import JobSkills from "../jobs/JobSkills";
 import { Route } from "../routes/jobvana.jobs.$id";
@@ -13,9 +14,11 @@ const Job = () => {
 
   return (
     <>
-      <h1>
-        {job.company?.name} - {job.title}
-      </h1>
+      <h1>{job.title}</h1>
+      <h2>Company</h2>
+      <div className="card text-left">
+        {job.company && <CompanyLink company={job.company} />}
+      </div>
       <h2>Description</h2>
       <div className="card text-left">{job.description}</div>
       <h2>Created</h2>
