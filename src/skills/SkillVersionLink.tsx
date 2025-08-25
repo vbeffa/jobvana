@@ -10,9 +10,10 @@ const SkillVersionLink = ({
 }) => {
   return (
     <Link
-      to="/jobvana/skills/$id/skill_versions/$skill_version_id"
+      to="/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id"
       params={{
-        id: skillVersion.skill_id.toString(),
+        id: skill.skill_category_id.toString(),
+        skill_id: skillVersion.skill_id.toString(),
         skill_version_id: skillVersion.id.toString()
       }}
     >
