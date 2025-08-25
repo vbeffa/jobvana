@@ -7,9 +7,9 @@ import SkillsList from "./SkillsList";
 import SkillVersionsList from "./SkillVersionsList";
 
 const Skill = () => {
-  const { id } = Route.useLoaderData();
+  const { skillId } = Route.useLoaderData();
   const { findSkillCategory } = useSkills();
-  const { skill } = useSkill({ id });
+  const { skill } = useSkill({ id: skillId });
   const { jobsForSkill } = useJobs();
 
   if (!skill) {
@@ -21,7 +21,7 @@ const Skill = () => {
     return null;
   }
 
-  const jobs = jobsForSkill(id);
+  const jobs = jobsForSkill(skillId);
 
   return (
     <>

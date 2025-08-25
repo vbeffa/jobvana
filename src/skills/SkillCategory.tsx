@@ -1,5 +1,5 @@
 import useSkills from "../hooks/useSkills";
-import { Route } from "../routes/jobvana.skill_categories.$id";
+import { Route } from "../routes/jobvana.skill_categories.$id.index";
 import SkillsList from "./SkillsList";
 import SkillCategoryLink from "./SkillCategoryLink";
 import SkillCategoriesList from "./SkillCategoriesList";
