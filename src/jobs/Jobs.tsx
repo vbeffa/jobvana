@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import CompanyLink from "../companies/CompanyLink";
+import Filter from "../Filter";
 import useCompanies from "../hooks/useCompanies";
 import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
@@ -8,7 +9,6 @@ import JobLink from "./JobLink";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
 import SalarySelect from "./SalarySelect";
-import Filter from "../Filter";
 
 type SortCol = "company" | "title" | "created" | "min_salary" | "max_salary";
 type SortDir = "up" | "down";

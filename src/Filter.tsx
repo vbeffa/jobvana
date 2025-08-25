@@ -16,7 +16,7 @@ const Filter = ({
       <input
         id={id}
         type="text"
-        className="border border-gray-500 rounded-md pl-1 h-8"
+        className="border border-gray-500 w-full rounded-md pl-1 h-8"
         placeholder={placeholder}
         value={value}
         onChange={(e) => {
