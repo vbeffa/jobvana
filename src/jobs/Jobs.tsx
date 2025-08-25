@@ -7,8 +7,10 @@ import Loading from "../Loading";
 import JobLink from "./JobLink";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
+import SalarySelect from "./SalarySelect";
+import Filter from "../Filter";
 
-type SortCol = "company" | "title" | "created";
+type SortCol = "company" | "title" | "created" | "min_salary" | "max_salary";
 type SortDir = "up" | "down";
 
 const Jobs = () => {
@@ -16,6 +18,8 @@ const Jobs = () => {
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [companyFilter, setCompanyFilter] = useState<string>();
   const [jobTitleFilter, setJobTitleFilter] = useState<string>();
+  const [minSalaryFilter, setMinSalaryFilter] = useState<number>();
+  const [maxSalaryFilter, setMaxSalaryFilter] = useState<number>();
 
   const { findCompany } = useCompanies();
   const { jobs } = useJobs();
@@ -27,16 +31,22 @@ const Jobs = () => {
         let pass = true;
         if (companyFilter) {
           const company = findCompany(job.company_id);
-          pass =
+          pass &&=
             company !== undefined &&
             company?.name
               .toLocaleLowerCase()
               .includes(companyFilter.toLocaleLowerCase());
         }
         if (jobTitleFilter) {
-          pass = job.title
+          pass &&= job.title
             .toLocaleLowerCase()
             .includes(jobTitleFilter.toLocaleLowerCase());
+        }
+        if (minSalaryFilter) {
+          pass &&= job.salaryLow >= minSalaryFilter;
+        }
+        if (maxSalaryFilter) {
+          pass &&= job.salaryHigh <= maxSalaryFilter;
         }
         return pass;
       })
@@ -59,7 +69,16 @@ const Jobs = () => {
           : new Date(job1.created_at).getTime() -
               new Date(job2.created_at).getTime();
       });
-  }, [companyFilter, findCompany, jobTitleFilter, jobs, sortCol, sortDir]);
+  }, [
+    companyFilter,
+    findCompany,
+    jobTitleFilter,
+    jobs,
+    maxSalaryFilter,
+    minSalaryFilter,
+    sortCol,
+    sortDir
+  ]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
@@ -84,51 +103,75 @@ const Jobs = () => {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left pb-2 w-[20%]">
-                <input
-                  type="text"
-                  className="border pl-1"
+              <td className="text-left pb-2">
+                <Filter
+                  id="company_filter"
                   placeholder="Filter by company"
-                  onChange={(e) => {
-                    setCompanyFilter(e.target.value);
-                  }}
+                  value={companyFilter}
+                  onChange={setCompanyFilter}
+                  onClear={() => setCompanyFilter("")}
                 />
               </td>
-              <td className="text-left pb-2  w-[20%]">
-                <input
-                  type="text"
-                  className="border pl-1"
+              <td className="text-left pb-2">
+                <Filter
+                  id="job_title_filter"
                   placeholder="Filter by job title"
-                  onChange={(e) => {
-                    setJobTitleFilter(e.target.value);
+                  value={jobTitleFilter}
+                  onChange={setJobTitleFilter}
+                  onClear={() => setJobTitleFilter("")}
+                />
+              </td>
+              <td colSpan={2} />
+              <td className="flex flex-row w-full gap-x-1">
+                <SalarySelect
+                  id="min_salary"
+                  title="Min salary"
+                  value={minSalaryFilter}
+                  onChange={(minSalary) => {
+                    setMinSalaryFilter(minSalary);
+                    if (maxSalaryFilter && minSalary > maxSalaryFilter) {
+                      setMaxSalaryFilter(minSalary);
+                    }
+                  }}
+                />
+                <div className="flex pt-1">-</div>
+                <SalarySelect
+                  id="max_salary"
+                  title="Max salary"
+                  value={maxSalaryFilter}
+                  onChange={(maxSalary) => {
+                    setMaxSalaryFilter(maxSalary);
+                    if (minSalaryFilter && maxSalary < minSalaryFilter) {
+                      setMinSalaryFilter(maxSalary);
+                    }
                   }}
                 />
               </td>
             </tr>
             <tr>
               <th
-                className="p-1 border cursor-pointer"
+                className="p-1 border cursor-pointer w-[20%]"
                 onClick={() => setSort("company")}
               >
                 Company{" "}
                 {sortCol === "company" && (sortDir === "up" ? "↑" : "↓")}
               </th>
               <th
-                className="p-1 border cursor-pointer"
+                className="p-1 border cursor-pointer w-[20%]"
                 onClick={() => setSort("title")}
               >
                 Title {sortCol === "title" && (sortDir === "up" ? "↑" : "↓")}
               </th>
               <th
-                className="p-1 border cursor-pointer"
+                className="p-1 border cursor-pointer w-[15%]"
                 onClick={() => setSort("created")}
               >
                 Created{" "}
                 {sortCol === "created" && (sortDir === "up" ? "↑" : "↓")}
               </th>
-              <th className="p-1 border">Status</th>
-              <th className="p-1 border">Salary</th>
-              <th className="p-1 border">Skills</th>
+              <th className="p-1 border w-[5%]">Status</th>
+              <th className="p-1 border w-[20%]">Salary</th>
+              <th className="p-1 border w-[20%]">Skills</th>
             </tr>
           </thead>
           <tbody>
