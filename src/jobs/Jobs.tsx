@@ -103,7 +103,7 @@ const Jobs = () => {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left pb-2">
+              <td>
                 <Filter
                   id="company_filter"
                   placeholder="Filter by company"
@@ -112,7 +112,7 @@ const Jobs = () => {
                   onClear={() => setCompanyFilter("")}
                 />
               </td>
-              <td className="text-left pb-2">
+              <td>
                 <Filter
                   id="job_title_filter"
                   placeholder="Filter by job title"
@@ -147,6 +147,9 @@ const Jobs = () => {
                   }}
                 />
               </td>
+            </tr>
+            <tr>
+              <td className="h-1" colSpan={6} />
             </tr>
             <tr>
               <th

@@ -16,7 +16,7 @@ const Filter = ({
       <input
         id={id}
         type="text"
-        className="border border-gray-500 rounded-md pl-1 w-full h-8"
+        className="border border-gray-500 rounded-md pl-1 h-8"
         placeholder={placeholder}
         value={value}
         onChange={(e) => {
@@ -24,7 +24,7 @@ const Filter = ({
         }}
       />
       <div
-        className="absolute right-1.25 top-0.75 text-gray-400 cursor-pointer"
+        className="absolute right-1.75 top-1 text-gray-400 cursor-pointer"
         onClick={() => {
           onClear();
           document.getElementById(id)?.focus();
