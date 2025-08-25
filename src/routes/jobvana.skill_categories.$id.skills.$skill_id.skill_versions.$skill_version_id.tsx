@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import SkillVersion from "../skills/SkillVersion";
 
 export const Route = createFileRoute(
-  "/jobvana/skills/$id/skill_versions/$skill_version_id"
+  "/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id"
 )({
   loader: ({ params: { id, skill_version_id } }) => ({
     id: parseInt(id),

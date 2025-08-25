@@ -1,15 +1,19 @@
 import { Link } from "@tanstack/react-router";
 import type { SkillCategory } from "../hooks/useSkills";
 
-const SkillCategoryLink = ({ skillType }: { skillType: SkillCategory }) => {
+const SkillCategoryLink = ({
+  skillCategory
+}: {
+  skillCategory: SkillCategory;
+}) => {
   return (
     <Link
-      to="/jobvana/skill_categories/$skill_category_id"
+      to="/jobvana/skill_categories/$id"
       params={{
-        skill_category_id: skillType.id.toString()
+        id: skillCategory.id.toString()
       }}
     >
-      {skillType.name}
+      {skillCategory.name}
     </Link>
   );
 };

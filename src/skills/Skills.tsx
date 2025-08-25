@@ -12,9 +12,9 @@ const Skills = () => {
   const [sortCol, setSortCol] = useState<SortCol>("num_jobs");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [skillsFilter, setSkillsFilter] = useState<string>();
-  const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
+  const [skillCategoriesFilter, setSkillCategoriesFilter] = useState<string>();
 
-  const { skills, findSkillType } = useSkills();
+  const { skills, findSkillCategory: findSkillCategory } = useSkills();
   const { jobsForSkill } = useJobs();
 
   const filteredSkills = useMemo(() => {
@@ -31,13 +31,15 @@ const Skills = () => {
                 .toLocaleLowerCase()
                 .includes(skillsFilter.toLocaleLowerCase()));
         }
-        if (skillTypesFilter) {
-          const skillType = findSkillType(skill.skill_category_id)?.name;
+        if (skillCategoriesFilter) {
+          const skillCategory = findSkillCategory(
+            skill.skill_category_id
+          )?.name;
           pass =
-            skillType !== undefined &&
-            skillType
+            skillCategory !== undefined &&
+            skillCategory
               ?.toLocaleLowerCase()
-              .includes(skillTypesFilter.toLocaleLowerCase());
+              .includes(skillCategoriesFilter.toLocaleLowerCase());
         }
         return pass;
       })
@@ -58,16 +60,16 @@ const Skills = () => {
         if (skill1.skill_category_id === skill2.skill_category_id) {
           return skill1.name.localeCompare(skill2.name);
         }
-        const skillType1 = findSkillType(skill1.skill_category_id);
-        const skillType2 = findSkillType(skill2.skill_category_id);
+        const skillCategory1 = findSkillCategory(skill1.skill_category_id);
+        const skillCategory2 = findSkillCategory(skill2.skill_category_id);
         return sortDir === "up"
-          ? skillType1!.name.localeCompare(skillType2!.name)
-          : skillType2!.name.localeCompare(skillType1!.name);
+          ? skillCategory1!.name.localeCompare(skillCategory2!.name)
+          : skillCategory2!.name.localeCompare(skillCategory1!.name);
       });
   }, [
-    findSkillType,
+    findSkillCategory,
     jobsForSkill,
-    skillTypesFilter,
+    skillCategoriesFilter,
     skills,
     skillsFilter,
     sortCol,
@@ -103,7 +105,7 @@ const Skills = () => {
                 <input
                   type="text"
                   className="border pl-1"
-                  placeholder="Search for skill"
+                  placeholder="Filter by skill"
                   onChange={(e) => {
                     setSkillsFilter(e.target.value);
                   }}
@@ -115,7 +117,7 @@ const Skills = () => {
                   className="border pl-1"
                   placeholder="Filter by category"
                   onChange={(e) => {
-                    setSkillTypesFilter(e.target.value);
+                    setSkillCategoriesFilter(e.target.value);
                   }}
                 />
               </td>
@@ -146,7 +148,7 @@ const Skills = () => {
           <tbody>
             <Loading waitingFor={skills} colSpan={2} />
             {filteredSkills?.map((skill) => {
-              const skillType = findSkillType(skill.skill_category_id);
+              const skillCategory = findSkillCategory(skill.skill_category_id);
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
@@ -154,7 +156,9 @@ const Skills = () => {
                     {skill.abbreviation && ` (${skill.abbreviation})`}
                   </td>
                   <td className="p-1 border text-left">
-                    {skillType && <SkillCategoryLink skillType={skillType} />}
+                    {skillCategory && (
+                      <SkillCategoryLink skillCategory={skillCategory} />
+                    )}
                   </td>
                   <td className="p-1 border text-left">
                     {jobsForSkill(skill.id)?.length}

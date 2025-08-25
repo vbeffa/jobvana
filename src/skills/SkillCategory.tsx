@@ -1,40 +1,46 @@
 import useSkills from "../hooks/useSkills";
-import { Route } from "../routes/jobvana.skill_categories.$skill_category_id";
+import { Route } from "../routes/jobvana.skill_categories.$id";
 import SkillsList from "./SkillsList";
 import SkillCategoryLink from "./SkillCategoryLink";
 import SkillCategoriesList from "./SkillCategoriesList";
 
 const SkillCategory = () => {
   const { skillCategoryId } = Route.useLoaderData();
-  const { findSkillType, findSkills, findChildSkillTypes } = useSkills();
-  const skillType = findSkillType(skillCategoryId);
-  if (!skillType) {
+  const {
+    findSkillCategory: findSkillCategory,
+    findSkills,
+    findChildSkillCategories: findChildSkillCategories
+  } = useSkills();
+  const skillCategory = findSkillCategory(skillCategoryId);
+  if (!skillCategory) {
     return null;
   }
-  const parentSkillType =
-    skillType.parent_skill_category_id &&
-    findSkillType(skillType.parent_skill_category_id);
+  const parentSkillCategory =
+    skillCategory.parent_skill_category_id &&
+    findSkillCategory(skillCategory.parent_skill_category_id);
   const skills = findSkills(skillCategoryId);
-  const childSkillTypes = findChildSkillTypes(skillType.id);
+  const childSkillCategories = findChildSkillCategories(skillCategory.id);
 
   return (
     <>
-      <h1>{skillType.name}</h1>
+      <h1>{skillCategory.name}</h1>
       <h2>Description</h2>
       <div className="card text-left whitespace-pre-wrap">
-        {skillType.description}
+        {skillCategory.description}
       </div>
       <h2>Parent Category</h2>
       <div className="card text-left">
-        {parentSkillType && <SkillCategoryLink skillType={parentSkillType} />}
-        {!parentSkillType && <>---</>}
+        {parentSkillCategory && (
+          <SkillCategoryLink skillCategory={parentSkillCategory} />
+        )}
+        {!parentSkillCategory && <>---</>}
       </div>
       <h2>Subcategories</h2>
       <div className="card text-left">
-        {childSkillTypes && (
-          <SkillCategoriesList skillTypes={childSkillTypes} />
+        {childSkillCategories && (
+          <SkillCategoriesList skillCategories={childSkillCategories} />
         )}
-        {childSkillTypes?.length === 0 && <>---</>}
+        {childSkillCategories?.length === 0 && <>---</>}
       </div>
       <h2>Skills</h2>
       <div className="card text-left">
@@ -42,13 +48,13 @@ const SkillCategory = () => {
       </div>
       <h2>Notes</h2>
       <div className="card text-left whitespace-pre-wrap">
-        {skillType.notes}
+        {skillCategory.notes}
       </div>
       <h2>Reference</h2>
       <div className="card text-left">
-        {skillType.reference && (
-          <a target="_blank" href={skillType.reference}>
-            {skillType.reference}
+        {skillCategory.reference && (
+          <a target="_blank" href={skillCategory.reference}>
+            {skillCategory.reference}
           </a>
         )}
       </div>

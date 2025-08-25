@@ -2,15 +2,15 @@ import type { SkillCategory } from "../hooks/useSkills";
 import SkillCategoryLink from "./SkillCategoryLink";
 
 const SkillCategoriesList = ({
-  skillTypes
+  skillCategories
 }: {
-  skillTypes: Array<SkillCategory>;
+  skillCategories: Array<SkillCategory>;
 }) => {
   return (
     <ul className="list-inside list-disc">
-      {skillTypes.map((skillType) => (
-        <li key={skillType.id}>
-          <SkillCategoryLink skillType={skillType} />
+      {skillCategories.map((skillCategory) => (
+        <li key={skillCategory.id}>
+          <SkillCategoryLink skillCategory={skillCategory} />
         </li>
       ))}
     </ul>

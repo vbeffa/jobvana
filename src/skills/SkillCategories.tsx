@@ -2,34 +2,35 @@ import { useMemo, useState } from "react";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
 import SkillCategoryLink from "./SkillCategoryLink";
+import SkillsList from "./SkillsList";
 
-type SortCol = "skill_category";
+type SortCol = "skill_category" | "skills";
 type SortDir = "up" | "down";
 
 const SkillCategories = () => {
   const [sortCol, setSortCol] = useState<SortCol>("skill_category");
   const [sortDir, setSortDir] = useState<SortDir>("up");
-  const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
+  const [skillCategoriesFilter, setSkillCategoriesFilter] = useState<string>();
 
-  const { skillTypes } = useSkills();
+  const { skillCategories, findSkills } = useSkills();
 
-  const filteredSkillTypes = useMemo(() => {
-    return skillTypes
-      ?.filter((skillType) => {
+  const filteredSkillCategories = useMemo(() => {
+    return skillCategories
+      ?.filter((skillCategory) => {
         let pass = true;
-        if (skillTypesFilter) {
-          pass = skillType.name
+        if (skillCategoriesFilter) {
+          pass = skillCategory.name
             .toLocaleLowerCase()
-            .includes(skillTypesFilter.toLocaleLowerCase());
+            .includes(skillCategoriesFilter.toLocaleLowerCase());
         }
         return pass;
       })
-      .sort((skillType1, skillType2) => {
+      .sort((skillCategory1, skillCategory2) => {
         return sortDir === "up"
-          ? skillType1.name.localeCompare(skillType2.name)
-          : skillType2.name.localeCompare(skillType1.name);
+          ? skillCategory1.name.localeCompare(skillCategory2.name)
+          : skillCategory2.name.localeCompare(skillCategory1.name);
       });
-  }, [skillTypes, skillTypesFilter, sortDir]);
+  }, [skillCategories, skillCategoriesFilter, sortDir]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
@@ -54,12 +55,13 @@ const SkillCategories = () => {
                 <input
                   type="text"
                   className="border pl-1"
-                  placeholder="Search for skill category"
+                  placeholder="Filter by skill category"
                   onChange={(e) => {
-                    setSkillTypesFilter(e.target.value);
+                    setSkillCategoriesFilter(e.target.value);
                   }}
                 />
               </td>
+              <td></td>
             </tr>
             <tr>
               <th
@@ -69,15 +71,25 @@ const SkillCategories = () => {
                 Category{" "}
                 {sortCol === "skill_category" && (sortDir === "up" ? "↑" : "↓")}
               </th>
+              <th
+                className="p-1 border cursor-pointer"
+                onClick={() => setSort("skills")}
+              >
+                Skills {sortCol === "skills" && (sortDir === "up" ? "↑" : "↓")}
+              </th>
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={skillTypes} colSpan={1} />
-            {filteredSkillTypes?.map((skillType) => {
+            <Loading waitingFor={skillCategories} colSpan={1} />
+            {filteredSkillCategories?.map((skillCategory) => {
+              const skills = findSkills(skillCategory.id);
               return (
-                <tr key={skillType.id}>
+                <tr key={skillCategory.id}>
+                  <td className="p-1 border text-left align-top">
+                    <SkillCategoryLink skillCategory={skillCategory} />
+                  </td>
                   <td className="p-1 border text-left">
-                    <SkillCategoryLink skillType={skillType} />
+                    {skills && <SkillsList skills={skills} />}
                   </td>
                 </tr>
               );

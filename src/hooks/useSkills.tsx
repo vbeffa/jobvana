@@ -21,10 +21,10 @@ export type Skills = {
   skills: Array<Skill> | undefined;
   findSkill: (id: number) => Skill | undefined;
 
-  skillTypes: Array<SkillCategory> | undefined;
-  findSkillType: (id: number) => SkillCategory | undefined;
+  skillCategories: Array<SkillCategory> | undefined;
+  findSkillCategory: (id: number) => SkillCategory | undefined;
   findSkills: (skillCategoryId: number) => Array<Skill> | undefined;
-  findChildSkillTypes: (
+  findChildSkillCategories: (
     parentSkillId: number
   ) => Array<SkillCategory> | undefined;
 
@@ -41,8 +41,8 @@ const useSkills = (): Skills => {
     }
   });
 
-  const { data: skillTypesData } = useQuery({
-    queryKey: ["skillTypes"],
+  const { data: skillCategoriesData } = useQuery({
+    queryKey: ["skillCategories"],
     queryFn: async () => {
       const { data } = await supabase.from("skill_categories").select();
       return data;
@@ -65,9 +65,9 @@ const useSkills = (): Skills => {
     }
   });
 
-  const skillTypes = useMemo(
-    () => skillTypesData ?? undefined,
-    [skillTypesData]
+  const skillCategories = useMemo(
+    () => skillCategoriesData ?? undefined,
+    [skillCategoriesData]
   );
   const skillVersions = useMemo(
     () => skillVersionsData ?? undefined,
@@ -79,7 +79,7 @@ const useSkills = (): Skills => {
   );
 
   const skills = useMemo(() => {
-    if (!skillsData || !skillTypes || !skillVersions || !skillRelations) {
+    if (!skillsData || !skillCategories || !skillVersions || !skillRelations) {
       return undefined;
     }
     const skills: Array<Skill> = skillsData.map((skill) => ({
@@ -107,29 +107,30 @@ const useSkills = (): Skills => {
       if (skill1.skill_category_id === skill2.skill_category_id) {
         return skill1.name.localeCompare(skill2.name);
       }
-      const skillType1 = skillTypes.find(
-        (skillType) => skillType.id === skill1.skill_category_id
+      const skillCategory1 = skillCategories.find(
+        (skillCategory) => skillCategory.id === skill1.skill_category_id
       );
-      const skillType2 = skillTypes.find(
-        (skillType) => skillType.id === skill2.skill_category_id
+      const skillCategory2 = skillCategories.find(
+        (skillCategory) => skillCategory.id === skill2.skill_category_id
       );
-      return skillType1!.name.localeCompare(skillType2!.name);
+      return skillCategory1!.name.localeCompare(skillCategory2!.name);
     });
     return skills;
-  }, [skillRelations, skillTypes, skillVersions, skillsData]);
+  }, [skillRelations, skillCategories, skillVersions, skillsData]);
 
   return {
     skills,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
-    skillTypes,
-    findSkillType: (id: number) =>
-      skillTypes?.find((skillType) => skillType.id === id),
+    skillCategories: skillCategories,
+    findSkillCategory: (id: number) =>
+      skillCategories?.find((skillCategory) => skillCategory.id === id),
     findSkills: (skillCategoryId: number) =>
       skills?.filter((skill) => skill.skill_category_id === skillCategoryId),
-    findChildSkillTypes: (parentSkillId: number) =>
-      skillTypes?.filter(
-        (skillType) => skillType.parent_skill_category_id === parentSkillId
+    findChildSkillCategories: (parentSkillId: number) =>
+      skillCategories?.filter(
+        (skillCategory) =>
+          skillCategory.parent_skill_category_id === parentSkillId
       ),
 
     skillVersions,
