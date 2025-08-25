@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
+import Filter from "../Filter";
 import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
-import SkillLink from "./SkillLink";
 import SkillCategoryLink from "./SkillCategoryLink";
+import SkillLink from "./SkillLink";
 
 type SortCol = "skill" | "skill_type" | "num_jobs";
 type SortDir = "up" | "down";
@@ -11,27 +12,27 @@ type SortDir = "up" | "down";
 const Skills = () => {
   const [sortCol, setSortCol] = useState<SortCol>("num_jobs");
   const [sortDir, setSortDir] = useState<SortDir>("down");
-  const [skillsFilter, setSkillsFilter] = useState<string>();
-  const [skillCategoriesFilter, setSkillCategoriesFilter] = useState<string>();
+  const [skillFilter, setSkillFilter] = useState<string>();
+  const [skillCategoryFilter, setSkillCategoryFilter] = useState<string>();
 
-  const { skills, findSkillCategory: findSkillCategory } = useSkills();
+  const { skills, findSkillCategory } = useSkills();
   const { jobsForSkill } = useJobs();
 
   const filteredSkills = useMemo(() => {
     return skills
       ?.filter((skill) => {
         let pass = true;
-        if (skillsFilter) {
+        if (skillFilter) {
           pass =
             skill.name
               .toLocaleLowerCase()
-              .includes(skillsFilter.toLocaleLowerCase()) ||
+              .includes(skillFilter.toLocaleLowerCase()) ||
             (skill.abbreviation !== null &&
               skill.abbreviation
                 .toLocaleLowerCase()
-                .includes(skillsFilter.toLocaleLowerCase()));
+                .includes(skillFilter.toLocaleLowerCase()));
         }
-        if (skillCategoriesFilter) {
+        if (skillCategoryFilter) {
           const skillCategory = findSkillCategory(
             skill.skill_category_id
           )?.name;
@@ -39,7 +40,7 @@ const Skills = () => {
             skillCategory !== undefined &&
             skillCategory
               ?.toLocaleLowerCase()
-              .includes(skillCategoriesFilter.toLocaleLowerCase());
+              .includes(skillCategoryFilter.toLocaleLowerCase());
         }
         return pass;
       })
@@ -69,9 +70,9 @@ const Skills = () => {
   }, [
     findSkillCategory,
     jobsForSkill,
-    skillCategoriesFilter,
+    skillCategoryFilter,
     skills,
-    skillsFilter,
+    skillFilter,
     sortCol,
     sortDir
   ]);
@@ -101,30 +102,35 @@ const Skills = () => {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left pb-2 w-[45%]">
-                <input
-                  type="text"
-                  className="border pl-1"
-                  placeholder="Filter by skill"
-                  onChange={(e) => {
-                    setSkillsFilter(e.target.value);
-                  }}
-                />
+              <td className="text-left">
+                <div className="w-[50%]">
+                  <Filter
+                    id="skill_filter"
+                    placeholder="Filter by skill"
+                    value={skillFilter}
+                    onChange={setSkillFilter}
+                    onClear={() => setSkillFilter("")}
+                  />
+                </div>
               </td>
-              <td className="text-left pb-2" colSpan={2}>
-                <input
-                  type="text"
-                  className="border pl-1"
-                  placeholder="Filter by category"
-                  onChange={(e) => {
-                    setSkillCategoriesFilter(e.target.value);
-                  }}
-                />
+              <td className="text-left">
+                <div className="w-[50%]">
+                  <Filter
+                    id="skill_category_filter"
+                    placeholder="Filter by category"
+                    value={skillCategoryFilter}
+                    onChange={setSkillCategoryFilter}
+                    onClear={() => setSkillCategoryFilter("")}
+                  />
+                </div>
               </td>
             </tr>
             <tr>
+              <td className="h-1" colSpan={3} />
+            </tr>
+            <tr>
               <th
-                className="p-1 border cursor-pointer"
+                className="p-1 border cursor-pointer w-[45%]"
                 onClick={() => setSort("skill")}
               >
                 Skill {sortCol === "skill" && (sortDir === "up" ? "↑" : "↓")}
