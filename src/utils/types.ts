@@ -148,6 +148,41 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_categories: {
+        Row: {
+          description: string | null
+          id: number
+          name: string
+          notes: string | null
+          parent_skill_category_id: number | null
+          reference: string | null
+        }
+        Insert: {
+          description?: string | null
+          id?: number
+          name: string
+          notes?: string | null
+          parent_skill_category_id?: number | null
+          reference?: string | null
+        }
+        Update: {
+          description?: string | null
+          id?: number
+          name?: string
+          notes?: string | null
+          parent_skill_category_id?: number | null
+          reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_categories_parent_skill_category_id_fkey"
+            columns: ["parent_skill_category_id"]
+            isOneToOne: false
+            referencedRelation: "skill_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       skill_relations: {
         Row: {
           related_skill_id: number
@@ -178,45 +213,11 @@ export type Database = {
           },
         ]
       }
-      skill_types: {
-        Row: {
-          description: string | null
-          id: number
-          name: string
-          notes: string | null
-          parent_skill_type_id: number | null
-          reference: string | null
-        }
-        Insert: {
-          description?: string | null
-          id?: number
-          name: string
-          notes?: string | null
-          parent_skill_type_id?: number | null
-          reference?: string | null
-        }
-        Update: {
-          description?: string | null
-          id?: number
-          name?: string
-          notes?: string | null
-          parent_skill_type_id?: number | null
-          reference?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "skill_types_parent_skill_type_id_fkey"
-            columns: ["parent_skill_type_id"]
-            isOneToOne: false
-            referencedRelation: "skill_types"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       skill_versions: {
         Row: {
           id: number
           notes: string | null
+          ordinal: number
           reference: string | null
           release_date: string | null
           skill_id: number
@@ -225,6 +226,7 @@ export type Database = {
         Insert: {
           id?: number
           notes?: string | null
+          ordinal: number
           reference?: string | null
           release_date?: string | null
           skill_id: number
@@ -233,6 +235,7 @@ export type Database = {
         Update: {
           id?: number
           notes?: string | null
+          ordinal?: number
           reference?: string | null
           release_date?: string | null
           skill_id?: number
@@ -256,7 +259,7 @@ export type Database = {
           name: string
           notes: string | null
           reference: string | null
-          skill_type_id: number
+          skill_category_id: number
         }
         Insert: {
           abbreviation?: string | null
@@ -265,7 +268,7 @@ export type Database = {
           name: string
           notes?: string | null
           reference?: string | null
-          skill_type_id: number
+          skill_category_id: number
         }
         Update: {
           abbreviation?: string | null
@@ -274,14 +277,14 @@ export type Database = {
           name?: string
           notes?: string | null
           reference?: string | null
-          skill_type_id?: number
+          skill_category_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "skills_skill_type_id_fkey"
-            columns: ["skill_type_id"]
+            foreignKeyName: "skills_skill_category_id_fkey"
+            columns: ["skill_category_id"]
             isOneToOne: false
-            referencedRelation: "skill_types"
+            referencedRelation: "skill_categories"
             referencedColumns: ["id"]
           },
         ]

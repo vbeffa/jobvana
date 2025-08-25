@@ -1,5 +1,7 @@
+import useJobs from "../hooks/useJobs";
 import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
+import JobsList from "../jobs/JobsList";
 import { Route } from "../routes/jobvana.skills.$id.index";
 import SkillsList from "./SkillsList";
 import SkillVersionsList from "./SkillVersionsList";
@@ -8,15 +10,18 @@ const Skill = () => {
   const { id } = Route.useLoaderData();
   const { findSkillType } = useSkills();
   const { skill } = useSkill({ id });
+  const { jobsForSkill } = useJobs();
 
   if (!skill) {
     return null;
   }
 
-  const skillType = findSkillType(skill.skill_type_id);
+  const skillType = findSkillType(skill.skill_category_id);
   if (!skillType) {
     return null;
   }
+
+  const jobs = jobsForSkill(id);
 
   return (
     <>
@@ -26,8 +31,10 @@ const Skill = () => {
       </h1>
       <h2>Description</h2>
       <div className="card text-left">{skill.description}</div>
-      <h2>Skill Type</h2>
+      <h2>Category</h2>
       <div className="card text-left">{skillType.name}</div>
+      <h2>Jobs</h2>
+      <div className="card text-left">{jobs && <JobsList jobs={jobs} />}</div>
       <h2>Versions</h2>
       <div className="card text-left">
         {skill.versions.length > 0 && (

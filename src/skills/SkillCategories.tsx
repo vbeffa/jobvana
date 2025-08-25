@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
-import SkillTypeLink from "./SkillTypeLink";
+import SkillCategoryLink from "./SkillCategoryLink";
 
-type SortCol = "skill_type";
+type SortCol = "skill_category";
 type SortDir = "up" | "down";
 
-const SkillTypes = () => {
-  const [sortCol, setSortCol] = useState<SortCol>("skill_type");
+const SkillCategories = () => {
+  const [sortCol, setSortCol] = useState<SortCol>("skill_category");
   const [sortDir, setSortDir] = useState<SortDir>("up");
   const [skillTypesFilter, setSkillTypesFilter] = useState<string>();
 
@@ -64,10 +64,10 @@ const SkillTypes = () => {
             <tr>
               <th
                 className="p-1 border cursor-pointer"
-                onClick={() => setSort("skill_type")}
+                onClick={() => setSort("skill_category")}
               >
                 Category{" "}
-                {sortCol === "skill_type" && (sortDir === "up" ? "↑" : "↓")}
+                {sortCol === "skill_category" && (sortDir === "up" ? "↑" : "↓")}
               </th>
             </tr>
           </thead>
@@ -77,7 +77,7 @@ const SkillTypes = () => {
               return (
                 <tr key={skillType.id}>
                   <td className="p-1 border text-left">
-                    <SkillTypeLink skillType={skillType} />
+                    <SkillCategoryLink skillType={skillType} />
                   </td>
                 </tr>
               );
@@ -89,4 +89,4 @@ const SkillTypes = () => {
   );
 };
 
-export default SkillTypes;
+export default SkillCategories;

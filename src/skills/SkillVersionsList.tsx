@@ -10,17 +10,22 @@ const SkillVersionsList = ({
   const { findSkill } = useSkills();
   return (
     <ul className="list-inside list-disc">
-      {skillVersions.map((skillVersion) => {
-        const skill = findSkill(skillVersion.skill_id);
+      {skillVersions
+        .sort(
+          (skillVersion1, skillVersion2) =>
+            skillVersion2.ordinal - skillVersion1.ordinal
+        )
+        .map((skillVersion) => {
+          const skill = findSkill(skillVersion.skill_id);
 
-        return (
-          skill && (
-            <li key={skillVersion.id}>
-              <SkillVersionLink skill={skill} skillVersion={skillVersion} />
-            </li>
-          )
-        );
-      })}
+          return (
+            skill && (
+              <li key={skillVersion.id}>
+                <SkillVersionLink skill={skill} skillVersion={skillVersion} />
+              </li>
+            )
+          );
+        })}
     </ul>
   );
 };

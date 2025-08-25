@@ -3,7 +3,7 @@ import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
 import Loading from "../Loading";
 import SkillLink from "./SkillLink";
-import SkillTypeLink from "./SkillTypeLink";
+import SkillCategoryLink from "./SkillCategoryLink";
 
 type SortCol = "skill" | "skill_type" | "num_jobs";
 type SortDir = "up" | "down";
@@ -32,7 +32,7 @@ const Skills = () => {
                 .includes(skillsFilter.toLocaleLowerCase()));
         }
         if (skillTypesFilter) {
-          const skillType = findSkillType(skill.skill_type_id)?.name;
+          const skillType = findSkillType(skill.skill_category_id)?.name;
           pass =
             skillType !== undefined &&
             skillType
@@ -55,11 +55,11 @@ const Skills = () => {
           }
           return sortDir === "up" ? numJobs1 - numJobs2 : numJobs2 - numJobs1;
         }
-        if (skill1.skill_type_id === skill2.skill_type_id) {
+        if (skill1.skill_category_id === skill2.skill_category_id) {
           return skill1.name.localeCompare(skill2.name);
         }
-        const skillType1 = findSkillType(skill1.skill_type_id);
-        const skillType2 = findSkillType(skill2.skill_type_id);
+        const skillType1 = findSkillType(skill1.skill_category_id);
+        const skillType2 = findSkillType(skill2.skill_category_id);
         return sortDir === "up"
           ? skillType1!.name.localeCompare(skillType2!.name)
           : skillType2!.name.localeCompare(skillType1!.name);
@@ -146,7 +146,7 @@ const Skills = () => {
           <tbody>
             <Loading waitingFor={skills} colSpan={2} />
             {filteredSkills?.map((skill) => {
-              const skillType = findSkillType(skill.skill_type_id);
+              const skillType = findSkillType(skill.skill_category_id);
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
@@ -154,7 +154,7 @@ const Skills = () => {
                     {skill.abbreviation && ` (${skill.abbreviation})`}
                   </td>
                   <td className="p-1 border text-left">
-                    {skillType && <SkillTypeLink skillType={skillType} />}
+                    {skillType && <SkillCategoryLink skillType={skillType} />}
                   </td>
                   <td className="p-1 border text-left">
                     {jobsForSkill(skill.id)?.length}

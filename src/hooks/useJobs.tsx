@@ -19,7 +19,9 @@ export type JobSkillVersion =
 export type Jobs = {
   jobs: Array<Job> | undefined;
   jobsForCompany: (companyId: number) => Array<Job> | undefined;
+  /** Includes skill versions for skill. */
   jobsForSkill: (skillId: number) => Array<Job> | undefined;
+  jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
 };
 
 const useJobs = (): Jobs => {
@@ -114,6 +116,13 @@ const useJobs = (): Jobs => {
           job.skillVersions
             .map((skillVersion) => skillVersion.skill_id)
             .includes(skillId)
+      );
+    },
+    jobsForSkillVersion: (skillVersionId: number) => {
+      return jobs?.filter((job) =>
+        job.skillVersions
+          .map((skillVersion) => skillVersion.id)
+          .includes(skillVersionId)
       );
     }
   };

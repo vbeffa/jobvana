@@ -1,20 +1,20 @@
 import useSkills from "../hooks/useSkills";
-import { Route } from "../routes/jobvana.skills.skill_types.$skill_type_id";
+import { Route } from "../routes/jobvana.skill_categories.$skill_category_id";
 import SkillsList from "./SkillsList";
-import SkillTypeLink from "./SkillTypeLink";
-import SkillTypesList from "./SkillTypesList";
+import SkillCategoryLink from "./SkillCategoryLink";
+import SkillCategoriesList from "./SkillCategoriesList";
 
-const SkillType = () => {
-  const { skillTypeId } = Route.useLoaderData();
+const SkillCategory = () => {
+  const { skillCategoryId } = Route.useLoaderData();
   const { findSkillType, findSkills, findChildSkillTypes } = useSkills();
-  const skillType = findSkillType(skillTypeId);
+  const skillType = findSkillType(skillCategoryId);
   if (!skillType) {
     return null;
   }
   const parentSkillType =
-    skillType.parent_skill_type_id &&
-    findSkillType(skillType.parent_skill_type_id);
-  const skills = findSkills(skillTypeId);
+    skillType.parent_skill_category_id &&
+    findSkillType(skillType.parent_skill_category_id);
+  const skills = findSkills(skillCategoryId);
   const childSkillTypes = findChildSkillTypes(skillType.id);
 
   return (
@@ -26,12 +26,14 @@ const SkillType = () => {
       </div>
       <h2>Parent Category</h2>
       <div className="card text-left">
-        {parentSkillType && <SkillTypeLink skillType={parentSkillType} />}
+        {parentSkillType && <SkillCategoryLink skillType={parentSkillType} />}
         {!parentSkillType && <>---</>}
       </div>
       <h2>Subcategories</h2>
       <div className="card text-left">
-        {childSkillTypes && <SkillTypesList skillTypes={childSkillTypes} />}
+        {childSkillTypes && (
+          <SkillCategoriesList skillTypes={childSkillTypes} />
+        )}
         {childSkillTypes?.length === 0 && <>---</>}
       </div>
       <h2>Skills</h2>
@@ -54,4 +56,4 @@ const SkillType = () => {
   );
 };
 
-export default SkillType;
+export default SkillCategory;

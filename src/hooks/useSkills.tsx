@@ -14,16 +14,19 @@ export type SkillRelation =
 export type SkillVersion =
   Database["public"]["Tables"]["skill_versions"]["Row"];
 
-export type SkillType = Database["public"]["Tables"]["skill_types"]["Row"];
+export type SkillCategory =
+  Database["public"]["Tables"]["skill_categories"]["Row"];
 
 export type Skills = {
   skills: Array<Skill> | undefined;
   findSkill: (id: number) => Skill | undefined;
 
-  skillTypes: Array<SkillType> | undefined;
-  findSkillType: (id: number) => SkillType | undefined;
-  findSkills: (skillTypeId: number) => Array<Skill> | undefined;
-  findChildSkillTypes: (parentSkillId: number) => Array<SkillType> | undefined;
+  skillTypes: Array<SkillCategory> | undefined;
+  findSkillType: (id: number) => SkillCategory | undefined;
+  findSkills: (skillCategoryId: number) => Array<Skill> | undefined;
+  findChildSkillTypes: (
+    parentSkillId: number
+  ) => Array<SkillCategory> | undefined;
 
   skillVersions: Array<SkillVersion> | undefined;
   findSkillVersion: (versionId: number) => SkillVersion | undefined;
@@ -41,7 +44,7 @@ const useSkills = (): Skills => {
   const { data: skillTypesData } = useQuery({
     queryKey: ["skillTypes"],
     queryFn: async () => {
-      const { data } = await supabase.from("skill_types").select();
+      const { data } = await supabase.from("skill_categories").select();
       return data;
     }
   });
@@ -101,14 +104,14 @@ const useSkills = (): Skills => {
       skill.versions = versionsForSkill;
     }
     skills.sort((skill1, skill2) => {
-      if (skill1.skill_type_id === skill2.skill_type_id) {
+      if (skill1.skill_category_id === skill2.skill_category_id) {
         return skill1.name.localeCompare(skill2.name);
       }
       const skillType1 = skillTypes.find(
-        (skillType) => skillType.id === skill1.skill_type_id
+        (skillType) => skillType.id === skill1.skill_category_id
       );
       const skillType2 = skillTypes.find(
-        (skillType) => skillType.id === skill2.skill_type_id
+        (skillType) => skillType.id === skill2.skill_category_id
       );
       return skillType1!.name.localeCompare(skillType2!.name);
     });
@@ -122,11 +125,11 @@ const useSkills = (): Skills => {
     skillTypes,
     findSkillType: (id: number) =>
       skillTypes?.find((skillType) => skillType.id === id),
-    findSkills: (skillTypeId: number) =>
-      skills?.filter((skill) => skill.skill_type_id === skillTypeId),
+    findSkills: (skillCategoryId: number) =>
+      skills?.filter((skill) => skill.skill_category_id === skillCategoryId),
     findChildSkillTypes: (parentSkillId: number) =>
       skillTypes?.filter(
-        (skillType) => skillType.parent_skill_type_id === parentSkillId
+        (skillType) => skillType.parent_skill_category_id === parentSkillId
       ),
 
     skillVersions,

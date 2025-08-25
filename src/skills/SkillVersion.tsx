@@ -1,11 +1,14 @@
+import useJobs from "../hooks/useJobs";
 import useSkills from "../hooks/useSkills";
 import useSkillVersion from "../hooks/useSkillVersion";
+import JobsList from "../jobs/JobsList";
 import { Route } from "../routes/jobvana.skills.$id.skill_versions.$skill_version_id";
 
 const SkillVersion = () => {
   const { skillVersionId } = Route.useLoaderData();
   const { findSkill } = useSkills();
   const { skillVersion } = useSkillVersion({ id: skillVersionId });
+  const { jobsForSkillVersion } = useJobs();
   if (!skillVersion) {
     return null;
   }
@@ -13,6 +16,8 @@ const SkillVersion = () => {
   if (!skill) {
     return null;
   }
+
+  const jobs = jobsForSkillVersion(skillVersionId);
 
   return (
     <>
@@ -27,6 +32,9 @@ const SkillVersion = () => {
       </div>
       <h2>Released</h2>
       <div className="card text-left">{skillVersion.release_date}</div>
+      <h2>Jobs</h2>
+      <div className="card text-left">{jobs && <JobsList jobs={jobs} />}</div>
+
       <h2>Reference</h2>
       <div className="card text-left">
         {skillVersion.reference && (
