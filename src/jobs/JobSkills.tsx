@@ -20,7 +20,6 @@ const JobSkills = ({ job }: { job: Job }) => {
             {skill && (
               <SkillVersionLink skill={skill} skillVersion={skillVersion} />
             )}
-            ;
           </li>
         );
       })}
