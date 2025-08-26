@@ -20,9 +20,11 @@ const SalarySelect = ({
       value={value}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
-      <option value="">{title}</option>
-      {salaries.map((salary) => (
-        <option value={salary}>
+      <option key={0} value="">
+        {title}
+      </option>
+      {salaries.map((salary, idx) => (
+        <option key={idx} value={salary}>
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",

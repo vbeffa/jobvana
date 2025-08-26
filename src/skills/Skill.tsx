@@ -3,6 +3,7 @@ import useSkill from "../hooks/useSkill";
 import useSkills from "../hooks/useSkills";
 import JobsList from "../jobs/JobsList";
 import { Route } from "../routes/jobvana.skill_categories.$id.skills.$skill_id.index";
+import SkillCategoryLink from "./SkillCategoryLink";
 import SkillsList from "./SkillsList";
 import SkillVersionsList from "./SkillVersionsList";
 
@@ -32,7 +33,9 @@ const Skill = () => {
       <h2>Description</h2>
       <div className="card text-left">{skill.description}</div>
       <h2>Category</h2>
-      <div className="card text-left">{skillCategory.name}</div>
+      <div className="card text-left">
+        <SkillCategoryLink skillCategory={skillCategory} />
+      </div>
       <h2>Jobs</h2>
       <div className="card text-left">{jobs && <JobsList jobs={jobs} />}</div>
       <h2>Versions</h2>

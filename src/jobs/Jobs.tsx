@@ -9,11 +9,13 @@ import JobLink from "./JobLink";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
 import SalarySelect from "./SalarySelect";
+import PageNav from "./PageNav";
 
 type SortCol = "company" | "title" | "created" | "min_salary" | "max_salary";
 type SortDir = "up" | "down";
 
 const Jobs = () => {
+  const [page, setPage] = useState<number>(1);
   const [sortCol, setSortCol] = useState<SortCol>("created");
   const [sortDir, setSortDir] = useState<SortDir>("down");
   const [companyFilter, setCompanyFilter] = useState<string>();
@@ -22,7 +24,10 @@ const Jobs = () => {
   const [maxSalaryFilter, setMaxSalaryFilter] = useState<number>();
 
   const { findCompany } = useCompanies();
-  const { jobs } = useJobs();
+  const { jobs, isPlaceholderData, openJobCount } = useJobs({
+    paging: { page, pageSize: 50 }
+  });
+  console.log(isPlaceholderData);
   const { skills } = useSkills();
 
   const filteredJobs = useMemo(() => {
@@ -43,10 +48,10 @@ const Jobs = () => {
             .includes(jobTitleFilter.toLocaleLowerCase());
         }
         if (minSalaryFilter) {
-          pass &&= job.salaryLow >= minSalaryFilter;
+          pass &&= job.salary_low >= minSalaryFilter;
         }
         if (maxSalaryFilter) {
-          pass &&= job.salaryHigh <= maxSalaryFilter;
+          pass &&= job.salary_high <= maxSalaryFilter;
         }
         return pass;
       })
@@ -83,7 +88,13 @@ const Jobs = () => {
   const setSort = (col: SortCol) => {
     const newSortCol = col;
     const newSortDir =
-      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "up";
+      newSortCol === sortCol
+        ? sortDir === "up"
+          ? "down"
+          : "up"
+        : newSortCol === "created"
+          ? "down"
+          : "up";
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {
@@ -99,6 +110,14 @@ const Jobs = () => {
   return (
     <>
       <h1>Jobs</h1>
+      <div className="card text-left flex flex-row">
+        {openJobCount && (
+          <PageNav page={page} total={openJobCount} onSetPage={setPage} />
+        )}
+        {isPlaceholderData && (
+          <div className="content-center pl-2">Loading...</div>
+        )}
+      </div>
       <div className="card">
         <table className="w-full">
           <thead>
@@ -125,7 +144,7 @@ const Jobs = () => {
               <td className="flex flex-row w-full gap-x-1">
                 <SalarySelect
                   id="min_salary"
-                  title="Min salary"
+                  title="Min"
                   value={minSalaryFilter}
                   onChange={(minSalary) => {
                     setMinSalaryFilter(minSalary);
@@ -137,7 +156,7 @@ const Jobs = () => {
                 <div className="flex pt-1">-</div>
                 <SalarySelect
                   id="max_salary"
-                  title="Max salary"
+                  title="Max"
                   value={maxSalaryFilter}
                   onChange={(maxSalary) => {
                     setMaxSalaryFilter(maxSalary);
@@ -163,7 +182,7 @@ const Jobs = () => {
                 className="p-1 border cursor-pointer w-[20%]"
                 onClick={() => setSort("title")}
               >
-                Title {sortCol === "title" && (sortDir === "up" ? "↑" : "↓")}
+                Position {sortCol === "title" && (sortDir === "up" ? "↑" : "↓")}
               </th>
               <th
                 className="p-1 border cursor-pointer w-[15%]"
@@ -178,7 +197,7 @@ const Jobs = () => {
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={jobs} colSpan={6} />
+            {<Loading waitingFor={jobs} colSpan={6} />}
             {filteredJobs.map((job) => {
               const company = findCompany(job.company_id);
               return (

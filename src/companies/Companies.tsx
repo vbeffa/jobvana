@@ -72,11 +72,12 @@ const Companies = () => {
             </tr>
             <tr>
               <th
-                className="p-1 border cursor-pointer w-[90%]"
+                className="p-1 border cursor-pointer w-[70%]"
                 onClick={() => setSort("company")}
               >
                 Name {sortCol === "company" && (sortDir === "up" ? "↑" : "↓")}
               </th>
+              <th className="p-1 border w-[20%]">Location</th>
               <th
                 className="p-1 border cursor-pointer"
                 onClick={() => setSort("num_employees")}
@@ -93,6 +94,9 @@ const Companies = () => {
                 <tr key={company.id}>
                   <td className="p-1 border text-left align-top">
                     <CompanyLink company={company} />
+                  </td>
+                  <td className="p-1 border text-left align-top">
+                    {company.location}
                   </td>
                   <td className="p-1 border text-center align-top">
                     {company.num_employees}

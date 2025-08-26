@@ -18,18 +18,21 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          location: string | null
           name: string
           num_employees: number
         }
         Insert: {
           created_at?: string
           id?: number
+          location?: string | null
           name: string
           num_employees: number
         }
         Update: {
           created_at?: string
           id?: number
+          location?: string | null
           name?: string
           num_employees?: number
         }
@@ -101,7 +104,11 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
-          salary_range: unknown
+          role_id: number | null
+          role_level: number | null
+          salary_high: number
+          salary_low: number
+          salary_range: unknown | null
           status: Database["public"]["Enums"]["job_status"]
           title: string
         }
@@ -110,7 +117,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          salary_range: unknown
+          role_id?: number | null
+          role_level?: number | null
+          salary_high?: number
+          salary_low?: number
+          salary_range?: unknown | null
           status?: Database["public"]["Enums"]["job_status"]
           title: string
         }
@@ -119,11 +130,22 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          salary_range?: unknown
+          role_id?: number | null
+          role_level?: number | null
+          salary_high?: number
+          salary_low?: number
+          salary_range?: unknown | null
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "jobs_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "jobs2_company_id_fkey"
             columns: ["company_id"]
@@ -135,16 +157,22 @@ export type Database = {
       }
       roles: {
         Row: {
+          description: string | null
           id: number
-          role: string
+          name: string
+          reference: string | null
         }
         Insert: {
+          description?: string | null
           id?: number
-          role: string
+          name: string
+          reference?: string | null
         }
         Update: {
+          description?: string | null
           id?: number
-          role?: string
+          name?: string
+          reference?: string | null
         }
         Relationships: []
       }

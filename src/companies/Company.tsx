@@ -1,14 +1,12 @@
 import useCompany from "../hooks/useCompany";
-import useJobs from "../hooks/useJobs";
 import JobsForCompany from "../jobs/JobsForCompany";
 import { Route } from "../routes/jobvana.companies.$id";
 
 const Company = () => {
   const { id } = Route.useLoaderData();
-  const jobs = useJobs();
   const { company } = useCompany({ id });
 
-  if (!company || !jobs) {
+  if (!company) {
     return null;
   }
 

@@ -3,9 +3,10 @@ import type { Job } from "../hooks/useJobs";
 const Salary = ({ job }: { job: Job }) => {
   return (
     <>
-      {job.salaryLow === job.salaryHigh && `$${job.salaryLow.toLocaleString()}`}
-      {job.salaryLow !== job.salaryHigh &&
-        `$${job.salaryLow.toLocaleString()} - $${job.salaryHigh.toLocaleString()}`}
+      {job.salary_low === job.salary_high &&
+        `$${job.salary_low.toLocaleString()}`}
+      {job.salary_low !== job.salary_high &&
+        `$${job.salary_low.toLocaleString()} - $${job.salary_high.toLocaleString()}`}
     </>
   );
 };
