@@ -35,7 +35,9 @@ export type JobsParams = {
   companyId?: number;
 };
 
-const useJobs = (params?: JobsParams): Jobs => {
+const useJobs = (
+  params: JobsParams = { paging: { page: 1, pageSize: 50 } }
+): Jobs => {
   const { skills, findSkillVersion } = useSkills();
   const { findCompany } = useCompanies();
 
