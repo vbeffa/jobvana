@@ -21,52 +21,29 @@ export type Jobs = {
   jobs: Array<Job> | undefined;
   isPlaceholderData: boolean;
   openJobCount: number | undefined;
-
-  queryJobs: () => Array<Job> | undefined;
-
-  jobsForCompany: Array<Job> | undefined;
-  /** Includes skill versions for skill. */
-  jobsForSkill: (skillId: number) => Array<Job> | undefined;
-  jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
-};
-
-export type JobFilters = {
-  company?: string;
-  title?: string;
-  minSalary?: number;
-  maxSalary?: number;
 };
 
 export type JobsParams = {
-  paging: {
+  paging?: {
     page: number;
     pageSize: number;
   };
-  filters?: JobFilters;
-  companyId?: number;
+  filters: {
+    company?: string;
+    title?: string;
+    minSalary?: number;
+    maxSalary?: number;
+  };
 };
 
-type QueryKey = {
-  page: number;
-} & JobFilters;
-
-const useJobs = (
-  params: JobsParams = { paging: { page: 1, pageSize: 50 } }
+const useJobsQuery = (
+  params: JobsParams = { paging: { page: 1, pageSize: 50 }, filters: {} }
 ): Jobs => {
   const { skills, findSkillVersion } = useSkills();
   const { findCompany } = useCompanies();
 
-  const queryKey: QueryKey = useMemo(
-    () => ({
-      page: params.paging?.page,
-      // https://tanstack.com/query/latest/docs/framework/react/guides/query-keys#query-keys-are-hashed-deterministically
-      ...params.filters
-    }),
-    [params.filters, params.paging?.page]
-  );
-
   const { isPlaceholderData, data: jobsData } = useQuery({
-    queryKey: ["jobs", queryKey],
+    queryKey: ["queryJobs", params?.paging?.page],
     queryFn: async () => {
       if (!params?.paging) {
         return null;
@@ -76,11 +53,8 @@ const useJobs = (
         .from("jobs")
         .select("*, companies!inner(*)", { count: "exact" })
         .filter("status", "eq", "open");
-      if (params.filters?.company) {
+      if (params.filters.company) {
         q = q.ilike("companies.name", `%${params.filters.company}%`);
-      }
-      if (params.filters?.title) {
-        q = q.ilike("title", `%${params.filters.title}%`);
       }
       const { data, count } = await q
         .range(
@@ -93,21 +67,6 @@ const useJobs = (
       return { data, count };
     },
     placeholderData: keepPreviousData
-  });
-
-  const { data: jobsForCompanyData } = useQuery({
-    queryKey: ["jobsForCompany"],
-    queryFn: async () => {
-      if (!params?.companyId) {
-        return null;
-      }
-      const { data, count } = await supabase
-        .from("jobs")
-        .select("*", { count: "exact" })
-        .filter("company_id", "eq", params?.companyId)
-        .order("created_at", { ascending: false });
-      return { data, count };
-    }
   });
 
   const { data: rolesData } = useQuery({
@@ -183,45 +142,6 @@ const useJobs = (
     findSkillVersion
   ]);
 
-  const jobsForCompany = useMemo(() => {
-    if (
-      !jobsForCompanyData?.data ||
-      !jobSkills ||
-      !jobSkillVersions ||
-      !skills ||
-      !roles
-    ) {
-      return undefined;
-    }
-    return jobsForCompanyData.data.map((job) => {
-      return {
-        ...job,
-        company: findCompany(job.company_id),
-        role: roles.find((role) => role.id === job.role_id),
-        skills: skills.filter((skill) =>
-          jobSkills
-            .filter((jobSkill) => jobSkill.job_id === job.id)
-            .map((jobSkill) => jobSkill.skill_id)
-            .includes(skill.id)
-        ),
-        skillVersions: jobSkillVersions
-          .filter((jobSkillVersion) => jobSkillVersion.job_id === job.id)
-          .map((jobSkillVersion) =>
-            findSkillVersion(jobSkillVersion.skill_version_id)
-          )
-          .filter((skillVersion) => skillVersion !== undefined)
-      };
-    });
-  }, [
-    findCompany,
-    findSkillVersion,
-    jobSkillVersions,
-    jobSkills,
-    jobsForCompanyData,
-    roles,
-    skills
-  ]);
-
   const openJobCount = useMemo(
     () => jobsData?.count ?? undefined,
     [jobsData?.count]
@@ -230,30 +150,8 @@ const useJobs = (
   return {
     jobs,
     isPlaceholderData,
-    openJobCount,
-
-    queryJobs: () => {
-      return undefined;
-    },
-
-    jobsForCompany,
-    jobsForSkill: (skillId: number) => {
-      return jobs?.filter(
-        (job) =>
-          job.skills.map((skill) => skill.id).includes(skillId) ||
-          job.skillVersions
-            .map((skillVersion) => skillVersion.skill_id)
-            .includes(skillId)
-      );
-    },
-    jobsForSkillVersion: (skillVersionId: number) => {
-      return jobs?.filter((job) =>
-        job.skillVersions
-          .map((skillVersion) => skillVersion.id)
-          .includes(skillVersionId)
-      );
-    }
+    openJobCount
   };
 };
 
-export default useJobs;
+export default useJobsQuery;

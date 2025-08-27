@@ -30,7 +30,7 @@ const Filter = ({
           document.getElementById(id)?.focus();
         }}
       >
-        X
+        {value && "X"}
       </div>
     </div>
   );

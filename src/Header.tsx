@@ -3,7 +3,7 @@ import "./App.css";
 
 const Header = () => {
   return (
-    <div className="bg-amber-300 flex gap-2 w-full h-12 pl-2 pt-2.5 mb-4 top-0 left-0 sticky">
+    <div className="bg-amber-300 flex gap-2 w-full h-12 pl-2 pt-2.5 mb-4 top-0 left-0 sticky z-10">
       <Link to="/jobvana" className="[&.active]:font-bold">
         Home
       </Link>

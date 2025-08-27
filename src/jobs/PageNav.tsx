@@ -17,7 +17,7 @@ const PageNav = ({
   );
 
   return (
-    <div className="border-[.05rem] rounded-lg border-gray-500 flex w-fit h-9 content-center align-middle gap-2">
+    <div className="flex w-fit h-9 content-center align-middle gap-2">
       <div>
         <input
           type="button"
@@ -25,7 +25,7 @@ const PageNav = ({
           className="border-[.05rem] h-full w-10
                    border-gray-400 rounded-lg
                      cursor-pointer
-                     hover:border hover:border-blue-400
+                     hover:bg-gray-300
                      disabled:cursor-default
                      disabled:bg-gray-50
                      disabled:hover:border-[.05rem] 
@@ -66,7 +66,7 @@ const PageNav = ({
           className="border-[.05rem] h-full w-10
                    border-gray-400 rounded-lg
                      cursor-pointer
-                     hover:border hover:border-blue-400
+                     hover:bg-gray-300
                      disabled:cursor-default
                      disabled:bg-gray-50
                      disabled:hover:border-[.05rem] 
@@ -75,6 +75,7 @@ const PageNav = ({
           value="→"
         />
       </div>
+      <div className="content-center">{total} total</div>
     </div>
   );
 };
