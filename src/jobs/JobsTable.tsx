@@ -6,7 +6,13 @@ import JobLink from "./JobLink";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
 
-type SortCol = "company" | "title" | "created" | "min_salary" | "max_salary";
+type SortCol =
+  | "company"
+  | "title"
+  | "role"
+  | "created"
+  | "min_salary"
+  | "max_salary";
 type SortDir = "up" | "down";
 
 const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
@@ -14,51 +20,25 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
   const [sortDir, setSortDir] = useState<SortDir>("down");
 
   const sortedJobs = useMemo(() => {
-    return (
-      jobs
-        // .filter((job) => {
-        //   let pass = true;
-        //   if (companyFilter) {
-        //     const company = findCompany(job.company_id);
-        //     pass &&=
-        //       company !== undefined &&
-        //       company?.name
-        //         .toLocaleLowerCase()
-        //         .includes(companyFilter.toLocaleLowerCase());
-        //   }
-        //   if (jobTitleFilter) {
-        //     pass &&= job.title
-        //       .toLocaleLowerCase()
-        //       .includes(jobTitleFilter.toLocaleLowerCase());
-        //   }
-        //   if (minSalaryFilter) {
-        //     pass &&= job.salary_low >= minSalaryFilter;
-        //   }
-        //   if (maxSalaryFilter) {
-        //     pass &&= job.salary_high <= maxSalaryFilter;
-        //   }
-        //   return pass;
-        // })
-        ?.sort((job1, job2) => {
-          if (sortCol === "company") {
-            const company1 = job1.company;
-            const company2 = job2.company;
-            return sortDir === "up"
-              ? company1!.name.localeCompare(company2!.name)
-              : company2!.name.localeCompare(company1!.name);
-          }
-          if (sortCol === "title") {
-            return sortDir === "up"
-              ? job1.title.localeCompare(job2.title)
-              : job2.title.localeCompare(job1.title);
-          }
-          return sortDir === "down"
-            ? new Date(job2.created_at).getTime() -
-                new Date(job1.created_at).getTime()
-            : new Date(job1.created_at).getTime() -
-                new Date(job2.created_at).getTime();
-        })
-    );
+    return jobs?.sort((job1, job2) => {
+      if (sortCol === "company") {
+        const company1 = job1.company;
+        const company2 = job2.company;
+        return sortDir === "up"
+          ? company1!.name.localeCompare(company2!.name)
+          : company2!.name.localeCompare(company1!.name);
+      }
+      if (sortCol === "title") {
+        return sortDir === "up"
+          ? job1.title.localeCompare(job2.title)
+          : job2.title.localeCompare(job1.title);
+      }
+      return sortDir === "down"
+        ? new Date(job2.created_at).getTime() -
+            new Date(job1.created_at).getTime()
+        : new Date(job1.created_at).getTime() -
+            new Date(job2.created_at).getTime();
+    });
   }, [jobs, sortCol, sortDir]);
 
   const setSort = (col: SortCol) => {
@@ -137,16 +117,22 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
         </tr>
         <tr>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[20%]"
+            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
             onClick={() => setSort("company")}
           >
             Company {sortCol === "company" && (sortDir === "up" ? "↑" : "↓")}
           </th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[20%]"
+            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
             onClick={() => setSort("title")}
           >
-            Position {sortCol === "title" && (sortDir === "up" ? "↑" : "↓")}
+            Title {sortCol === "title" && (sortDir === "up" ? "↑" : "↓")}
+          </th>
+          <th
+            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
+            onClick={() => setSort("role")}
+          >
+            Role {sortCol === "role" && (sortDir === "up" ? "↑" : "↓")}
           </th>
           <th
             className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
@@ -155,7 +141,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
             Created {sortCol === "created" && (sortDir === "up" ? "↑" : "↓")}
           </th>
           <th className="p-2 border-[0.05rem] w-[5%]">Status</th>
-          <th className="p-2 border-[0.05rem] w-[20%]">Salary</th>
+          <th className="p-2 border-[0.05rem] w-[15%]">Salary</th>
           <th className="p-2 border-[0.05rem] w-[20%]">Skills</th>
         </tr>
       </thead>
@@ -170,6 +156,9 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
                 <JobLink job={job} />
+              </td>
+              <td className="p-2 border-[0.05rem] text-left align-top">
+                {job.role?.name}
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
                 {new Date(job.created_at).toDateString()}

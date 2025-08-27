@@ -4,6 +4,7 @@ import supabase from "../utils/supabase";
 import type { Database } from "../utils/types";
 import useCompanies, { type Company } from "./useCompanies";
 import useSkills, { type Skill, type SkillVersion } from "./useSkills";
+import type { SearchFilters } from "../jobs/Jobs";
 
 export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
   company: Company | undefined;
@@ -20,6 +21,7 @@ export type JobSkillVersion =
 export type Jobs = {
   jobs: Array<Job> | undefined;
   isPlaceholderData: boolean;
+  isPending: boolean;
   openJobCount: number | undefined;
 
   queryJobs: () => Array<Job> | undefined;
@@ -30,25 +32,18 @@ export type Jobs = {
   jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
 };
 
-export type JobFilters = {
-  company?: string;
-  title?: string;
-  minSalary?: number;
-  maxSalary?: number;
-};
-
 export type JobsParams = {
   paging: {
     page: number;
     pageSize: number;
   };
-  filters?: JobFilters;
+  filters?: SearchFilters;
   companyId?: number;
 };
 
 type QueryKey = {
   page: number;
-} & JobFilters;
+} & SearchFilters;
 
 const useJobs = (
   params: JobsParams = { paging: { page: 1, pageSize: 50 } }
@@ -65,7 +60,11 @@ const useJobs = (
     [params.filters, params.paging?.page]
   );
 
-  const { isPlaceholderData, data: jobsData } = useQuery({
+  const {
+    isPlaceholderData,
+    isPending,
+    data: jobsData
+  } = useQuery({
     queryKey: ["jobs", queryKey],
     queryFn: async () => {
       if (!params?.paging) {
@@ -81,6 +80,15 @@ const useJobs = (
       }
       if (params.filters?.title) {
         q = q.ilike("title", `%${params.filters.title}%`);
+      }
+      if (params.filters?.roleId) {
+        q = q.filter("role_id", "eq", params.filters.roleId);
+      }
+      if (params.filters?.minSalary) {
+        q = q.filter("salary_low", "gte", params.filters.minSalary);
+      }
+      if (params.filters?.maxSalary) {
+        q = q.filter("salary_high", "lte", params.filters.maxSalary);
       }
       const { data, count } = await q
         .range(
@@ -230,6 +238,7 @@ const useJobs = (
   return {
     jobs,
     isPlaceholderData,
+    isPending,
     openJobCount,
 
     queryJobs: () => {

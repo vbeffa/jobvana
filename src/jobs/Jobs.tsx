@@ -1,27 +1,42 @@
 import { useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
-import useJobs, { type JobFilters as JobFiltersT } from "../hooks/useJobs";
+import useJobs from "../hooks/useJobs";
 import JobFilters from "./JobFilters";
 import JobsTable from "./JobsTable";
 import PageNav from "./PageNav";
 
+export type SearchFilters = {
+  company?: string;
+  title?: string;
+  roleId?: number;
+  minSalary?: number;
+  maxSalary?: number;
+};
+
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);
-  const [companyFilter, setCompanyFilter] = useState<string>("");
-  const [titleFilter, setTitleFilter] = useState<string>("");
-  const [minSalaryFilter, setMinSalaryFilter] = useState<number>(10000);
-  const [maxSalaryFilter, setMaxSalaryFilter] = useState<number>(200000);
-  // const [openJobCount, setOpenJobCount] = useState<number>();
-  // const [isPlaceholderData, setPlaceholderData] = useState<boolean>();
-  const [debouncedCompany] = useDebounce(companyFilter, 1000);
-  const [debouncedTitle] = useDebounce(titleFilter, 1000);
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
+  const [debouncedCompany] = useDebounce(searchFilters.company, 1000);
+  const [debouncedTitle] = useDebounce(searchFilters.title, 1000);
 
-  const filters: JobFiltersT = useMemo(
-    () => ({ company: debouncedCompany, title: debouncedTitle }),
-    [debouncedCompany, debouncedTitle]
+  const filters: SearchFilters = useMemo(
+    () => ({
+      company: debouncedCompany,
+      title: debouncedTitle,
+      roleId: searchFilters.roleId,
+      minSalary: searchFilters.minSalary,
+      maxSalary: searchFilters.maxSalary
+    }),
+    [
+      debouncedCompany,
+      debouncedTitle,
+      searchFilters.maxSalary,
+      searchFilters.minSalary,
+      searchFilters.roleId
+    ]
   );
 
-  const { jobs, isPlaceholderData, openJobCount } = useJobs({
+  const { jobs, isPlaceholderData, isPending, openJobCount } = useJobs({
     paging: { page, pageSize: 50 },
     filters
   });
@@ -36,14 +51,8 @@ const Jobs = () => {
       <h1>Browse Jobs</h1>
       <div className="px-[2em] pb-4 text-left flex">
         <JobFilters
-          company={companyFilter}
-          onCompanyChange={setCompanyFilter}
-          title={titleFilter}
-          onTitleChange={setTitleFilter}
-          minSalary={minSalaryFilter}
-          onMinSalarySelect={setMinSalaryFilter}
-          maxSalary={maxSalaryFilter}
-          onMaxSalarySelect={setMaxSalaryFilter}
+          filters={searchFilters}
+          setFilters={setSearchFilters}
           onSearch={() => {}}
         />
       </div>
@@ -51,7 +60,7 @@ const Jobs = () => {
         {openJobCount && (
           <PageNav page={page} total={openJobCount} onSetPage={setPage} />
         )}
-        {isPlaceholderData && (
+        {(isPlaceholderData || isPending) && (
           <div className="content-center pl-2">Loading...</div>
         )}
       </div>
