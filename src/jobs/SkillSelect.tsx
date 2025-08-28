@@ -1,21 +1,21 @@
-import useRoles from "../hooks/useRoles";
+import useSkillsLite from "../hooks/useSkillsLite";
 
-const RoleSelect = ({
+const SkillSelect = ({
   id,
-  roleId,
+  skillId,
   onChange
 }: {
   id: string;
-  roleId?: number;
-  onChange: (roleId: number) => void;
+  skillId?: number;
+  onChange: (skillId: number) => void;
 }) => {
-  const { isPending, roles } = useRoles();
+  const { isPending, skills } = useSkillsLite();
 
   return (
     <select
       id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
-      value={roleId}
+      value={skillId}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {isPending && (
@@ -24,13 +24,14 @@ const RoleSelect = ({
         </option>
       )}
       {!isPending && <option key={0} value=""></option>}
-      {roles?.map((role, idx) => (
-        <option key={idx} value={role.id}>
-          {role.name}
+      {skills?.map((skill, idx) => (
+        <option key={idx} value={skill.id}>
+          {skill.name}
+          {skill.abbreviation && ` (${skill.abbreviation})`}
         </option>
       ))}
     </select>
   );
 };
 
-export default RoleSelect;
+export default SkillSelect;

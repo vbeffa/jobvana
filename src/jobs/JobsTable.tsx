@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import CompanyLink from "../companies/CompanyLink";
 import type { Job } from "../hooks/useJobs";
-import Loading from "../Loading";
 import JobLink from "./JobLink";
 import JobSkills from "./JobSkills";
 import Salary from "./Salary";
@@ -33,11 +32,22 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
           ? job1.title.localeCompare(job2.title)
           : job2.title.localeCompare(job1.title);
       }
+      if (sortCol === "min_salary") {
+        return sortDir === "up"
+          ? job1.salary_low - job2.salary_low
+          : job2.salary_low - job1.salary_low;
+      }
+      if (sortCol === "max_salary") {
+        return sortDir === "up"
+          ? job1.salary_high - job2.salary_high
+          : job2.salary_high - job1.salary_high;
+      }
+      // created
+      const createdAt1 = new Date(job1.created_at).getTime();
+      const createdAt2 = new Date(job2.created_at).getTime();
       return sortDir === "down"
-        ? new Date(job2.created_at).getTime() -
-            new Date(job1.created_at).getTime()
-        : new Date(job1.created_at).getTime() -
-            new Date(job2.created_at).getTime();
+        ? createdAt2 - createdAt1
+        : createdAt1 - createdAt2;
     });
   }, [jobs, sortCol, sortDir]);
 
@@ -67,63 +77,14 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
     <table className="w-full">
       <thead>
         <tr>
-          {/* <td>
-            <Filter
-              id="company_filter"
-              placeholder="Filter by company"
-              value={companyFilter}
-              onChange={setCompanyFilter}
-              onClear={() => setCompanyFilter("")}
-            />
-          </td>
-          <td>
-            <Filter
-              id="job_title_filter"
-              placeholder="Filter by job title"
-              value={jobTitleFilter}
-              onChange={setJobTitleFilter}
-              onClear={() => setJobTitleFilter("")}
-            />
-          </td>
-          <td colSpan={2} />
-          <td className="flex flex-row w-full gap-x-1">
-            <SalarySelect
-              id="min_salary"
-              title="Min"
-              value={minSalaryFilter}
-              onChange={(minSalary) => {
-                setMinSalaryFilter(minSalary);
-                if (maxSalaryFilter && minSalary > maxSalaryFilter) {
-                  setMaxSalaryFilter(minSalary);
-                }
-              }}
-            />
-            <div className="flex pt-1">-</div>
-            <SalarySelect
-              id="max_salary"
-              title="Max"
-              value={maxSalaryFilter}
-              onChange={(maxSalary) => {
-                setMaxSalaryFilter(maxSalary);
-                if (minSalaryFilter && maxSalary < minSalaryFilter) {
-                  setMinSalaryFilter(maxSalary);
-                }
-              }}
-            />
-          </td> */}
-        </tr>
-        <tr>
-          <td className="h-1" colSpan={6} />
-        </tr>
-        <tr>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
+            className="p-2 border-[0.05rem] cursor-pointer w-[20%]"
             onClick={() => setSort("company")}
           >
             Company {sortCol === "company" && (sortDir === "up" ? "↑" : "↓")}
           </th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
+            className="p-2 border-[0.05rem] cursor-pointer w-[20%]"
             onClick={() => setSort("title")}
           >
             Title {sortCol === "title" && (sortDir === "up" ? "↑" : "↓")}
@@ -135,18 +96,40 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
             Role {sortCol === "role" && (sortDir === "up" ? "↑" : "↓")}
           </th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
+            className="p-2 border-[0.05rem] cursor-pointer w-[10%]"
             onClick={() => setSort("created")}
           >
             Created {sortCol === "created" && (sortDir === "up" ? "↑" : "↓")}
           </th>
-          <th className="p-2 border-[0.05rem] w-[5%]">Status</th>
-          <th className="p-2 border-[0.05rem] w-[15%]">Salary</th>
+          <th className="p-2 border-[0.05rem] w-[15%]">
+            <div className="flex flex-row items-center w-full gap-2">
+              <div>Salary</div>
+              <div
+                className="cursor-pointer"
+                onClick={() => setSort("min_salary")}
+              >
+                ${sortCol === "min_salary" && (sortDir === "up" ? "↑" : "↓")}
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => setSort("max_salary")}
+              >
+                $$${sortCol === "max_salary" && (sortDir === "up" ? "↑" : "↓")}
+              </div>
+            </div>
+          </th>
           <th className="p-2 border-[0.05rem] w-[20%]">Skills</th>
         </tr>
       </thead>
       <tbody>
-        {<Loading waitingFor={jobs} colSpan={6} />}
+        {/* {<Loading waitingFor={jobs} colSpan={6} />} */}
+        {sortedJobs.length === 0 && (
+          <tr key={0}>
+            <td className="p-2 border-[0.05rem] text-center" colSpan={6}>
+              No jobs found
+            </td>
+          </tr>
+        )}
         {sortedJobs.map((job) => {
           const company = job.company;
           return (
@@ -161,10 +144,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
                 {job.role?.name}
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
-                {new Date(job.created_at).toDateString()}
-              </td>
-              <td className="p-2 border-[0.05rem] text-left align-top">
-                {job.status}
+                {new Date(job.created_at).toLocaleDateString()}
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
                 <Salary job={job} />

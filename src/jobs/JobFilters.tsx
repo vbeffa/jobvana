@@ -1,20 +1,19 @@
 import Filter from "../Filter";
-import type { SearchFilters } from "./Jobs";
+import type { SearchFilters } from "../hooks/useJobs";
 import RoleSelect from "./RoleSelect";
 import SalarySelect from "./SalarySelect";
+import SkillSelect from "./SkillSelect";
 
 const JobFilters = ({
   filters,
-  setFilters,
-  onSearch
+  setFilters
 }: {
   filters: SearchFilters;
   setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>;
-  onSearch: () => void;
 }) => {
   return (
     <div className="border-[0.05rem] rounded-lg grid grid-cols-3 gap-2 p-2">
-      <div>Company: </div>
+      <div>Company:</div>
       <div className="col-span-2">
         <Filter
           id="company_filter"
@@ -26,7 +25,7 @@ const JobFilters = ({
           onClear={() => setFilters((filters) => ({ ...filters, company: "" }))}
         />
       </div>
-      <div>Job Title: </div>
+      <div>Title:</div>
       <div className="col-span-2">
         <Filter
           id="job_title_filter"
@@ -38,7 +37,7 @@ const JobFilters = ({
           onClear={() => setFilters((filters) => ({ ...filters, title: "" }))}
         />
       </div>
-      <div>Role: </div>
+      <div>Role:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
         <RoleSelect
           id="role"
@@ -48,7 +47,7 @@ const JobFilters = ({
           }}
         />
       </div>
-      <div>Salary Range: </div>
+      <div>Salary Range:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
         <SalarySelect
           id="min_salary"
@@ -84,12 +83,14 @@ const JobFilters = ({
           }}
         />
       </div>
-      <div className="col-span-3 text-center py-2">
-        <input
-          type="button"
-          className="border-[0.05rem] px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-300"
-          value="Search"
-          onClick={onSearch}
+      <div>Skill:</div>
+      <div className="col-span-2 flex flex-row gap-x-2">
+        <SkillSelect
+          id="role"
+          skillId={filters.skillId}
+          onChange={(val) => {
+            setFilters((filters) => ({ ...filters, skillId: val }));
+          }}
         />
       </div>
     </div>

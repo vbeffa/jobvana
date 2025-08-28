@@ -1,21 +1,16 @@
 import { useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
-import useJobs from "../hooks/useJobs";
+import useJobs, { type SearchFilters } from "../hooks/useJobs";
 import JobFilters from "./JobFilters";
 import JobsTable from "./JobsTable";
 import PageNav from "./PageNav";
 
-export type SearchFilters = {
-  company?: string;
-  title?: string;
-  roleId?: number;
-  minSalary?: number;
-  maxSalary?: number;
-};
-
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
+    company: "",
+    title: ""
+  });
   const [debouncedCompany] = useDebounce(searchFilters.company, 1000);
   const [debouncedTitle] = useDebounce(searchFilters.title, 1000);
 
@@ -25,44 +20,45 @@ const Jobs = () => {
       title: debouncedTitle,
       roleId: searchFilters.roleId,
       minSalary: searchFilters.minSalary,
-      maxSalary: searchFilters.maxSalary
+      maxSalary: searchFilters.maxSalary,
+      skillId: searchFilters.skillId
     }),
     [
       debouncedCompany,
       debouncedTitle,
       searchFilters.maxSalary,
       searchFilters.minSalary,
-      searchFilters.roleId
+      searchFilters.roleId,
+      searchFilters.skillId
     ]
   );
 
-  const { jobs, isPlaceholderData, isPending, openJobCount } = useJobs({
+  const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
     paging: { page, pageSize: 50 },
     filters
   });
-  // const { skills } = useSkills();
-
-  // if (!jobs || !skills) {
-  //   return null;
-  // }
+  console.log(openJobCount);
 
   return (
     <>
-      <h1>Browse Jobs</h1>
+      <h1>Jobs</h1>
+      {error && <div className="text-red-500">{error}</div>}
       <div className="px-[2em] pb-4 text-left flex">
         <JobFilters
           filters={searchFilters}
-          setFilters={setSearchFilters}
-          onSearch={() => {}}
+          setFilters={(filters) => {
+            setPage(1);
+            setSearchFilters(filters);
+          }}
         />
       </div>
-      <div className="px-[2em] text-left flex">
-        {openJobCount && (
-          <PageNav page={page} total={openJobCount} onSetPage={setPage} />
-        )}
-        {(isPlaceholderData || isPending) && (
-          <div className="content-center pl-2">Loading...</div>
-        )}
+      <div className="px-[2em]">
+        <PageNav
+          page={page}
+          total={openJobCount}
+          onSetPage={setPage}
+          isLoading={isPlaceholderData || isPending}
+        />
       </div>
       <div className="card">
         <JobsTable jobs={jobs} />

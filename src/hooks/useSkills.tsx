@@ -19,6 +19,7 @@ export type SkillCategory =
 
 export type Skills = {
   skills: Array<Skill> | undefined;
+  isPending: boolean;
   findSkill: (id: number) => Skill | undefined;
 
   skillCategories: Array<SkillCategory> | undefined;
@@ -33,7 +34,7 @@ export type Skills = {
 };
 
 const useSkills = (): Skills => {
-  const { data: skillsData } = useQuery({
+  const { isPending, data: skillsData } = useQuery({
     queryKey: ["skills"],
     queryFn: async () => {
       const { data } = await supabase.from("skills").select();
@@ -120,6 +121,7 @@ const useSkills = (): Skills => {
 
   return {
     skills,
+    isPending,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
     skillCategories: skillCategories,

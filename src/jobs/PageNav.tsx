@@ -4,32 +4,36 @@ const PageNav = ({
   page,
   pageSize = 50,
   total,
-  onSetPage
+  onSetPage,
+  isLoading
 }: {
   page: number;
   pageSize?: number;
-  total: number;
+  total?: number;
   onSetPage: (page: number) => void;
+  isLoading: boolean;
 }) => {
   const numPages = useMemo(
-    () => Math.ceil(total / pageSize),
+    () => (total ? Math.ceil(total / pageSize) : undefined),
     [pageSize, total]
   );
+
+  if (!numPages) {
+    return <>Loading...</>;
+  }
 
   return (
     <div className="flex w-fit h-9 content-center align-middle gap-2">
       <div>
         <input
           type="button"
-          disabled={page === 1}
+          disabled={page === 1 || isLoading}
           className="border-[.05rem] h-full w-10
-                   border-gray-400 rounded-lg
+                     border-gray-400 rounded-lg
                      cursor-pointer
                      hover:bg-gray-300
                      disabled:cursor-default
-                     disabled:bg-gray-50
-                     disabled:hover:border-[.05rem] 
-                     disabled:hover:border-gray-400"
+                     disabled:bg-gray-50"
           onClick={() => onSetPage(page - 1)}
           value="←"
         />
@@ -41,7 +45,10 @@ const PageNav = ({
           step={1}
           min={1}
           max={numPages}
-          className="border-[.05rem] h-9 pr-1 rounded-lg border-gray-500 text-center"
+          disabled={isLoading}
+          className="border-[.05rem] h-9 pr-1 text-center
+                     border-gray-400 rounded-lg
+                     disabled:bg-gray-50"
           value={page}
           onChange={(e) => {
             let page = parseInt(e.target.value);
@@ -58,24 +65,25 @@ const PageNav = ({
         />
       </div>
       <div className="content-center">of</div>
-      <div className="content-center">{numPages}</div>
+      <div className="content-center">{numPages} </div>
       <div>
         <input
           type="button"
-          disabled={page === numPages}
+          disabled={page === numPages || isLoading}
           className="border-[.05rem] h-full w-10
-                   border-gray-400 rounded-lg
+                     border-gray-400 rounded-lg
                      cursor-pointer
                      hover:bg-gray-300
                      disabled:cursor-default
-                     disabled:bg-gray-50
-                     disabled:hover:border-[.05rem] 
-                     disabled:hover:border-gray-400"
+                     disabled:bg-gray-50"
           onClick={() => onSetPage(page + 1)}
           value="→"
         />
       </div>
-      <div className="content-center">{total} total</div>
+      <div className="content-center">
+        {!isLoading && `${total} total`}
+        {isLoading && "Loading..."}
+      </div>
     </div>
   );
 };
