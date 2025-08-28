@@ -180,6 +180,7 @@ const useJobs = (
     isPending,
     openJobCount,
 
+    // TODO fix - jobs are now paged, this needs to be in a separate hook
     jobsForSkill: (skillId: number) => {
       return jobs?.filter(
         (job) =>

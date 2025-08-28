@@ -15,7 +15,9 @@ export type SkillVersion =
   Database["public"]["Tables"]["skill_versions"]["Row"];
 
 export type SkillCategory =
-  Database["public"]["Tables"]["skill_categories"]["Row"];
+  Database["public"]["Tables"]["skill_categories"]["Row"] & {
+    childCategories: Array<SkillCategory> | undefined;
+  };
 
 export type Skills = {
   skills: Array<Skill> | undefined;
@@ -66,10 +68,24 @@ const useSkills = (): Skills => {
     }
   });
 
-  const skillCategories = useMemo(
-    () => skillCategoriesData ?? undefined,
-    [skillCategoriesData]
-  );
+  const skillCategories: Array<SkillCategory> | undefined = useMemo(() => {
+    if (!skillCategoriesData) {
+      return undefined;
+    }
+    const skillCategories: Array<SkillCategory> = skillCategoriesData.map(
+      (skillCategory) => ({
+        ...skillCategory,
+        childCategories: [] // set to empty array to satisfy type checker
+      })
+    );
+    // now that skillCategories is hydrated, can correctly set childCategories
+    skillCategories.forEach((skillCategory) => {
+      skillCategory.childCategories = skillCategories.filter(
+        (category) => category.parent_skill_category_id === skillCategory.id
+      );
+    });
+    return skillCategories;
+  }, [skillCategoriesData]);
   const skillVersions = useMemo(
     () => skillVersionsData ?? undefined,
     [skillVersionsData]
@@ -88,9 +104,9 @@ const useSkills = (): Skills => {
       versions: skillVersions.filter(
         (skillVersion) => skillVersion.skill_id === skill.id
       ),
-      relatedSkills: [] // set to empty array
+      relatedSkills: [] // set to empty array to satisfy type checker
     }));
-    // now that skills is hydrated, can set relatedSkills to satisfy type checker
+    // now that skills is hydrated, can correctly set relatedSkills
     skills.forEach((skill) => {
       skill.relatedSkills = skillRelations
         .filter((skillRelation) => skillRelation.skill_id === skill.id)
@@ -124,7 +140,7 @@ const useSkills = (): Skills => {
     isPending,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
-    skillCategories: skillCategories,
+    skillCategories,
     findSkillCategory: (id: number) =>
       skillCategories?.find((skillCategory) => skillCategory.id === id),
     findSkills: (skillCategoryId: number) =>

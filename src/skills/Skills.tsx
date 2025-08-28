@@ -170,8 +170,8 @@ const Skills = () => {
                       <SkillCategoryLink skillCategory={skillCategory} />
                     )}
                   </td>
-                  <td className="p-1 border text-left">
-                    {jobsForSkill(skill.id)?.length}
+                  <td className="p-1 border text-center">
+                    {/* {jobsForSkill(skill.id)?.length} */}-
                   </td>
                 </tr>
               );
