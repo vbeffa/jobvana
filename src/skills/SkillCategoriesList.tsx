@@ -8,11 +8,13 @@ const SkillCategoriesList = ({
 }) => {
   return (
     <ul className="list-inside list-disc">
-      {skillCategories.map((skillCategory) => (
-        <li key={skillCategory.id}>
-          <SkillCategoryLink skillCategory={skillCategory} />
-        </li>
-      ))}
+      {skillCategories
+        .sort((c1, c2) => c1.name.localeCompare(c2.name))
+        .map((skillCategory) => (
+          <li key={skillCategory.id}>
+            <SkillCategoryLink skillCategory={skillCategory} />
+          </li>
+        ))}
     </ul>
   );
 };

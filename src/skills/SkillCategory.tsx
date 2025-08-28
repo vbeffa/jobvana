@@ -9,7 +9,7 @@ const SkillCategory = () => {
   const {
     findSkillCategory: findSkillCategory,
     findSkills,
-    findChildSkillCategories: findChildSkillCategories
+    findChildSkillCategories
   } = useSkills();
   const skillCategory = findSkillCategory(skillCategoryId);
   if (!skillCategory) {

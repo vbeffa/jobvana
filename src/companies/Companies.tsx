@@ -9,7 +9,7 @@ type SortDir = "up" | "down";
 
 const Companies = () => {
   const [sortCol, setSortCol] = useState<SortCol>("company");
-  const [sortDir, setSortDir] = useState<SortDir>("down");
+  const [sortDir, setSortDir] = useState<SortDir>("up");
   const [companyFilter, setCompanyFilter] = useState<string>();
 
   const companies = useCompanies();
