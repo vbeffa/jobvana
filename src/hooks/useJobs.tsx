@@ -1,9 +1,9 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
-import supabase from "../utils/supabase";
-import type { Database } from "../utils/types";
-import { type Company } from "./useCompanies";
-import useSkills, { type Skill, type SkillVersion } from "./useSkills";
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import supabase from '../utils/supabase';
+import type { Database } from '../utils/types';
+import { type Company } from './useCompanies';
+import useSkills, { type Skill, type SkillVersion } from './useSkills';
 
 export type SearchFilters = {
   company?: string;
@@ -15,17 +15,17 @@ export type SearchFilters = {
   skillId?: number;
 };
 
-export type Job = Database["public"]["Tables"]["jobs"]["Row"] & {
+export type Job = Database['public']['Tables']['jobs']['Row'] & {
   company: Company | undefined;
   role: Role | undefined;
   skills: Array<Skill>;
   skillVersions: Array<SkillVersion>;
 };
 
-export type Role = Database["public"]["Tables"]["roles"]["Row"];
-export type JobSkill = Database["public"]["Tables"]["job_skills"]["Row"];
+export type Role = Database['public']['Tables']['roles']['Row'];
+export type JobSkill = Database['public']['Tables']['job_skills']['Row'];
 export type JobSkillVersion =
-  Database["public"]["Tables"]["job_skill_versions"]["Row"];
+  Database['public']['Tables']['job_skill_versions']['Row'];
 
 export type Jobs = {
   jobs: Array<Job> | undefined;
@@ -70,48 +70,48 @@ const useJobs = (
     isPending,
     data: jobsData
   } = useQuery({
-    queryKey: ["jobs", queryKey],
+    queryKey: ['jobs', queryKey],
     queryFn: async () => {
       // console.log("query", params);
       let q = supabase
-        .from("jobs")
+        .from('jobs')
         .select(
-          "*, companies!inner(*), roles!inner(*), job_skills(*), skills(*)",
+          '*, companies!inner(*), roles!inner(*), job_skills(*), skills(*)',
           {
-            count: "exact"
+            count: 'exact'
           }
         )
         // .is("skills", null)
-        .filter("status", "eq", "open");
+        .filter('status', 'eq', 'open');
 
       const { filters } = params;
       if (filters?.company) {
-        q = q.ilike("companies.name", `%${filters.company}%`);
+        q = q.ilike('companies.name', `%${filters.company}%`);
       }
       if (filters?.companyId) {
-        q = q.filter("companies.id", "eq", filters.companyId);
+        q = q.filter('companies.id', 'eq', filters.companyId);
       }
       if (filters?.title) {
-        q = q.ilike("title", `%${filters.title}%`);
+        q = q.ilike('title', `%${filters.title}%`);
       }
       if (filters?.roleId) {
-        q = q.filter("role_id", "eq", filters.roleId);
+        q = q.filter('role_id', 'eq', filters.roleId);
       }
       if (filters?.minSalary) {
-        q = q.filter("salary_low", "gte", filters.minSalary);
+        q = q.filter('salary_low', 'gte', filters.minSalary);
       }
       if (filters?.maxSalary) {
-        q = q.filter("salary_high", "lte", filters.maxSalary);
+        q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
       if (filters?.skillId) {
-        q = q.filter("skills.id", "eq", filters.skillId);
+        q = q.filter('skills.id', 'eq', filters.skillId);
       }
       const { error, data, count } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
-        .order("created_at", { ascending: false });
+        .order('created_at', { ascending: false });
       console.log(data);
       console.log(error?.name);
       return { error, data, count };
@@ -120,17 +120,17 @@ const useJobs = (
   });
 
   const { data: jobSkillsData } = useQuery({
-    queryKey: ["jobSkills"],
+    queryKey: ['jobSkills'],
     queryFn: async () => {
-      const { data } = await supabase.from("job_skills").select();
+      const { data } = await supabase.from('job_skills').select();
       return data;
     }
   });
 
   const { data: jobSkillVersionsData } = useQuery({
-    queryKey: ["jobSkillVersions"],
+    queryKey: ['jobSkillVersions'],
     queryFn: async () => {
-      const { data } = await supabase.from("job_skill_versions").select();
+      const { data } = await supabase.from('job_skill_versions').select();
       return data;
     }
   });

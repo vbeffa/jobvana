@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import supabase from "../utils/supabase";
-import type { Database } from "../utils/types";
+import { useQuery } from '@tanstack/react-query';
+import supabase from '../utils/supabase';
+import type { Database } from '../utils/types';
 
-type Skill = Database["public"]["Tables"]["skills"]["Row"];
+type Skill = Database['public']['Tables']['skills']['Row'];
 
 export type SkillsLite = {
   skills: Array<Skill> | undefined;
@@ -11,9 +11,9 @@ export type SkillsLite = {
 
 const useSkills = (): SkillsLite => {
   const { isPending, data: skillsData } = useQuery({
-    queryKey: ["skillsLite"],
+    queryKey: ['skillsLite'],
     queryFn: async () => {
-      const { data } = await supabase.from("skills").select().order("name");
+      const { data } = await supabase.from('skills').select().order('name');
       return data;
     }
   });

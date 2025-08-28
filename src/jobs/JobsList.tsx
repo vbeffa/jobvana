@@ -1,5 +1,5 @@
-import type { Job } from "../hooks/useJobs";
-import JobLink from "./JobLink";
+import type { Job } from '../hooks/useJobs';
+import JobLink from './JobLink';
 
 const JobsList = ({ jobs }: { jobs: Array<Job> }) => {
   return (

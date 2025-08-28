@@ -1,17 +1,17 @@
-import { useMemo, useState } from "react";
-import Filter from "../Filter";
-import useJobs from "../hooks/useJobs";
-import useSkills from "../hooks/useSkills";
-import Loading from "../Loading";
-import SkillCategoryLink from "./SkillCategoryLink";
-import SkillLink from "./SkillLink";
+import { useMemo, useState } from 'react';
+import Filter from '../Filter';
+import useJobs from '../hooks/useJobs';
+import useSkills from '../hooks/useSkills';
+import Loading from '../Loading';
+import SkillCategoryLink from './SkillCategoryLink';
+import SkillLink from './SkillLink';
 
-type SortCol = "skill" | "skill_type" | "num_jobs";
-type SortDir = "up" | "down";
+type SortCol = 'skill' | 'skill_type' | 'num_jobs';
+type SortDir = 'up' | 'down';
 
 const Skills = () => {
-  const [sortCol, setSortCol] = useState<SortCol>("num_jobs");
-  const [sortDir, setSortDir] = useState<SortDir>("down");
+  const [sortCol, setSortCol] = useState<SortCol>('num_jobs');
+  const [sortDir, setSortDir] = useState<SortDir>('down');
   const [skillFilter, setSkillFilter] = useState<string>();
   const [skillCategoryFilter, setSkillCategoryFilter] = useState<string>();
 
@@ -48,25 +48,25 @@ const Skills = () => {
         return pass;
       })
       .sort((skill1, skill2) => {
-        if (sortCol === "skill") {
-          return sortDir === "up"
+        if (sortCol === 'skill') {
+          return sortDir === 'up'
             ? skill1.name.localeCompare(skill2.name)
             : skill2.name.localeCompare(skill1.name);
         }
-        if (sortCol === "num_jobs") {
+        if (sortCol === 'num_jobs') {
           const numJobs1 = jobsForSkill(skill1.id)!.length;
           const numJobs2 = jobsForSkill(skill2.id)!.length;
           if (numJobs1 === numJobs2) {
             return skill1.name.localeCompare(skill2.name);
           }
-          return sortDir === "up" ? numJobs1 - numJobs2 : numJobs2 - numJobs1;
+          return sortDir === 'up' ? numJobs1 - numJobs2 : numJobs2 - numJobs1;
         }
         if (skill1.skill_category_id === skill2.skill_category_id) {
           return skill1.name.localeCompare(skill2.name);
         }
         const skillCategory1 = findSkillCategory(skill1.skill_category_id);
         const skillCategory2 = findSkillCategory(skill2.skill_category_id);
-        return sortDir === "up"
+        return sortDir === 'up'
           ? skillCategory1!.name.localeCompare(skillCategory2!.name)
           : skillCategory2!.name.localeCompare(skillCategory1!.name);
       });
@@ -85,12 +85,12 @@ const Skills = () => {
     const newSortCol = col;
     const newSortDir =
       newSortCol === sortCol
-        ? sortDir === "up"
-          ? "down"
-          : "up"
-        : newSortCol === "num_jobs"
-          ? "down"
-          : "up";
+        ? sortDir === 'up'
+          ? 'down'
+          : 'up'
+        : newSortCol === 'num_jobs'
+          ? 'down'
+          : 'up';
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {
@@ -113,7 +113,7 @@ const Skills = () => {
                     placeholder="Filter by skill"
                     value={skillFilter}
                     onChange={setSkillFilter}
-                    onClear={() => setSkillFilter("")}
+                    onClear={() => setSkillFilter('')}
                   />
                 </div>
               </td>
@@ -124,7 +124,7 @@ const Skills = () => {
                     placeholder="Filter by category"
                     value={skillCategoryFilter}
                     onChange={setSkillCategoryFilter}
-                    onClear={() => setSkillCategoryFilter("")}
+                    onClear={() => setSkillCategoryFilter('')}
                   />
                 </div>
               </td>
@@ -135,23 +135,23 @@ const Skills = () => {
             <tr>
               <th
                 className="p-1 border cursor-pointer w-[45%]"
-                onClick={() => setSort("skill")}
+                onClick={() => setSort('skill')}
               >
-                Skill {sortCol === "skill" && (sortDir === "up" ? "↑" : "↓")}
+                Skill {sortCol === 'skill' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
               <th
                 className="p-1 border cursor-pointer"
-                onClick={() => setSort("skill_type")}
+                onClick={() => setSort('skill_type')}
               >
-                Category{" "}
-                {sortCol === "skill_type" && (sortDir === "up" ? "↑" : "↓")}
+                Category{' '}
+                {sortCol === 'skill_type' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
               <th
                 className="p-1 border cursor-pointer w-[10%]"
-                onClick={() => setSort("num_jobs")}
+                onClick={() => setSort('num_jobs')}
               >
-                # Jobs{" "}
-                {sortCol === "num_jobs" && (sortDir === "up" ? "↑" : "↓")}
+                # Jobs{' '}
+                {sortCol === 'num_jobs' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
             </tr>
           </thead>

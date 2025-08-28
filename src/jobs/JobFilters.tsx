@@ -1,8 +1,8 @@
-import Filter from "../Filter";
-import type { SearchFilters } from "../hooks/useJobs";
-import RoleSelect from "./RoleSelect";
-import SalarySelect from "./SalarySelect";
-import SkillSelect from "./SkillSelect";
+import Filter from '../Filter';
+import type { SearchFilters } from '../hooks/useJobs';
+import RoleSelect from './RoleSelect';
+import SalarySelect from './SalarySelect';
+import SkillSelect from './SkillSelect';
 
 const JobFilters = ({
   filters,
@@ -22,7 +22,7 @@ const JobFilters = ({
           onChange={(val) => {
             setFilters((filters) => ({ ...filters, company: val }));
           }}
-          onClear={() => setFilters((filters) => ({ ...filters, company: "" }))}
+          onClear={() => setFilters((filters) => ({ ...filters, company: '' }))}
         />
       </div>
       <div>Title:</div>
@@ -34,7 +34,7 @@ const JobFilters = ({
           onChange={(val) => {
             setFilters((filters) => ({ ...filters, title: val }));
           }}
-          onClear={() => setFilters((filters) => ({ ...filters, title: "" }))}
+          onClear={() => setFilters((filters) => ({ ...filters, title: '' }))}
         />
       </div>
       <div>Role:</div>

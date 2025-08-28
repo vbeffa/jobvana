@@ -1,4 +1,4 @@
-import useSkillsLite from "../hooks/useSkillsLite";
+import useSkillsLite from '../hooks/useSkillsLite';
 
 const SkillSelect = ({
   id,

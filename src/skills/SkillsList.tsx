@@ -1,5 +1,5 @@
-import type { Skill } from "../hooks/useSkills";
-import SkillLink from "./SkillLink";
+import type { Skill } from '../hooks/useSkills';
+import SkillLink from './SkillLink';
 
 const SkillsList = ({ skills }: { skills: Array<Skill> }) => {
   return (

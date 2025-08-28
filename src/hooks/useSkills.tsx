@@ -1,21 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
-import supabase from "../utils/supabase";
-import type { Database } from "../utils/types";
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import supabase from '../utils/supabase';
+import type { Database } from '../utils/types';
 
-export type Skill = Database["public"]["Tables"]["skills"]["Row"] & {
+export type Skill = Database['public']['Tables']['skills']['Row'] & {
   versions: Array<SkillVersion>;
   relatedSkills: Array<Skill>;
 };
 
 export type SkillRelation =
-  Database["public"]["Tables"]["skill_relations"]["Row"];
+  Database['public']['Tables']['skill_relations']['Row'];
 
 export type SkillVersion =
-  Database["public"]["Tables"]["skill_versions"]["Row"];
+  Database['public']['Tables']['skill_versions']['Row'];
 
 export type SkillCategory =
-  Database["public"]["Tables"]["skill_categories"]["Row"] & {
+  Database['public']['Tables']['skill_categories']['Row'] & {
     childCategories: Array<SkillCategory> | undefined;
   };
 
@@ -37,33 +37,33 @@ export type Skills = {
 
 const useSkills = (): Skills => {
   const { isPending, data: skillsData } = useQuery({
-    queryKey: ["skills"],
+    queryKey: ['skills'],
     queryFn: async () => {
-      const { data } = await supabase.from("skills").select();
+      const { data } = await supabase.from('skills').select();
       return data;
     }
   });
 
   const { data: skillCategoriesData } = useQuery({
-    queryKey: ["skillCategories"],
+    queryKey: ['skillCategories'],
     queryFn: async () => {
-      const { data } = await supabase.from("skill_categories").select();
+      const { data } = await supabase.from('skill_categories').select();
       return data;
     }
   });
 
   const { data: skillVersionsData } = useQuery({
-    queryKey: ["skillVersions"],
+    queryKey: ['skillVersions'],
     queryFn: async () => {
-      const { data } = await supabase.from("skill_versions").select();
+      const { data } = await supabase.from('skill_versions').select();
       return data;
     }
   });
 
   const { data: skillRelationsData } = useQuery({
-    queryKey: ["skillRelations"],
+    queryKey: ['skillRelations'],
     queryFn: async () => {
-      const { data } = await supabase.from("skill_relations").select();
+      const { data } = await supabase.from('skill_relations').select();
       return data;
     }
   });

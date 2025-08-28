@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
-import supabase from "../utils/supabase";
-import type { Database } from "../utils/types";
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import supabase from '../utils/supabase';
+import type { Database } from '../utils/types';
 
-export type Company = Database["public"]["Tables"]["companies"]["Row"];
+export type Company = Database['public']['Tables']['companies']['Row'];
 
 export type Companies = {
   companies: Array<Company> | undefined;
@@ -12,9 +12,9 @@ export type Companies = {
 
 const useCompanies = (): Companies => {
   const { data: companiesData } = useQuery({
-    queryKey: ["companies"],
+    queryKey: ['companies'],
     queryFn: async () => {
-      const { data } = await supabase.from("companies").select();
+      const { data } = await supabase.from('companies').select();
       return data;
     }
   });

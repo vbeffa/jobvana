@@ -1,4 +1,4 @@
-import useSkills from "./useSkills";
+import useSkills from './useSkills';
 
 const useSkillVersion = ({ id }: { id: number }) => {
   const { skillVersions } = useSkills();

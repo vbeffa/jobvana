@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
-import supabase from "../utils/supabase";
-import type { Database } from "../utils/types";
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import supabase from '../utils/supabase';
+import type { Database } from '../utils/types';
 
-export type Role = Database["public"]["Tables"]["roles"]["Row"];
+export type Role = Database['public']['Tables']['roles']['Row'];
 
 export type Roles = {
   roles: Array<Role> | undefined;
@@ -12,9 +12,9 @@ export type Roles = {
 
 const useRoles = (): Roles => {
   const { isPending, data: rolesData } = useQuery({
-    queryKey: ["roles"],
+    queryKey: ['roles'],
     queryFn: async () => {
-      const { data } = await supabase.from("roles").select();
+      const { data } = await supabase.from('roles').select();
       return data;
     }
   });

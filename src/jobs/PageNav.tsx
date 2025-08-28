@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 const PageNav = ({
   page,
@@ -82,7 +82,7 @@ const PageNav = ({
       </div>
       <div className="content-center">
         {!isLoading && `${total} total`}
-        {isLoading && "Loading..."}
+        {isLoading && 'Loading...'}
       </div>
     </div>
   );

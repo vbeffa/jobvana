@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 const salaries = _.range(10000, 200001, 10000);
 
@@ -25,9 +25,9 @@ const SalarySelect = ({
       </option>
       {salaries.map((salary, idx) => (
         <option key={idx} value={salary}>
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
+          {new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
             maximumFractionDigits: 0
           }).format(salary)}
         </option>

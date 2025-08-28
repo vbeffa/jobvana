@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import type { SkillCategory } from "../hooks/useSkills";
+import { Link } from '@tanstack/react-router';
+import type { SkillCategory } from '../hooks/useSkills';
 
 const SkillCategoryLink = ({
   skillCategory

@@ -1,11 +1,11 @@
-import useJobs from "../hooks/useJobs";
-import useSkill from "../hooks/useSkill";
-import useSkills from "../hooks/useSkills";
-import JobsList from "../jobs/JobsList";
-import { Route } from "../routes/jobvana.skill_categories.$id.skills.$skill_id.index";
-import SkillCategoryLink from "./SkillCategoryLink";
-import SkillsList from "./SkillsList";
-import SkillVersionsList from "./SkillVersionsList";
+import useJobs from '../hooks/useJobs';
+import useSkill from '../hooks/useSkill';
+import useSkills from '../hooks/useSkills';
+import JobsList from '../jobs/JobsList';
+import { Route } from '../routes/jobvana.skill_categories.$id.skills.$skill_id.index';
+import SkillCategoryLink from './SkillCategoryLink';
+import SkillsList from './SkillsList';
+import SkillVersionsList from './SkillVersionsList';
 
 const Skill = () => {
   const { skillId } = Route.useLoaderData();

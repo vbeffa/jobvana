@@ -1,4 +1,4 @@
-import useJobs from "./useJobs";
+import useJobs from './useJobs';
 
 const useJob = ({ id }: { id: number }) => {
   const { jobs } = useJobs();

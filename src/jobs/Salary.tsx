@@ -1,4 +1,4 @@
-import type { Job } from "../hooks/useJobs";
+import type { Job } from '../hooks/useJobs';
 
 const Salary = ({ job }: { job: Job }) => {
   return (

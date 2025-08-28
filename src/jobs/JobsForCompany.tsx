@@ -1,8 +1,8 @@
-import { useState } from "react";
-import type { Company } from "../hooks/useCompanies";
-import useJobs from "../hooks/useJobs";
-import JobsTable from "./JobsTable";
-import PageNav from "./PageNav";
+import { useState } from 'react';
+import type { Company } from '../hooks/useCompanies';
+import useJobs from '../hooks/useJobs';
+import JobsTable from './JobsTable';
+import PageNav from './PageNav';
 
 const JobsForCompany = ({ company }: { company: Company }) => {
   const [page, setPage] = useState<number>(1);

@@ -1,7 +1,7 @@
-import { type Job } from "../hooks/useJobs";
-import useSkills from "../hooks/useSkills";
-import SkillLink from "../skills/SkillLink";
-import SkillVersionLink from "../skills/SkillVersionLink";
+import { type Job } from '../hooks/useJobs';
+import useSkills from '../hooks/useSkills';
+import SkillLink from '../skills/SkillLink';
+import SkillVersionLink from '../skills/SkillVersionLink';
 
 const JobSkills = ({ job }: { job: Job }) => {
   const { findSkill } = useSkills();

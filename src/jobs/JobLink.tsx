@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { type Job } from "../hooks/useJobs";
+import { Link } from '@tanstack/react-router';
+import { type Job } from '../hooks/useJobs';
 
 const JobLink = ({ job }: { job: Job }) => {
   return (

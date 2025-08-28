@@ -1,15 +1,15 @@
-import { useMemo, useState } from "react";
-import { useDebounce } from "use-debounce";
-import useJobs, { type SearchFilters } from "../hooks/useJobs";
-import JobFilters from "./JobFilters";
-import JobsTable from "./JobsTable";
-import PageNav from "./PageNav";
+import { useMemo, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+import useJobs, { type SearchFilters } from '../hooks/useJobs';
+import JobFilters from './JobFilters';
+import JobsTable from './JobsTable';
+import PageNav from './PageNav';
 
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    company: "",
-    title: ""
+    company: '',
+    title: ''
   });
   const [debouncedCompany] = useDebounce(searchFilters.company, 1000);
   const [debouncedTitle] = useDebounce(searchFilters.title, 1000);

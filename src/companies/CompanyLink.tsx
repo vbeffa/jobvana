@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import type { Company } from "../hooks/useCompanies";
+import { Link } from '@tanstack/react-router';
+import type { Company } from '../hooks/useCompanies';
 
 const CompanyLink = ({ company }: { company: Company }) => {
   return (

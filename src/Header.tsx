@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import "./App.css";
+import { Link } from '@tanstack/react-router';
+import './App.css';
 
 const Header = () => {
   return (
@@ -7,23 +7,23 @@ const Header = () => {
       <Link to="/jobvana" className="[&.active]:font-bold">
         Home
       </Link>
-      {" • "}
+      {' • '}
       <Link to="/jobvana/about" className="[&.active]:font-bold">
         About
       </Link>
-      {" • "}
+      {' • '}
       <Link to="/jobvana/jobs" className="[&.active]:font-bold">
         Jobs
       </Link>
-      {" • "}
+      {' • '}
       <Link to="/jobvana/companies" className="[&.active]:font-bold">
         Companies
       </Link>
-      {" • "}
+      {' • '}
       <Link to="/jobvana/skills" className="[&.active]:font-bold">
         Skills
       </Link>
-      {" • "}
+      {' • '}
       <Link to="/jobvana/skill_categories" className="[&.active]:font-bold">
         Skill Categories
       </Link>

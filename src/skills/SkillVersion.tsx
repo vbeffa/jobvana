@@ -1,8 +1,8 @@
-import useJobs from "../hooks/useJobs";
-import useSkills from "../hooks/useSkills";
-import useSkillVersion from "../hooks/useSkillVersion";
-import JobsList from "../jobs/JobsList";
-import { Route } from "../routes/jobvana.skill_categories.$id.skills.$skill_id.skill_versions.$skill_version_id";
+import useJobs from '../hooks/useJobs';
+import useSkills from '../hooks/useSkills';
+import useSkillVersion from '../hooks/useSkillVersion';
+import JobsList from '../jobs/JobsList';
+import { Route } from '../routes/jobvana.skill_categories.$id.skills.$skill_id.skill_versions.$skill_version_id';
 
 const SkillVersion = () => {
   const { skillVersionId } = Route.useLoaderData();
@@ -23,7 +23,7 @@ const SkillVersion = () => {
     <>
       <h1>
         {skill.name}
-        {skill.abbreviation && ` (${skill.abbreviation})`}{" "}
+        {skill.abbreviation && ` (${skill.abbreviation})`}{' '}
         {skillVersion.version}
       </h1>
       <h2>Notes</h2>

@@ -1,15 +1,15 @@
-import { useMemo, useState } from "react";
-import Filter from "../Filter";
-import useCompanies from "../hooks/useCompanies";
-import Loading from "../Loading";
-import CompanyLink from "./CompanyLink";
+import { useMemo, useState } from 'react';
+import Filter from '../Filter';
+import useCompanies from '../hooks/useCompanies';
+import Loading from '../Loading';
+import CompanyLink from './CompanyLink';
 
-type SortCol = "company" | "num_employees";
-type SortDir = "up" | "down";
+type SortCol = 'company' | 'num_employees';
+type SortDir = 'up' | 'down';
 
 const Companies = () => {
-  const [sortCol, setSortCol] = useState<SortCol>("company");
-  const [sortDir, setSortDir] = useState<SortDir>("up");
+  const [sortCol, setSortCol] = useState<SortCol>('company');
+  const [sortDir, setSortDir] = useState<SortDir>('up');
   const [companyFilter, setCompanyFilter] = useState<string>();
 
   const companies = useCompanies();
@@ -25,12 +25,12 @@ const Companies = () => {
         return true;
       })
       .sort((company1, company2) => {
-        if (sortCol === "company") {
-          return sortDir === "up"
+        if (sortCol === 'company') {
+          return sortDir === 'up'
             ? company1!.name.localeCompare(company2!.name)
             : company2!.name.localeCompare(company1!.name);
         }
-        return sortDir === "down"
+        return sortDir === 'down'
           ? company2.num_employees - company1.num_employees
           : company1.num_employees - company2.num_employees;
       });
@@ -39,7 +39,7 @@ const Companies = () => {
   const setSort = (col: SortCol) => {
     const newSortCol = col;
     const newSortDir =
-      newSortCol === sortCol ? (sortDir === "up" ? "down" : "up") : "up";
+      newSortCol === sortCol ? (sortDir === 'up' ? 'down' : 'up') : 'up';
     if (newSortCol === sortCol) {
       setSortDir(newSortDir);
     } else {
@@ -62,7 +62,7 @@ const Companies = () => {
                     placeholder="Filter by company"
                     value={companyFilter}
                     onChange={setCompanyFilter}
-                    onClear={() => setCompanyFilter("")}
+                    onClear={() => setCompanyFilter('')}
                   />
                 </div>
               </td>
@@ -73,17 +73,17 @@ const Companies = () => {
             <tr>
               <th
                 className="p-1 border cursor-pointer w-[70%]"
-                onClick={() => setSort("company")}
+                onClick={() => setSort('company')}
               >
-                Name {sortCol === "company" && (sortDir === "up" ? "↑" : "↓")}
+                Name {sortCol === 'company' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
               <th className="p-1 border w-[20%]">Location</th>
               <th
                 className="p-1 border cursor-pointer"
-                onClick={() => setSort("num_employees")}
+                onClick={() => setSort('num_employees')}
               >
-                Size{" "}
-                {sortCol === "num_employees" && (sortDir === "up" ? "↑" : "↓")}
+                Size{' '}
+                {sortCol === 'num_employees' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
             </tr>
           </thead>

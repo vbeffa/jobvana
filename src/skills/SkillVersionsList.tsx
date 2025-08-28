@@ -1,6 +1,6 @@
-import type { SkillVersion } from "../hooks/useSkills";
-import useSkills from "../hooks/useSkills";
-import SkillVersionLink from "./SkillVersionLink";
+import type { SkillVersion } from '../hooks/useSkills';
+import useSkills from '../hooks/useSkills';
+import SkillVersionLink from './SkillVersionLink';
 
 const SkillVersionsList = ({
   skillVersions

@@ -1,6 +1,6 @@
-import useCompany from "../hooks/useCompany";
-import JobsForCompany from "../jobs/JobsForCompany";
-import { Route } from "../routes/jobvana.companies.$id";
+import useCompany from '../hooks/useCompany';
+import JobsForCompany from '../jobs/JobsForCompany';
+import { Route } from '../routes/jobvana.companies.$id';
 
 const Company = () => {
   const { id } = Route.useLoaderData();

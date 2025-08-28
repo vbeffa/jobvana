@@ -1,8 +1,8 @@
-import CompanyLink from "../companies/CompanyLink";
-import useJob from "../hooks/useJob";
-import JobSkills from "../jobs/JobSkills";
-import { Route } from "../routes/jobvana.jobs.$id";
-import Salary from "./Salary";
+import CompanyLink from '../companies/CompanyLink';
+import useJob from '../hooks/useJob';
+import JobSkills from '../jobs/JobSkills';
+import { Route } from '../routes/jobvana.jobs.$id';
+import Salary from './Salary';
 
 const Job = () => {
   const { id } = Route.useLoaderData();
