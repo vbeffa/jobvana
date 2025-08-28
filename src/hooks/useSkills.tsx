@@ -25,6 +25,7 @@ export type Skills = {
   findSkill: (id: number) => Skill | undefined;
 
   skillCategories: Array<SkillCategory> | undefined;
+  rootCategories: Array<SkillCategory> | undefined;
   findSkillCategory: (id: number) => SkillCategory | undefined;
   findSkills: (skillCategoryId: number) => Array<Skill> | undefined;
   findChildSkillCategories: (
@@ -141,6 +142,9 @@ const useSkills = (): Skills => {
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
     skillCategories,
+    rootCategories: skillCategories?.filter(
+      (category) => category.parent_skill_category_id === null
+    ),
     findSkillCategory: (id: number) =>
       skillCategories?.find((skillCategory) => skillCategory.id === id),
     findSkills: (skillCategoryId: number) =>

@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
+import Filter from '../Filter';
 import useSkills from '../hooks/useSkills';
 import Loading from '../Loading';
 import SkillCategoryLink from './SkillCategoryLink';
+import SkillCategoryTree from './SkillCategoryTree';
 import SkillsList from './SkillsList';
-import Filter from '../Filter';
 
 type SortCol = 'skill_category';
 type SortDir = 'up' | 'down';
@@ -13,7 +14,7 @@ const SkillCategories = () => {
   const [sortDir, setSortDir] = useState<SortDir>('up');
   const [categoryFilter, setCategoryFilter] = useState<string>();
 
-  const { skillCategories, findSkills } = useSkills();
+  const { skillCategories, rootCategories, skills, findSkills } = useSkills();
 
   const filteredSkillCategories = useMemo(() => {
     return skillCategories
@@ -48,6 +49,11 @@ const SkillCategories = () => {
   return (
     <>
       <h1>Skill Categories</h1>
+      <div className="text-left">
+        {rootCategories && skills && (
+          <SkillCategoryTree skillCategories={rootCategories} skills={skills} />
+        )}
+      </div>
       <div className="card">
         <table className="w-full">
           <thead>

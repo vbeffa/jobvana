@@ -42,3 +42,21 @@
 .read-the-docs {
   color: #888;
 }
+
+.tree {
+  --spacing: 1.5rem;
+  --radius: 10px;
+}
+
+.tree li {
+  display: block;
+  position: relative;
+  /* padding-top: 2px; */
+  padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
+  /* padding-bottom: 2px; */
+}
+
+.tree ul {
+  margin-left: calc(var(--radius) - var(--spacing));
+  padding-left: 0;
+}
