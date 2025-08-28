@@ -16,9 +16,12 @@ const Skills = () => {
   const [skillCategoryFilter, setSkillCategoryFilter] = useState<string>();
 
   const { skills, findSkillCategory } = useSkills();
-  const { jobsForSkill } = useJobs();
+  const { jobsForSkill, isPending } = useJobs();
 
   const filteredSkills = useMemo(() => {
+    if (isPending) {
+      return undefined;
+    }
     return skills
       ?.filter((skill) => {
         let pass = true;
@@ -68,13 +71,14 @@ const Skills = () => {
           : skillCategory2!.name.localeCompare(skillCategory1!.name);
       });
   }, [
-    findSkillCategory,
-    jobsForSkill,
-    skillCategoryFilter,
+    isPending,
     skills,
     skillFilter,
+    skillCategoryFilter,
+    findSkillCategory,
     sortCol,
-    sortDir
+    sortDir,
+    jobsForSkill
   ]);
 
   const setSort = (col: SortCol) => {
