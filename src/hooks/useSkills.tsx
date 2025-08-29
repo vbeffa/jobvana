@@ -17,7 +17,7 @@ export type SkillVersion =
 
 export type SkillCategory =
   Database['public']['Tables']['skill_categories']['Row'] & {
-    childCategories: Array<SkillCategory> | undefined;
+    childCategories: Array<SkillCategory>;
   };
 
 export type Skills = {

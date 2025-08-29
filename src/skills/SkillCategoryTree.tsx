@@ -21,27 +21,25 @@ const SkillCategoryTree = ({
             : null;
           return (
             <li key={skillCategory.id}>
-              {skillCategory.childCategories &&
-                skillCategory.childCategories.length > 0 && (
-                  <details open>
-                    <summary className="pb-[2px]">
-                      <SkillCategoryLink skillCategory={skillCategory} />
-                      {numSkillsString}
-                    </summary>
-                    <SkillCategoryTree
-                      skillCategories={skillCategory.childCategories}
-                      skills={skills}
-                    />
-                  </details>
-                )}
-              {skillCategory.childCategories &&
-                skillCategory.childCategories.length === 0 && (
-                  <div className="pb-[2px]">
-                    <span className="font-extrabold">&bull;</span>{' '}
+              {skillCategory.childCategories.length > 0 && (
+                <details open>
+                  <summary className="pb-[2px]">
                     <SkillCategoryLink skillCategory={skillCategory} />
                     {numSkillsString}
-                  </div>
-                )}
+                  </summary>
+                  <SkillCategoryTree
+                    skillCategories={skillCategory.childCategories}
+                    skills={skills}
+                  />
+                </details>
+              )}
+              {skillCategory.childCategories.length === 0 && (
+                <div className="pb-[2px]">
+                  <span className="font-extrabold">&bull;</span>{' '}
+                  <SkillCategoryLink skillCategory={skillCategory} />
+                  {numSkillsString}
+                </div>
+              )}
             </li>
           );
         })}
