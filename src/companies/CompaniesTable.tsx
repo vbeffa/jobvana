@@ -34,6 +34,10 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
     }
   };
 
+  if (!sortedCompanies) {
+    return null;
+  }
+
   return (
     <table className="w-full">
       <thead>
@@ -55,14 +59,14 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
       </thead>
       <tbody>
         {/* <Loading waitingFor={companies} colSpan={1} /> */}
-        {sortedCompanies?.length === 0 && (
+        {sortedCompanies.length === 0 && (
           <tr key={0}>
             <td className="p-2 border-[0.05rem] text-center" colSpan={6}>
               No companies found
             </td>
           </tr>
         )}
-        {sortedCompanies?.map((company) => {
+        {sortedCompanies.map((company) => {
           return (
             <tr key={company.id}>
               <td className="p-1 border text-left align-top">
