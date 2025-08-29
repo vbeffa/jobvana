@@ -6,7 +6,7 @@ const SkillsList = ({ skills }: { skills: Array<Skill> }) => {
     <ul className="list-inside list-disc">
       {skills.map((skill) => (
         <li key={skill.id}>
-          <SkillLink skill={skill} />
+          <SkillLink skill={skill} includeAbbrev={true} />
         </li>
       ))}
     </ul>

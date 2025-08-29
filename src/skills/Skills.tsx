@@ -162,8 +162,7 @@ const Skills = () => {
               return (
                 <tr key={skill.id}>
                   <td className="p-1 border text-left">
-                    <SkillLink skill={skill} />
-                    {skill.abbreviation && ` (${skill.abbreviation})`}
+                    <SkillLink skill={skill} includeAbbrev={true} />
                   </td>
                   <td className="p-1 border text-left">
                     {skillCategory && (
