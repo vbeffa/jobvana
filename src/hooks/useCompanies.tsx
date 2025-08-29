@@ -55,10 +55,12 @@ const useCompanies = (
         q = q.ilike('name', `%${filters.name}%`);
       }
 
-      const { error, data, count } = await q.range(
-        (params.paging.page - 1) * params.paging.pageSize,
-        params.paging.page * params.paging.pageSize - 1
-      );
+      const { error, data, count } = await q
+        .range(
+          (params.paging.page - 1) * params.paging.pageSize,
+          params.paging.page * params.paging.pageSize - 1
+        )
+        .order('name');
       return { error, data, count };
     },
     placeholderData: keepPreviousData
@@ -69,9 +71,7 @@ const useCompanies = (
       return undefined;
     }
 
-    return companiesData.data.sort((company1, company2) =>
-      company1.name.localeCompare(company2.name)
-    );
+    return companiesData.data;
   }, [companiesData]);
 
   const companyCount = useMemo(
@@ -80,7 +80,7 @@ const useCompanies = (
   );
 
   return {
-    companies: companies,
+    companies,
     error: companiesData?.error?.message,
     isPlaceholderData,
     isPending,

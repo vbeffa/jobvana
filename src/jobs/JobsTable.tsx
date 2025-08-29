@@ -126,7 +126,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
         {/* {<Loading waitingFor={jobs} colSpan={6} />} */}
         {sortedJobs.length === 0 && (
           <tr key={0}>
-            <td className="p-2 border-[0.05rem] text-center" colSpan={6}>
+            <td className="p-2 border-[0.05rem] text-center" colSpan={7}>
               No jobs found
             </td>
           </tr>
