@@ -23,7 +23,7 @@ const PageNav = ({
   }
 
   if (!numPages) {
-    return <>Loading...</>;
+    return <div className="text-left h-9">Loading...</div>;
   }
 
   return (

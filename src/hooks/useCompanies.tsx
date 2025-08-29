@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
@@ -60,7 +60,8 @@ const useCompanies = (
         params.paging.page * params.paging.pageSize - 1
       );
       return { error, data, count };
-    }
+    },
+    placeholderData: keepPreviousData
   });
 
   const companies = useMemo(() => {

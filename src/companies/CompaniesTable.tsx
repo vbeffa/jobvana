@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import Filter from '../Filter';
 import { type Company } from '../hooks/useCompanies';
 import CompanyLink from './CompanyLink';
 
@@ -9,7 +8,6 @@ type SortDir = 'up' | 'down';
 const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
   const [sortCol, setSortCol] = useState<SortCol>('company');
   const [sortDir, setSortDir] = useState<SortDir>('up');
-  const [companyFilter, setCompanyFilter] = useState<string>();
 
   const sortedCompanies = useMemo(() => {
     return companies?.sort((company1, company2) => {
@@ -36,29 +34,9 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
     }
   };
 
-  if (!sortedCompanies) {
-    return null;
-  }
-
   return (
     <table className="w-full">
       <thead>
-        <tr>
-          <td className="text-left">
-            <div className="w-[25%]">
-              <Filter
-                id="company_filter"
-                placeholder="Filter by company"
-                value={companyFilter}
-                onChange={setCompanyFilter}
-                onClear={() => setCompanyFilter('')}
-              />
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td className="h-1" colSpan={2} />
-        </tr>
         <tr>
           <th
             className="p-1 border cursor-pointer w-[70%]"
@@ -77,14 +55,14 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
       </thead>
       <tbody>
         {/* <Loading waitingFor={companies} colSpan={1} /> */}
-        {sortedCompanies.length === 0 && (
+        {sortedCompanies?.length === 0 && (
           <tr key={0}>
             <td className="p-2 border-[0.05rem] text-center" colSpan={6}>
               No companies found
             </td>
           </tr>
         )}
-        {sortedCompanies.map((company) => {
+        {sortedCompanies?.map((company) => {
           return (
             <tr key={company.id}>
               <td className="p-1 border text-left align-top">
