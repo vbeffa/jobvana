@@ -90,11 +90,12 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
             Title {sortCol === 'title' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[15%]"
+            className="p-2 border-[0.05rem] cursor-pointer w-[10%]"
             onClick={() => setSort('role')}
           >
             Role {sortCol === 'role' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
+          <th className="p-2 border-[0.05rem] cursor-pointer w-[5%]">Level</th>
           <th
             className="p-2 border-[0.05rem] cursor-pointer w-[10%]"
             onClick={() => setSort('created')}
@@ -153,7 +154,10 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
                 <JobLink job={job} />
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
-                {roleLevel} {job.role?.name}
+                {job.role?.name}
+              </td>
+              <td className="p-2 border-[0.05rem] text-left align-top">
+                {roleLevel}
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
                 {new Date(job.created_at).toLocaleDateString()}

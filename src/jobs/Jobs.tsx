@@ -11,8 +11,14 @@ const Jobs = () => {
     company: '',
     title: ''
   });
-  const [debouncedCompany] = useDebounce(searchFilters.company, 1000);
-  const [debouncedTitle] = useDebounce(searchFilters.title, 1000);
+  const [debouncedCompany] = useDebounce(
+    searchFilters.company,
+    searchFilters.company ? 1000 : 0
+  );
+  const [debouncedTitle] = useDebounce(
+    searchFilters.title,
+    searchFilters.title ? 1000 : 0
+  );
 
   const filters: SearchFilters = useMemo(
     () => ({

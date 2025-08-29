@@ -53,7 +53,6 @@ export type JobsParams = {
     pageSize: number;
   };
   filters?: SearchFilters;
-  companyId?: number;
 };
 
 type QueryKey = {
@@ -81,9 +80,12 @@ const useJobs = (
       // console.log("query", params);
       let q = supabase
         .from('jobs')
-        .select('*, companies!inner(*), roles!inner(*), skills(*)', {
-          count: 'exact'
-        })
+        .select(
+          '*, companies!jobs_company_id_fkey!inner(*), roles!inner(*), skills(*)',
+          {
+            count: 'exact'
+          }
+        )
         .filter('status', 'eq', 'open');
 
       const { filters } = params;
@@ -124,12 +126,14 @@ const useJobs = (
         // console.log(createdAfter);
         q = q.filter('created_at', 'gte', createdAfter);
       }
+
       const { error, data, count } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .overrideTypes<Array<{ companies: Company }>>();
       console.log(data);
       if (error) {
         console.log(JSON.stringify(error));
