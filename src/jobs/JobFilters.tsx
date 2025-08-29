@@ -3,6 +3,7 @@ import type { SearchFilters } from '../hooks/useJobs';
 import CreatedSelect from './CreatedSelect';
 import RoleSelect from './RoleSelect';
 import SalarySelect from './SalarySelect';
+import SkillSelect from './SkillSelect';
 
 const JobFilters = ({
   filters,
@@ -83,13 +84,22 @@ const JobFilters = ({
           }}
         />
       </div>
+      <div>Skill:</div>
+      <div className="col-span-2 flex flex-row gap-x-2">
+        <SkillSelect
+          id="role"
+          skillId={filters.skillId}
+          onChange={(val) => {
+            setFilters((filters) => ({ ...filters, skillId: val }));
+          }}
+        />
+      </div>
       <div>Created:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
         <CreatedSelect
           id="role"
           value={filters.created}
           onChange={(val) => {
-            console.log(val);
             setFilters((filters) => ({ ...filters, created: val }));
           }}
         />

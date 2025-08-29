@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
 import { type Company } from './useCompanies';
-import type { DbSkill, SkillVersion } from './useSkills';
-import dayjs from 'dayjs';
+import type { DbSkill } from './useSkills';
 
 export type CreatedRange =
   | 'today'
@@ -19,6 +19,7 @@ export type SearchFilters = {
   roleId?: number;
   minSalary?: number;
   maxSalary?: number;
+  skillId?: number;
   created?: CreatedRange;
 };
 
@@ -26,7 +27,7 @@ export type Job = Database['public']['Tables']['jobs']['Row'] & {
   company: Company | undefined;
   role: Role | undefined;
   skills: Array<DbSkill>;
-  skillVersions: Array<SkillVersion>;
+  // skillVersions: Array<SkillVersion>;
 };
 
 export type Role = Database['public']['Tables']['roles']['Row'];
@@ -43,7 +44,7 @@ export type Jobs = {
 
   /** Includes skill versions for skill. */
   jobsForSkill: (skillId: number) => Array<Job> | undefined;
-  jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
+  // jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
 };
 
 export type JobsParams = {
@@ -80,12 +81,9 @@ const useJobs = (
       // console.log("query", params);
       let q = supabase
         .from('jobs')
-        .select(
-          '*, companies!inner(*), roles!inner(*), skills(*), skill_versions(*)',
-          {
-            count: 'exact'
-          }
-        )
+        .select('*, companies!inner(*), roles!inner(*), skills(*)', {
+          count: 'exact'
+        })
         .filter('status', 'eq', 'open');
 
       const { filters } = params;
@@ -106,6 +104,9 @@ const useJobs = (
       }
       if (filters?.maxSalary) {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
+      }
+      if (filters?.skillId) {
+        q = q.eq('skills.id', filters.skillId);
       }
       if (filters?.created) {
         const createdAfter = (() => {
@@ -147,8 +148,8 @@ const useJobs = (
       return {
         ...job,
         company: job.companies,
-        role: job.roles,
-        skillVersions: job.skill_versions
+        role: job.roles
+        // skillVersions: job.skill_versions
       };
     });
   }, [jobsData]);
@@ -168,20 +169,20 @@ const useJobs = (
     // TODO fix - jobs are now paged, this needs to be in a separate hook
     jobsForSkill: (skillId: number) => {
       return jobs?.filter(
-        (job) =>
-          job.skills.map((skill) => skill.id).includes(skillId) ||
-          job.skill_versions
-            .map((skillVersion) => skillVersion.skill_id)
-            .includes(skillId)
-      );
-    },
-    jobsForSkillVersion: (skillVersionId: number) => {
-      return jobs?.filter((job) =>
-        job.skill_versions
-          .map((skillVersion) => skillVersion.id)
-          .includes(skillVersionId)
+        (job) => job.skills.map((skill) => skill.id).includes(skillId)
+        //  ||
+        //   job.skill_versions
+        //     .map((skillVersion) => skillVersion.skill_id)
+        //     .includes(skillId)
       );
     }
+    // jobsForSkillVersion: (skillVersionId: number) => {
+    //   return jobs?.filter((job) =>
+    //     job.skill_versions
+    //       .map((skillVersion) => skillVersion.id)
+    //       .includes(skillVersionId)
+    //   );
+    // }
   };
 };
 

@@ -8,7 +8,7 @@ const SkillVersion = () => {
   const { skillVersionId } = Route.useLoaderData();
   const { findSkill } = useSkills();
   const { skillVersion } = useSkillVersion({ id: skillVersionId });
-  const { jobsForSkillVersion } = useJobs();
+  const { jobsForSkill } = useJobs();
   if (!skillVersion) {
     return null;
   }
@@ -17,7 +17,7 @@ const SkillVersion = () => {
     return null;
   }
 
-  const jobs = jobsForSkillVersion(skillVersionId);
+  const jobs = jobsForSkill(skillVersion.skill_id);
 
   return (
     <>

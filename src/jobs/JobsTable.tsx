@@ -132,6 +132,18 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
         )}
         {sortedJobs.map((job) => {
           const company = job.company;
+          const roleLevel = (() => {
+            switch (job.role_level) {
+              case 1:
+                return 'Junior';
+              case 2:
+                return 'Mid';
+              case 3:
+                return 'Senior';
+              case 4:
+                return 'Staff';
+            }
+          })();
           return (
             <tr key={job.id}>
               <td className="p-2 border-[0.05rem] text-left align-top">
@@ -141,7 +153,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
                 <JobLink job={job} />
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
-                {job.role?.name}
+                {roleLevel} {job.role?.name}
               </td>
               <td className="p-2 border-[0.05rem] text-left align-top">
                 {new Date(job.created_at).toLocaleDateString()}

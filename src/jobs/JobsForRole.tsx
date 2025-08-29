@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import type { Company } from '../hooks/useCompanies';
+import type { Role } from '../hooks/useRoles';
 import useJobs from '../hooks/useJobs';
 import JobsTable from './JobsTable';
 import PageNav from './PageNav';
 
-const JobsForCompany = ({ company }: { company: Company }) => {
+const JobsForRole = ({ role }: { role: Role }) => {
   const [page, setPage] = useState<number>(1);
   const { jobs, openJobCount, isPlaceholderData, isPending } = useJobs({
     paging: { page: 1, pageSize: 50 },
-    filters: { companyId: company.id }
+    filters: { roleId: role.id }
   });
 
   return (
@@ -28,4 +28,4 @@ const JobsForCompany = ({ company }: { company: Company }) => {
   );
 };
 
-export default JobsForCompany;
+export default JobsForRole;

@@ -20,6 +20,10 @@ const Header = () => {
         Companies
       </Link>
       {' • '}
+      <Link to="/jobvana/roles" className="[&.active]:font-bold">
+        Roles
+      </Link>
+      {' • '}
       <Link to="/jobvana/skills" className="[&.active]:font-bold">
         Skills
       </Link>

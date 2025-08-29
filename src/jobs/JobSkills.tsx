@@ -1,11 +1,7 @@
 import { type Job } from '../hooks/useJobs';
-import useSkills from '../hooks/useSkills';
 import SkillLink from '../skills/SkillLink';
-import SkillVersionLink from '../skills/SkillVersionLink';
 
 const JobSkills = ({ job }: { job: Job }) => {
-  const { findSkill } = useSkills();
-
   return (
     <ul className="list-inside list-disc">
       {job.skills.map((skill) => (
@@ -13,7 +9,7 @@ const JobSkills = ({ job }: { job: Job }) => {
           <SkillLink skill={skill} />
         </li>
       ))}
-      {job.skillVersions.map((skillVersion) => {
+      {/* {job.skillVersions.map((skillVersion) => {
         const skill = findSkill(skillVersion.skill_id);
         return (
           <li key={skillVersion.id}>
@@ -22,7 +18,7 @@ const JobSkills = ({ job }: { job: Job }) => {
             )}
           </li>
         );
-      })}
+      })} */}
     </ul>
   );
 };

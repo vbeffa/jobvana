@@ -21,6 +21,7 @@ const Jobs = () => {
       roleId: searchFilters.roleId,
       minSalary: searchFilters.minSalary,
       maxSalary: searchFilters.maxSalary,
+      skillId: searchFilters.skillId,
       created: searchFilters.created
     }),
     [
@@ -29,7 +30,8 @@ const Jobs = () => {
       searchFilters.created,
       searchFilters.maxSalary,
       searchFilters.minSalary,
-      searchFilters.roleId
+      searchFilters.roleId,
+      searchFilters.skillId
     ]
   );
 

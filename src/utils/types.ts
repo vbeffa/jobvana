@@ -104,11 +104,10 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
-          role_id: number | null
-          role_level: number | null
+          role_id: number
+          role_level: number
           salary_high: number
           salary_low: number
-          salary_range: unknown | null
           status: Database['public']['Enums']['job_status']
           title: string
         }
@@ -117,11 +116,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          role_id?: number | null
-          role_level?: number | null
+          role_id: number
+          role_level: number
           salary_high?: number
           salary_low?: number
-          salary_range?: unknown | null
           status?: Database['public']['Enums']['job_status']
           title: string
         }
@@ -130,11 +128,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          role_id?: number | null
-          role_level?: number | null
+          role_id?: number
+          role_level?: number
           salary_high?: number
           salary_low?: number
-          salary_range?: unknown | null
           status?: Database['public']['Enums']['job_status']
           title?: string
         }
