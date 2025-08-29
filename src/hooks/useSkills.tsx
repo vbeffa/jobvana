@@ -3,7 +3,8 @@ import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
 
-export type Skill = Database['public']['Tables']['skills']['Row'] & {
+export type DbSkill = Database['public']['Tables']['skills']['Row'];
+export type Skill = DbSkill & {
   versions: Array<SkillVersion>;
   relatedSkills: Array<Skill>;
 };

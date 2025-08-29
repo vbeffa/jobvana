@@ -21,15 +21,15 @@ const Jobs = () => {
       roleId: searchFilters.roleId,
       minSalary: searchFilters.minSalary,
       maxSalary: searchFilters.maxSalary,
-      skillId: searchFilters.skillId
+      created: searchFilters.created
     }),
     [
       debouncedCompany,
       debouncedTitle,
+      searchFilters.created,
       searchFilters.maxSalary,
       searchFilters.minSalary,
-      searchFilters.roleId,
-      searchFilters.skillId
+      searchFilters.roleId
     ]
   );
 
@@ -37,7 +37,6 @@ const Jobs = () => {
     paging: { page, pageSize: 50 },
     filters
   });
-  console.log(openJobCount);
 
   return (
     <>

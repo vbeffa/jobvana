@@ -20,7 +20,7 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
-      quotes: [2, 'single', { avoidEscape: true }]
+      quotes: [2, 'single', { avoidEscape: true, allowTemplateLiterals: true }]
     }
   },
 ])

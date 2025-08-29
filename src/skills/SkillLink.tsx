@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import type { Skill } from '../hooks/useSkills';
+import type { DbSkill } from '../hooks/useSkills';
 
-const SkillLink = ({ skill }: { skill: Skill }) => {
+const SkillLink = ({ skill }: { skill: DbSkill }) => {
   return (
     <Link
       to="/jobvana/skill_categories/$id/skills/$skill_id"

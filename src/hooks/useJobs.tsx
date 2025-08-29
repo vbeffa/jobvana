@@ -3,7 +3,14 @@ import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
 import { type Company } from './useCompanies';
-import useSkills, { type Skill, type SkillVersion } from './useSkills';
+import type { DbSkill, SkillVersion } from './useSkills';
+import dayjs from 'dayjs';
+
+export type CreatedRange =
+  | 'today'
+  | 'last_three_days'
+  | 'last_week'
+  | 'last_month';
 
 export type SearchFilters = {
   company?: string;
@@ -12,13 +19,13 @@ export type SearchFilters = {
   roleId?: number;
   minSalary?: number;
   maxSalary?: number;
-  skillId?: number;
+  created?: CreatedRange;
 };
 
 export type Job = Database['public']['Tables']['jobs']['Row'] & {
   company: Company | undefined;
   role: Role | undefined;
-  skills: Array<Skill>;
+  skills: Array<DbSkill>;
   skillVersions: Array<SkillVersion>;
 };
 
@@ -55,8 +62,6 @@ type QueryKey = {
 const useJobs = (
   params: JobsParams = { paging: { page: 1, pageSize: 50 } }
 ): Jobs => {
-  const { skills, findSkillVersion } = useSkills();
-
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
@@ -76,12 +81,11 @@ const useJobs = (
       let q = supabase
         .from('jobs')
         .select(
-          '*, companies!inner(*), roles!inner(*), job_skills(*), skills(*)',
+          '*, companies!inner(*), roles!inner(*), skills(*), skill_versions(*)',
           {
             count: 'exact'
           }
         )
-        // .is("skills", null)
         .filter('status', 'eq', 'open');
 
       const { filters } = params;
@@ -103,8 +107,21 @@ const useJobs = (
       if (filters?.maxSalary) {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
-      if (filters?.skillId) {
-        q = q.filter('skills.id', 'eq', filters.skillId);
+      if (filters?.created) {
+        const createdAfter = (() => {
+          switch (filters.created) {
+            case 'today':
+              return dayjs().startOf('day').toDate();
+            case 'last_three_days':
+              return dayjs().subtract(3, 'days').startOf('day').toDate();
+            case 'last_week':
+              return dayjs().subtract(7, 'days').startOf('day').toDate();
+            case 'last_month':
+              return dayjs().subtract(1, 'month').startOf('day').toDate();
+          }
+        })().toISOString();
+        // console.log(createdAfter);
+        q = q.filter('created_at', 'gte', createdAfter);
       }
       const { error, data, count } = await q
         .range(
@@ -113,37 +130,16 @@ const useJobs = (
         )
         .order('created_at', { ascending: false });
       console.log(data);
-      console.log(error?.name);
+      if (error) {
+        console.log(JSON.stringify(error));
+      }
       return { error, data, count };
     },
     placeholderData: keepPreviousData
   });
 
-  const { data: jobSkillsData } = useQuery({
-    queryKey: ['jobSkills'],
-    queryFn: async () => {
-      const { data } = await supabase.from('job_skills').select();
-      return data;
-    }
-  });
-
-  const { data: jobSkillVersionsData } = useQuery({
-    queryKey: ['jobSkillVersions'],
-    queryFn: async () => {
-      const { data } = await supabase.from('job_skill_versions').select();
-      return data;
-    }
-  });
-
-  const jobSkills = useMemo(() => jobSkillsData, [jobSkillsData]);
-
-  const jobSkillVersions = useMemo(
-    () => jobSkillVersionsData,
-    [jobSkillVersionsData]
-  );
-
   const jobs = useMemo(() => {
-    if (!jobsData?.data || !jobSkills || !jobSkillVersions || !skills) {
+    if (!jobsData?.data) {
       return undefined;
     }
 
@@ -152,21 +148,10 @@ const useJobs = (
         ...job,
         company: job.companies,
         role: job.roles,
-        skills: skills.filter((skill) =>
-          jobSkills
-            .filter((jobSkill) => jobSkill.job_id === job.id)
-            .map((jobSkill) => jobSkill.skill_id)
-            .includes(skill.id)
-        ),
-        skillVersions: jobSkillVersions
-          .filter((jobSkillVersion) => jobSkillVersion.job_id === job.id)
-          .map((jobSkillVersion) =>
-            findSkillVersion(jobSkillVersion.skill_version_id)
-          )
-          .filter((skillVersion) => skillVersion !== undefined)
+        skillVersions: job.skill_versions
       };
     });
-  }, [jobsData, jobSkills, jobSkillVersions, skills, findSkillVersion]);
+  }, [jobsData]);
 
   const openJobCount = useMemo(
     () => jobsData?.count ?? undefined,
@@ -185,14 +170,14 @@ const useJobs = (
       return jobs?.filter(
         (job) =>
           job.skills.map((skill) => skill.id).includes(skillId) ||
-          job.skillVersions
+          job.skill_versions
             .map((skillVersion) => skillVersion.skill_id)
             .includes(skillId)
       );
     },
     jobsForSkillVersion: (skillVersionId: number) => {
       return jobs?.filter((job) =>
-        job.skillVersions
+        job.skill_versions
           .map((skillVersion) => skillVersion.id)
           .includes(skillVersionId)
       );

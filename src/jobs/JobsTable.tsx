@@ -99,7 +99,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
             className="p-2 border-[0.05rem] cursor-pointer w-[10%]"
             onClick={() => setSort('created')}
           >
-            Created {sortCol === 'created' && (sortDir === 'up' ? '↑' : '↓')}
+            Posted {sortCol === 'created' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
           <th className="p-2 border-[0.05rem] w-[15%]">
             <div className="flex flex-row items-center w-full gap-2">

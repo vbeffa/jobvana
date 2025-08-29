@@ -18,6 +18,10 @@ const PageNav = ({
     [pageSize, total]
   );
 
+  if (total === 0 && !isLoading) {
+    return <div className="h-9"></div>;
+  }
+
   if (!numPages) {
     return <>Loading...</>;
   }
