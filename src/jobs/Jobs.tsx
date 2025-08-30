@@ -3,7 +3,7 @@ import { useDebounce } from 'use-debounce';
 import useJobs, { type SearchFilters } from '../hooks/useJobs';
 import JobFilters from './JobFilters';
 import JobsTable from './JobsTable';
-import PageNav from './PageNav';
+import PageNav from '../PageNav';
 
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);

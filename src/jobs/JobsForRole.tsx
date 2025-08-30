@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Role } from '../hooks/useRoles';
 import useJobs from '../hooks/useJobs';
 import JobsTable from './JobsTable';
-import PageNav from './PageNav';
+import PageNav from '../PageNav';
 
 const JobsForRole = ({ role }: { role: Role }) => {
   const [page, setPage] = useState<number>(1);

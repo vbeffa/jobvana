@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import useCompanies, { type SearchFilters } from '../hooks/useCompanies';
-import PageNav from '../jobs/PageNav';
+import PageNav from '../PageNav';
 import CompaniesTable from './CompaniesTable';
 import CompanyFilters from './CompanyFilters';
 
