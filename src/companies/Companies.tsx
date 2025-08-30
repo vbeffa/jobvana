@@ -7,24 +7,44 @@ import CompanyFilters from './CompanyFilters';
 
 const Companies = () => {
   const [page, setPage] = useState<number>(1);
+  const [debouncedPage] = useDebounce(page, 500);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    name: ''
+    name: '',
+    minSize: 1,
+    maxSize: 1000
   });
   const [debouncedName] = useDebounce(
     searchFilters.name,
     searchFilters.name ? 1000 : 0
   );
-
-  const filters: SearchFilters = useMemo(
-    () => ({
-      name: debouncedName
-    }),
-    [debouncedName]
+  const [debouncedMinSize] = useDebounce(
+    searchFilters.minSize,
+    searchFilters.minSize ? 500 : 0
   );
+  const [debouncedMaxSize] = useDebounce(
+    searchFilters.maxSize,
+    searchFilters.maxSize ? 500 : 0
+  );
+
+  const filters: SearchFilters = useMemo(() => {
+    let minSize = debouncedMinSize;
+    if ((debouncedMinSize ?? 1) > (debouncedMaxSize ?? 1000)) {
+      setSearchFilters((filters) => ({
+        ...filters,
+        minSize: debouncedMaxSize
+      }));
+      minSize = debouncedMaxSize;
+    }
+    return {
+      name: debouncedName,
+      minSize,
+      maxSize: debouncedMaxSize
+    };
+  }, [debouncedMaxSize, debouncedMinSize, debouncedName]);
 
   const { companies, error, isPlaceholderData, isPending, companyCount } =
     useCompanies({
-      paging: { page, pageSize: 50 },
+      paging: { page: debouncedPage, pageSize: 50 },
       filters
     });
 

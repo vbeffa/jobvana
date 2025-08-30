@@ -16,10 +16,52 @@ const CompanyFilters = ({
           id="company_filter"
           placeholder="Filter by company"
           value={filters.name}
-          onChange={(val) => {
-            setFilters((filters) => ({ ...filters, name: val }));
+          onChange={(name) => {
+            setFilters((filters) => ({ ...filters, name }));
           }}
           onClear={() => setFilters((filters) => ({ ...filters, name: '' }))}
+        />
+      </div>
+      <div>Size:</div>
+      <div className="col-span-2 flex flex-row gap-x-2">
+        <input
+          type="number"
+          step={1}
+          min={1}
+          max={1000}
+          className="border h-9 pr-1 text-center
+                     border-gray-500 rounded-lg"
+          value={filters.minSize}
+          onChange={(e) => {
+            let minSize = parseInt(e.target.value);
+            if (isNaN(minSize)) {
+              return;
+            }
+            if (minSize < 1) {
+              minSize = 1;
+            }
+            setFilters((filters) => ({ ...filters, minSize }));
+          }}
+        />
+        <div className="flex pt-1">-</div>
+        <input
+          type="number"
+          step={1}
+          min={1}
+          max={1000}
+          className="border h-9 pr-1 text-center
+                     border-gray-500 rounded-lg"
+          value={filters.maxSize}
+          onChange={(e) => {
+            let maxSize = parseInt(e.target.value);
+            if (isNaN(maxSize)) {
+              return;
+            }
+            if (maxSize > 1000) {
+              maxSize = 1000;
+            }
+            setFilters((filters) => ({ ...filters, maxSize }));
+          }}
         />
       </div>
     </div>

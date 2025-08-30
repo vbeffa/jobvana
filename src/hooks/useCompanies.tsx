@@ -5,6 +5,8 @@ import type { Database } from '../utils/types';
 
 export type SearchFilters = {
   name?: string;
+  minSize?: number;
+  maxSize?: number;
 };
 
 export type Company = Database['public']['Tables']['companies']['Row'];
@@ -53,6 +55,12 @@ const useCompanies = (
       const { filters } = params;
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
+      }
+      if (filters?.minSize) {
+        q = q.gte('num_employees', filters.minSize);
+      }
+      if (filters?.maxSize) {
+        q = q.lte('num_employees', filters.maxSize);
       }
 
       const { error, data, count } = await q

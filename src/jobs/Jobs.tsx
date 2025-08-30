@@ -7,6 +7,7 @@ import PageNav from '../PageNav';
 
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);
+  const [debouncedPage] = useDebounce(page, 500);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     company: '',
     title: ''
@@ -30,7 +31,7 @@ const Jobs = () => {
   );
 
   const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
-    paging: { page, pageSize: 50 },
+    paging: { page: debouncedPage, pageSize: 50 },
     filters
   });
 
