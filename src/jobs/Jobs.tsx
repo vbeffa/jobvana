@@ -22,23 +22,11 @@ const Jobs = () => {
 
   const filters: SearchFilters = useMemo(
     () => ({
+      ...searchFilters,
       company: debouncedCompany,
-      title: debouncedTitle,
-      roleId: searchFilters.roleId,
-      minSalary: searchFilters.minSalary,
-      maxSalary: searchFilters.maxSalary,
-      skillId: searchFilters.skillId,
-      created: searchFilters.created
+      title: debouncedTitle
     }),
-    [
-      debouncedCompany,
-      debouncedTitle,
-      searchFilters.created,
-      searchFilters.maxSalary,
-      searchFilters.minSalary,
-      searchFilters.roleId,
-      searchFilters.skillId
-    ]
+    [debouncedCompany, debouncedTitle, searchFilters]
   );
 
   const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
