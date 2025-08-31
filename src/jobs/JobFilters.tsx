@@ -20,8 +20,8 @@ const JobFilters = ({
           id="company_filter"
           placeholder="Filter by company"
           value={filters.company}
-          onChange={(val) => {
-            setFilters((filters) => ({ ...filters, company: val }));
+          onChange={(company) => {
+            setFilters((filters) => ({ ...filters, company }));
           }}
           onClear={() => setFilters((filters) => ({ ...filters, company: '' }))}
         />
@@ -32,8 +32,8 @@ const JobFilters = ({
           id="job_title_filter"
           placeholder="Filter by job title"
           value={filters.title}
-          onChange={(val) => {
-            setFilters((filters) => ({ ...filters, title: val }));
+          onChange={(title) => {
+            setFilters((filters) => ({ ...filters, title }));
           }}
           onClear={() => setFilters((filters) => ({ ...filters, title: '' }))}
         />
@@ -43,8 +43,8 @@ const JobFilters = ({
         <RoleSelect
           id="role"
           roleId={filters.roleId}
-          onChange={(val) => {
-            setFilters((filters) => ({ ...filters, roleId: val }));
+          onChange={(roleId) => {
+            setFilters((filters) => ({ ...filters, roleId }));
           }}
         />
       </div>
@@ -89,8 +89,8 @@ const JobFilters = ({
         <SkillSelect
           id="role"
           skillId={filters.skillId}
-          onChange={(val) => {
-            setFilters((filters) => ({ ...filters, skillId: val }));
+          onChange={(skillId) => {
+            setFilters((filters) => ({ ...filters, skillId }));
           }}
         />
       </div>
@@ -99,8 +99,8 @@ const JobFilters = ({
         <CreatedSelect
           id="role"
           value={filters.created}
-          onChange={(val) => {
-            setFilters((filters) => ({ ...filters, created: val }));
+          onChange={(created) => {
+            setFilters((filters) => ({ ...filters, created }));
           }}
         />
       </div>

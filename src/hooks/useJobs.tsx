@@ -73,6 +73,7 @@ const useJobs = (
   const {
     isPlaceholderData,
     isPending,
+    error,
     data: jobsData
   } = useQuery({
     queryKey: ['jobs', queryKey],
@@ -165,7 +166,7 @@ const useJobs = (
 
   return {
     jobs,
-    error: jobsData?.error?.message,
+    error: error?.message,
     isPlaceholderData,
     isPending,
     openJobCount,

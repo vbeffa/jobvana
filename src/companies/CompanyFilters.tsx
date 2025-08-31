@@ -1,5 +1,6 @@
 import Filter from '../Filter';
 import type { SearchFilters } from '../hooks/useCompanies';
+import IndustrySelect from './IndustrySelect';
 
 const CompanyFilters = ({
   filters,
@@ -61,6 +62,16 @@ const CompanyFilters = ({
               maxSize = 1000;
             }
             setFilters((filters) => ({ ...filters, maxSize }));
+          }}
+        />
+      </div>
+      <div>Industry:</div>
+      <div className="col-span-2">
+        <IndustrySelect
+          id="industry"
+          industryId={filters.industryId}
+          onChange={(industryId) => {
+            setFilters((filters) => ({ ...filters, industryId }));
           }}
         />
       </div>

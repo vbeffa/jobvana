@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { type Company } from '../hooks/useCompanies';
 import CompanyLink from './CompanyLink';
+import { findHeadquarters } from './companiesUtil';
 
 type SortCol = 'company' | 'num_employees';
 type SortDir = 'up' | 'down';
@@ -43,12 +44,14 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
       <thead>
         <tr>
           <th
-            className="p-1 border cursor-pointer w-[70%]"
+            className="p-1 border cursor-pointer w-[50%]"
             onClick={() => setSort('company')}
           >
             Name {sortCol === 'company' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
-          <th className="p-1 border w-[20%]">Location</th>
+          <th className="p-1 border w-[20%]">Industry</th>
+          <th className="p-1 border w-[10%]">Headquarters</th>
+          <th className="p-1 border w-[10%]">Num Offices</th>
           <th
             className="p-1 border cursor-pointer"
             onClick={() => setSort('num_employees')}
@@ -73,7 +76,13 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
                 <CompanyLink company={company} />
               </td>
               <td className="p-1 border text-left align-top">
-                {company.location}
+                {company.industry.name}
+              </td>
+              <td className="p-1 border text-left align-top">
+                {findHeadquarters(company)?.state}
+              </td>
+              <td className="p-1 border text-left align-top">
+                {company.addresses.length}
               </td>
               <td className="p-1 border text-center align-top">
                 {company.num_employees}

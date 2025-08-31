@@ -36,11 +36,12 @@ const Companies = () => {
       minSize = debouncedMaxSize;
     }
     return {
+      ...searchFilters,
       name: debouncedName,
       minSize,
       maxSize: debouncedMaxSize
     };
-  }, [debouncedMaxSize, debouncedMinSize, debouncedName]);
+  }, [debouncedMaxSize, debouncedMinSize, debouncedName, searchFilters]);
 
   const { companies, error, isPlaceholderData, isPending, companyCount } =
     useCompanies({

@@ -7,9 +7,17 @@ export type SearchFilters = {
   name?: string;
   minSize?: number;
   maxSize?: number;
+  industryId?: number;
 };
 
-export type Company = Database['public']['Tables']['companies']['Row'];
+export type CompanyAddress =
+  Database['public']['Tables']['company_addresses']['Row'];
+export type Industry = Database['public']['Tables']['industries']['Row'];
+
+export type Company = Database['public']['Tables']['companies']['Row'] & {
+  addresses: Array<CompanyAddress>;
+  industry: Industry;
+};
 
 export type Companies = {
   companies: Array<Company> | undefined;
@@ -51,7 +59,11 @@ const useCompanies = (
   } = useQuery({
     queryKey: ['companies', queryKey],
     queryFn: async () => {
-      let q = supabase.from('companies').select('*', { count: 'exact' });
+      let q = supabase
+        .from('companies')
+        .select(`*, company_addresses(*), industries(*)`, {
+          count: 'exact'
+        });
       const { filters } = params;
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
@@ -62,6 +74,9 @@ const useCompanies = (
       if (filters?.maxSize) {
         q = q.lte('num_employees', filters.maxSize);
       }
+      if (filters?.industryId) {
+        q = q.filter('industry_id', 'eq', filters.industryId);
+      }
 
       const { error, data, count } = await q
         .range(
@@ -69,6 +84,8 @@ const useCompanies = (
           params.paging.page * params.paging.pageSize - 1
         )
         .order('name');
+
+      console.log(data);
       return { error, data, count };
     },
     placeholderData: keepPreviousData
@@ -79,7 +96,11 @@ const useCompanies = (
       return undefined;
     }
 
-    return companiesData.data;
+    return companiesData.data.map((companyData) => ({
+      ...companyData,
+      addresses: companyData.company_addresses,
+      industry: companyData.industries
+    }));
   }, [companiesData]);
 
   const companyCount = useMemo(

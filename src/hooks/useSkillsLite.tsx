@@ -7,9 +7,10 @@ type Skill = Database['public']['Tables']['skills']['Row'];
 export type SkillsLite = {
   skills: Array<Skill> | undefined;
   isPending: boolean;
+  findSkill: (skillId: number) => Skill | undefined;
 };
 
-const useSkills = (): SkillsLite => {
+const useSkillsLite = (): SkillsLite => {
   const { isPending, data: skillsData } = useQuery({
     queryKey: ['skillsLite'],
     queryFn: async () => {
@@ -20,8 +21,10 @@ const useSkills = (): SkillsLite => {
 
   return {
     skills: skillsData ?? undefined,
-    isPending
+    isPending,
+    findSkill: (skillId: number) =>
+      skillsData?.find((skillData) => skillData.id === skillId)
   };
 };
 
-export default useSkills;
+export default useSkillsLite;

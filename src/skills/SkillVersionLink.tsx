@@ -1,11 +1,11 @@
 import { Link } from '@tanstack/react-router';
-import type { Skill, SkillVersion } from '../hooks/useSkills';
+import type { DbSkill, SkillVersion } from '../hooks/useSkills';
 
 const SkillVersionLink = ({
   skill,
   skillVersion
 }: {
-  skill: Skill;
+  skill: DbSkill;
   skillVersion: SkillVersion;
 }) => {
   return (
