@@ -7,7 +7,7 @@ const SkillCategoriesList = ({
   skillCategories: Array<SkillCategory>;
 }) => {
   return (
-    <ul className="list-inside list-disc">
+    <ul>
       {skillCategories
         .sort((c1, c2) => c1.name.localeCompare(c2.name))
         .map((skillCategory) => (

@@ -42,7 +42,7 @@ const Company = () => {
       <h2>Offices</h2>
       <div className="card text-left">
         {company.addresses.length > 0 && (
-          <ul className="list-inside list-disc">
+          <ul>
             {company.addresses.map((address) => (
               <li key={address.id}>
                 {address.street} {address.city}, {address.state} {address.zip}
@@ -54,7 +54,7 @@ const Company = () => {
       </div>
       <h2>Tech Stack</h2>
       <div className="card text-left">
-        <ul className="list-inside list-disc">
+        <ul>
           {company.techStack.map((techStackRow) => {
             const skillVersion = findSkillVersion(
               techStackRow.skill_version_id

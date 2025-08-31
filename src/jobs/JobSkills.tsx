@@ -3,7 +3,7 @@ import SkillLink from '../skills/SkillLink';
 
 const JobSkills = ({ job }: { job: Job }) => {
   return (
-    <ul className="list-inside list-disc">
+    <ul>
       {job.skills.map((skill) => (
         <li key={skill.id}>
           <SkillLink skill={skill} />

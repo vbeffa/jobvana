@@ -9,7 +9,7 @@ const SkillVersionsList = ({
 }) => {
   const { findSkill } = useSkills();
   return (
-    <ul className="list-inside list-disc">
+    <ul>
       {skillVersions
         .sort(
           (skillVersion1, skillVersion2) =>

@@ -3,7 +3,7 @@ import JobLink from './JobLink';
 
 const JobsList = ({ jobs }: { jobs: Array<Job> }) => {
   return (
-    <ul className="list-inside list-disc">
+    <ul>
       {jobs.map((job) => (
         <li key={job.id}>
           <JobLink job={job} />

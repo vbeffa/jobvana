@@ -3,7 +3,7 @@ import SkillLink from './SkillLink';
 
 const SkillsList = ({ skills }: { skills: Array<Skill> }) => {
   return (
-    <ul className="list-inside list-disc">
+    <ul>
       {skills.map((skill) => (
         <li key={skill.id}>
           <SkillLink skill={skill} includeAbbrev={true} />
