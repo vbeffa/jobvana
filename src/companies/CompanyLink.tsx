@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import type { Company } from '../hooks/useCompanies';
+import type { DbCompany } from '../hooks/useCompanies';
 
-const CompanyLink = ({ company }: { company: Company }) => {
+const CompanyLink = ({ company }: { company: DbCompany }) => {
   return (
     <Link to="/jobvana/companies/$id" params={{ id: company.id.toString() }}>
       {company.name}

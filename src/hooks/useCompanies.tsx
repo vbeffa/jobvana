@@ -14,14 +14,15 @@ export type CompanyAddress =
   Database['public']['Tables']['company_addresses']['Row'];
 export type Industry = Database['public']['Tables']['industries']['Row'];
 
-export type Company = Database['public']['Tables']['companies']['Row'] & {
+export type DbCompany = Database['public']['Tables']['companies']['Row'];
+export type Company = DbCompany & {
   addresses: Array<CompanyAddress>;
   industry: Industry;
 };
 
 export type Companies = {
   companies: Array<Company> | undefined;
-  error?: string;
+  error?: Error;
   isPlaceholderData: boolean;
   isPending: boolean;
   companyCount: number | undefined;
@@ -55,7 +56,8 @@ const useCompanies = (
   const {
     isPlaceholderData,
     isPending,
-    data: companiesData
+    data: companiesData,
+    error
   } = useQuery({
     queryKey: ['companies', queryKey],
     queryFn: async () => {
@@ -110,7 +112,7 @@ const useCompanies = (
 
   return {
     companies,
-    error: companiesData?.error?.message,
+    error: error ?? undefined,
     isPlaceholderData,
     isPending,
     companyCount,

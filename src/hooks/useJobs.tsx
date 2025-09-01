@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
-import { type Company } from './useCompanies';
+import { type DbCompany } from './useCompanies';
 import type { DbSkill } from './useSkills';
 
 export type CreatedRange =
@@ -24,7 +24,7 @@ export type SearchFilters = {
 };
 
 export type Job = Database['public']['Tables']['jobs']['Row'] & {
-  company: Company | undefined;
+  company: DbCompany | undefined;
   role: Role | undefined;
   skills: Array<DbSkill>;
   // skillVersions: Array<SkillVersion>;
@@ -37,7 +37,7 @@ export type JobSkillVersion =
 
 export type Jobs = {
   jobs: Array<Job> | undefined;
-  error?: string;
+  error?: Error;
   isPlaceholderData: boolean;
   isPending: boolean;
   openJobCount: number | undefined;
@@ -134,7 +134,7 @@ const useJobs = (
           params.paging.page * params.paging.pageSize - 1
         )
         .order('created_at', { ascending: false })
-        .overrideTypes<Array<{ companies: Company }>>();
+        .overrideTypes<Array<{ companies: DbCompany }>>();
       console.log(data);
       if (error) {
         console.log(JSON.stringify(error));
@@ -166,7 +166,7 @@ const useJobs = (
 
   return {
     jobs,
-    error: error?.message,
+    error: error ?? undefined,
     isPlaceholderData,
     isPending,
     openJobCount,

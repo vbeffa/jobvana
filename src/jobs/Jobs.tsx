@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import Error from '../Error';
 import useJobs, { type SearchFilters } from '../hooks/useJobs';
-import JobFilters from './JobFilters';
-import JobsTable from './JobsTable';
 import PageNav from '../PageNav';
+import JobDetails from './JobDetails';
+import JobFilters from './JobFilters';
+import JobSummary from './JobSummary';
 
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);
@@ -20,6 +22,7 @@ const Jobs = () => {
     searchFilters.title,
     searchFilters.title ? 1000 : 0
   );
+  const [jobId, setJobId] = useState<number | null>(null);
 
   const filters: SearchFilters = useMemo(
     () => ({
@@ -31,14 +34,20 @@ const Jobs = () => {
   );
 
   const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
-    paging: { page: debouncedPage, pageSize: 50 },
+    paging: { page: debouncedPage, pageSize: 10 },
     filters
   });
+
+  useEffect(() => {
+    if (jobs?.[0]) {
+      setJobId(jobs[0].id);
+    }
+  }, [jobs]);
 
   return (
     <>
       <h1>Jobs</h1>
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <Error error={error} />}
       <div className="px-[2em] pb-4 text-left flex">
         <JobFilters
           filters={searchFilters}
@@ -51,14 +60,24 @@ const Jobs = () => {
       <div className="px-[2em]">
         <PageNav
           page={page}
+          pageSize={10}
           total={openJobCount}
           onSetPage={setPage}
           isLoading={isPlaceholderData || isPending}
         />
       </div>
-      <div className="card">
-        <JobsTable jobs={jobs} />
-      </div>
+      <div className="card text-left flex flex-row gap-x-2">
+        <div className="w-[20%]">
+          {jobs?.map((job) => (
+            <JobSummary
+              job={job}
+              selected={jobId === job.id}
+              onClick={() => setJobId(job.id)}
+            />
+          ))}
+        </div>
+        <div className="w-[80%]">{jobId && <JobDetails id={jobId} />}</div>
+      </div>{' '}
     </>
   );
 };

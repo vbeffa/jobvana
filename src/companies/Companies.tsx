@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import Error from '../Error';
 import useCompanies, { type SearchFilters } from '../hooks/useCompanies';
 import PageNav from '../PageNav';
-import CompaniesTable from './CompaniesTable';
+import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
+import CompanySummary from './CompanySummary';
 
 const Companies = () => {
   const [page, setPage] = useState<number>(1);
@@ -25,6 +27,7 @@ const Companies = () => {
     searchFilters.maxSize,
     searchFilters.maxSize ? 500 : 0
   );
+  const [companyId, setCompanyId] = useState<number | null>(null);
 
   const filters: SearchFilters = useMemo(() => {
     let minSize = debouncedMinSize;
@@ -45,14 +48,20 @@ const Companies = () => {
 
   const { companies, error, isPlaceholderData, isPending, companyCount } =
     useCompanies({
-      paging: { page: debouncedPage, pageSize: 50 },
+      paging: { page: debouncedPage, pageSize: 10 },
       filters
     });
+
+  useEffect(() => {
+    if (companies?.[0]) {
+      setCompanyId(companies[0].id);
+    }
+  }, [companies]);
 
   return (
     <>
       <h1>Companies</h1>
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <Error error={error} />}
       <div className="px-[2em] pb-4 text-left flex">
         <CompanyFilters
           filters={searchFilters}
@@ -65,13 +74,28 @@ const Companies = () => {
       <div className="px-[2em]">
         <PageNav
           page={page}
+          pageSize={10}
           total={companyCount}
-          onSetPage={setPage}
+          onSetPage={(page) => {
+            setPage(page);
+            setCompanyId(null);
+          }}
           isLoading={isPlaceholderData || isPending}
         />
       </div>
-      <div className="card">
-        <CompaniesTable companies={companies} />
+      <div className="card text-left flex flex-row gap-x-2">
+        <div className="w-[20%]">
+          {companies?.map((company) => (
+            <CompanySummary
+              company={company}
+              selected={companyId === company.id}
+              onClick={() => setCompanyId(company.id)}
+            />
+          ))}
+        </div>
+        <div className="w-[80%]">
+          {companyId && <CompanyDetails id={companyId} />}
+        </div>
       </div>
     </>
   );

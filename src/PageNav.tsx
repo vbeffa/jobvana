@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import LoadingModal from './LoadingModal';
 
 const PageNav = ({
   page,
@@ -23,7 +24,7 @@ const PageNav = ({
   }
 
   if (!numPages) {
-    return <div className="text-left h-9">Loading...</div>;
+    return <LoadingModal />;
   }
 
   return (

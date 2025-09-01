@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Company } from './useCompanies';
 import type { Database } from '../utils/types';
+import type { Company } from './useCompanies';
 
 export type TechStack = Database['public']['Tables']['tech_stacks']['Row'];
 
@@ -11,7 +11,12 @@ export type FullCompany = Company & {
 };
 
 const useCompany = ({ id }: { id: number }) => {
-  const { error, data: companyData } = useQuery({
+  const {
+    isPlaceholderData,
+    isPending,
+    data: companyData,
+    error
+  } = useQuery({
     queryKey: ['companies', id],
     queryFn: async () => {
       const { error, data } = await supabase
@@ -23,7 +28,8 @@ const useCompany = ({ id }: { id: number }) => {
 
       console.log(data);
       return { error, data };
-    }
+    },
+    placeholderData: keepPreviousData
   });
 
   const company: FullCompany | undefined = useMemo(() => {
@@ -41,7 +47,9 @@ const useCompany = ({ id }: { id: number }) => {
 
   return {
     company,
-    error: error?.message
+    error: error ?? undefined,
+    isPlaceholderData,
+    isPending
   };
 };
 

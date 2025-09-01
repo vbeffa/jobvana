@@ -1,33 +1,22 @@
-import { useState } from 'react';
+import Error from '../Error';
 import type { Company } from '../hooks/useCompanies';
 import useJobs from '../hooks/useJobs';
-import JobsTable from './JobsTable';
-import PageNav from '../PageNav';
-import { useDebounce } from 'use-debounce';
+import JobsList from './JobsList';
 
 const JobsForCompany = ({ company }: { company: Company }) => {
-  const [page, setPage] = useState<number>(1);
-  const [debouncedPage] = useDebounce(page, 500);
-  const { jobs, openJobCount, isPlaceholderData, isPending } = useJobs({
-    paging: { page: debouncedPage, pageSize: 50 },
+  const { jobs, error } = useJobs({
+    paging: { page: 1, pageSize: 50 },
     filters: { companyId: company.id }
   });
 
-  return (
-    <>
-      <div className="pb-[2em]">
-        <PageNav
-          page={page}
-          total={openJobCount}
-          onSetPage={setPage}
-          isLoading={isPlaceholderData || isPending}
-        />
-      </div>
-      <div>
-        <JobsTable jobs={jobs} />
-      </div>
-    </>
-  );
+  if (error) {
+    return <Error error={error} />;
+  }
+
+  if (!jobs) {
+    return null;
+  }
+  return <JobsList jobs={jobs} />;
 };
 
 export default JobsForCompany;
