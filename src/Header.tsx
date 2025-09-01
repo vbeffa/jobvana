@@ -51,7 +51,17 @@ const Header = () => {
       )}
       {currPage === 'companies' && <span>Companies</span>}
       {' • '}
-      {currPage !== 'roles' && (
+      {currPage !== 'applications' && (
+        <Link
+          to="/jobvana/applications"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('applications')}
+        >
+          Applications
+        </Link>
+      )}
+      {currPage === 'applications' && <span>Applications</span>}
+      {/* {currPage !== 'roles' && (
         <Link
           to="/jobvana/roles"
           className="[&.active]:font-bold"
@@ -82,7 +92,7 @@ const Header = () => {
           Skill Categories
         </Link>
       )}
-      {currPage === 'skill_categories' && <span>Skill Categories</span>}
+      {currPage === 'skill_categories' && <span>Skill Categories</span>} */}
     </div>
   );
 };

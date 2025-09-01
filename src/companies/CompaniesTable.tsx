@@ -44,16 +44,16 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
       <thead>
         <tr>
           <th
-            className="p-1 border cursor-pointer w-[50%]"
+            className="cursor-pointer w-[50%]"
             onClick={() => setSort('company')}
           >
             Name {sortCol === 'company' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
-          <th className="p-1 border w-[20%]">Industry</th>
-          <th className="p-1 border w-[10%]">Headquarters</th>
-          <th className="p-1 border w-[10%]">Num Offices</th>
+          <th className="w-[20%]">Industry</th>
+          <th className="w-[10%]">Headquarters</th>
+          <th className="w-[10%]">Num Offices</th>
           <th
-            className="p-1 border cursor-pointer"
+            className="cursor-pointer"
             onClick={() => setSort('num_employees')}
           >
             Size {sortCol === 'num_employees' && (sortDir === 'up' ? '↑' : '↓')}
@@ -64,7 +64,7 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
         {/* <Loading waitingFor={companies} colSpan={1} /> */}
         {sortedCompanies.length === 0 && (
           <tr key={0}>
-            <td className="p-2 border-[0.05rem] text-center" colSpan={6}>
+            <td className="text-center" colSpan={6}>
               No companies found
             </td>
           </tr>
@@ -72,21 +72,13 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
         {sortedCompanies.map((company) => {
           return (
             <tr key={company.id}>
-              <td className="p-1 border text-left align-top">
+              <td>
                 <CompanyLink company={company} />
               </td>
-              <td className="p-1 border text-left align-top">
-                {company.industry.name}
-              </td>
-              <td className="p-1 border text-left align-top">
-                {findHeadquarters(company)?.state}
-              </td>
-              <td className="p-1 border text-left align-top">
-                {company.addresses.length}
-              </td>
-              <td className="p-1 border text-center align-top">
-                {company.num_employees}
-              </td>
+              <td>{company.industry.name}</td>
+              <td>{findHeadquarters(company)?.state}</td>
+              <td>{company.addresses.length}</td>
+              <td>{company.num_employees}</td>
             </tr>
           );
         })}

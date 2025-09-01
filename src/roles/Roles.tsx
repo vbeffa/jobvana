@@ -10,15 +10,15 @@ const Roles = () => {
   const [sortCol, setSortCol] = useState<SortCol>('name');
   const [sortDir, setSortDir] = useState<SortDir>('up');
 
-  const roles = useRoles();
+  const { roles } = useRoles();
 
   const filteredRoles = useMemo(() => {
-    return roles.roles?.sort((role1, role2) => {
+    return roles?.sort((role1, role2) => {
       return sortDir === 'up'
         ? role1!.name.localeCompare(role2!.name)
         : role2!.name.localeCompare(role1!.name);
     });
-  }, [roles.roles, sortDir]);
+  }, [roles, sortDir]);
 
   const setSort = (col: SortCol) => {
     const newSortCol = col;
@@ -40,25 +40,23 @@ const Roles = () => {
           <thead>
             <tr>
               <th
-                className="p-1 border cursor-pointer w-[25%]"
+                className="cursor-pointer w-[25%]"
                 onClick={() => setSort('name')}
               >
                 Name {sortCol === 'name' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
-              <th className="p-1 border">Description</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={roles.roles} colSpan={1} />
+            <Loading waitingFor={roles} colSpan={2} />
             {filteredRoles?.map((role) => {
               return (
                 <tr key={role.id}>
-                  <td className="p-1 border text-left align-top">
+                  <td>
                     <RoleLink role={role} />
                   </td>
-                  <td className="p-1 border text-left align-top">
-                    {role.description}
-                  </td>
+                  <td>{role.description}</td>
                 </tr>
               );
             })}

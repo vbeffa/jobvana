@@ -26,7 +26,7 @@ const useRoles = (): Roles => {
   );
 
   return {
-    roles: roles,
+    roles,
     isPending
   };
 };

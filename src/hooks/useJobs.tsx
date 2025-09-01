@@ -23,7 +23,9 @@ export type SearchFilters = {
   created?: CreatedRange;
 };
 
-export type Job = Database['public']['Tables']['jobs']['Row'] & {
+export type DbJob = Database['public']['Tables']['jobs']['Row'];
+
+export type Job = DbJob & {
   company: DbCompany | undefined;
   role: Role | undefined;
   skills: Array<DbSkill>;

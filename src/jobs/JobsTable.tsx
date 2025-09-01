@@ -78,31 +78,31 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
       <thead>
         <tr>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[20%]"
+            className="cursor-pointer w-[20%]"
             onClick={() => setSort('company')}
           >
             Company {sortCol === 'company' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[20%]"
+            className="cursor-pointer w-[20%]"
             onClick={() => setSort('title')}
           >
             Title {sortCol === 'title' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[10%]"
+            className="cursor-pointer w-[10%]"
             onClick={() => setSort('role')}
           >
             Role {sortCol === 'role' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
-          <th className="p-2 border-[0.05rem] cursor-pointer w-[5%]">Level</th>
+          <th className="cursor-pointer w-[5%]">Level</th>
           <th
-            className="p-2 border-[0.05rem] cursor-pointer w-[10%]"
+            className="cursor-pointer w-[10%]"
             onClick={() => setSort('created')}
           >
             Posted {sortCol === 'created' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
-          <th className="p-2 border-[0.05rem] w-[15%]">
+          <th className="w-[15%]">
             <div className="flex flex-row items-center w-full gap-2">
               <div>Salary</div>
               <div
@@ -119,14 +119,14 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
               </div>
             </div>
           </th>
-          <th className="p-2 border-[0.05rem] w-[20%]">Skills</th>
+          <th className="w-[20%]">Skills</th>
         </tr>
       </thead>
       <tbody>
         {/* {<Loading waitingFor={jobs} colSpan={6} />} */}
         {sortedJobs.length === 0 && (
           <tr key={0}>
-            <td className="p-2 border-[0.05rem] text-center" colSpan={7}>
+            <td className="text-center" colSpan={7}>
               No jobs found
             </td>
           </tr>
@@ -147,25 +147,17 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
           })();
           return (
             <tr key={job.id}>
-              <td className="p-2 border-[0.05rem] text-left align-top">
-                {company && <CompanyLink company={company} />}
-              </td>
-              <td className="p-2 border-[0.05rem] text-left align-top">
+              <td>{company && <CompanyLink company={company} />}</td>
+              <td>
                 <JobLink job={job} />
               </td>
-              <td className="p-2 border-[0.05rem] text-left align-top">
-                {job.role?.name}
-              </td>
-              <td className="p-2 border-[0.05rem] text-left align-top">
-                {roleLevel}
-              </td>
-              <td className="p-2 border-[0.05rem] text-left align-top">
-                {new Date(job.created_at).toLocaleDateString()}
-              </td>
-              <td className="p-2 border-[0.05rem] text-left align-top">
+              <td>{job.role?.name}</td>
+              <td>{roleLevel}</td>
+              <td>{new Date(job.created_at).toLocaleDateString()}</td>
+              <td>
                 <Salary job={job} />
               </td>
-              <td className="p-2 border-[0.05rem] text-left">
+              <td>
                 <JobSkills job={job} />
               </td>
             </tr>

@@ -58,8 +58,8 @@ const SkillCategories = () => {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left">
-                <div className="w-[50%]">
+              <td className="filter" colSpan={2}>
+                <div className="w-[25%]">
                   <Filter
                     id="category_filter"
                     placeholder="Filter by skill category"
@@ -69,34 +69,28 @@ const SkillCategories = () => {
                   />
                 </div>
               </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td className="h-1" colSpan={3} />
             </tr>
             <tr>
               <th
-                className="p-1 border cursor-pointer"
+                className="cursor-pointer"
                 onClick={() => setSort('skill_category')}
               >
                 Category{' '}
                 {sortCol === 'skill_category' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
-              <th className="p-1 border">Skills</th>
+              <th>Skills</th>
             </tr>
           </thead>
           <tbody>
-            <Loading waitingFor={skillCategories} colSpan={1} />
+            <Loading waitingFor={skillCategories} colSpan={2} />
             {filteredSkillCategories?.map((skillCategory) => {
               const skills = findSkills(skillCategory.id);
               return (
                 <tr key={skillCategory.id}>
-                  <td className="p-1 border text-left align-top">
+                  <td>
                     <SkillCategoryLink skillCategory={skillCategory} />
                   </td>
-                  <td className="p-1 border text-left">
-                    {skills && <SkillsList skills={skills} />}
-                  </td>
+                  <td>{skills && <SkillsList skills={skills} />}</td>
                 </tr>
               );
             })}

@@ -106,7 +106,7 @@ const Skills = () => {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left">
+              <td className="filter">
                 <div className="w-[50%]">
                   <Filter
                     id="skill_filter"
@@ -117,7 +117,7 @@ const Skills = () => {
                   />
                 </div>
               </td>
-              <td className="text-left">
+              <td className="filter" colSpan={2}>
                 <div className="w-[50%]">
                   <Filter
                     id="skill_category_filter"
@@ -130,24 +130,21 @@ const Skills = () => {
               </td>
             </tr>
             <tr>
-              <td className="h-1" colSpan={3} />
-            </tr>
-            <tr>
               <th
-                className="p-1 border cursor-pointer w-[45%]"
+                className="cursor-pointer w-[45%]"
                 onClick={() => setSort('skill')}
               >
                 Skill {sortCol === 'skill' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
               <th
-                className="p-1 border cursor-pointer"
+                className="cursor-pointer"
                 onClick={() => setSort('skill_type')}
               >
                 Category{' '}
                 {sortCol === 'skill_type' && (sortDir === 'up' ? '↑' : '↓')}
               </th>
               <th
-                className="p-1 border cursor-pointer w-[10%]"
+                className="cursor-pointer w-[10%]"
                 onClick={() => setSort('num_jobs')}
               >
                 # Jobs{' '}
@@ -161,17 +158,15 @@ const Skills = () => {
               const skillCategory = findSkillCategory(skill.skill_category_id);
               return (
                 <tr key={skill.id}>
-                  <td className="p-1 border text-left">
+                  <td>
                     <SkillLink skill={skill} includeAbbrev={true} />
                   </td>
-                  <td className="p-1 border text-left">
+                  <td>
                     {skillCategory && (
                       <SkillCategoryLink skillCategory={skillCategory} />
                     )}
                   </td>
-                  <td className="p-1 border text-center">
-                    {/* {jobsForSkill(skill.id)?.length} */}-
-                  </td>
+                  <td>{/* {jobsForSkill(skill.id)?.length} */}-</td>
                 </tr>
               );
             })}
