@@ -1,44 +1,30 @@
+import { useState } from 'react';
 import useApplications from '../hooks/useApplications';
-import JobLink from '../jobs/JobLink';
-import Loading from '../Loading';
-import ApplicationLink from './ApplicationLink';
+import SummaryCard from '../SummaryCard';
+import ApplicationDetails from './ApplicationDetails';
 
 const Applications = () => {
   const { applications } = useApplications();
+  const [applicationId, setApplicationId] = useState<number | null>(null);
 
   return (
     <>
       <h1>Applications</h1>
-
-      <div className="card text-center justify-center">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="w-[25%]">Job</th>
-              <th>Job Seeker</th>
-              <th>Application Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <Loading waitingFor={applications} colSpan={3} />
-            {applications?.map((application) => {
-              return (
-                <tr key={application.id}>
-                  <td>
-                    <JobLink job={application.job} />
-                  </td>
-                  <td>
-                    {application.jobSeeker.user.first_name}{' '}
-                    {application.jobSeeker.user.last_name}
-                  </td>
-                  <td>
-                    <ApplicationLink application={application} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="card text-left flex flex-row gap-x-2">
+        <div className="w-[20%]">
+          {applications?.map((application) => (
+            <SummaryCard
+              id={application.id}
+              selected={applicationId === application.id}
+              onClick={() => setApplicationId(application.id)}
+              title={application.job.title}
+              text={`${application.jobSeeker.user.first_name} ${application.jobSeeker.user.last_name}`}
+            />
+          ))}
+        </div>
+        <div className="w-[80%]">
+          {applicationId && <ApplicationDetails id={applicationId} />}
+        </div>
       </div>
     </>
   );

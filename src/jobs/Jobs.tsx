@@ -3,9 +3,9 @@ import { useDebounce } from 'use-debounce';
 import Error from '../Error';
 import useJobs, { type SearchFilters } from '../hooks/useJobs';
 import PageNav from '../PageNav';
+import SummaryCard from '../SummaryCard';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
-import JobSummary from './JobSummary';
 
 const Jobs = () => {
   const [page, setPage] = useState<number>(1);
@@ -69,10 +69,17 @@ const Jobs = () => {
       <div className="card text-left flex flex-row gap-x-2">
         <div className="w-[20%]">
           {jobs?.map((job) => (
-            <JobSummary
-              job={job}
+            <SummaryCard
+              id={job.id}
               selected={jobId === job.id}
               onClick={() => setJobId(job.id)}
+              title={job.title}
+              text={
+                <>
+                  <div>{job.company?.name}</div>
+                  <div>{job.role?.name}</div>
+                </>
+              }
             />
           ))}
         </div>

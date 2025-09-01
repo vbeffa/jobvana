@@ -3,9 +3,9 @@ import { useDebounce } from 'use-debounce';
 import Error from '../Error';
 import useCompanies, { type SearchFilters } from '../hooks/useCompanies';
 import PageNav from '../PageNav';
+import SummaryCard from '../SummaryCard';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
-import CompanySummary from './CompanySummary';
 
 const Companies = () => {
   const [page, setPage] = useState<number>(1);
@@ -78,7 +78,7 @@ const Companies = () => {
           total={companyCount}
           onSetPage={(page) => {
             setPage(page);
-            setCompanyId(null);
+            // setCompanyId(null);
           }}
           isLoading={isPlaceholderData || isPending}
         />
@@ -86,10 +86,12 @@ const Companies = () => {
       <div className="card text-left flex flex-row gap-x-2">
         <div className="w-[20%]">
           {companies?.map((company) => (
-            <CompanySummary
-              company={company}
+            <SummaryCard
+              id={company.id}
               selected={companyId === company.id}
               onClick={() => setCompanyId(company.id)}
+              title={company.name}
+              text={company.industry.name}
             />
           ))}
         </div>
