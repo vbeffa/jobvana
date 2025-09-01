@@ -1,36 +1,88 @@
 import { Link } from '@tanstack/react-router';
 import './App.css';
+import { useState } from 'react';
 
 const Header = () => {
+  const [currPage, setCurrPage] = useState<string>('home');
+
   return (
     <div className="bg-amber-300 flex gap-2 w-full h-12 pl-2 pt-2.5 mb-4 top-0 left-0 sticky z-10">
-      <Link to="/jobvana" className="[&.active]:font-bold">
-        Home
-      </Link>
+      {currPage !== 'home' && (
+        <Link
+          to="/jobvana"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('home')}
+        >
+          Home
+        </Link>
+      )}
+      {currPage === 'home' && <span>Home</span>}
       {' • '}
-      <Link to="/jobvana/about" className="[&.active]:font-bold">
-        About
-      </Link>
+      {currPage !== 'about' && (
+        <Link
+          to="/jobvana/about"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('about')}
+        >
+          About
+        </Link>
+      )}
+      {currPage === 'about' && <span>About</span>}
       {' • '}
-      <Link to="/jobvana/jobs" className="[&.active]:font-bold">
-        Jobs
-      </Link>
+      {currPage !== 'jobs' && (
+        <Link
+          to="/jobvana/jobs"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('jobs')}
+        >
+          Jobs
+        </Link>
+      )}
+      {currPage === 'jobs' && <span>Jobs</span>}
       {' • '}
-      <Link to="/jobvana/companies" className="[&.active]:font-bold">
-        Companies
-      </Link>
+      {currPage !== 'companies' && (
+        <Link
+          to="/jobvana/companies"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('companies')}
+        >
+          Companies
+        </Link>
+      )}
+      {currPage === 'companies' && <span>Companies</span>}
       {' • '}
-      <Link to="/jobvana/roles" className="[&.active]:font-bold">
-        Roles
-      </Link>
+      {currPage !== 'roles' && (
+        <Link
+          to="/jobvana/roles"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('roles')}
+        >
+          Roles
+        </Link>
+      )}
+      {currPage === 'roles' && <span>Roles</span>}
       {' • '}
-      <Link to="/jobvana/skills" className="[&.active]:font-bold">
-        Skills
-      </Link>
+      {currPage !== 'skills' && (
+        <Link
+          to="/jobvana/skills"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('skills')}
+        >
+          Skills
+        </Link>
+      )}
+      {currPage === 'skills' && <span>Skills</span>}
       {' • '}
-      <Link to="/jobvana/skill_categories" className="[&.active]:font-bold">
-        Skill Categories
-      </Link>
+      {currPage !== 'skill_categories' && (
+        <Link
+          to="/jobvana/skill_categories"
+          className="[&.active]:font-bold"
+          onClick={() => setCurrPage('skill_categories')}
+        >
+          Skill Categories
+        </Link>
+      )}
+      {currPage === 'skill_categories' && <span>Skill Categories</span>}
     </div>
   );
 };
