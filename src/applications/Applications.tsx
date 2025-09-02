@@ -14,7 +14,7 @@ const Applications = () => {
         <div className="w-[20%]">
           {applications?.map((application) => (
             <SummaryCard
-              id={application.id}
+              key={application.id}
               selected={applicationId === application.id}
               onClick={() => setApplicationId(application.id)}
               title={application.job.title}

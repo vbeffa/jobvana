@@ -70,7 +70,7 @@ const Jobs = () => {
         <div className="w-[20%]">
           {jobs?.map((job) => (
             <SummaryCard
-              id={job.id}
+              key={job.id}
               selected={jobId === job.id}
               onClick={() => setJobId(job.id)}
               title={job.title}

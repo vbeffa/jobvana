@@ -87,7 +87,7 @@ const Companies = () => {
         <div className="w-[20%]">
           {companies?.map((company) => (
             <SummaryCard
-              id={company.id}
+              key={company.id}
               selected={companyId === company.id}
               onClick={() => setCompanyId(company.id)}
               title={company.name}

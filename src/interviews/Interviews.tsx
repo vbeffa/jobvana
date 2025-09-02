@@ -14,7 +14,7 @@ const Interviews = () => {
         <div className="w-[20%]">
           {interviews?.map((interview) => (
             <SummaryCard
-              id={interview.id}
+              key={interview.id}
               selected={interviewId === interview.id}
               onClick={() => setInterviewId(interview.id)}
               title={interview.application_id.toString()}
