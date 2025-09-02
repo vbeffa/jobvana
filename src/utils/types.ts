@@ -20,18 +20,24 @@ export type Database = {
           id: number
           job_id: number
           job_seeker_id: number
+          reason: string | null
+          status: Database['public']['Enums']['application_status'] | null
         }
         Insert: {
           created_at?: string
           id?: number
           job_id: number
           job_seeker_id: number
+          reason?: string | null
+          status?: Database['public']['Enums']['application_status'] | null
         }
         Update: {
           created_at?: string
           id?: number
           job_id?: number
           job_seeker_id?: number
+          reason?: string | null
+          status?: Database['public']['Enums']['application_status'] | null
         }
         Relationships: [
           {
@@ -137,6 +143,67 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      interview_rounds: {
+        Row: {
+          created_at: string
+          id: number
+          interview_id: number
+          round: number
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          interview_id: number
+          round: number
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          interview_id?: number
+          round?: number
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'interview_rounds_interview_id_fkey'
+            columns: ['interview_id']
+            isOneToOne: false
+            referencedRelation: 'interviews'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      interviews: {
+        Row: {
+          application_id: number
+          created_at: string
+          id: number
+          status: string | null
+        }
+        Insert: {
+          application_id: number
+          created_at?: string
+          id?: number
+          status?: string | null
+        }
+        Update: {
+          application_id?: number
+          created_at?: string
+          id?: number
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'interviews_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: true
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+        ]
       }
       job_seekers: {
         Row: {
@@ -509,6 +576,7 @@ export type Database = {
     }
     Enums: {
       address_type: 'headquarters' | 'office'
+      application_status: 'accepted' | 'rejected'
       job_status: 'open' | 'filled' | 'closed'
     }
     CompositeTypes: {
@@ -638,6 +706,7 @@ export const Constants = {
   public: {
     Enums: {
       address_type: ['headquarters', 'office'],
+      application_status: ['accepted', 'rejected'],
       job_status: ['open', 'filled', 'closed'],
     },
   },

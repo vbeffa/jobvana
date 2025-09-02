@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
 import type { DbJob } from './useJobs';
+import type { DbCompany } from './useCompanies';
 
 export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'] & {
   user: User;
@@ -13,6 +14,7 @@ export type User = Database['public']['Tables']['users']['Row'];
 export type Application =
   Database['public']['Tables']['applications']['Row'] & {
     job: DbJob;
+    company: DbCompany;
     jobSeeker: JobSeeker;
   };
 
@@ -27,7 +29,9 @@ const useApplications = (): Applications => {
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
-        .select('*, job_seekers!inner(*, users!inner(*)), jobs!inner(*)');
+        .select(
+          '*, job_seekers!inner(*, users!inner(*)), jobs!inner(*, companies!inner(*))'
+        );
       return data;
     }
   });
@@ -42,6 +46,7 @@ const useApplications = (): Applications => {
         .map((applicationData) => ({
           ...applicationData,
           job: applicationData.jobs,
+          company: applicationData.jobs.companies,
           jobSeeker: {
             ...applicationData.job_seekers,
             user: applicationData.job_seekers.users

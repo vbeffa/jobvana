@@ -15,10 +15,12 @@ import { Route as JobvanaSkillsIndexRouteImport } from './routes/jobvana.skills.
 import { Route as JobvanaSkill_categoriesIndexRouteImport } from './routes/jobvana.skill_categories.index'
 import { Route as JobvanaRolesIndexRouteImport } from './routes/jobvana.roles.index'
 import { Route as JobvanaJobsIndexRouteImport } from './routes/jobvana.jobs.index'
+import { Route as JobvanaInterviewsIndexRouteImport } from './routes/jobvana.interviews.index'
 import { Route as JobvanaCompaniesIndexRouteImport } from './routes/jobvana.companies.index'
 import { Route as JobvanaApplicationsIndexRouteImport } from './routes/jobvana.applications.index'
 import { Route as JobvanaRolesIdRouteImport } from './routes/jobvana.roles.$id'
 import { Route as JobvanaJobsIdRouteImport } from './routes/jobvana.jobs.$id'
+import { Route as JobvanaInterviewsIdRouteImport } from './routes/jobvana.interviews.$id'
 import { Route as JobvanaCompaniesIdRouteImport } from './routes/jobvana.companies.$id'
 import { Route as JobvanaApplicationsIdRouteImport } from './routes/jobvana.applications.$id'
 import { Route as JobvanaSkill_categoriesIdIndexRouteImport } from './routes/jobvana.skill_categories.$id.index'
@@ -56,6 +58,11 @@ const JobvanaJobsIndexRoute = JobvanaJobsIndexRouteImport.update({
   path: '/jobvana/jobs/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JobvanaInterviewsIndexRoute = JobvanaInterviewsIndexRouteImport.update({
+  id: '/jobvana/interviews/',
+  path: '/jobvana/interviews/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JobvanaCompaniesIndexRoute = JobvanaCompaniesIndexRouteImport.update({
   id: '/jobvana/companies/',
   path: '/jobvana/companies/',
@@ -75,6 +82,11 @@ const JobvanaRolesIdRoute = JobvanaRolesIdRouteImport.update({
 const JobvanaJobsIdRoute = JobvanaJobsIdRouteImport.update({
   id: '/jobvana/jobs/$id',
   path: '/jobvana/jobs/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobvanaInterviewsIdRoute = JobvanaInterviewsIdRouteImport.update({
+  id: '/jobvana/interviews/$id',
+  path: '/jobvana/interviews/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JobvanaCompaniesIdRoute = JobvanaCompaniesIdRouteImport.update({
@@ -113,10 +125,12 @@ export interface FileRoutesByFullPath {
   '/jobvana': typeof JobvanaIndexRoute
   '/jobvana/applications/$id': typeof JobvanaApplicationsIdRoute
   '/jobvana/companies/$id': typeof JobvanaCompaniesIdRoute
+  '/jobvana/interviews/$id': typeof JobvanaInterviewsIdRoute
   '/jobvana/jobs/$id': typeof JobvanaJobsIdRoute
   '/jobvana/roles/$id': typeof JobvanaRolesIdRoute
   '/jobvana/applications': typeof JobvanaApplicationsIndexRoute
   '/jobvana/companies': typeof JobvanaCompaniesIndexRoute
+  '/jobvana/interviews': typeof JobvanaInterviewsIndexRoute
   '/jobvana/jobs': typeof JobvanaJobsIndexRoute
   '/jobvana/roles': typeof JobvanaRolesIndexRoute
   '/jobvana/skill_categories': typeof JobvanaSkill_categoriesIndexRoute
@@ -130,10 +144,12 @@ export interface FileRoutesByTo {
   '/jobvana': typeof JobvanaIndexRoute
   '/jobvana/applications/$id': typeof JobvanaApplicationsIdRoute
   '/jobvana/companies/$id': typeof JobvanaCompaniesIdRoute
+  '/jobvana/interviews/$id': typeof JobvanaInterviewsIdRoute
   '/jobvana/jobs/$id': typeof JobvanaJobsIdRoute
   '/jobvana/roles/$id': typeof JobvanaRolesIdRoute
   '/jobvana/applications': typeof JobvanaApplicationsIndexRoute
   '/jobvana/companies': typeof JobvanaCompaniesIndexRoute
+  '/jobvana/interviews': typeof JobvanaInterviewsIndexRoute
   '/jobvana/jobs': typeof JobvanaJobsIndexRoute
   '/jobvana/roles': typeof JobvanaRolesIndexRoute
   '/jobvana/skill_categories': typeof JobvanaSkill_categoriesIndexRoute
@@ -148,10 +164,12 @@ export interface FileRoutesById {
   '/jobvana/': typeof JobvanaIndexRoute
   '/jobvana/applications/$id': typeof JobvanaApplicationsIdRoute
   '/jobvana/companies/$id': typeof JobvanaCompaniesIdRoute
+  '/jobvana/interviews/$id': typeof JobvanaInterviewsIdRoute
   '/jobvana/jobs/$id': typeof JobvanaJobsIdRoute
   '/jobvana/roles/$id': typeof JobvanaRolesIdRoute
   '/jobvana/applications/': typeof JobvanaApplicationsIndexRoute
   '/jobvana/companies/': typeof JobvanaCompaniesIndexRoute
+  '/jobvana/interviews/': typeof JobvanaInterviewsIndexRoute
   '/jobvana/jobs/': typeof JobvanaJobsIndexRoute
   '/jobvana/roles/': typeof JobvanaRolesIndexRoute
   '/jobvana/skill_categories/': typeof JobvanaSkill_categoriesIndexRoute
@@ -167,10 +185,12 @@ export interface FileRouteTypes {
     | '/jobvana'
     | '/jobvana/applications/$id'
     | '/jobvana/companies/$id'
+    | '/jobvana/interviews/$id'
     | '/jobvana/jobs/$id'
     | '/jobvana/roles/$id'
     | '/jobvana/applications'
     | '/jobvana/companies'
+    | '/jobvana/interviews'
     | '/jobvana/jobs'
     | '/jobvana/roles'
     | '/jobvana/skill_categories'
@@ -184,10 +204,12 @@ export interface FileRouteTypes {
     | '/jobvana'
     | '/jobvana/applications/$id'
     | '/jobvana/companies/$id'
+    | '/jobvana/interviews/$id'
     | '/jobvana/jobs/$id'
     | '/jobvana/roles/$id'
     | '/jobvana/applications'
     | '/jobvana/companies'
+    | '/jobvana/interviews'
     | '/jobvana/jobs'
     | '/jobvana/roles'
     | '/jobvana/skill_categories'
@@ -201,10 +223,12 @@ export interface FileRouteTypes {
     | '/jobvana/'
     | '/jobvana/applications/$id'
     | '/jobvana/companies/$id'
+    | '/jobvana/interviews/$id'
     | '/jobvana/jobs/$id'
     | '/jobvana/roles/$id'
     | '/jobvana/applications/'
     | '/jobvana/companies/'
+    | '/jobvana/interviews/'
     | '/jobvana/jobs/'
     | '/jobvana/roles/'
     | '/jobvana/skill_categories/'
@@ -219,10 +243,12 @@ export interface RootRouteChildren {
   JobvanaIndexRoute: typeof JobvanaIndexRoute
   JobvanaApplicationsIdRoute: typeof JobvanaApplicationsIdRoute
   JobvanaCompaniesIdRoute: typeof JobvanaCompaniesIdRoute
+  JobvanaInterviewsIdRoute: typeof JobvanaInterviewsIdRoute
   JobvanaJobsIdRoute: typeof JobvanaJobsIdRoute
   JobvanaRolesIdRoute: typeof JobvanaRolesIdRoute
   JobvanaApplicationsIndexRoute: typeof JobvanaApplicationsIndexRoute
   JobvanaCompaniesIndexRoute: typeof JobvanaCompaniesIndexRoute
+  JobvanaInterviewsIndexRoute: typeof JobvanaInterviewsIndexRoute
   JobvanaJobsIndexRoute: typeof JobvanaJobsIndexRoute
   JobvanaRolesIndexRoute: typeof JobvanaRolesIndexRoute
   JobvanaSkill_categoriesIndexRoute: typeof JobvanaSkill_categoriesIndexRoute
@@ -276,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JobvanaJobsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jobvana/interviews/': {
+      id: '/jobvana/interviews/'
+      path: '/jobvana/interviews'
+      fullPath: '/jobvana/interviews'
+      preLoaderRoute: typeof JobvanaInterviewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jobvana/companies/': {
       id: '/jobvana/companies/'
       path: '/jobvana/companies'
@@ -302,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/jobvana/jobs/$id'
       fullPath: '/jobvana/jobs/$id'
       preLoaderRoute: typeof JobvanaJobsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobvana/interviews/$id': {
+      id: '/jobvana/interviews/$id'
+      path: '/jobvana/interviews/$id'
+      fullPath: '/jobvana/interviews/$id'
+      preLoaderRoute: typeof JobvanaInterviewsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jobvana/companies/$id': {
@@ -347,10 +387,12 @@ const rootRouteChildren: RootRouteChildren = {
   JobvanaIndexRoute: JobvanaIndexRoute,
   JobvanaApplicationsIdRoute: JobvanaApplicationsIdRoute,
   JobvanaCompaniesIdRoute: JobvanaCompaniesIdRoute,
+  JobvanaInterviewsIdRoute: JobvanaInterviewsIdRoute,
   JobvanaJobsIdRoute: JobvanaJobsIdRoute,
   JobvanaRolesIdRoute: JobvanaRolesIdRoute,
   JobvanaApplicationsIndexRoute: JobvanaApplicationsIndexRoute,
   JobvanaCompaniesIndexRoute: JobvanaCompaniesIndexRoute,
+  JobvanaInterviewsIndexRoute: JobvanaInterviewsIndexRoute,
   JobvanaJobsIndexRoute: JobvanaJobsIndexRoute,
   JobvanaRolesIndexRoute: JobvanaRolesIndexRoute,
   JobvanaSkill_categoriesIndexRoute: JobvanaSkill_categoriesIndexRoute,
