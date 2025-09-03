@@ -54,7 +54,7 @@ const SkillCategories = () => {
           <SkillCategoryTree skillCategories={rootCategories} skills={skills} />
         )}
       </div>
-      <div className="card">
+      <div className="">
         <table className="w-full">
           <thead>
             <tr>

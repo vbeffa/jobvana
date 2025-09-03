@@ -84,10 +84,10 @@ const Companies = () => {
       </div>
       <div className="border-y-[0.5px] border-y-blue-300 mx-8 mt-4 flex flex-row">
         <div className="border-l-[0.5px] border-l-blue-300 w-[20%]">
-          <div className="h-12 pt-3 text-gray-400">
+          <div className="h-12 pt-3 text-gray-400 text-center">
             Browsing {companyCount} companies
           </div>
-          <div className="h-[calc(100dvh-317px)] overflow-y-auto">
+          <div className="h-[calc(100dvh-333px)] overflow-y-auto">
             {companies?.map((company) => (
               <SummaryCard
                 key={company.id}
@@ -99,7 +99,7 @@ const Companies = () => {
             ))}
           </div>
         </div>
-        <div className="border-x-[0.5px] border-x-blue-300 pl-4 w-[80%] h-[calc(100vh-269px)] overflow-y-auto">
+        <div className="border-x-[0.5px] border-x-blue-300 pl-4 w-[80%] h-[calc(100vh-285px)] overflow-y-auto">
           {companyId && <CompanyDetails id={companyId} />}
         </div>
       </div>

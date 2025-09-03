@@ -10,7 +10,7 @@ const Applications = () => {
   return (
     <>
       <h1>Applications</h1>
-      <div className="card text-left flex flex-row gap-x-2">
+      <div className="flex flex-row gap-x-2">
         <div className="w-[20%]">
           {applications?.map((application) => (
             <SummaryCard

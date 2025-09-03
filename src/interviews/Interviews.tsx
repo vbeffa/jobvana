@@ -10,7 +10,7 @@ const Interviews = () => {
   return (
     <>
       <h1>Interviews</h1>
-      <div className="card text-left flex flex-row gap-x-2">
+      <div className="flex flex-row gap-x-2">
         <div className="w-[20%]">
           {interviews?.map((interview) => (
             <SummaryCard

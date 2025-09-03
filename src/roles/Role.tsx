@@ -15,9 +15,9 @@ const Role = () => {
     <>
       <h1>{role.name}</h1>
       <h2>Description</h2>
-      <div className="card text-left">{role.description}</div>
+      <div>{role.description}</div>
       <h2>Reference</h2>
-      <div className="card text-left">
+      <div>
         {role.reference && (
           <Link to={role.reference} target="_blank">
             {role.reference}
@@ -25,7 +25,7 @@ const Role = () => {
         )}
       </div>
       <h2>Jobs</h2>
-      <div className="card text-left">
+      <div>
         <JobsForRole role={role} />
       </div>
     </>

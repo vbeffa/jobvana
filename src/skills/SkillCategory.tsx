@@ -25,33 +25,27 @@ const SkillCategory = () => {
     <>
       <h1>{skillCategory.name}</h1>
       <h2>Description</h2>
-      <div className="card text-left whitespace-pre-wrap">
-        {skillCategory.description}
-      </div>
+      <div className="whitespace-pre-wrap">{skillCategory.description}</div>
       <h2>Parent Category</h2>
-      <div className="card text-left">
+      <div>
         {parentSkillCategory && (
           <SkillCategoryLink skillCategory={parentSkillCategory} />
         )}
         {!parentSkillCategory && <>---</>}
       </div>
       <h2>Subcategories</h2>
-      <div className="card text-left">
+      <div>
         {childSkillCategories && (
           <SkillCategoriesList skillCategories={childSkillCategories} />
         )}
         {childSkillCategories?.length === 0 && <>---</>}
       </div>
       <h2>Skills</h2>
-      <div className="card text-left">
-        {skills && <SkillsList skills={skills} />}
-      </div>
+      <div>{skills && <SkillsList skills={skills} />}</div>
       <h2>Notes</h2>
-      <div className="card text-left whitespace-pre-wrap">
-        {skillCategory.notes}
-      </div>
+      <div className="whitespace-pre-wrap">{skillCategory.notes}</div>
       <h2>Reference</h2>
-      <div className="card text-left">
+      <div>
         {skillCategory.reference && (
           <a target="_blank" href={skillCategory.reference}>
             {skillCategory.reference}

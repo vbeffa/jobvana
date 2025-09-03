@@ -31,27 +31,27 @@ const Skill = () => {
         {skill.abbreviation && ` (${skill.abbreviation})`}
       </h1>
       <h2>Description</h2>
-      <div className="card text-left">{skill.description}</div>
+      <div>{skill.description}</div>
       <h2>Category</h2>
-      <div className="card text-left">
+      <div>
         <SkillCategoryLink skillCategory={skillCategory} />
       </div>
       <h2>Jobs</h2>
-      <div className="card text-left">{jobs && <JobsList jobs={jobs} />}</div>
+      <div>{jobs && <JobsList jobs={jobs} />}</div>
       <h2>Versions</h2>
-      <div className="card text-left">
+      <div>
         {skill.versions.length > 0 && (
           <SkillVersionsList skillVersions={skill.versions} />
         )}
       </div>
       <h2>Notes</h2>
-      <div className="card text-left whitespace-pre-wrap">{skill.notes}</div>
+      <div className="whitespace-pre-wrap">{skill.notes}</div>
       <h2>Related Skills</h2>
-      <div className="card text-left">
+      <div>
         <SkillsList skills={skill.relatedSkills} />
       </div>
       <h2>Reference</h2>
-      <div className="card text-left">
+      <div>
         {skill.reference && (
           <a target="_blank" href={skill.reference}>
             {skill.reference}

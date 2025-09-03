@@ -28,31 +28,27 @@ const JobDetails = ({ id }: { id: number }) => {
       {isPlaceholderData && <LoadingModal />}
       <h2>{job.title}</h2>
       <h2>Company</h2>
-      <div className="card text-left">
-        {job.company && <CompanyLink company={job.company} />}
-      </div>
+      <div>{job.company && <CompanyLink company={job.company} />}</div>
       <h2>Role</h2>
-      <div className="card text-left">
+      <div>
         <RoleLink role={job.role} /> ({roleLevel(job.role_level)})
       </div>
       <h2>Description</h2>
-      <div className="card text-left">{job.description}</div>
+      <div>{job.description}</div>
       <h2>Created</h2>
-      <div className="card text-left">
-        {new Date(job.created_at).toDateString()}
-      </div>
+      <div>{new Date(job.created_at).toDateString()}</div>
       <h2>Status</h2>
-      <div className="card text-left">{job.status}</div>
+      <div>{job.status}</div>
       <h2>Salary</h2>
-      <div className="card text-left">
+      <div>
         <Salary job={job} />
       </div>
       <h2>Skills</h2>
-      <div className="card text-left">
+      <div>
         <JobSkills job={job} />
       </div>
       <h2>Applications</h2>
-      <div className="card text-left">
+      <div>
         {job.applications && (
           <ApplicationsList applications={job.applications} />
         )}

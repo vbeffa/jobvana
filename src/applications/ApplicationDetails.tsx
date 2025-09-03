@@ -13,32 +13,30 @@ const ApplicationDetails = ({ id }: { id: number }) => {
   return (
     <>
       <h2>Job</h2>
-      <div className="card text-left">
+      <div>
         <JobLink job={application.job} />
       </div>
       <h2>Company</h2>
-      <div className="card text-left">
+      <div>
         <CompanyLink company={application.company} />
       </div>
       <h2>Job Seeker</h2>
-      <div className="card text-left">
+      <div>
         {application.jobSeeker.user.first_name}{' '}
         {application.jobSeeker.user.last_name}
       </div>
       <h2>Status</h2>
-      <div className="card text-left">
-        {capitalize(application.status ?? 'pending')}
-      </div>
+      <div>{capitalize(application.status ?? 'pending')}</div>
       {application.status === 'accepted' && (
         <>
           <h2>Interview</h2>
-          <div className="card text-left">Link</div>
+          <div>Link</div>
         </>
       )}
       {application.status === 'rejected' && (
         <>
           <h2>Reason</h2>
-          <div className="card text-left">{application.reason}</div>
+          <div>{application.reason}</div>
         </>
       )}
     </>

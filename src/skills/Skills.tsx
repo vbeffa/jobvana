@@ -102,7 +102,7 @@ const Skills = () => {
   return (
     <>
       <h1>Skills</h1>
-      <div className="card">
+      <div className="">
         <table className="w-full">
           <thead>
             <tr>

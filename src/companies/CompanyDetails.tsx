@@ -31,13 +31,13 @@ const CompanyDetails = ({ id }: { id: number }) => {
       {isPlaceholderData && <LoadingModal />}
       <h2>{company.name}</h2>
       <h2>Description</h2>
-      <div className="card text-left">{company.description}</div>
+      <div>{company.description}</div>
       <h2>Industry</h2>
-      <div className="card text-left">{company.industry.name}</div>
+      <div>{company.industry.name}</div>
       <h2>Size</h2>
-      <div className="card text-left">{company.num_employees}</div>
+      <div>{company.num_employees}</div>
       <h2>Headquarters</h2>
-      <div className="card text-left">
+      <div>
         {hq && (
           <>
             {hq.street} {hq.city}, {hq.state} {hq.zip}
@@ -45,7 +45,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
         )}
       </div>
       <h2>Offices</h2>
-      <div className="card text-left">
+      <div>
         {company.addresses.length > 0 && (
           <ul>
             {company.addresses.map((address) => (
@@ -58,7 +58,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
         )}
       </div>
       <h2>Tech Stack</h2>
-      <div className="card text-left">
+      <div>
         <ul>
           {company.techStack.map((techStackRow) => {
             const skillVersion = findSkillVersion(
@@ -80,7 +80,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
         </ul>
       </div>
       <h2>Jobs</h2>
-      <div className="card text-left">
+      <div>
         <JobsForCompany company={company} />
       </div>
     </div>

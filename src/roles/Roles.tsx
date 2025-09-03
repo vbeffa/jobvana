@@ -35,7 +35,7 @@ const Roles = () => {
   return (
     <>
       <h1>Roles</h1>
-      <div className="card text-center justify-center">
+      <div className="">
         <table className="w-full">
           <thead>
             <tr>
