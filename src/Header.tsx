@@ -28,7 +28,7 @@ const Header = () => {
       )}
       {currPage === 'about' && (
         <div>
-          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
             About
           </div>
         </div>
@@ -40,7 +40,7 @@ const Header = () => {
       )}
       {currPage === 'jobs' && (
         <div>
-          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
             Jobs
           </div>
         </div>
@@ -52,7 +52,7 @@ const Header = () => {
       )}
       {currPage === 'companies' && (
         <div>
-          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
             Companies
           </div>
         </div>
@@ -67,7 +67,7 @@ const Header = () => {
       )}
       {currPage === 'applications' && (
         <div>
-          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
             Applications
           </div>
         </div>
