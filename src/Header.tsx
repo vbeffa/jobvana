@@ -14,25 +14,49 @@ const Header = () => {
           Home
         </Link>
       )}
-      {currPage === 'home' && <span>Home</span>}
+      {currPage === 'home' && (
+        <div>
+          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 content-center">
+            Home
+          </div>
+        </div>
+      )}
       {currPage !== 'about' && (
         <Link to="/jobvana/about" onClick={() => setCurrPage('about')}>
           About
         </Link>
       )}
-      {currPage === 'about' && <span>About</span>}
+      {currPage === 'about' && (
+        <div>
+          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+            About
+          </div>
+        </div>
+      )}
       {currPage !== 'jobs' && (
         <Link to="/jobvana/jobs" onClick={() => setCurrPage('jobs')}>
           Jobs
         </Link>
       )}
-      {currPage === 'jobs' && <span>Jobs</span>}
+      {currPage === 'jobs' && (
+        <div>
+          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+            Jobs
+          </div>
+        </div>
+      )}
       {currPage !== 'companies' && (
         <Link to="/jobvana/companies" onClick={() => setCurrPage('companies')}>
           Companies
         </Link>
       )}
-      {currPage === 'companies' && <span>Companies</span>}
+      {currPage === 'companies' && (
+        <div>
+          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+            Companies
+          </div>
+        </div>
+      )}
       {currPage !== 'applications' && (
         <Link
           to="/jobvana/applications"
@@ -41,7 +65,13 @@ const Header = () => {
           Applications
         </Link>
       )}
-      {currPage === 'applications' && <span>Applications</span>}
+      {currPage === 'applications' && (
+        <div>
+          <div className="border-b-4 border-b-blue-600 pt-[4px] h-16 w-full content-center">
+            Applications
+          </div>
+        </div>
+      )}
     </div>
   );
 };
