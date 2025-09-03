@@ -27,7 +27,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
   const hq = findHeadquarters(company);
 
   return (
-    <div className="px-4">
+    <div className="">
       {isPlaceholderData && <LoadingModal />}
       <h2>{company.name}</h2>
       <h2>Description</h2>

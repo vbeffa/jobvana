@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import CompanyLink from '../companies/CompanyLink';
 import type { Job } from '../hooks/useJobs';
+import { roleLevel } from '../roles/utils';
 import JobLink from './JobLink';
 import JobSkills from './JobSkills';
 import Salary from './Salary';
@@ -133,18 +134,6 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
         )}
         {sortedJobs.map((job) => {
           const company = job.company;
-          const roleLevel = (() => {
-            switch (job.role_level) {
-              case 1:
-                return 'Junior';
-              case 2:
-                return 'Mid';
-              case 3:
-                return 'Senior';
-              case 4:
-                return 'Staff';
-            }
-          })();
           return (
             <tr key={job.id}>
               <td>{company && <CompanyLink company={company} />}</td>
@@ -152,7 +141,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
                 <JobLink job={job} />
               </td>
               <td>{job.role?.name}</td>
-              <td>{roleLevel}</td>
+              <td>{roleLevel(job.role_level)}</td>
               <td>{new Date(job.created_at).toLocaleDateString()}</td>
               <td>
                 <Salary job={job} />

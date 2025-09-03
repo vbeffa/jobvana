@@ -1,7 +1,10 @@
+import ApplicationsList from '../applications/ApplicationsList';
 import CompanyLink from '../companies/CompanyLink';
 import Error from '../Error';
 import useJob from '../hooks/useJob';
 import LoadingModal from '../LoadingModal';
+import RoleLink from '../roles/RoleLink';
+import { roleLevel } from '../roles/utils';
 import JobSkills from './JobSkills';
 import Salary from './Salary';
 
@@ -21,12 +24,16 @@ const JobDetails = ({ id }: { id: number }) => {
   }
 
   return (
-    <div className="px-4">
+    <>
       {isPlaceholderData && <LoadingModal />}
       <h2>{job.title}</h2>
       <h2>Company</h2>
       <div className="card text-left">
         {job.company && <CompanyLink company={job.company} />}
+      </div>
+      <h2>Role</h2>
+      <div className="card text-left">
+        <RoleLink role={job.role} /> ({roleLevel(job.role_level)})
       </div>
       <h2>Description</h2>
       <div className="card text-left">{job.description}</div>
@@ -40,12 +47,17 @@ const JobDetails = ({ id }: { id: number }) => {
       <div className="card text-left">
         <Salary job={job} />
       </div>
-
       <h2>Skills</h2>
       <div className="card text-left">
         <JobSkills job={job} />
       </div>
-    </div>
+      <h2>Applications</h2>
+      <div className="card text-left">
+        {job.applications && (
+          <ApplicationsList applications={job.applications} />
+        )}
+      </div>
+    </>
   );
 };
 

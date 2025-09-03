@@ -13,7 +13,7 @@ const SummaryCard = ({
 }) => {
   return (
     <div
-      className={`text-left px-4 py-2 w-fit ${selected ? 'bg-gray-200' : ''} cursor-pointer`}
+      className={`text-left pl-2 py-2 w-full border-b-[0.5px] border-b-blue-300 ${selected ? 'bg-gray-200' : ''} cursor-pointer`}
       onClick={onClick}
     >
       <div className="text-blue-500">{title}</div>

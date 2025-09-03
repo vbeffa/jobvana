@@ -1,13 +1,20 @@
 import { Link } from '@tanstack/react-router';
-import type { Application } from '../hooks/useApplications';
 
-const ApplicationLink = ({ application }: { application: Application }) => {
+export type ApplicationLinkParams = {
+  applicationId: number;
+  jobTitle: string;
+};
+
+const ApplicationLink = ({
+  applicationId,
+  jobTitle
+}: ApplicationLinkParams) => {
   return (
     <Link
       to="/jobvana/applications/$id"
-      params={{ id: application.id.toString() }}
+      params={{ id: applicationId.toString() }}
     >
-      {application.job.title}
+      {jobTitle}
     </Link>
   );
 };

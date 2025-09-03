@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
+import type { DbApplication } from './useApplications';
 import { type DbCompany } from './useCompanies';
 import type { DbSkill } from './useSkills';
 
@@ -26,10 +27,11 @@ export type SearchFilters = {
 export type DbJob = Database['public']['Tables']['jobs']['Row'];
 
 export type Job = DbJob & {
-  company: DbCompany | undefined;
-  role: Role | undefined;
+  company: DbCompany;
+  role: Role;
   skills: Array<DbSkill>;
   // skillVersions: Array<SkillVersion>;
+  applications: Array<DbApplication> | undefined;
 };
 
 export type Role = Database['public']['Tables']['roles']['Row'];
@@ -84,7 +86,7 @@ const useJobs = (
       let q = supabase
         .from('jobs')
         .select(
-          '*, companies!jobs_company_id_fkey!inner(*), roles!inner(*), skills(*)',
+          '*, companies!jobs_company_id_fkey!inner(*), roles!inner(*), skills(*), applications(*)',
           {
             count: 'exact'
           }

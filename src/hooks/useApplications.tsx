@@ -11,12 +11,13 @@ export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'] & {
 
 export type User = Database['public']['Tables']['users']['Row'];
 
-export type Application =
-  Database['public']['Tables']['applications']['Row'] & {
-    job: DbJob;
-    company: DbCompany;
-    jobSeeker: JobSeeker;
-  };
+export type DbApplication = Database['public']['Tables']['applications']['Row'];
+
+export type Application = DbApplication & {
+  job: DbJob;
+  company: DbCompany;
+  jobSeeker: JobSeeker;
+};
 
 export type Applications = {
   applications: Array<Application> | undefined;

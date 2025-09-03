@@ -30,7 +30,7 @@ const CompanyFilters = ({
           step={1}
           min={1}
           max={1000}
-          className="border h-9 pr-1 text-center
+          className="border h-8 pr-1 text-center
                      border-gray-500 rounded-lg"
           value={filters.minSize}
           onChange={(e) => {
@@ -50,7 +50,7 @@ const CompanyFilters = ({
           step={1}
           min={1}
           max={1000}
-          className="border h-9 pr-1 text-center
+          className="border h-8 pr-1 text-center
                      border-gray-500 rounded-lg"
           value={filters.maxSize}
           onChange={(e) => {
