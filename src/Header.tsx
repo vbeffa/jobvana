@@ -1,9 +1,12 @@
-import { Link } from '@tanstack/react-router';
-import './App.css';
+import { Link, useLocation } from '@tanstack/react-router';
 import { useState } from 'react';
+import './App.css';
 
 const Header = () => {
-  const [currPage, setCurrPage] = useState<string>('home');
+  const location = useLocation();
+  const [currPage, setCurrPage] = useState<string>(
+    location.pathname.substring(9) || 'home'
+  );
 
   return (
     <div className="bg-amber-300 flex gap-2 w-full h-12 pl-2 pt-2.5 mb-4 top-0 left-0 sticky z-10">
