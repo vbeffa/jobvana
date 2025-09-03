@@ -20,7 +20,11 @@ const PageNav = ({
   );
 
   if (total === 0 && !isLoading) {
-    return <div className="h-9"></div>;
+    return <div className="h-9">Loading...</div>;
+  }
+
+  if (isLoading) {
+    return <div className="text-left h-9">Loading...</div>;
   }
 
   if (!numPages) {
