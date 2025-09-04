@@ -89,7 +89,7 @@ const Jobs = () => {
                       <div>{job.role?.name}</div>
                     </>
                   }
-                  borderBottom={idx < jobs.length - 1}
+                  last={idx === jobs.length - 1}
                 />
               ))}
             </div>

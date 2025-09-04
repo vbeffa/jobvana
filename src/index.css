@@ -125,5 +125,6 @@ input::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type=number] {
+  appearance: inherit;
   -moz-appearance: textfield;
 }

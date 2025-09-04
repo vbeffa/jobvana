@@ -19,7 +19,7 @@ const Interviews = () => {
               onClick={() => setInterviewId(interview.id)}
               title={interview.application_id.toString()}
               text={interview.status ?? ''}
-              borderBottom={idx < interviews.length - 1}
+              last={idx === interviews.length - 1}
             />
           ))}
         </div>

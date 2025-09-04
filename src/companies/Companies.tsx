@@ -107,7 +107,7 @@ const Companies = () => {
                         )}
                       </>
                     }
-                    borderBottom={idx < companies.length - 1}
+                    last={idx === companies.length - 1}
                   />
                 );
               })}

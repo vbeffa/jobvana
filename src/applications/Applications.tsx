@@ -19,7 +19,7 @@ const Applications = () => {
               onClick={() => setApplicationId(application.id)}
               title={application.job.title}
               text={`${application.jobSeeker.user.first_name} ${application.jobSeeker.user.last_name}`}
-              borderBottom={idx < applications.length - 1}
+              last={idx === applications.length - 1}
             />
           ))}
         </div>
