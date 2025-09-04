@@ -19,11 +19,15 @@ const IndustrySelect = ({
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {isPending && (
-        <option key={0} value="">
+        <option key={0} value="0">
           Loading...
         </option>
       )}
-      {!isPending && <option key={0} value=""></option>}
+      {!isPending && (
+        <option key={0} value="0">
+          All
+        </option>
+      )}
       {industries?.map((industry, idx) => (
         <option key={idx} value={industry.id}>
           {industry.name}

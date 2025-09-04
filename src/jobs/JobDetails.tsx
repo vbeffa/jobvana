@@ -40,7 +40,7 @@ const JobDetails = ({ id }: { id: number }) => {
             const role = roles?.find((role) => role.id === jobRole.role_id);
             return (
               role && (
-                <li>
+                <li key={role.id}>
                   <RoleLink {...role} /> ({jobRole.percent} %)
                 </li>
               )

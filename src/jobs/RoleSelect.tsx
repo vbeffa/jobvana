@@ -19,11 +19,15 @@ const RoleSelect = ({
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {isPending && (
-        <option key={0} value="">
+        <option key={0} value="0">
           Loading...
         </option>
       )}
-      {!isPending && <option key={0} value=""></option>}
+      {!isPending && (
+        <option key={0} value="0">
+          Any
+        </option>
+      )}
       {roles?.map((role, idx) => (
         <option key={idx} value={role.id}>
           {role.name}

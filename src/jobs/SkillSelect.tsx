@@ -19,11 +19,15 @@ const SkillSelect = ({
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {isPending && (
-        <option key={0} value="">
+        <option key={0} value="0">
           Loading...
         </option>
       )}
-      {!isPending && <option key={0} value=""></option>}
+      {!isPending && (
+        <option key={0} value="0">
+          Any
+        </option>
+      )}
       {skills?.map((skill, idx) => (
         <option key={idx} value={skill.id}>
           {skill.name}

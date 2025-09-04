@@ -16,7 +16,9 @@ const CreatedSelect = ({
       value={value}
       onChange={(e) => onChange(e.target.value as CreatedRange)}
     >
-      <option key={0} value=""></option>
+      <option key={0} value="all">
+        Any Time
+      </option>
       <option key={1} value="today">
         Today
       </option>

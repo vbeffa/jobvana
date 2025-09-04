@@ -8,6 +8,7 @@ import { type DbCompany } from './useCompanies';
 import type { DbSkill } from './useSkills';
 
 export type CreatedRange =
+  | 'all'
   | 'today'
   | 'last_three_days'
   | 'last_week'
@@ -117,7 +118,7 @@ const useJobs = (
       if (filters?.skillId) {
         q = q.eq('skills.id', filters.skillId);
       }
-      if (filters?.created) {
+      if (filters?.created && filters.created !== 'all') {
         const createdAfter = (() => {
           switch (filters.created) {
             case 'today':
@@ -141,7 +142,7 @@ const useJobs = (
         )
         .order('created_at', { ascending: false })
         .overrideTypes<Array<{ companies: DbCompany }>>();
-      console.log(data);
+      // console.log(data);
       if (error) {
         console.log(JSON.stringify(error));
       }

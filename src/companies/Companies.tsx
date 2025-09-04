@@ -83,17 +83,16 @@ const Companies = () => {
         />
       </div> */}
       <div className="flex justify-center">
-        <div className="border-y-[0.5px] border-y-blue-300 w-[75%] min-w-[760px] flex flex-row">
+        <div className="border-y-[0.5px] border-y-blue-300 w-[75%] min-w-[1100px] flex flex-row">
           <div className="border-l-[0.5px] border-l-blue-300 w-[20%]">
             <div className="flex justify-center">
               <PageNav
                 page={page}
                 pageSize={10}
                 total={companyCount}
-                onSetPage={(page) => {
-                  setPage(page);
-                }}
+                onSetPage={setPage}
                 isLoading={isPlaceholderData || isPending}
+                type="companies"
               />
             </div>
             <div className="h-[calc(100dvh-333px)] overflow-y-auto">

@@ -47,7 +47,11 @@ const JobFilters = ({
             id="role"
             roleId={filters.roleId}
             onChange={(roleId) => {
-              setFilters((filters) => ({ ...filters, roleId }));
+              if (!roleId) {
+                setFilters((filters) => ({ ...filters, roleId: undefined }));
+              } else {
+                setFilters((filters) => ({ ...filters, roleId }));
+              }
             }}
           />
         </div>
@@ -57,7 +61,7 @@ const JobFilters = ({
         <div className="col-span-2 flex flex-row gap-x-2">
           <SalarySelect
             id="min_salary"
-            title="Min"
+            type="min"
             value={filters.minSalary}
             onChange={(minSalary) => {
               const newFilters = {
@@ -74,7 +78,7 @@ const JobFilters = ({
           <div className="flex pt-1">-</div>
           <SalarySelect
             id="max_salary"
-            title="Max"
+            type="max"
             value={filters.maxSalary}
             onChange={(maxSalary) => {
               const newFilters = {
@@ -95,7 +99,11 @@ const JobFilters = ({
             id="role"
             skillId={filters.skillId}
             onChange={(skillId) => {
-              setFilters((filters) => ({ ...filters, skillId }));
+              if (skillId === 0) {
+                setFilters((filters) => ({ ...filters, skillId: undefined }));
+              } else {
+                setFilters((filters) => ({ ...filters, skillId }));
+              }
             }}
           />
         </div>
@@ -105,7 +113,11 @@ const JobFilters = ({
             id="role"
             value={filters.created}
             onChange={(created) => {
-              setFilters((filters) => ({ ...filters, created }));
+              if (created === 'all') {
+                setFilters((filters) => ({ ...filters, created: undefined }));
+              } else {
+                setFilters((filters) => ({ ...filters, created }));
+              }
             }}
           />
         </div>
