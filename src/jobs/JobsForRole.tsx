@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import type { Role } from '../hooks/useRoles';
-import useJobs from '../hooks/useJobs';
-import JobsTable from './JobsTable';
-import PageNav from '../PageNav';
 import { useDebounce } from 'use-debounce';
+import useJobs from '../hooks/useJobs';
+import type { Role } from '../hooks/useRoles';
+import PageNav from '../PageNav';
+import JobsTable from './JobsTable';
 
 const JobsForRole = ({ role }: { role: Role }) => {
   const [page, setPage] = useState<number>(1);
@@ -21,6 +21,7 @@ const JobsForRole = ({ role }: { role: Role }) => {
           total={openJobCount}
           onSetPage={setPage}
           isLoading={isPlaceholderData || isPending}
+          type="jobs"
         />
       </div>
       <div>

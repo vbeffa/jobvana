@@ -54,7 +54,7 @@ const Roles = () => {
               return (
                 <tr key={role.id}>
                   <td>
-                    <RoleLink role={role} />
+                    <RoleLink {...role} />
                   </td>
                   <td>{role.description}</td>
                 </tr>

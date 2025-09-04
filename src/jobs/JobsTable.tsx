@@ -144,7 +144,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
               <td>{roleLevel(job.role_level)}</td>
               <td>{new Date(job.created_at).toLocaleDateString()}</td>
               <td>
-                <Salary job={job} />
+                <Salary {...job} />
               </td>
               <td>
                 <JobSkills job={job} />
