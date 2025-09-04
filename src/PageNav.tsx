@@ -6,7 +6,7 @@ export type PageNavProps = {
   page: number;
   pageSize?: number;
   total?: number;
-  onSetPage: (page: number) => void;
+  onSetPage: (page: number, debounce: boolean) => void;
   isLoading: boolean;
   type: NavType;
 };
@@ -23,18 +23,6 @@ const PageNav = ({
     [pageSize, total]
   );
 
-  // if (total === 0 && isLoading) {
-  //   return <div className="h-9">Loading...</div>;
-  // }
-
-  // if (isLoading) {
-  //   return <div className="text-left h-9">Loading...</div>;
-  // }
-
-  // if (!numPages) {
-  //   return <LoadingModal />;
-  // }
-
   const navButtonStyles = `h-full w-6 pb-0.5
                            cursor-pointer
                            hover:text-gray-700
@@ -50,7 +38,7 @@ const PageNav = ({
               type="button"
               disabled={page === 1}
               className={navButtonStyles}
-              onClick={() => onSetPage(1)}
+              onClick={() => onSetPage(1, false)}
               value="≪"
             />
           </div>
@@ -59,7 +47,7 @@ const PageNav = ({
               type="button"
               disabled={page === 1}
               className={navButtonStyles}
-              onClick={() => onSetPage(page - 1)}
+              onClick={() => onSetPage(page - 1, false)}
               value="<"
             />
           </div>
@@ -87,7 +75,7 @@ const PageNav = ({
                 } else if (page > numPages) {
                   page = numPages;
                 }
-                onSetPage(page);
+                onSetPage(page, true);
               }}
             />
           </div>
@@ -98,14 +86,14 @@ const PageNav = ({
               type="button"
               disabled={page === numPages}
               className={navButtonStyles}
-              onClick={() => onSetPage(page + 1)}
+              onClick={() => onSetPage(page + 1, false)}
               value=">"
             />
             <input
               type="button"
               disabled={page === numPages}
               className={navButtonStyles}
-              onClick={() => numPages && onSetPage(numPages)}
+              onClick={() => numPages && onSetPage(numPages, false)}
               value="≫"
             />
           </div>
@@ -113,14 +101,12 @@ const PageNav = ({
       )}
       <div>
         <div className="content-center text-xs font-bold">
-          {/* {!isLoading && `${total} total`} */}
-          {/* {isLoading && 'Loading...'} */}
-          {total !== undefined && (
+          {!isLoading && (
             <>
               {total} {type}
             </>
           )}
-          {total === undefined && <>Loading...</>}
+          {isLoading && <>Loading...</>}
         </div>
       </div>
     </div>

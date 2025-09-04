@@ -10,7 +10,8 @@ import CompanyFilters from './CompanyFilters';
 
 const Companies = () => {
   const [page, setPage] = useState<number>(1);
-  const [debouncedPage] = useDebounce(page, 500);
+  const [debouncePage, setDebouncePage] = useState(false);
+  const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     name: '',
     minSize: 1,
@@ -71,35 +72,25 @@ const Companies = () => {
           }}
         />
       </div>
-      {/* <div className="flex justify-center">
-        <PageNav
-          page={page}
-          pageSize={10}
-          total={companyCount}
-          onSetPage={(page) => {
-            setPage(page);
-            // setCompanyId(null);
-          }}
-          isLoading={isPlaceholderData || isPending}
-        />
-      </div> */}
       <div className="flex justify-center">
-        <div className="border-y-[0.5px] border-y-blue-300 w-[75%] min-w-[1100px] flex flex-row">
-          <div className="border-l-[0.5px] border-l-blue-300 w-[20%]">
-            <div className="flex justify-center">
+        <div className="border-[0.5px] border-blue-300 rounded-lg w-[75%] min-w-[1100px] flex flex-row">
+          <div className="border-r-[0.5px] border-r-blue-300 w-[20%]">
+            <div className="border-b-[0.5px] border-b-blue-300 flex justify-center">
               <PageNav
                 page={page}
                 pageSize={10}
                 total={companyCount}
-                onSetPage={setPage}
+                onSetPage={(page, debounce) => {
+                  setPage(page);
+                  setDebouncePage(debounce);
+                }}
                 isLoading={isPlaceholderData || isPending}
                 type="companies"
               />
             </div>
             <div className="h-[calc(100dvh-300px)] overflow-y-auto">
-              {companies?.map((company) => {
+              {companies?.map((company, idx) => {
                 const hq = findHeadquarters(company);
-
                 return (
                   <SummaryCard
                     key={company.id}
@@ -110,18 +101,19 @@ const Companies = () => {
                       <>
                         <div>{company.industry.name}</div>
                         {hq && (
-                          <div>
+                          <div className="text-gray-500">
                             {hq.city}, {hq.state}
                           </div>
                         )}
                       </>
                     }
+                    borderBottom={idx < companies.length - 1}
                   />
                 );
               })}
             </div>
           </div>
-          <div className="border-x-[0.5px] border-x-blue-300 px-4 pt-4 w-[80%] h-[calc(100vh-238px)] overflow-y-auto">
+          <div className="px-4 pt-4 w-[80%] h-[calc(100vh-238px)] overflow-y-auto">
             {companyId && <CompanyDetails id={companyId} />}
           </div>
         </div>

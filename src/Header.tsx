@@ -57,7 +57,7 @@ const Header = () => {
           </div>
         </div>
       )}
-      {currPage !== 'applications' && (
+      {/* {currPage !== 'applications' && (
         <Link
           to="/jobvana/applications"
           onClick={() => setCurrPage('applications')}
@@ -71,7 +71,7 @@ const Header = () => {
             Applications
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
