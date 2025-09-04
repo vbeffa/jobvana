@@ -26,7 +26,7 @@ const JobDetails = ({ id }: { id: number }) => {
   }
 
   return (
-    <div className="relative">
+    <>
       {isPlaceholderData && <LoadingModal />}
       <h2>
         <div className="flex justify-between">
@@ -75,7 +75,7 @@ const JobDetails = ({ id }: { id: number }) => {
           <ApplicationsList applications={job.applications} />
         )}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -17,7 +17,11 @@ const SummaryCard = ({
 
   useEffect(() => {
     if (selected) {
-      ref.current?.scrollIntoView({ behavior: 'smooth' });
+      ref.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
     }
   }, [selected]);
 
