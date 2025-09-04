@@ -45,9 +45,9 @@ const Jobs = () => {
   }, [jobs]);
 
   return (
-    <>
+    <div className="mx-4">
       {error && <Error error={error} />}
-      <div className="px-[2em] mt-2 pb-4 text-left flex">
+      <div className="my-4 flex justify-center">
         <JobFilters
           filters={searchFilters}
           setFilters={(filters) => {
@@ -56,7 +56,7 @@ const Jobs = () => {
           }}
         />
       </div>
-      <div className="px-[2em]">
+      {/* <div className="flex justify-center">
         <PageNav
           page={page}
           pageSize={10}
@@ -64,34 +64,42 @@ const Jobs = () => {
           onSetPage={setPage}
           isLoading={isPlaceholderData || isPending}
         />
-      </div>
-      <div className="border-y-[0.5px] border-y-blue-300 mx-8 mt-4 flex flex-row">
-        <div className="border-l-[0.5px] border-l-blue-300 w-[20%]">
-          <div className="h-12 pt-3 text-gray-400 text-center">
-            Browsing {openJobCount} jobs
-          </div>
-          <div className="h-[calc(100dvh-333px)] overflow-y-auto">
-            {jobs?.map((job) => (
-              <SummaryCard
-                key={job.id}
-                selected={jobId === job.id}
-                onClick={() => setJobId(job.id)}
-                title={job.title}
-                text={
-                  <>
-                    <div>{job.company?.name}</div>
-                    <div>{job.role?.name}</div>
-                  </>
-                }
+      </div> */}
+      <div className="flex justify-center">
+        <div className="border-y-[0.5px] border-y-blue-300 w-[75%] min-w-[760px] flex flex-row">
+          <div className="border-l-[0.5px] border-l-blue-300 w-[20%]">
+            <div className="flex justify-center">
+              <PageNav
+                page={page}
+                pageSize={10}
+                total={openJobCount}
+                onSetPage={setPage}
+                isLoading={isPlaceholderData || isPending}
               />
-            ))}
+            </div>
+            <div className="h-[calc(100dvh-333px)] overflow-y-auto">
+              {jobs?.map((job) => (
+                <SummaryCard
+                  key={job.id}
+                  selected={jobId === job.id}
+                  onClick={() => setJobId(job.id)}
+                  title={job.title}
+                  text={
+                    <>
+                      <div>{job.company?.name}</div>
+                      <div>{job.role?.name}</div>
+                    </>
+                  }
+                />
+              ))}
+            </div>
+          </div>
+          <div className="border-x-[0.5px] border-x-blue-300 pl-4 w-[80%] h-[calc(100vh-285px)] overflow-y-auto">
+            {jobId && <JobDetails id={jobId} />}
           </div>
         </div>
-        <div className="border-x-[0.5px] border-x-blue-300 pl-4 w-[80%] h-[calc(100vh-285px)] overflow-y-auto">
-          {jobId && <JobDetails id={jobId} />}
-        </div>
-      </div>{' '}
-    </>
+      </div>
+    </div>
   );
 };
 

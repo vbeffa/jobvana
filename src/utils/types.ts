@@ -205,6 +205,39 @@ export type Database = {
           },
         ]
       }
+      job_roles: {
+        Row: {
+          job_id: number
+          percent: number
+          role_id: number
+        }
+        Insert: {
+          job_id: number
+          percent: number
+          role_id: number
+        }
+        Update: {
+          job_id?: number
+          percent?: number
+          role_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'job_roles_job_id_fkey'
+            columns: ['job_id']
+            isOneToOne: false
+            referencedRelation: 'jobs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'job_roles_role_id_fkey'
+            columns: ['role_id']
+            isOneToOne: false
+            referencedRelation: 'roles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       job_seekers: {
         Row: {
           created_at: string

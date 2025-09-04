@@ -6,7 +6,7 @@ export const Route = createFileRoute('/jobvana/')({
 
 function Index() {
   return (
-    <div className="p-2">
+    <div className="pl-4">
       <h3>Welcome to Jobvana!</h3>
     </div>
   );

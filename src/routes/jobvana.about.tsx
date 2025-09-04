@@ -5,5 +5,5 @@ export const Route = createFileRoute('/jobvana/about')({
 });
 
 function About() {
-  return <div className="p-2">Gamifying the job search process</div>;
+  return <div className="pl-4">Gamifying the job search process</div>;
 }

@@ -15,7 +15,7 @@ const useJob = ({ id }: { id: number }) => {
       const { error, data } = await supabase
         .from('jobs')
         .select(
-          '*, companies!jobs_company_id_fkey!inner(*), roles!inner(*), skills(*), applications(*)'
+          '*, companies!jobs_company_id_fkey!inner(*), roles!jobs_role_id_fkey!inner(*), job_roles(*), skills(*), applications(*)'
         )
         .filter('id', 'eq', id);
 
@@ -33,7 +33,8 @@ const useJob = ({ id }: { id: number }) => {
     return {
       ...job,
       company: job.companies,
-      role: job.roles
+      role: job.roles,
+      jobRoles: job.job_roles
     };
   }, [jobData?.data]);
 
