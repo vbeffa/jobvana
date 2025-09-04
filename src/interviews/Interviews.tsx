@@ -12,13 +12,14 @@ const Interviews = () => {
       <h1>Interviews</h1>
       <div className="flex flex-row gap-x-2">
         <div className="w-[20%]">
-          {interviews?.map((interview) => (
+          {interviews?.map((interview, idx) => (
             <SummaryCard
               key={interview.id}
               selected={interviewId === interview.id}
               onClick={() => setInterviewId(interview.id)}
               title={interview.application_id.toString()}
               text={interview.status ?? ''}
+              borderBottom={idx < interviews.length - 1}
             />
           ))}
         </div>
