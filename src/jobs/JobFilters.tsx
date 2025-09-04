@@ -107,7 +107,7 @@ const JobFilters = ({
             }}
           />
         </div>
-        <div>Created:</div>
+        <div>Posted:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <CreatedSelect
             id="role"

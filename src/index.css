@@ -65,9 +65,10 @@ h1 {
 }
 
 h2 {
-  font-size: 2em;
+  font-weight: bold;
+  /* font-size: 2em;
   text-align: left;
-  padding-bottom: 10px;
+  padding-bottom: 10px; */
 }
 
 table th, td {

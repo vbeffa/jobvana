@@ -1,13 +1,14 @@
 import type { Job } from '../hooks/useJobs';
 
-const Salary = ({ job }: { job: Job }) => {
+export type SalaryProps = Pick<Job, 'salary_low' | 'salary_high'>;
+
+const Salary = ({ salary_low, salary_high }: SalaryProps) => {
   return (
-    <>
-      {job.salary_low === job.salary_high &&
-        `$${job.salary_low.toLocaleString()}`}
-      {job.salary_low !== job.salary_high &&
-        `$${job.salary_low.toLocaleString()} - $${job.salary_high.toLocaleString()}`}
-    </>
+    <div className="text-xs font-bold pt-[5.5px] text-gray-600">
+      {salary_low === salary_high && `$${salary_low.toLocaleString()}`}
+      {salary_low !== salary_high &&
+        `$${salary_low.toLocaleString()} - $${salary_high.toLocaleString()}`}
+    </div>
   );
 };
 

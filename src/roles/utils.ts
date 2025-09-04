@@ -5,7 +5,7 @@ export const roleLevel = (level: number) => {
     case 1:
       return 'Junior';
     case 2:
-      return 'Mid';
+      return 'Mid-Level';
     case 3:
       return 'Senior';
     case 4:

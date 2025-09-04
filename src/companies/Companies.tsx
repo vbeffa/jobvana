@@ -4,6 +4,7 @@ import Error from '../Error';
 import useCompanies, { type SearchFilters } from '../hooks/useCompanies';
 import PageNav from '../PageNav';
 import SummaryCard from '../SummaryCard';
+import { findHeadquarters } from './companiesUtil';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
 
@@ -95,19 +96,32 @@ const Companies = () => {
                 type="companies"
               />
             </div>
-            <div className="h-[calc(100dvh-333px)] overflow-y-auto">
-              {companies?.map((company) => (
-                <SummaryCard
-                  key={company.id}
-                  selected={companyId === company.id}
-                  onClick={() => setCompanyId(company.id)}
-                  title={company.name}
-                  text={company.industry.name}
-                />
-              ))}
+            <div className="h-[calc(100dvh-300px)] overflow-y-auto">
+              {companies?.map((company) => {
+                const hq = findHeadquarters(company);
+
+                return (
+                  <SummaryCard
+                    key={company.id}
+                    selected={companyId === company.id}
+                    onClick={() => setCompanyId(company.id)}
+                    title={company.name}
+                    text={
+                      <>
+                        <div>{company.industry.name}</div>
+                        {hq && (
+                          <div>
+                            {hq.city}, {hq.state}
+                          </div>
+                        )}
+                      </>
+                    }
+                  />
+                );
+              })}
             </div>
           </div>
-          <div className="border-x-[0.5px] border-x-blue-300 pl-4 w-[80%] h-[calc(100vh-285px)] overflow-y-auto">
+          <div className="border-x-[0.5px] border-x-blue-300 px-4 pt-4 w-[80%] h-[calc(100vh-238px)] overflow-y-auto">
             {companyId && <CompanyDetails id={companyId} />}
           </div>
         </div>

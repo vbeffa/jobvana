@@ -28,11 +28,23 @@ const JobDetails = ({ id }: { id: number }) => {
   return (
     <>
       {isPlaceholderData && <LoadingModal />}
-      <h2>{job.title}</h2>
-      <div>
-        {job.company && <CompanyLink company={job.company} />} -{' '}
-        <RoleLink {...job.role} /> ({roleLevel(job.role_level)})
+      <h2>
+        <div className="flex justify-between">
+          <div>{job.title}</div>
+          <div>{new Date(job.created_at).toLocaleDateString()}</div>
+        </div>
+      </h2>
+      <div className="flex flex-row gap-x-2">
+        <CompanyLink company={job.company} />
+        <Salary {...job} />
+        <div></div>
       </div>
+      <hr className="my-4 border-gray-400 shadow" />
+      <h2>Role</h2>
+      <div>
+        {roleLevel(job.role_level)} {job.role.name}
+      </div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Skills</h2>
       <div>
         <ul>
@@ -41,27 +53,22 @@ const JobDetails = ({ id }: { id: number }) => {
             return (
               role && (
                 <li key={role.id}>
-                  <RoleLink {...role} /> ({jobRole.percent} %)
+                  <RoleLink {...role} /> ({jobRole.percent}%)
                 </li>
               )
             );
           })}
         </ul>
       </div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Description</h2>
       <div>{job.description}</div>
-      <h2>Created</h2>
-      <div>{new Date(job.created_at).toDateString()}</div>
-      <h2>Status</h2>
-      <div>{job.status}</div>
-      <h2>Salary</h2>
-      <div>
-        <Salary job={job} />
-      </div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Tools / Tech Stack</h2>
       <div>
         <JobSkills job={job} />
       </div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Applications</h2>
       <div>
         {job.applications && (

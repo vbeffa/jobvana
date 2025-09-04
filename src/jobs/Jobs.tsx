@@ -81,7 +81,7 @@ const Jobs = () => {
                 type="jobs"
               />
             </div>
-            <div className="h-[calc(100dvh-333px)] overflow-y-auto">
+            <div className="h-[calc(100dvh-300px)] overflow-y-auto">
               {jobs?.map((job) => (
                 <SummaryCard
                   key={job.id}
@@ -98,7 +98,7 @@ const Jobs = () => {
               ))}
             </div>
           </div>
-          <div className="border-x-[0.5px] border-x-blue-300 pl-4 w-[80%] h-[calc(100vh-285px)] overflow-y-auto">
+          <div className="border-x-[0.5px] border-x-blue-300 px-4 pt-4 w-[80%] h-[calc(100vh-238px)] overflow-y-auto">
             {jobId && <JobDetails id={jobId} />}
           </div>
         </div>

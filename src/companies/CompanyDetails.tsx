@@ -30,20 +30,20 @@ const CompanyDetails = ({ id }: { id: number }) => {
     <div className="">
       {isPlaceholderData && <LoadingModal />}
       <h2>{company.name}</h2>
-      <h2>Description</h2>
-      <div>{company.description}</div>
-      <h2>Industry</h2>
-      <div>{company.industry.name}</div>
-      <h2>Size</h2>
-      <div>{company.num_employees}</div>
-      <h2>Headquarters</h2>
-      <div>
+      <div className="flex flex-col">
+        <div>
+          {company.industry.name}, {company.num_employees} employees
+        </div>
         {hq && (
-          <>
-            {hq.street} {hq.city}, {hq.state} {hq.zip}
-          </>
+          <div>
+            {hq.city}, {hq.state}
+          </div>
         )}
       </div>
+      <hr className="my-4 border-gray-400 shadow" />
+      <h2>Description</h2>
+      <div>{company.description}</div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Offices</h2>
       <div>
         {company.addresses.length > 0 && (
@@ -57,6 +57,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
           </ul>
         )}
       </div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Tech Stack</h2>
       <div>
         <ul>
@@ -79,6 +80,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
           })}
         </ul>
       </div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Jobs</h2>
       <div>
         <JobsForCompany company={company} />
