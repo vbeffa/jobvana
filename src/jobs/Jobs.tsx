@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
-import useJobs, { type SearchFilters } from '../hooks/useJobs';
+import useJobs, { type JobsParams, type SearchFilters } from '../hooks/useJobs';
 import PageNav from '../PageNav';
 import SummaryCard from '../SummaryCard';
 import JobDetails from './JobDetails';
@@ -34,11 +34,15 @@ const Jobs = () => {
     [debouncedCompany, debouncedTitle, searchFilters]
   );
 
+  const paging: JobsParams['paging'] = useMemo(
+    () => ({ page: debouncedPage, pageSize: 10 }),
+    [debouncedPage]
+  );
+
   const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
-    paging: { page: debouncedPage, pageSize: 10 },
+    paging,
     filters
   });
-  console.log(isPending, isPlaceholderData, openJobCount);
 
   useEffect(() => {
     if (jobs?.[0]) {
@@ -61,7 +65,7 @@ const Jobs = () => {
         />
       </div>
       <div className="flex justify-center">
-        <div className="border-[0.5px] border-blue-300 rounded-lg w-[75%] min-w-[1100px] flex flex-row">
+        <div className="border-[0.5px] border-blue-300 rounded-lg overflow-hidden w-[75%] min-w-[1100px] flex flex-row">
           <div className="border-r-[0.5px] border-r-blue-300 w-[20%]">
             <div className="border-b-[0.5px] border-b-blue-300 flex justify-center">
               <PageNav
@@ -76,7 +80,7 @@ const Jobs = () => {
                 type="jobs"
               />
             </div>
-            <div className="h-[calc(100dvh-300px)] overflow-y-auto">
+            <div className="h-[calc(100dvh-300px)] min-h-[500px] overflow-y-auto">
               {jobs?.map((job, idx) => (
                 <SummaryCard
                   key={job.id}
@@ -89,7 +93,7 @@ const Jobs = () => {
                       <div>{job.role?.name}</div>
                     </>
                   }
-                  last={idx === jobs.length - 1}
+                  borderBottom={idx < jobs.length - 1}
                 />
               ))}
             </div>

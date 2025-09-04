@@ -27,7 +27,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
   const hq = findHeadquarters(company);
 
   return (
-    <div className="">
+    <div className="relative">
       {isPlaceholderData && <LoadingModal />}
       <h2>{company.name}</h2>
       <div className="flex flex-col">

@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
-import useCompanies, { type SearchFilters } from '../hooks/useCompanies';
+import useCompanies, {
+  type CompaniesParams,
+  type SearchFilters
+} from '../hooks/useCompanies';
 import PageNav from '../PageNav';
 import SummaryCard from '../SummaryCard';
 import { findHeadquarters } from './companiesUtil';
@@ -48,11 +51,13 @@ const Companies = () => {
     };
   }, [debouncedMaxSize, debouncedMinSize, debouncedName, searchFilters]);
 
+  const paging: CompaniesParams['paging'] = useMemo(
+    () => ({ page: debouncedPage, pageSize: 10 }),
+    [debouncedPage]
+  );
+
   const { companies, error, isPlaceholderData, isPending, companyCount } =
-    useCompanies({
-      paging: { page: debouncedPage, pageSize: 10 },
-      filters
-    });
+    useCompanies({ paging, filters });
 
   useEffect(() => {
     if (companies?.[0]) {
@@ -73,7 +78,7 @@ const Companies = () => {
         />
       </div>
       <div className="flex justify-center">
-        <div className="border-[0.5px] border-blue-300 rounded-lg w-[75%] min-w-[1100px] flex flex-row">
+        <div className="border-[0.5px] border-blue-300 rounded-lg overflow-hidden w-[75%] min-w-[1100px] flex flex-row">
           <div className="border-r-[0.5px] border-r-blue-300 w-[20%]">
             <div className="border-b-[0.5px] border-b-blue-300 flex justify-center">
               <PageNav
@@ -107,7 +112,7 @@ const Companies = () => {
                         )}
                       </>
                     }
-                    last={idx === companies.length - 1}
+                    borderBottom={idx < companies.length - 1}
                   />
                 );
               })}

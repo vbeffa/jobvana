@@ -5,13 +5,13 @@ const SummaryCard = ({
   onClick,
   title,
   text,
-  last
+  borderBottom
 }: {
   selected: boolean;
   onClick: () => void;
   title: string;
   text: JSX.Element | string;
-  last: boolean;
+  borderBottom: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -25,8 +25,9 @@ const SummaryCard = ({
     <div
       ref={ref}
       className={`text-left pl-2 py-2 w-full ${
-        !last ? 'border-b-[0.5px] border-b-blue-300' : ''
-      } ${selected ? (last ? 'bg-gray-200 rounded-bl-lg' : 'bg-gray-200') : ''} cursor-pointer`}
+        // TODO border bottom if last card is inside the viewport?
+        borderBottom ? 'border-b-[0.5px] border-b-blue-300' : ''
+      } ${selected ? 'bg-gray-200' : ''} cursor-pointer`}
       onClick={onClick}
     >
       <div className="text-blue-500">{title}</div>
