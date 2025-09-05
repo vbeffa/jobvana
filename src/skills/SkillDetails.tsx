@@ -2,15 +2,13 @@ import useJobs from '../hooks/useJobs';
 import useSkill from '../hooks/useSkill';
 import useSkills from '../hooks/useSkills';
 import JobsList from '../jobs/JobsList';
-import { Route } from '../routes/jobvana.skill_categories.$id.skills.$skill_id.index';
 import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 import SkillVersionsList from './SkillVersionsList';
 
-const Skill = () => {
-  const { skillId } = Route.useLoaderData();
+const SkillDetails = ({ id }: { id: number }) => {
   const { findSkillCategory } = useSkills();
-  const { skill } = useSkill({ id: skillId });
+  const { skill } = useSkill({ id });
   const { jobsForSkill } = useJobs();
 
   if (!skill) {
@@ -22,10 +20,10 @@ const Skill = () => {
     return null;
   }
 
-  const jobs = jobsForSkill(skillId);
+  const jobs = jobsForSkill(id);
 
   return (
-    <>
+    <div className="mx-4 flex flex-col gap-2">
       <h1>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`}
@@ -58,8 +56,8 @@ const Skill = () => {
           </a>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
-export default Skill;
+export default SkillDetails;

@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import Application from '../applications/Application';
+import ApplicationRoute from '../applications/ApplicationRoute';
 
 export const Route = createFileRoute('/jobvana/applications/$id')({
   loader: ({ params: { id } }) => ({
     id: parseInt(id)
   }),
-  component: Application
+  component: ApplicationRoute
 });

@@ -1,28 +1,26 @@
 import useSkills from '../hooks/useSkills';
-import { Route } from '../routes/jobvana.skill_categories.$id.index';
-import SkillsList from './SkillsList';
-import SkillCategoryLink from './SkillCategoryLink';
 import SkillCategoriesList from './SkillCategoriesList';
+import SkillCategoryLink from './SkillCategoryLink';
+import SkillsList from './SkillsList';
 
-const SkillCategory = () => {
-  const { skillCategoryId } = Route.useLoaderData();
+const SkillCategoryDetails = ({ id }: { id: number }) => {
   const {
     findSkillCategory: findSkillCategory,
     findSkills,
     findChildSkillCategories
   } = useSkills();
-  const skillCategory = findSkillCategory(skillCategoryId);
+  const skillCategory = findSkillCategory(id);
   if (!skillCategory) {
     return null;
   }
   const parentSkillCategory =
     skillCategory.parent_skill_category_id &&
     findSkillCategory(skillCategory.parent_skill_category_id);
-  const skills = findSkills(skillCategoryId);
+  const skills = findSkills(id);
   const childSkillCategories = findChildSkillCategories(skillCategory.id);
 
   return (
-    <>
+    <div className="mx-4 flex flex-col gap-2">
       <h1>{skillCategory.name}</h1>
       <h2>Description</h2>
       <div className="whitespace-pre-wrap">{skillCategory.description}</div>
@@ -52,8 +50,8 @@ const SkillCategory = () => {
           </a>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
-export default SkillCategory;
+export default SkillCategoryDetails;

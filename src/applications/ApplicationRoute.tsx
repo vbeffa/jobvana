@@ -1,10 +1,10 @@
 import { Route } from '../routes/jobvana.applications.$id';
 import ApplicationDetails from './ApplicationDetails';
 
-const Application = () => {
+const ApplicationRoute = () => {
   const { id } = Route.useLoaderData();
 
   return <ApplicationDetails id={id} />;
 };
 
-export default Application;
+export default ApplicationRoute;

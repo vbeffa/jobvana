@@ -62,6 +62,7 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  text-align: center;
 }
 
 h2 {
@@ -69,6 +70,12 @@ h2 {
   /* font-size: 2em;
   text-align: left;
   padding-bottom: 10px; */
+}
+
+input[type=button] {
+  /* border: 1px solid black; */
+  padding: 2px 6px 2px 6px;
+  cursor: pointer;
 }
 
 table th, td {

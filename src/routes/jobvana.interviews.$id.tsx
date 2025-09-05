@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import Interview from '../interviews/Interview';
+import InterviewRoute from '../interviews/InterviewRoute';
 
 export const Route = createFileRoute('/jobvana/interviews/$id')({
   loader: ({ params: { id } }) => ({
     id: parseInt(id)
   }),
-  component: Interview
+  component: InterviewRoute
 });

@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import CompanyLink from '../companies/CompanyLink';
 import type { Job } from '../hooks/useJobs';
 import { roleLevel } from '../roles/utils';
+import SkillsList from '../skills/SkillsList';
 import JobLink from './JobLink';
-import JobSkills from './JobSkills';
 import Salary from './Salary';
 
 type SortCol =
@@ -147,7 +147,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
                 <Salary {...job} />
               </td>
               <td>
-                <JobSkills job={job} />
+                <SkillsList skills={job.skills} />
               </td>
             </tr>
           );

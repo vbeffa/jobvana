@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import Skill from '../skills/Skill';
+import SkillRoute from '../skills/SkillRoute';
 
 export const Route = createFileRoute(
   '/jobvana/skill_categories/$id/skills/$skill_id/'
@@ -8,5 +8,5 @@ export const Route = createFileRoute(
     id: parseInt(id),
     skillId: parseInt(skill_id)
   }),
-  component: Skill
+  component: SkillRoute
 });

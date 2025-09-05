@@ -6,7 +6,7 @@ import useRoles from '../hooks/useRoles';
 import LoadingModal from '../LoadingModal';
 import RoleLink from '../roles/RoleLink';
 import { roleLevel } from '../roles/utils';
-import JobSkills from './JobSkills';
+import SkillsList from '../skills/SkillsList';
 import Salary from './Salary';
 
 const JobDetails = ({ id }: { id: number }) => {
@@ -45,7 +45,7 @@ const JobDetails = ({ id }: { id: number }) => {
         {roleLevel(job.role_level)} {job.role.name}
       </div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Skills</h2>
+      <h2>Roles</h2>
       <div>
         <ul>
           {job.jobRoles.map((jobRole) => {
@@ -65,8 +65,8 @@ const JobDetails = ({ id }: { id: number }) => {
       <div>{job.description}</div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Tools / Tech Stack</h2>
-      <div>
-        <JobSkills job={job} />
+      <div className="pt-2">
+        <SkillsList skills={job.skills} />
       </div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Applications</h2>

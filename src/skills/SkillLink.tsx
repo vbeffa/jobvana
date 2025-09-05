@@ -1,15 +1,14 @@
 import { Link } from '@tanstack/react-router';
 import type { DbSkill } from '../hooks/useSkills';
 
-const SkillLink = ({
-  skill,
-  includeAbbrev = false
-}: {
-  skill: DbSkill;
+export type SkillLinkProps = {
+  skill: Pick<DbSkill, 'id' | 'skill_category_id' | 'name' | 'abbreviation'>;
   includeAbbrev?: boolean;
-}) => {
+};
+
+const SkillLink = ({ skill, includeAbbrev = false }: SkillLinkProps) => {
   return (
-    <>
+    <div className="border-[1px] border-blue-500 bg-blue-100 hover:bg-blue-200 p-1 flex gap-1 whitespace-nowrap cursor-pointer">
       <Link
         to="/jobvana/skill_categories/$id/skills/$skill_id"
         params={{
@@ -20,7 +19,7 @@ const SkillLink = ({
         {skill.name}
       </Link>
       {includeAbbrev && skill.abbreviation && ` (${skill.abbreviation})`}
-    </>
+    </div>
   );
 };
 

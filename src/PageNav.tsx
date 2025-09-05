@@ -12,7 +12,7 @@ export type PageNavProps = {
 };
 const PageNav = ({
   page,
-  pageSize = 50,
+  pageSize = 10,
   total,
   onSetPage,
   isLoading,

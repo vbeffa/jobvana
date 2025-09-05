@@ -1,15 +1,18 @@
-import type { Skill } from '../hooks/useSkills';
-import SkillLink from './SkillLink';
+import SkillLink, { type SkillLinkProps } from './SkillLink';
 
-const SkillsList = ({ skills }: { skills: Array<Skill> }) => {
+export type SkillsListProps = {
+  skills: Array<SkillLinkProps['skill']>;
+};
+
+const SkillsList = ({ skills }: SkillsListProps) => {
   return (
-    <ul>
+    <div className="flex flex-wrap gap-2">
       {skills.map((skill) => (
-        <li key={skill.id}>
+        <div key={skill.id}>
           <SkillLink skill={skill} includeAbbrev={true} />
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 

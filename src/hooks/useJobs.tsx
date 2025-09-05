@@ -67,7 +67,7 @@ type QueryKey = {
 } & SearchFilters;
 
 const useJobs = (
-  params: JobsParams = { paging: { page: 1, pageSize: 50 } }
+  params: JobsParams = { paging: { page: 1, pageSize: 10 } }
 ): Jobs => {
   const queryKey: QueryKey = useMemo(
     () => ({

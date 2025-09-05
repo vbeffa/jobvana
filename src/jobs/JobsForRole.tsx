@@ -9,13 +9,13 @@ const JobsForRole = ({ role }: { role: Role }) => {
   const [page, setPage] = useState<number>(1);
   const [debouncedPage] = useDebounce(page, 500);
   const { jobs, openJobCount, isPlaceholderData, isPending } = useJobs({
-    paging: { page: debouncedPage, pageSize: 50 },
+    paging: { page: debouncedPage, pageSize: 10 },
     filters: { roleId: role.id }
   });
 
   return (
     <>
-      <div className="pb-[2em]">
+      <div className="pb-4">
         <PageNav
           page={page}
           total={openJobCount}

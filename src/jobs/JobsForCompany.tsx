@@ -5,7 +5,7 @@ import JobsList from './JobsList';
 
 const JobsForCompany = ({ company }: { company: Company }) => {
   const { jobs, error } = useJobs({
-    paging: { page: 1, pageSize: 50 },
+    paging: { page: 1, pageSize: 10 },
     filters: { companyId: company.id }
   });
 

@@ -43,7 +43,7 @@ type QueryKey = {
 } & SearchFilters;
 
 const useCompanies = (
-  params: CompaniesParams = { paging: { page: 1, pageSize: 50 } }
+  params: CompaniesParams = { paging: { page: 1, pageSize: 10 } }
 ): Companies => {
   const queryKey: QueryKey = useMemo(
     () => ({
