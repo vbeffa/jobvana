@@ -61,7 +61,6 @@ const JobFilters = ({
         <div className="col-span-2 flex flex-row gap-x-2">
           <SalarySelect
             id="min_salary"
-            type="min"
             value={filters.minSalary}
             onChange={(minSalary) => {
               const newFilters = {
@@ -78,7 +77,6 @@ const JobFilters = ({
           <div className="flex pt-1">-</div>
           <SalarySelect
             id="max_salary"
-            type="max"
             value={filters.maxSalary}
             onChange={(maxSalary) => {
               const newFilters = {

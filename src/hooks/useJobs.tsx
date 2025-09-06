@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
+import type { Params } from './types';
 import type { DbApplication } from './useApplications';
 import { type DbCompany } from './useCompanies';
 import type { DbSkill } from './useSkills';
@@ -53,13 +54,7 @@ export type Jobs = {
   // jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
 };
 
-export type JobsParams = {
-  paging: {
-    page: number;
-    pageSize: number;
-  };
-  filters?: SearchFilters;
-};
+export type JobsParams = Params<SearchFilters>;
 
 type QueryKey = {
   page: number;
@@ -106,7 +101,8 @@ const useJobs = (
         q = q.ilike('title', `%${filters.title}%`);
       }
       if (filters?.roleId) {
-        q = q.filter('role_id', 'eq', filters.roleId);
+        // TODO not working
+        q = q.filter('job_roles.role_id', 'eq', filters.roleId);
       }
       if (filters?.minSalary) {
         q = q.filter('salary_low', 'gte', filters.minSalary);

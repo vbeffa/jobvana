@@ -22,6 +22,7 @@ const JobsForRole = ({ role }: { role: Role }) => {
           onSetPage={setPage}
           isLoading={isPlaceholderData || isPending}
           type="jobs"
+          borderBottom={false}
         />
       </div>
       <div>

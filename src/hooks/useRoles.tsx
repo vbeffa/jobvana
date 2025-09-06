@@ -7,27 +7,29 @@ export type Role = Database['public']['Tables']['roles']['Row'];
 
 export type Roles = {
   roles: Array<Role> | undefined;
-  isPending: boolean;
+  error?: Error;
 };
 
 const useRoles = (): Roles => {
-  const { isPending, data: rolesData } = useQuery({
+  const { data: rolesData, error } = useQuery({
     queryKey: ['roles'],
     queryFn: async () => {
-      const { data } = await supabase.from('roles').select();
-      return data;
+      const { error, data } = await supabase.from('roles').select();
+      return { error, data };
     }
   });
 
   const roles = useMemo(
     () =>
-      rolesData?.sort((role1, role2) => role1.name.localeCompare(role2.name)),
+      rolesData?.data?.sort((role1, role2) =>
+        role1.name.localeCompare(role2.name)
+      ),
     [rolesData]
   );
 
   return {
     roles,
-    isPending
+    error: error ?? undefined
   };
 };
 

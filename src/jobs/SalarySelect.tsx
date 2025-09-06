@@ -2,16 +2,12 @@ import _ from 'lodash';
 
 const salaries = _.range(10000, 200001, 10000);
 
-export type SalaryType = 'min' | 'max';
-
 const SalarySelect = ({
   id,
-  type,
   value,
   onChange
 }: {
   id: string;
-  type: SalaryType;
   value?: number;
   onChange: (salary: number) => void;
 }) => {
@@ -26,7 +22,7 @@ const SalarySelect = ({
         <option
           key={idx}
           value={salary}
-          selected={type === 'min' ? idx === 0 : idx === salaries.length - 1}
+          // selected={type === 'min' ? idx === 0 : idx === salaries.length - 1}
         >
           {new Intl.NumberFormat('en-US', {
             style: 'currency',

@@ -2,6 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { Database } from '../utils/types';
+import type { Params } from './types';
 
 export type SearchFilters = {
   name?: string;
@@ -30,13 +31,7 @@ export type Companies = {
   findCompany: (id: number) => Company | undefined;
 };
 
-export type CompaniesParams = {
-  paging: {
-    page: number;
-    pageSize: number;
-  };
-  filters?: SearchFilters;
-};
+export type CompaniesParams = Params<SearchFilters>;
 
 type QueryKey = {
   page: number;

@@ -1,9 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
+import FiltersContainer from '../FiltersContainer';
 import useJobs, { type JobsParams, type SearchFilters } from '../hooks/useJobs';
 import PageNav from '../PageNav';
+import ResourceDetailsContainer from '../ResourceDetailsContainer';
+import ResourceListContainer from '../ResourceListContainer';
+import ResourcesContainer from '../ResourcesContainer';
 import SummaryCard from '../SummaryCard';
+import SummaryCardsContainer from '../SummaryCardsContainer';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
 
@@ -17,7 +22,7 @@ const Jobs = () => {
   });
   const [debouncedCompany] = useDebounce(
     searchFilters.company,
-    searchFilters.company ? 1000 : 0
+    searchFilters.company ? 5000 : 0
   );
   const [debouncedTitle] = useDebounce(
     searchFilters.title,
@@ -55,7 +60,7 @@ const Jobs = () => {
   return (
     <div className="mx-4">
       {error && <Error error={error} />}
-      <div className="my-4 flex justify-center">
+      <FiltersContainer>
         <JobFilters
           filters={searchFilters}
           setFilters={(filters) => {
@@ -63,45 +68,41 @@ const Jobs = () => {
             setSearchFilters(filters);
           }}
         />
-      </div>
-      <div className="flex justify-center">
-        <div className="border-[0.5px] border-blue-300 rounded-lg overflow-hidden w-[75%] min-w-[1100px] flex flex-row">
-          <div className="border-r-[0.5px] border-r-blue-300 w-[20%]">
-            <div className="border-b-[0.5px] border-b-blue-300 flex justify-center">
-              <PageNav
-                page={page}
-                pageSize={10}
-                total={openJobCount}
-                onSetPage={(page, debounce) => {
-                  setPage(page);
-                  setDebouncePage(debounce);
-                }}
-                isLoading={isPlaceholderData || isPending}
-                type="jobs"
+      </FiltersContainer>
+      <ResourcesContainer>
+        <ResourceListContainer>
+          <PageNav
+            page={page}
+            pageSize={10}
+            total={openJobCount}
+            onSetPage={(page, debounce) => {
+              setPage(page);
+              setDebouncePage(debounce);
+            }}
+            isLoading={isPlaceholderData || isPending}
+            type="jobs"
+          />
+          <SummaryCardsContainer>
+            {jobs?.map((job, idx) => (
+              <SummaryCard
+                key={job.id}
+                selected={jobId === job.id}
+                onClick={() => setJobId(job.id)}
+                title={job.title}
+                text={
+                  <>
+                    <div>{job.company?.name}</div>
+                  </>
+                }
+                borderBottom={idx < jobs.length - 1}
               />
-            </div>
-            <div className="h-[calc(100dvh-300px)] min-h-[500px] overflow-y-auto">
-              {jobs?.map((job, idx) => (
-                <SummaryCard
-                  key={job.id}
-                  selected={jobId === job.id}
-                  onClick={() => setJobId(job.id)}
-                  title={job.title}
-                  text={
-                    <>
-                      <div>{job.company?.name}</div>
-                    </>
-                  }
-                  borderBottom={idx < jobs.length - 1}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="px-4 pt-4 w-[80%] h-[calc(100vh-238px)] overflow-y-auto">
-            {jobId && <JobDetails id={jobId} />}
-          </div>
-        </div>
-      </div>
+            ))}
+          </SummaryCardsContainer>
+        </ResourceListContainer>
+        <ResourceDetailsContainer>
+          {jobId ? <JobDetails id={jobId} /> : undefined}
+        </ResourceDetailsContainer>
+      </ResourcesContainer>
     </div>
   );
 };

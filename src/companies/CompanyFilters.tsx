@@ -71,7 +71,6 @@ const CompanyFilters = ({
           id="industry"
           industryId={filters.industryId}
           onChange={(industryId) => {
-            console.log(industryId);
             setFilters((filters) => ({ ...filters, industryId }));
           }}
         />
