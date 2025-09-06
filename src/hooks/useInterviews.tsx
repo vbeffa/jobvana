@@ -1,14 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
-
-export type InterviewRound =
-  Database['public']['Tables']['interview_rounds']['Row'];
-
-export type Interview = Database['public']['Tables']['interviews']['Row'] & {
-  // rounds: Array<InterviewRound>;
-};
+import type { Interview } from './types';
 
 export type Interviews = {
   interviews: Array<Interview> | undefined;

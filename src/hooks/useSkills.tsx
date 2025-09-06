@@ -1,24 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
+import type { Skill as DbSkill, SkillCategory, SkillVersion } from './types';
 
-export type DbSkill = Database['public']['Tables']['skills']['Row'];
 export type Skill = DbSkill & {
   versions: Array<SkillVersion>;
   relatedSkills: Array<Skill>;
 };
-
-export type SkillRelation =
-  Database['public']['Tables']['skill_relations']['Row'];
-
-export type SkillVersion =
-  Database['public']['Tables']['skill_versions']['Row'];
-
-export type SkillCategory =
-  Database['public']['Tables']['skill_categories']['Row'] & {
-    childCategories: Array<SkillCategory>;
-  };
 
 export type Skills = {
   skills: Array<Skill> | undefined;

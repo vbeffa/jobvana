@@ -1,10 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
-import type { Company } from './useCompanies';
-
-export type TechStack = Database['public']['Tables']['tech_stacks']['Row'];
+import type { Company, TechStack } from './types';
 
 export type FullCompany = Company & {
   techStack: Array<TechStack>;

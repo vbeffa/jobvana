@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
-
-type SkillVersion = Database['public']['Tables']['skill_versions']['Row'];
+import type { SkillVersion } from './types';
 
 export type SkillVersionsLite = {
   skillVersions: Array<SkillVersion> | undefined;

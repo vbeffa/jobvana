@@ -1,8 +1,12 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
-import type { Params } from './types';
+import type {
+  CompanyAddress,
+  Company as DbCompany,
+  Industry,
+  Params
+} from './types';
 
 export type SearchFilters = {
   name?: string;
@@ -11,11 +15,6 @@ export type SearchFilters = {
   industryId?: number;
 };
 
-export type CompanyAddress =
-  Database['public']['Tables']['company_addresses']['Row'];
-export type Industry = Database['public']['Tables']['industries']['Row'];
-
-export type DbCompany = Database['public']['Tables']['companies']['Row'];
 export type Company = DbCompany & {
   addresses: Array<CompanyAddress>;
   industry: Industry;

@@ -1,20 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
-import type { DbJob } from './useJobs';
-import type { DbCompany } from './useCompanies';
-
-export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'] & {
-  user: User;
-};
-
-export type User = Database['public']['Tables']['users']['Row'];
-
-export type DbApplication = Database['public']['Tables']['applications']['Row'];
+import type {
+  Application as DbApplication,
+  Company as DbCompany,
+  Job,
+  JobSeeker
+} from './types';
 
 export type Application = DbApplication & {
-  job: DbJob;
+  job: Job;
   company: DbCompany;
   jobSeeker: JobSeeker;
 };
