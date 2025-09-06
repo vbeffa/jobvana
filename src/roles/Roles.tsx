@@ -25,7 +25,7 @@ const Roles = () => {
       <div className="h-4" />
       <ResourcesContainer>
         <ResourceListContainer>
-          <SummaryCardsContainer>
+          <SummaryCardsContainer hasFilters={false}>
             {roles?.map((role, idx) => {
               return (
                 <SummaryCard
@@ -44,7 +44,7 @@ const Roles = () => {
             })}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer hasFilters={false}>
           {roleId ? <RoleDetails id={roleId} /> : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>

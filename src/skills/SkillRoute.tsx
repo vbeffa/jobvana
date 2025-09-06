@@ -4,7 +4,12 @@ import SkillDetails from './SkillDetails';
 const SkillRoute = () => {
   const { skillId } = Route.useLoaderData();
 
-  return <SkillDetails id={skillId} />;
+  return (
+    <SkillDetails
+      id={skillId}
+      paging={{ page: 1, pageSize: 1000 }} // TODO fix paging
+    />
+  );
 };
 
 export default SkillRoute;

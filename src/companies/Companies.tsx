@@ -32,7 +32,7 @@ const Companies = () => {
     [debouncedPage]
   );
 
-  const { companies, error, isPlaceholderData, isPending, companyCount } =
+  const { companies, error, isPending, isPlaceholderData, companyCount } =
     useCompanies({ paging, filters: searchFilters });
 
   useEffect(() => {

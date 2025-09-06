@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export type NavType = 'jobs' | 'companies';
+export type NavType = 'jobs' | 'companies' | 'skills';
 
 export type PageNavProps = {
   page: number;
@@ -25,6 +25,7 @@ const PageNav = ({
     () => (total ? Math.ceil(total / pageSize) : undefined),
     [pageSize, total]
   );
+  console.log(page);
 
   const navButtonStyles = `h-full w-6 pb-0.5
                            cursor-pointer
@@ -53,7 +54,10 @@ const PageNav = ({
                 type="button"
                 disabled={page === 1}
                 className={navButtonStyles}
-                onClick={() => onSetPage(page - 1, false)}
+                onClick={() => {
+                  console.log('click', page);
+                  onSetPage(page - 1, false);
+                }}
                 value="<"
               />
             </div>

@@ -1,12 +1,18 @@
 import type { JSX } from 'react';
 
 const SummaryCardsContainer = ({
-  children
+  children,
+  hasFilters = true
 }: {
   children?: Array<JSX.Element>;
+  hasFilters?: boolean;
 }) => {
   return (
-    <div className="h-[calc(100dvh-300px)] overflow-y-auto">{children}</div>
+    <div
+      className={`${hasFilters ? 'h-[calc(100dvh-300px)]' : 'h-[calc(100dvh-228px)]'} overflow-y-auto`}
+    >
+      {children}
+    </div>
   );
 };
 

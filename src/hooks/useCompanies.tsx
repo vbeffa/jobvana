@@ -24,8 +24,8 @@ export type Company = DbCompany & {
 export type Companies = {
   companies: Array<Company> | undefined;
   error?: Error;
-  isPlaceholderData: boolean;
   isPending: boolean;
+  isPlaceholderData: boolean;
   companyCount: number | undefined;
 
   findCompany: (id: number) => Company | undefined;

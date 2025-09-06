@@ -22,7 +22,10 @@ export type SkillCategory =
 
 export type Skills = {
   skills: Array<Skill> | undefined;
+  error?: Error;
   isPending: boolean;
+  isPlaceholderData: boolean;
+  skillsCount: number | undefined;
   findSkill: (id: number) => Skill | undefined;
 
   skillCategories: Array<SkillCategory> | undefined;
@@ -37,12 +40,47 @@ export type Skills = {
   findSkillVersion: (versionId: number) => SkillVersion | undefined;
 };
 
-const useSkills = (): Skills => {
-  const { isPending, data: skillsData } = useQuery({
-    queryKey: ['skills'],
+export type SkillsParams = {
+  paging: {
+    page: number;
+    pageSize: number;
+  };
+};
+
+type QueryKey = {
+  page: number;
+};
+
+const useSkills = (
+  params: SkillsParams = { paging: { page: 1, pageSize: 10 } }
+): Skills => {
+  const queryKey: QueryKey = useMemo(
+    () => ({
+      page: params.paging?.page
+    }),
+    [params.paging?.page]
+  );
+  console.log(params.paging);
+
+  const {
+    isPending,
+    isPlaceholderData,
+    data: skillsData,
+    error
+  } = useQuery({
+    queryKey: ['skills', queryKey],
     queryFn: async () => {
-      const { data } = await supabase.from('skills').select();
-      return data;
+      const { data, error, count } = await supabase
+        .from('skills')
+        .select('*', {
+          count: 'exact'
+        })
+        .range(
+          (params.paging.page - 1) * params.paging.pageSize,
+          params.paging.page * params.paging.pageSize - 1
+        )
+        .order('name');
+      return { data, error, count };
     }
   });
 
@@ -98,10 +136,15 @@ const useSkills = (): Skills => {
   );
 
   const skills = useMemo(() => {
-    if (!skillsData || !skillCategories || !skillVersions || !skillRelations) {
+    if (
+      !skillsData?.data ||
+      !skillCategories ||
+      !skillVersions ||
+      !skillRelations
+    ) {
       return undefined;
     }
-    const skills: Array<Skill> = skillsData.map((skill) => ({
+    const skills: Array<Skill> = skillsData.data.map((skill) => ({
       ...skill,
       versions: skillVersions.filter(
         (skillVersion) => skillVersion.skill_id === skill.id
@@ -137,9 +180,17 @@ const useSkills = (): Skills => {
     return skills;
   }, [skillRelations, skillCategories, skillVersions, skillsData]);
 
+  const skillsCount = useMemo(
+    () => skillsData?.count ?? undefined,
+    [skillsData?.count]
+  );
+
   return {
     skills,
+    error: error ?? undefined,
     isPending,
+    isPlaceholderData,
+    skillsCount,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
     skillCategories,
