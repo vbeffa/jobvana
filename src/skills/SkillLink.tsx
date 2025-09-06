@@ -8,7 +8,7 @@ export type SkillLinkProps = {
 
 const SkillLink = ({ skill, includeAbbrev = false }: SkillLinkProps) => {
   return (
-    <div className="border-[1px] border-blue-500 bg-blue-100 hover:bg-blue-200 p-1 flex gap-1 whitespace-nowrap cursor-pointer">
+    <div className="border-[1px] border-blue-500 bg-blue-100 hover:bg-blue-200 p-1 w-fit flex gap-1 whitespace-nowrap cursor-pointer">
       <Link
         to="/jobvana/skill_categories/$id/skills/$skill_id"
         params={{

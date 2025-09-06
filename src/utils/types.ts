@@ -210,16 +210,19 @@ export type Database = {
           job_id: number
           percent: number
           role_id: number
+          role_level: number
         }
         Insert: {
           job_id: number
           percent: number
           role_id: number
+          role_level?: number
         }
         Update: {
           job_id?: number
           percent?: number
           role_id?: number
+          role_level?: number
         }
         Relationships: [
           {
@@ -650,7 +653,6 @@ export type Database = {
           name: string
           notes: string | null
           reference: string | null
-          skill_category_id: number
           skill_v2_id: number | null
         }
         Insert: {
@@ -660,7 +662,6 @@ export type Database = {
           name: string
           notes?: string | null
           reference?: string | null
-          skill_category_id: number
           skill_v2_id?: number | null
         }
         Update: {
@@ -670,17 +671,9 @@ export type Database = {
           name?: string
           notes?: string | null
           reference?: string | null
-          skill_category_id?: number
           skill_v2_id?: number | null
         }
         Relationships: [
-          {
-            foreignKeyName: 'tools_skill_category_id_fkey'
-            columns: ['skill_category_id']
-            isOneToOne: false
-            referencedRelation: 'skill_categories'
-            referencedColumns: ['id']
-          },
           {
             foreignKeyName: 'tools_skill_v2_id_fkey'
             columns: ['skill_v2_id']

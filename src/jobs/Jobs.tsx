@@ -90,7 +90,7 @@ const Jobs = () => {
                   text={
                     <>
                       <div>{job.company?.name}</div>
-                      <div>{job.role?.name}</div>
+                      {/* <div>{job.role?.name}</div> */}
                     </>
                   }
                   borderBottom={idx < jobs.length - 1}

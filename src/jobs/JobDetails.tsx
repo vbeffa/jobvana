@@ -40,12 +40,12 @@ const JobDetails = ({ id }: { id: number }) => {
         <div></div>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Role</h2>
+      {/* <h2>Role</h2>
       <div>
         {roleLevel(job.role_level)} {job.role.name}
       </div>
-      <hr className="my-4 border-gray-400 shadow" />
-      <h2>Roles</h2>
+      <hr className="my-4 border-gray-400 shadow" /> */}
+      <h2>Requirements</h2>
       <div>
         <ul>
           {job.jobRoles.map((jobRole) => {
@@ -53,7 +53,8 @@ const JobDetails = ({ id }: { id: number }) => {
             return (
               role && (
                 <li key={role.id}>
-                  <RoleLink {...role} /> ({jobRole.percent}%)
+                  <RoleLink {...role} /> ({jobRole.percent}%,{' '}
+                  {roleLevel(jobRole.role_level)})
                 </li>
               )
             );
@@ -64,7 +65,7 @@ const JobDetails = ({ id }: { id: number }) => {
       <h2>Description</h2>
       <div>{job.description}</div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Tools / Tech Stack</h2>
+      <h2>Tech Stack</h2>
       <div className="pt-2">
         <SkillsList skills={job.skills} />
       </div>

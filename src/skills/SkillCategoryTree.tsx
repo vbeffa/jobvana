@@ -3,10 +3,12 @@ import SkillCategoryLink from './SkillCategoryLink';
 
 const SkillCategoryTree = ({
   skillCategories,
-  skills
+  skills,
+  open
 }: {
   skillCategories: Array<SkillCategory>;
   skills: Array<Skill>;
+  open: boolean;
 }) => {
   return (
     <ul className="tree">
@@ -22,7 +24,7 @@ const SkillCategoryTree = ({
           return (
             <li key={skillCategory.id}>
               {skillCategory.childCategories.length > 0 && (
-                <details open>
+                <details open={open}>
                   <summary className="pb-[2px]">
                     <SkillCategoryLink skillCategory={skillCategory} />
                     {numSkillsString}
@@ -30,6 +32,7 @@ const SkillCategoryTree = ({
                   <SkillCategoryTree
                     skillCategories={skillCategory.childCategories}
                     skills={skills}
+                    open={open}
                   />
                 </details>
               )}
