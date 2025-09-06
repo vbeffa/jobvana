@@ -2,16 +2,13 @@ import ApplicationsList from '../applications/ApplicationsList';
 import CompanyLink from '../companies/CompanyLink';
 import Error from '../Error';
 import useJob from '../hooks/useJob';
-import useRoles from '../hooks/useRoles';
 import LoadingModal from '../LoadingModal';
-import RoleLink from '../roles/RoleLink';
-import { roleLevel } from '../roles/utils';
 import SkillsList from '../skills/SkillsList';
+import Requirements from './Requirements';
 import Salary from './Salary';
 
 const JobDetails = ({ id }: { id: number }) => {
   const { job, error, isPlaceholderData, isPending } = useJob({ id });
-  const { roles } = useRoles();
 
   if (error) {
     return <Error error={error} />;
@@ -40,26 +37,9 @@ const JobDetails = ({ id }: { id: number }) => {
         <div></div>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
-      {/* <h2>Role</h2>
-      <div>
-        {roleLevel(job.role_level)} {job.role.name}
-      </div>
-      <hr className="my-4 border-gray-400 shadow" /> */}
       <h2>Requirements</h2>
       <div>
-        <ul>
-          {job.jobRoles.map((jobRole) => {
-            const role = roles?.find((role) => role.id === jobRole.role_id);
-            return (
-              role && (
-                <li key={role.id}>
-                  <RoleLink {...role} /> ({jobRole.percent}%,{' '}
-                  {roleLevel(jobRole.role_level)})
-                </li>
-              )
-            );
-          })}
-        </ul>
+        <Requirements {...job} />
       </div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Description</h2>

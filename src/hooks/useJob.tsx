@@ -34,7 +34,7 @@ const useJob = ({ id }: { id: number }) => {
       ...job,
       company: job.companies,
       role: job.roles,
-      jobRoles: job.job_roles
+      roles: job.job_roles
     };
   }, [jobData?.data]);
 

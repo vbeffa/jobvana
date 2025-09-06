@@ -1,18 +1,12 @@
 import { useMemo, useState } from 'react';
 import CompanyLink from '../companies/CompanyLink';
 import type { Job } from '../hooks/useJobs';
-import { roleLevel } from '../roles/utils';
 import SkillsList from '../skills/SkillsList';
 import JobLink from './JobLink';
+import Requirements from './Requirements';
 import Salary from './Salary';
 
-type SortCol =
-  | 'company'
-  | 'title'
-  | 'role'
-  | 'created'
-  | 'min_salary'
-  | 'max_salary';
+type SortCol = 'company' | 'title' | 'created' | 'min_salary' | 'max_salary';
 type SortDir = 'up' | 'down';
 
 const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
@@ -90,13 +84,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
           >
             Title {sortCol === 'title' && (sortDir === 'up' ? '↑' : '↓')}
           </th>
-          <th
-            className="cursor-pointer w-[10%]"
-            onClick={() => setSort('role')}
-          >
-            Role {sortCol === 'role' && (sortDir === 'up' ? '↑' : '↓')}
-          </th>
-          <th className="cursor-pointer w-[5%]">Level</th>
+          <th className="w-[15%]">Requirements</th>
           <th
             className="cursor-pointer w-[10%]"
             onClick={() => setSort('created')}
@@ -140,8 +128,9 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
               <td>
                 <JobLink job={job} />
               </td>
-              <td>{job.role?.name}</td>
-              <td>{roleLevel(job.role_level)}</td>
+              <td>
+                <Requirements {...job} />
+              </td>
               <td>{new Date(job.created_at).toLocaleDateString()}</td>
               <td>
                 <Salary {...job} />

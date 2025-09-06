@@ -333,8 +333,6 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
-          role_id: number
-          role_level: number
           salary_high: number
           salary_low: number
           status: Database['public']['Enums']['job_status']
@@ -345,8 +343,6 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          role_id: number
-          role_level: number
           salary_high?: number
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
@@ -357,8 +353,6 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          role_id?: number
-          role_level?: number
           salary_high?: number
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
@@ -370,13 +364,6 @@ export type Database = {
             columns: ['company_id']
             isOneToOne: false
             referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'jobs_role_id_fkey'
-            columns: ['role_id']
-            isOneToOne: false
-            referencedRelation: 'roles'
             referencedColumns: ['id']
           },
         ]

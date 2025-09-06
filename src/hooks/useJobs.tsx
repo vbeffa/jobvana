@@ -29,8 +29,7 @@ export type DbJob = Database['public']['Tables']['jobs']['Row'];
 
 export type Job = DbJob & {
   company: DbCompany;
-  role: Role;
-  jobRoles: Array<JobRole>;
+  requirements: Array<JobRole>;
   skills: Array<DbSkill>;
   // skillVersions: Array<SkillVersion>;
   applications: Array<DbApplication> | undefined;
@@ -89,7 +88,7 @@ const useJobs = (
       let q = supabase
         .from('jobs')
         .select(
-          '*, companies!jobs_company_id_fkey!inner(*), roles!jobs_role_id_fkey!inner(*), job_roles(*), skills(*), applications(*)',
+          '*, companies!jobs_company_id_fkey!inner(*), job_roles(*), skills(*), applications(*)',
           {
             count: 'exact'
           }
@@ -160,8 +159,7 @@ const useJobs = (
       return {
         ...job,
         company: job.companies,
-        role: job.roles,
-        jobRoles: job.job_roles
+        requirements: job.job_roles
         // skillVersions: job.skill_versions
       };
     });
