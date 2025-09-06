@@ -7,11 +7,16 @@ export type Role = Database['public']['Tables']['roles']['Row'];
 
 export type Roles = {
   roles: Array<Role> | undefined;
+  isPending: boolean;
   error?: Error;
 };
 
 const useRoles = (): Roles => {
-  const { data: rolesData, error } = useQuery({
+  const {
+    isPending,
+    data: rolesData,
+    error
+  } = useQuery({
     queryKey: ['roles'],
     queryFn: async () => {
       const { error, data } = await supabase.from('roles').select();
@@ -29,6 +34,7 @@ const useRoles = (): Roles => {
 
   return {
     roles,
+    isPending,
     error: error ?? undefined
   };
 };
