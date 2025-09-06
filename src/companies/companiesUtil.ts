@@ -1,4 +1,5 @@
-import type { Company, CompanyAddress } from '../hooks/useCompanies';
+import type { CompanyAddress } from '../hooks/types';
+import type { Company } from '../hooks/useCompanies';
 
 export const isHeadquarters = (address: CompanyAddress) =>
   address.type === 'headquarters';

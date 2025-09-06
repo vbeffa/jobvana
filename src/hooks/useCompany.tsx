@@ -1,7 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Company, TechStack } from './types';
+import type { TechStack } from './types';
+import type { Company } from './useCompanies';
 
 export type FullCompany = Company & {
   techStack: Array<TechStack>;

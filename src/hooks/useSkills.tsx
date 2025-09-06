@@ -48,7 +48,6 @@ const useSkills = (
     }),
     [params.paging?.page]
   );
-  console.log(params.paging);
 
   const {
     isPending,
