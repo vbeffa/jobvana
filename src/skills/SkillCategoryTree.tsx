@@ -26,7 +26,7 @@ const SkillCategoryTree = ({
               {skillCategory.childCategories.length > 0 && (
                 <details open={open}>
                   <summary className="pb-[2px]">
-                    <SkillCategoryLink skillCategory={skillCategory} />
+                    <SkillCategoryLink {...skillCategory} />
                     {numSkillsString}
                   </summary>
                   <SkillCategoryTree
@@ -39,7 +39,7 @@ const SkillCategoryTree = ({
               {skillCategory.childCategories.length === 0 && (
                 <div className="pb-[2px]">
                   <span className="font-extrabold">&bull;</span>{' '}
-                  <SkillCategoryLink skillCategory={skillCategory} />
+                  <SkillCategoryLink {...skillCategory} />
                   {numSkillsString}
                 </div>
               )}

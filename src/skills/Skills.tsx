@@ -21,8 +21,14 @@ const Skills = () => {
     [debouncedPage]
   );
 
-  const { skills, error, isPending, isPlaceholderData, skillsCount } =
-    useSkills({ paging });
+  const {
+    skills,
+    error,
+    isPending,
+    isPlaceholderData,
+    skillsCount,
+    findSkillCategory
+  } = useSkills({ paging });
 
   useEffect(() => {
     if (skills?.[0]) {
@@ -58,9 +64,9 @@ const Skills = () => {
                   onClick={() => setSkillId(skill.id)}
                   title={skill.name}
                   text={
-                    <>
-                      <div>{skill.name}</div>
-                    </>
+                    <div>
+                      {findSkillCategory(skill.skill_category_id)?.name}
+                    </div>
                   }
                   borderBottom={idx < skills.length - 1}
                 />

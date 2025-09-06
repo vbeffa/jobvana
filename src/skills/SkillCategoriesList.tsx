@@ -1,4 +1,5 @@
 import type { SkillCategory } from '../hooks/useSkills';
+import PillContainer from '../PillContainer';
 import SkillCategoryLink from './SkillCategoryLink';
 
 const SkillCategoriesList = ({
@@ -7,15 +8,17 @@ const SkillCategoriesList = ({
   skillCategories: Array<SkillCategory>;
 }) => {
   return (
-    <ul>
+    <div className="flex flex-wrap gap-2">
       {skillCategories
         .sort((c1, c2) => c1.name.localeCompare(c2.name))
         .map((skillCategory) => (
-          <li key={skillCategory.id}>
-            <SkillCategoryLink skillCategory={skillCategory} />
-          </li>
+          <div key={skillCategory.id}>
+            <PillContainer>
+              <SkillCategoryLink {...skillCategory} />
+            </PillContainer>
+          </div>
         ))}
-    </ul>
+    </div>
   );
 };
 

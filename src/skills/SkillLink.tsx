@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import type { DbSkill } from '../hooks/useSkills';
+import PillContainer from '../PillContainer';
 
 export type SkillLinkProps = {
   skill: Pick<DbSkill, 'id' | 'skill_category_id' | 'name' | 'abbreviation'>;
@@ -8,7 +9,7 @@ export type SkillLinkProps = {
 
 const SkillLink = ({ skill, includeAbbrev = false }: SkillLinkProps) => {
   return (
-    <div className="border-[1px] border-blue-500 bg-blue-100 hover:bg-blue-200 p-1 w-fit flex gap-1 whitespace-nowrap cursor-pointer">
+    <PillContainer>
       <Link
         to="/jobvana/skill_categories/$id/skills/$skill_id"
         params={{
@@ -18,8 +19,8 @@ const SkillLink = ({ skill, includeAbbrev = false }: SkillLinkProps) => {
       >
         {skill.name}
       </Link>
-      {includeAbbrev && skill.abbreviation && ` (${skill.abbreviation})`}
-    </div>
+      <>{includeAbbrev && skill.abbreviation && ` (${skill.abbreviation})`}</>
+    </PillContainer>
   );
 };
 

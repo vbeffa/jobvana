@@ -155,9 +155,7 @@ const SkillsTable = () => {
                 <SkillLink skill={skill} includeAbbrev={true} />
               </td>
               <td>
-                {skillCategory && (
-                  <SkillCategoryLink skillCategory={skillCategory} />
-                )}
+                {skillCategory && <SkillCategoryLink {...skillCategory} />}
               </td>
               <td>{/* {jobsForSkill(skill.id)?.length} */}-</td>
             </tr>

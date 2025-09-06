@@ -79,7 +79,7 @@ const SkillCategoriesTable = () => {
           return (
             <tr key={skillCategory.id}>
               <td>
-                <SkillCategoryLink skillCategory={skillCategory} />
+                <SkillCategoryLink {...skillCategory} />
               </td>
               <td>{skills && <SkillsList skills={skills} />}</td>
             </tr>

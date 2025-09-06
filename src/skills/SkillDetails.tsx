@@ -2,6 +2,7 @@ import useJobs from '../hooks/useJobs';
 import useSkill from '../hooks/useSkill';
 import useSkills, { type SkillsParams } from '../hooks/useSkills';
 import JobsList from '../jobs/JobsList';
+import PillContainer from '../PillContainer';
 import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 import SkillVersionsList from './SkillVersionsList';
@@ -13,7 +14,7 @@ const SkillDetails = ({
   id: number;
   paging: SkillsParams['paging'];
 }) => {
-  const { findSkillCategory } = useSkills();
+  const { findSkillCategory } = useSkills({ paging });
   const { skill } = useSkill({ id, paging });
   const { jobsForSkill } = useJobs();
 
@@ -38,7 +39,9 @@ const SkillDetails = ({
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Category</h2>
       <div>
-        <SkillCategoryLink skillCategory={skillCategory} />
+        <PillContainer>
+          <SkillCategoryLink {...skillCategory} />
+        </PillContainer>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Jobs</h2>
