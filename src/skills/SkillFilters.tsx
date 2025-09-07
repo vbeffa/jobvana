@@ -1,5 +1,6 @@
 import Filter from '../Filter';
 import type { SearchFilters } from '../hooks/useSkills';
+import SkillCategorySelect from './SkillCategorySelect';
 
 const SkillFilters = ({
   filters,
@@ -22,6 +23,24 @@ const SkillFilters = ({
           onClear={() => setFilters((filters) => ({ ...filters, name: '' }))}
         />
       </div>
+      <div>Category:</div>
+      <div className="col-span-2 flex flex-row gap-x-2">
+        <SkillCategorySelect
+          id="role"
+          skillCategoryId={filters.skillCategoryId}
+          onChange={(skillCategoryId) => {
+            if (!skillCategoryId) {
+              setFilters((filters) => ({
+                ...filters,
+                skillCategoryId: undefined
+              }));
+            } else {
+              setFilters((filters) => ({ ...filters, skillCategoryId }));
+            }
+          }}
+        />
+      </div>
+      <div className="col-span-3 h-12" />
     </div>
   );
 };

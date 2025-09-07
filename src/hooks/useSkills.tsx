@@ -10,6 +10,7 @@ import type {
 
 export type SearchFilters = {
   name?: string;
+  skillCategoryId?: number;
 };
 
 export type Skill = DbSkill & {
@@ -68,6 +69,9 @@ const useSkills = (
       const { filters } = params;
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
+      }
+      if (filters?.skillCategoryId) {
+        q = q.filter('skill_category_id', 'eq', filters.skillCategoryId);
       }
       const { data, error, count } = await q
         .range(
