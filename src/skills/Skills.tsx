@@ -103,7 +103,12 @@ const Skills = () => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {selectedSkill ? <SkillDetails skill={selectedSkill} /> : undefined}
+          {selectedSkill ? (
+            <SkillDetails
+              skill={selectedSkill}
+              isPlaceholderData={isPlaceholderData}
+            />
+          ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </div>
