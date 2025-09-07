@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router';
-import type { DbSkill } from '../hooks/useSkills';
+import type { Skill } from '../hooks/types';
 import PillContainer from '../PillContainer';
 
 export type SkillLinkProps = {
-  skill: Pick<DbSkill, 'id' | 'skill_category_id' | 'name' | 'abbreviation'>;
+  skill: Pick<Skill, 'id' | 'skill_category_id' | 'name' | 'abbreviation'>;
   includeAbbrev?: boolean;
 };
 

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { Role } from '../hooks/useRoles';
+import type { Role } from '../hooks/types';
 
 export type RoleLinkParams = Pick<Role, 'id' | 'name'>;
 

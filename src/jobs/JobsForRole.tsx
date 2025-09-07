@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import type { Role } from '../hooks/types';
 import useJobs from '../hooks/useJobs';
-import type { Role } from '../hooks/useRoles';
 import PageNav from '../PageNav';
 import JobsTable from './JobsTable';
 

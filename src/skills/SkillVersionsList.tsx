@@ -1,4 +1,4 @@
-import type { SkillVersion } from '../hooks/useSkills';
+import type { SkillVersion } from '../hooks/types';
 import useSkills from '../hooks/useSkills';
 import SkillVersionLink from './SkillVersionLink';
 

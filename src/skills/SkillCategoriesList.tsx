@@ -1,4 +1,4 @@
-import type { SkillCategory } from '../hooks/useSkills';
+import type { SkillCategory } from '../hooks/types';
 import PillContainer from '../PillContainer';
 import SkillCategoryLink from './SkillCategoryLink';
 
