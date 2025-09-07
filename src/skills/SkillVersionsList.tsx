@@ -1,13 +1,17 @@
-import type { SkillVersion } from '../hooks/types';
-import useSkills from '../hooks/useSkills';
+import type { Skill, SkillVersion } from '../hooks/types';
 import SkillVersionLink from './SkillVersionLink';
 
+export type SkillVersionsListProps = {
+  skillVersions: Array<
+    Pick<SkillVersion, 'id' | 'ordinal' | 'skill_id' | 'version'>
+  >;
+  skill: Pick<Skill, 'skill_category_id' | 'name'>;
+};
+
 const SkillVersionsList = ({
-  skillVersions
-}: {
-  skillVersions: Array<SkillVersion>;
-}) => {
-  const { findSkill } = useSkills();
+  skillVersions,
+  skill
+}: SkillVersionsListProps) => {
   return (
     <ul>
       {skillVersions
@@ -16,14 +20,10 @@ const SkillVersionsList = ({
             skillVersion2.ordinal - skillVersion1.ordinal
         )
         .map((skillVersion) => {
-          const skill = findSkill(skillVersion.skill_id);
-
           return (
-            skill && (
-              <li key={skillVersion.id}>
-                <SkillVersionLink skill={skill} skillVersion={skillVersion} />
-              </li>
-            )
+            <li key={skillVersion.id}>
+              <SkillVersionLink {...skillVersion} {...skill} />
+            </li>
           );
         })}
     </ul>

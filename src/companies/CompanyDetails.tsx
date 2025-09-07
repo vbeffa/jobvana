@@ -1,7 +1,6 @@
 import Error from '../Error';
 import useCompany from '../hooks/useCompany';
 import useSkillsLite from '../hooks/useSkillsLite';
-import useSkillVersionsLite from '../hooks/useSkillVersionsLite';
 import JobsForCompany from '../jobs/JobsForCompany';
 import LoadingModal from '../LoadingModal';
 import SkillVersionLink from '../skills/SkillVersionLink';
@@ -10,7 +9,6 @@ import { findHeadquarters, isHeadquarters } from './companiesUtil';
 const CompanyDetails = ({ id }: { id: number }) => {
   const { company, error, isPlaceholderData, isPending } = useCompany({ id });
   const { findSkill } = useSkillsLite();
-  const { findSkillVersion } = useSkillVersionsLite();
 
   if (error) {
     return <Error error={error} />;
@@ -62,19 +60,13 @@ const CompanyDetails = ({ id }: { id: number }) => {
       <div>
         <ul>
           {company.techStack.map((techStackRow) => {
-            const skillVersion = findSkillVersion(
-              techStackRow.skill_version_id
-            );
-            if (!skillVersion) {
-              return null;
-            }
-            const skill = findSkill(skillVersion.skill_id);
+            const skill = findSkill(techStackRow.skill_id);
             if (!skill) {
               return null;
             }
             return (
-              <li key={techStackRow.skill_version_id}>
-                <SkillVersionLink skill={skill} skillVersion={skillVersion} />
+              <li key={techStackRow.id}>
+                <SkillVersionLink {...skill} {...techStackRow} />
               </li>
             );
           })}

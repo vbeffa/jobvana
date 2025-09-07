@@ -1,36 +1,23 @@
 import useJobs from '../hooks/useJobs';
-import useSkill from '../hooks/useSkill';
-import useSkillCategories from '../hooks/useSkillCategories';
-import useSkills, { type SkillsParams } from '../hooks/useSkills';
+import { type Skill } from '../hooks/useSkills';
 import JobsList from '../jobs/JobsList';
 import PillContainer from '../PillContainer';
 import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 import SkillVersionsList from './SkillVersionsList';
 
-const SkillDetails = ({
-  id,
-  paging
-}: {
-  id: number;
-  paging: SkillsParams['paging'];
-}) => {
-  const { findSiblingSkills } = useSkills({ paging });
-  const { findSkillCategory } = useSkillCategories();
-  const { skill } = useSkill({ id, paging });
+export type SkillDetailsProps = {
+  skill: Skill;
+};
+
+const SkillDetails = ({ skill }: SkillDetailsProps) => {
   const { jobsForSkill } = useJobs();
 
   if (!skill) {
     return null;
   }
 
-  const skillCategory = findSkillCategory(skill.skill_category_id);
-  if (!skillCategory) {
-    return null;
-  }
-
-  const jobs = jobsForSkill(id);
-  const siblingSkills = findSiblingSkills(skill);
+  const jobs = jobsForSkill(skill.id);
 
   return (
     <div className="mx-4 flex flex-col gap-2">
@@ -43,7 +30,7 @@ const SkillDetails = ({
       <h2>Category</h2>
       <div>
         <PillContainer>
-          <SkillCategoryLink {...skillCategory} />
+          <SkillCategoryLink {...skill.category} />
         </PillContainer>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
@@ -53,16 +40,16 @@ const SkillDetails = ({
       <h2>Versions</h2>
       <div>
         {skill.versions.length > 0 && (
-          <SkillVersionsList skillVersions={skill.versions} />
+          <SkillVersionsList skillVersions={skill.versions} skill={skill} />
         )}
       </div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Notes</h2>
       <div className="whitespace-pre-wrap">{skill.notes}</div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Sibling Skills</h2>
+      {/* <h2>Sibling Skills</h2>
       <div>{siblingSkills && <SkillsList skills={siblingSkills} />}</div>
-      <hr className="my-4 border-gray-400 shadow" />
+      <hr className="my-4 border-gray-400 shadow" /> */}
       <h2>Related Skills</h2>
       <div>
         <SkillsList skills={skill.relatedSkills} />

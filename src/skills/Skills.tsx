@@ -52,6 +52,11 @@ const Skills = () => {
     }
   }, [skills]);
 
+  const selectedSkill = useMemo(
+    () => skills?.find((skill) => skill.id === skillId),
+    [skillId, skills]
+  );
+
   return (
     <div className="mx-4">
       {error && <Error error={error} />}
@@ -98,7 +103,7 @@ const Skills = () => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {skillId ? <SkillDetails id={skillId} paging={paging} /> : undefined}
+          {selectedSkill ? <SkillDetails skill={selectedSkill} /> : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </div>

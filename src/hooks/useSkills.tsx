@@ -14,8 +14,9 @@ export type SearchFilters = {
 };
 
 export type Skill = DbSkill & {
+  category: SkillCategory;
   versions: Array<SkillVersion>;
-  relatedSkills: Array<Skill>;
+  relatedSkills: Array<DbSkill>;
 };
 
 export type Skills = {
@@ -28,9 +29,6 @@ export type Skills = {
 
   findSkills: (skillCategoryId: number) => Array<Skill> | undefined;
   findSiblingSkills: (skill: Skill) => Array<Skill> | undefined;
-
-  skillVersions: Array<SkillVersion> | undefined;
-  findSkillVersion: (versionId: number) => SkillVersion | undefined;
 };
 
 export type SkillsParams = Params<SearchFilters>;
@@ -58,10 +56,16 @@ const useSkills = (
   } = useQuery({
     queryKey: ['skills', queryKey],
     queryFn: async () => {
-      let q = supabase.from('skills').select('*', {
-        count: 'exact'
-      });
+      let q = supabase
+        .from('skills')
+        .select(
+          '*, skill_categories(*), skill_versions(*), skill_relations!skill_id(*, skills!related_skill_id(*))',
+          {
+            count: 'exact'
+          }
+        );
       const { filters } = params;
+      console.log(filters);
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
@@ -74,107 +78,31 @@ const useSkills = (
           params.paging.page * params.paging.pageSize - 1
         )
         .order('name');
+      console.log(data);
       return { data, error, count };
     }
   });
 
-  const { data: skillCategoriesData } = useQuery({
-    queryKey: ['skillCategories'],
-    queryFn: async () => {
-      const { data } = await supabase.from('skill_categories').select();
-      return data;
-    }
-  });
-
-  const { data: skillVersionsData } = useQuery({
-    queryKey: ['skillVersions'],
-    queryFn: async () => {
-      const { data } = await supabase.from('skill_versions').select();
-      return data;
-    }
-  });
-
-  const { data: skillRelationsData } = useQuery({
-    queryKey: ['skillRelations'],
-    queryFn: async () => {
-      const { data } = await supabase.from('skill_relations').select();
-      return data;
-    }
-  });
-
-  const skillCategories: Array<SkillCategory> | undefined = useMemo(() => {
-    if (!skillCategoriesData) {
-      return undefined;
-    }
-    const skillCategories: Array<SkillCategory> = skillCategoriesData
-      .map((skillCategory) => ({
-        ...skillCategory,
-        childCategories: [] // set to empty array to satisfy type checker
-      }))
-      .sort((skillCategory1, skillCategory2) =>
-        skillCategory1.name.localeCompare(skillCategory2.name)
-      );
-    // now that skillCategories is hydrated, can correctly set childCategories
-    skillCategories.forEach((skillCategory) => {
-      skillCategory.childCategories = skillCategories.filter(
-        (category) => category.parent_skill_category_id === skillCategory.id
-      );
-    });
-    return skillCategories;
-  }, [skillCategoriesData]);
-  const skillVersions = useMemo(
-    () => skillVersionsData ?? undefined,
-    [skillVersionsData]
-  );
-  const skillRelations = useMemo(
-    () => skillRelationsData,
-    [skillRelationsData]
-  );
-
   const skills = useMemo(() => {
-    if (
-      !skillsData?.data ||
-      !skillCategories ||
-      !skillVersions ||
-      !skillRelations
-    ) {
+    if (!skillsData?.data) {
       return undefined;
     }
-    const skills: Array<Skill> = skillsData.data.map((skill) => ({
-      ...skill,
-      versions: skillVersions.filter(
-        (skillVersion) => skillVersion.skill_id === skill.id
-      ),
-      relatedSkills: [] // set to empty array to satisfy type checker
-    }));
-    // now that skills is hydrated, can correctly set relatedSkills
-    skills.forEach((skill) => {
-      skill.relatedSkills = skillRelations
-        .filter((skillRelation) => skillRelation.skill_id === skill.id)
-        .flatMap((skillRelation) =>
-          skills.filter((skill) => skill.id === skillRelation.related_skill_id)
-        );
-    });
-    for (const skill of skills) {
-      const versionsForSkill = skillVersions.filter(
-        (skillVersion) => skillVersion.skill_id === skill.id
-      );
-      skill.versions = versionsForSkill;
-    }
-    skills.sort((skill1, skill2) => {
-      if (skill1.skill_category_id === skill2.skill_category_id) {
-        return skill1.name.localeCompare(skill2.name);
-      }
-      const skillCategory1 = skillCategories.find(
-        (skillCategory) => skillCategory.id === skill1.skill_category_id
-      );
-      const skillCategory2 = skillCategories.find(
-        (skillCategory) => skillCategory.id === skill2.skill_category_id
-      );
-      return skillCategory1!.name.localeCompare(skillCategory2!.name);
-    });
+    const skills: Array<Skill> = skillsData.data
+      .map((skill) => ({
+        ...skill,
+        category: skill.skill_categories,
+        versions: skill.skill_versions,
+        relatedSkills: skill.skill_relations.map((sr) => sr.skills)
+      }))
+      .sort((skill1, skill2) => {
+        if (skill1.skill_category_id === skill2.skill_category_id) {
+          return skill1.name.localeCompare(skill2.name);
+        }
+
+        return skill1.skill_category_id - skill2.skill_category_id;
+      });
     return skills;
-  }, [skillRelations, skillCategories, skillVersions, skillsData]);
+  }, [skillsData]);
 
   const skillsCount = useMemo(
     () => skillsData?.count ?? undefined,
@@ -197,14 +125,7 @@ const useSkills = (
       skills?.filter(
         (s) =>
           s.skill_category_id === skill.skill_category_id && s.id !== skill.id
-      ),
-
-    skillVersions,
-    findSkillVersion: (versionId: number) => {
-      return skillVersions?.find(
-        (skillVersion) => skillVersion.id === versionId
-      );
-    }
+      )
   };
 };
 

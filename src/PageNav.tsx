@@ -25,7 +25,6 @@ const PageNav = ({
     () => (total ? Math.ceil(total / pageSize) : undefined),
     [pageSize, total]
   );
-  console.log(page);
 
   const navButtonStyles = `h-full w-6 pb-0.5
                            cursor-pointer

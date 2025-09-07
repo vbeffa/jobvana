@@ -49,6 +49,4 @@ export type SkillVersion =
   Database['public']['Tables']['skill_versions']['Row'];
 
 export type SkillCategory =
-  Database['public']['Tables']['skill_categories']['Row'] & {
-    childCategories: Array<SkillCategory>;
-  };
+  Database['public']['Tables']['skill_categories']['Row'];

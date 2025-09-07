@@ -1,11 +1,11 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { TechStack } from './types';
+import type { SkillVersion } from './types';
 import type { Company } from './useCompanies';
 
 export type FullCompany = Company & {
-  techStack: Array<TechStack>;
+  techStack: Array<SkillVersion>;
 };
 
 const useCompany = ({ id }: { id: number }) => {
@@ -20,7 +20,7 @@ const useCompany = ({ id }: { id: number }) => {
       const { error, data } = await supabase
         .from('companies')
         .select(
-          `*, company_addresses(*), industries(*), tech_stacks(*), skill_versions(*)`
+          `*, company_addresses(*), industries(*), tech_stacks(*, skill_versions(*)), skill_versions(*)`
         )
         .filter('id', 'eq', id);
 
@@ -39,7 +39,9 @@ const useCompany = ({ id }: { id: number }) => {
       ...company,
       addresses: company.company_addresses,
       industry: company.industries,
-      techStack: company.tech_stacks
+      techStack: company.tech_stacks.map(
+        (techStackRow) => techStackRow.skill_versions
+      )
     };
   }, [companyData?.data]);
 
