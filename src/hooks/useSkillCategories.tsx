@@ -3,17 +3,16 @@ import { useMemo } from 'react';
 import supabase from '../utils/supabase';
 import type { SkillCategory } from './types';
 
-export type Skills = {
+export type SkillCategories = {
   skillCategories: Array<SkillCategory> | undefined;
   rootCategories: Array<SkillCategory> | undefined;
   findSkillCategory: (id: number) => SkillCategory | undefined;
-  // TODO rename to childSkillCategories since it filters not finds
   findChildSkillCategories: (
-    parentSkillId: number
+    parentSkillCategory: SkillCategory
   ) => Array<SkillCategory> | undefined;
 };
 
-const useSkillCategories = (): Skills => {
+const useSkillCategories = (): SkillCategories => {
   const { data: skillCategoriesData } = useQuery({
     queryKey: ['skillCategories'],
     queryFn: async () => {
@@ -51,10 +50,10 @@ const useSkillCategories = (): Skills => {
     findSkillCategory: (id: number) =>
       skillCategories?.find((skillCategory) => skillCategory.id === id),
 
-    findChildSkillCategories: (parentSkillId: number) =>
+    findChildSkillCategories: (parentSkillCategory: SkillCategory) =>
       skillCategories?.filter(
         (skillCategory) =>
-          skillCategory.parent_skill_category_id === parentSkillId
+          skillCategory.parent_skill_category_id === parentSkillCategory.id
       )
   };
 };

@@ -16,7 +16,7 @@ const SkillCategoryDetails = ({ id }: { id: number }) => {
     skillCategory.parent_skill_category_id &&
     findSkillCategory(skillCategory.parent_skill_category_id);
   const skills = findSkills(id);
-  const childSkillCategories = findChildSkillCategories(skillCategory.id);
+  const childSkillCategories = findChildSkillCategories(skillCategory);
 
   return (
     <div className="mx-4 flex flex-col gap-2">

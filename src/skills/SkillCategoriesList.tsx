@@ -1,12 +1,13 @@
-import type { SkillCategory } from '../hooks/types';
 import PillContainer from '../PillContainer';
-import SkillCategoryLink from './SkillCategoryLink';
+import SkillCategoryLink, {
+  type SkillCategoryLinkProps
+} from './SkillCategoryLink';
 
-const SkillCategoriesList = ({
-  skillCategories
-}: {
-  skillCategories: Array<SkillCategory>;
-}) => {
+export type SkillCategoriesListProps = {
+  skillCategories: Array<SkillCategoryLinkProps>;
+};
+
+const SkillCategoriesList = ({ skillCategories }: SkillCategoriesListProps) => {
   return (
     <div className="flex flex-wrap gap-2">
       {skillCategories
