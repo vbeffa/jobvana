@@ -82,7 +82,7 @@ const Skills = () => {
             isLoading={isPlaceholderData || isPending}
             type="skills"
           />
-          <SummaryCardsContainer hasFilters={false}>
+          <SummaryCardsContainer>
             {skills?.map((skill, idx) => {
               return (
                 <SummaryCard
@@ -101,7 +101,7 @@ const Skills = () => {
             })}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer hasFilters={false}>
+        <ResourceDetailsContainer>
           {skillId ? <SkillDetails id={skillId} paging={paging} /> : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
