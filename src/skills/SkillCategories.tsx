@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills from '../hooks/useSkills';
-import SkillCategoriesTable from './SkillCategoriesTable';
 import SkillCategoryTree from './SkillCategoryTree';
 
 const SkillCategories = () => {
-  const [view, setView] = useState<'tree' | 'table'>('tree');
   const [open, setOpen] = useState(false);
   const { skills } = useSkills();
   const { rootCategories } = useSkillCategories();
@@ -15,26 +13,8 @@ const SkillCategories = () => {
       <h1>Skill Categories</h1>
       <div className="flex justify-center">
         <div className="my-4 w-[50%] min-w-[1000px]">
-          <div className="py-4 flex flex-row justify-center gap-10">
-            <div>
-              <input
-                type="button"
-                value="Tree"
-                className={` ${view === 'tree' ? 'border-b-1 border-b-blue-500 bg-blue-200' : ''}`}
-                onClick={() => setView('tree')}
-              />
-            </div>
-            <div>
-              <input
-                type="button"
-                value="Table"
-                className={` ${view === 'table' ? 'border-b-1 border-b-blue-500 bg-blue-200' : ''}`}
-                onClick={() => setView('table')}
-              />
-            </div>
-          </div>
           <div>
-            {view === 'tree' && rootCategories && skills && (
+            {rootCategories && skills && (
               <>
                 <div className="pl-13 pb-2">
                   <input
@@ -51,9 +31,6 @@ const SkillCategories = () => {
                 />
               </>
             )}
-          </div>
-          <div className="mx-8">
-            {view === 'table' && <SkillCategoriesTable />}
           </div>
         </div>
       </div>
