@@ -25,7 +25,19 @@ const Companies = () => {
     minSize: 1,
     maxSize: 1000
   });
+  const [debouncedName] = useDebounce(
+    searchFilters.name,
+    searchFilters.name ? 500 : 0
+  );
   const [companyId, setCompanyId] = useState<number | null>(null);
+
+  const filters: SearchFilters = useMemo(
+    () => ({
+      ...searchFilters,
+      name: debouncedName
+    }),
+    [debouncedName, searchFilters]
+  );
 
   const paging: CompaniesParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -33,7 +45,7 @@ const Companies = () => {
   );
 
   const { companies, error, isPending, isPlaceholderData, companyCount } =
-    useCompanies({ paging, filters: searchFilters });
+    useCompanies({ paging, filters });
 
   useEffect(() => {
     if (companies?.[0]) {

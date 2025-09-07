@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
-import useSkills, { type SkillsParams } from '../hooks/useSkills';
+import FiltersContainer from '../FiltersContainer';
+import useSkills, {
+  type SearchFilters,
+  type SkillsParams
+} from '../hooks/useSkills';
 import PageNav from '../PageNav';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
@@ -9,12 +13,28 @@ import ResourcesContainer from '../ResourcesContainer';
 import SkillDetails from '../skills/SkillDetails';
 import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
+import SkillFilters from './SkillFilters';
 
 const Skills = () => {
   const [page, setPage] = useState<number>(1);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
+    name: ''
+  });
+  const [debouncedName] = useDebounce(
+    searchFilters.name,
+    searchFilters.name ? 500 : 0
+  );
   const [skillId, setSkillId] = useState<number | null>(null);
+
+  const filters: SearchFilters = useMemo(
+    () => ({
+      ...searchFilters,
+      name: debouncedName
+    }),
+    [debouncedName, searchFilters]
+  );
 
   const paging: SkillsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -28,7 +48,7 @@ const Skills = () => {
     isPlaceholderData,
     skillsCount,
     findSkillCategory
-  } = useSkills({ paging });
+  } = useSkills({ paging, filters });
 
   useEffect(() => {
     if (skills?.[0]) {
@@ -39,8 +59,15 @@ const Skills = () => {
   return (
     <div className="mx-4">
       {error && <Error error={error} />}
-      <h1>Skills</h1>
-      <div className="h-4" />
+      <FiltersContainer>
+        <SkillFilters
+          filters={searchFilters}
+          setFilters={(filters) => {
+            setPage(1);
+            setSearchFilters(filters);
+          }}
+        />
+      </FiltersContainer>
       <ResourcesContainer>
         <ResourceListContainer>
           <PageNav

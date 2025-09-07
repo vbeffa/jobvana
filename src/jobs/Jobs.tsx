@@ -22,11 +22,11 @@ const Jobs = () => {
   });
   const [debouncedCompany] = useDebounce(
     searchFilters.company,
-    searchFilters.company ? 5000 : 0
+    searchFilters.company ? 500 : 0
   );
   const [debouncedTitle] = useDebounce(
     searchFilters.title,
-    searchFilters.title ? 1000 : 0
+    searchFilters.title ? 500 : 0
   );
   const [jobId, setJobId] = useState<number | null>(null);
 

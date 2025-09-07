@@ -1,7 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Skill as DbSkill, SkillCategory, SkillVersion } from './types';
+import type {
+  Skill as DbSkill,
+  Params,
+  SkillCategory,
+  SkillVersion
+} from './types';
+
+export type SearchFilters = {
+  name?: string;
+};
 
 export type Skill = DbSkill & {
   versions: Array<SkillVersion>;
@@ -28,25 +37,21 @@ export type Skills = {
   findSkillVersion: (versionId: number) => SkillVersion | undefined;
 };
 
-export type SkillsParams = {
-  paging: {
-    page: number;
-    pageSize: number;
-  };
-};
+export type SkillsParams = Params<SearchFilters>;
 
 type QueryKey = {
   page: number;
-};
+} & SearchFilters;
 
 const useSkills = (
   params: SkillsParams = { paging: { page: 1, pageSize: 10 } }
 ): Skills => {
   const queryKey: QueryKey = useMemo(
     () => ({
-      page: params.paging?.page
+      page: params.paging?.page,
+      ...params.filters
     }),
-    [params.paging?.page]
+    [params.filters, params.paging?.page]
   );
 
   const {
@@ -57,11 +62,14 @@ const useSkills = (
   } = useQuery({
     queryKey: ['skills', queryKey],
     queryFn: async () => {
-      const { data, error, count } = await supabase
-        .from('skills')
-        .select('*', {
-          count: 'exact'
-        })
+      let q = supabase.from('skills').select('*', {
+        count: 'exact'
+      });
+      const { filters } = params;
+      if (filters?.name) {
+        q = q.ilike('name', `%${filters.name}%`);
+      }
+      const { data, error, count } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1

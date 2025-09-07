@@ -1,9 +1,10 @@
 import type { Database } from '../utils/types';
 import type { SearchFilters as CompanySearchFilters } from './useCompanies';
 import type { SearchFilters as JobSearchFilters } from './useJobs';
+import type { SearchFilters as SkillSearchFilters } from './useSkills';
 
 export type Params<
-  SF extends CompanySearchFilters | JobSearchFilters | undefined
+  SF extends CompanySearchFilters | JobSearchFilters | SkillSearchFilters
 > = {
   paging: {
     page: number;
