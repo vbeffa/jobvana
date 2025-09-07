@@ -1,12 +1,12 @@
 import useSkillCategories from '../hooks/useSkillCategories';
-import useSkills from '../hooks/useSkills';
+import useSkillsForCategory from '../hooks/useSkillsForCategory';
 import PillContainer from '../PillContainer';
 import SkillCategoriesList from './SkillCategoriesList';
 import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 
 const SkillCategoryDetails = ({ id }: { id: number }) => {
-  const { findSkills } = useSkills();
+  const { skills } = useSkillsForCategory(id);
   const { findSkillCategory, findChildSkillCategories } = useSkillCategories();
   const skillCategory = findSkillCategory(id);
   if (!skillCategory) {
@@ -15,7 +15,6 @@ const SkillCategoryDetails = ({ id }: { id: number }) => {
   const parentSkillCategory =
     skillCategory.parent_skill_category_id &&
     findSkillCategory(skillCategory.parent_skill_category_id);
-  const skills = findSkills(id);
   const childSkillCategories = findChildSkillCategories(skillCategory);
 
   return (

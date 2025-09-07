@@ -27,7 +27,6 @@ export type Skills = {
   skillsCount: number | undefined;
   findSkill: (id: number) => Skill | undefined;
 
-  findSkills: (skillCategoryId: number) => Array<Skill> | undefined;
   findSiblingSkills: (skill: Skill) => Array<Skill> | undefined;
 };
 
@@ -65,7 +64,6 @@ const useSkills = (
           }
         );
       const { filters } = params;
-      console.log(filters);
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
@@ -117,9 +115,6 @@ const useSkills = (
     skillsCount,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
-    // TODO fix - skills are paginated
-    findSkills: (skillCategoryId: number) =>
-      skills?.filter((skill) => skill.skill_category_id === skillCategoryId),
     // TODO fix - skills are paginated
     findSiblingSkills: (skill: Skill) =>
       skills?.filter(
