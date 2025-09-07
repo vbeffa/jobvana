@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { SkillCategory } from '../hooks/useSkills';
+import type { SkillCategory } from '../hooks/types';
 
 export type SkillCategoryLinkProps = Pick<SkillCategory, 'id' | 'name'>;
 
