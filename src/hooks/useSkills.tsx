@@ -111,12 +111,14 @@ const useSkills = (
     if (!skillCategoriesData) {
       return undefined;
     }
-    const skillCategories: Array<SkillCategory> = skillCategoriesData.map(
-      (skillCategory) => ({
+    const skillCategories: Array<SkillCategory> = skillCategoriesData
+      .map((skillCategory) => ({
         ...skillCategory,
         childCategories: [] // set to empty array to satisfy type checker
-      })
-    );
+      }))
+      .sort((skillCategory1, skillCategory2) =>
+        skillCategory1.name.localeCompare(skillCategory2.name)
+      );
     // now that skillCategories is hydrated, can correctly set childCategories
     skillCategories.forEach((skillCategory) => {
       skillCategory.childCategories = skillCategories.filter(
