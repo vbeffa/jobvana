@@ -1,5 +1,6 @@
 import useJobs from '../hooks/useJobs';
 import useSkill from '../hooks/useSkill';
+import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills, { type SkillsParams } from '../hooks/useSkills';
 import JobsList from '../jobs/JobsList';
 import PillContainer from '../PillContainer';
@@ -14,7 +15,8 @@ const SkillDetails = ({
   id: number;
   paging: SkillsParams['paging'];
 }) => {
-  const { findSkillCategory } = useSkills({ paging });
+  const { findSiblingSkills } = useSkills({ paging });
+  const { findSkillCategory } = useSkillCategories();
   const { skill } = useSkill({ id, paging });
   const { jobsForSkill } = useJobs();
 
@@ -28,6 +30,7 @@ const SkillDetails = ({
   }
 
   const jobs = jobsForSkill(id);
+  const siblingSkills = findSiblingSkills(skill);
 
   return (
     <div className="mx-4 flex flex-col gap-2">
@@ -56,6 +59,9 @@ const SkillDetails = ({
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Notes</h2>
       <div className="whitespace-pre-wrap">{skill.notes}</div>
+      <hr className="my-4 border-gray-400 shadow" />
+      <h2>Sibling Skills</h2>
+      <div>{siblingSkills && <SkillsList skills={siblingSkills} />}</div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Related Skills</h2>
       <div>

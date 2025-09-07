@@ -1,3 +1,4 @@
+import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills from '../hooks/useSkills';
 import PillContainer from '../PillContainer';
 import SkillCategoriesList from './SkillCategoriesList';
@@ -5,8 +6,8 @@ import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 
 const SkillCategoryDetails = ({ id }: { id: number }) => {
-  const { findSkillCategory, findSkills, findChildSkillCategories } =
-    useSkills();
+  const { findSkills } = useSkills();
+  const { findSkillCategory, findChildSkillCategories } = useSkillCategories();
   const skillCategory = findSkillCategory(id);
   if (!skillCategory) {
     return null;

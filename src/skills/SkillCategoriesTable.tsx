@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import Filter from '../Filter';
+import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills from '../hooks/useSkills';
 import Loading from '../Loading';
 import SkillCategoryLink from './SkillCategoryLink';
@@ -13,7 +14,8 @@ const SkillCategoriesTable = () => {
   const [sortDir, setSortDir] = useState<SortDir>('up');
   const [categoryFilter, setCategoryFilter] = useState<string>();
 
-  const { skillCategories, findSkills } = useSkills();
+  const { findSkills } = useSkills();
+  const { skillCategories } = useSkillCategories();
 
   const filteredSkillCategories = useMemo(() => {
     return skillCategories

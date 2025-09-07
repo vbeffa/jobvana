@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills from '../hooks/useSkills';
 import SkillCategoriesTable from './SkillCategoriesTable';
 import SkillCategoryTree from './SkillCategoryTree';
@@ -6,7 +7,8 @@ import SkillCategoryTree from './SkillCategoryTree';
 const SkillCategories = () => {
   const [view, setView] = useState<'tree' | 'table'>('tree');
   const [open, setOpen] = useState(false);
-  const { rootCategories, skills } = useSkills();
+  const { skills } = useSkills();
+  const { rootCategories } = useSkillCategories();
 
   return (
     <div className="mb-4">

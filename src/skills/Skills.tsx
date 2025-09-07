@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
 import FiltersContainer from '../FiltersContainer';
+import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills, {
   type SearchFilters,
   type SkillsParams
@@ -41,14 +42,9 @@ const Skills = () => {
     [debouncedPage]
   );
 
-  const {
-    skills,
-    error,
-    isPending,
-    isPlaceholderData,
-    skillsCount,
-    findSkillCategory
-  } = useSkills({ paging, filters });
+  const { skills, error, isPending, isPlaceholderData, skillsCount } =
+    useSkills({ paging, filters });
+  const { findSkillCategory } = useSkillCategories();
 
   useEffect(() => {
     if (skills?.[0]) {

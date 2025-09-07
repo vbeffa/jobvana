@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import Filter from '../Filter';
 import useJobs from '../hooks/useJobs';
+import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills from '../hooks/useSkills';
 import Loading from '../Loading';
 import SkillCategoryLink from './SkillCategoryLink';
@@ -15,7 +16,8 @@ const SkillsTable = () => {
   const [skillFilter, setSkillFilter] = useState<string>();
   const [skillCategoryFilter, setSkillCategoryFilter] = useState<string>();
 
-  const { skills, findSkillCategory } = useSkills();
+  const { skills } = useSkills();
+  const { findSkillCategory } = useSkillCategories();
   const { jobsForSkill, isPending } = useJobs();
 
   const filteredSkills = useMemo(() => {

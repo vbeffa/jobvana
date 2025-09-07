@@ -26,13 +26,8 @@ export type Skills = {
   skillsCount: number | undefined;
   findSkill: (id: number) => Skill | undefined;
 
-  skillCategories: Array<SkillCategory> | undefined;
-  rootCategories: Array<SkillCategory> | undefined;
-  findSkillCategory: (id: number) => SkillCategory | undefined;
   findSkills: (skillCategoryId: number) => Array<Skill> | undefined;
-  findChildSkillCategories: (
-    parentSkillId: number
-  ) => Array<SkillCategory> | undefined;
+  findSiblingSkills: (skill: Skill) => Array<Skill> | undefined;
 
   skillVersions: Array<SkillVersion> | undefined;
   findSkillVersion: (versionId: number) => SkillVersion | undefined;
@@ -194,18 +189,14 @@ const useSkills = (
     skillsCount,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id),
 
-    skillCategories,
-    rootCategories: skillCategories?.filter(
-      (category) => category.parent_skill_category_id === null
-    ),
-    findSkillCategory: (id: number) =>
-      skillCategories?.find((skillCategory) => skillCategory.id === id),
+    // TODO fix - skills are paginated
     findSkills: (skillCategoryId: number) =>
       skills?.filter((skill) => skill.skill_category_id === skillCategoryId),
-    findChildSkillCategories: (parentSkillId: number) =>
-      skillCategories?.filter(
-        (skillCategory) =>
-          skillCategory.parent_skill_category_id === parentSkillId
+    // TODO fix - skills are paginated
+    findSiblingSkills: (skill: Skill) =>
+      skills?.filter(
+        (s) =>
+          s.skill_category_id === skill.skill_category_id && s.id !== skill.id
       ),
 
     skillVersions,
