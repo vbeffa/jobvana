@@ -1,15 +1,37 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Skill as DbSkill } from './types';
+import type {
+  Skill as DbSkill,
+  SkillCategory as DbSkillCategory,
+  SkillVersion as DbSkillVersion
+} from './types';
 
 export type SearchFilters = {
   name?: string;
   skillCategoryId?: number;
 };
 
+export type SkillCategory = Pick<DbSkillCategory, 'id' | 'name'>;
+
+export type SkillVersion = Pick<
+  DbSkillVersion,
+  'id' | 'ordinal' | 'skill_id' | 'version'
+>;
+
+export type RelatedSkill = Pick<
+  DbSkill,
+  'id' | 'skill_category_id' | 'name' | 'abbreviation'
+>;
+
+export type Skill = Omit<DbSkill, 'id'> & {
+  category: SkillCategory;
+  versions: Array<SkillVersion>;
+  relatedSkills: Array<RelatedSkill>;
+};
+
 export type SkillH = {
-  skill: DbSkill | undefined;
+  skill: Skill | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
@@ -27,7 +49,10 @@ const useSkill = (id: number): SkillH => {
       const { data, error } = await supabase
         .from('skills')
         .select(
-          '*, skill_categories(*), skill_versions(*), skill_relations!skill_id(*, skills!related_skill_id(*))'
+          `name, abbreviation, description, notes, reference, skill_category_id,
+          skill_categories(id, name),
+          skill_versions(id, ordinal, skill_id, version),
+          skill_relations!skill_id(skills!related_skill_id(id, skill_category_id, name, abbreviation))`
         )
         .filter('id', 'eq', id);
 

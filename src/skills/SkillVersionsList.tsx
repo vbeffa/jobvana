@@ -1,10 +1,8 @@
-import type { Skill, SkillVersion } from '../hooks/types';
+import type { Skill, SkillVersion } from '../hooks/useSkill';
 import SkillVersionLink from './SkillVersionLink';
 
 export type SkillVersionsListProps = {
-  skillVersions: Array<
-    Pick<SkillVersion, 'id' | 'ordinal' | 'skill_id' | 'version'>
-  >;
+  skillVersions: Array<SkillVersion>;
   skill: Pick<Skill, 'skill_category_id' | 'name'>;
 };
 
