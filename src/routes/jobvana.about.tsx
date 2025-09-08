@@ -32,20 +32,20 @@ function About() {
           <Link to="/jobvana/roles">Roles</Link> are high-level descriptions of
           a job's duties.
         </p>
-        <h2>Skill Categories</h2>
-        <p>
-          <Link to="/jobvana/skill_categories">Skill categories</Link> are used
-          to classify skills.
-        </p>
         <h2>Skills</h2>
         <p>
           <Link to="/jobvana/skills">Skills</Link> are used in jobs. There is
           not a 1-1 relationship between skills and roles.
         </p>
+        <h2>Skill Categories</h2>
+        <p>
+          <Link to="/jobvana/skill_categories">Skill categories</Link> are used
+          to classify skills.
+        </p>
         <h2>Skill Versions</h2>
         <p>
           Skill versions are defined by the skill provider. Each skill version
-          has a unique ordinal number identifying its ordering. Skill versions
+          has a unique ordinal number identifying its position. Skill versions
           also have release dates.
         </p>
         <h2>Tech Stacks</h2>
