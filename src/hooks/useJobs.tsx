@@ -7,6 +7,7 @@ import type {
   Company,
   Job as DbJob,
   Skill as DbSkill,
+  JobRole,
   Params
 } from './types';
 
