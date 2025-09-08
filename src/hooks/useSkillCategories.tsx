@@ -9,28 +9,33 @@ export type SkillCategory = DbSkillCategory & {
 
 export type SkillCategories = {
   skillCategories: Array<SkillCategory> | undefined;
+  error?: Error;
   isPending: boolean;
+
   rootCategories: Array<SkillCategory> | undefined;
   findSkillCategory: (id: number) => SkillCategory | undefined;
+
   findChildSkillCategories: (
     parentSkillCategory: SkillCategory
   ) => Array<SkillCategory> | undefined;
 };
 
+// skill categories are few - no paging needed
 const useSkillCategories = (): SkillCategories => {
-  const { data: skillCategoriesData, isPending } = useQuery({
+  const { data, error, isPending } = useQuery({
     queryKey: ['skillCategories'],
     queryFn: async () => {
-      const { data } = await supabase.from('skill_categories').select();
-      return data;
+      const { data, error } = await supabase.from('skill_categories').select();
+      return { skillCategories: data, error };
     }
   });
 
   const skillCategories: Array<SkillCategory> | undefined = useMemo(() => {
-    if (!skillCategoriesData) {
+    if (!data?.skillCategories) {
       return undefined;
     }
-    const skillCategories: Array<SkillCategory> = skillCategoriesData
+
+    const skillCategories: Array<SkillCategory> = data.skillCategories
       .map((skillCategory) => ({
         ...skillCategory,
         childCategories: [] // set to empty array to satisfy type checker
@@ -45,11 +50,13 @@ const useSkillCategories = (): SkillCategories => {
       );
     });
     return skillCategories;
-  }, [skillCategoriesData]);
+  }, [data?.skillCategories]);
 
   return {
     skillCategories,
+    error: error ?? undefined,
     isPending,
+
     rootCategories: skillCategories?.filter(
       (category) => category.parent_skill_category_id === null
     ),

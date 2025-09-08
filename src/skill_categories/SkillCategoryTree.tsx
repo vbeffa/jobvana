@@ -3,11 +3,9 @@ import SkillCategoryLinkWithNumSkills from './SkillCategoryLinkWithNumSkills';
 
 const SkillCategoryTree = ({
   skillCategories,
-
   open
 }: {
   skillCategories: Array<SkillCategory>;
-
   open: boolean;
 }) => {
   return (
