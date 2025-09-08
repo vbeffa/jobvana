@@ -126,7 +126,7 @@ const JobsTable = ({ jobs }: { jobs?: Array<Job> }) => {
             <tr key={job.id}>
               <td>{company && <CompanyLink company={company} />}</td>
               <td>
-                <JobLink job={job} />
+                <JobLink {...job} />
               </td>
               <td>
                 <Requirements {...job} />

@@ -1,12 +1,12 @@
-import type { Job } from '../hooks/useJobs';
+import type { Job as DbJob } from '../hooks/useJobs';
 import JobLink from './JobLink';
 
-const JobsList = ({ jobs }: { jobs: Array<Job> }) => {
+const JobsList = ({ jobs }: { jobs: Array<DbJob> }) => {
   return (
     <ul>
       {jobs.map((job) => (
         <li key={job.id}>
-          <JobLink job={job} />
+          <JobLink {...job} />
         </li>
       ))}
     </ul>

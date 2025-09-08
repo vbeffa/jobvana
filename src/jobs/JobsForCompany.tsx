@@ -4,6 +4,7 @@ import useJobs from '../hooks/useJobs';
 import JobsList from './JobsList';
 
 const JobsForCompany = ({ company }: { company: Company }) => {
+  // TODO fix this is paged, not correct if company has more than 10 jobs
   const { jobs, error } = useJobs({
     paging: { page: 1, pageSize: 10 },
     filters: { companyId: company.id }

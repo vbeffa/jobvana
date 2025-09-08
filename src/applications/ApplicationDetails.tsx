@@ -14,7 +14,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
     <>
       <h2>Job</h2>
       <div>
-        <JobLink job={application.job} />
+        <JobLink {...application.job} />
       </div>
       <h2>Company</h2>
       <div>
