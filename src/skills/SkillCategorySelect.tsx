@@ -1,5 +1,4 @@
 import useSkillCategories from '../hooks/useSkillCategories';
-import useSkills from '../hooks/useSkills';
 
 const SkillCategorySelect = ({
   id,
@@ -10,8 +9,7 @@ const SkillCategorySelect = ({
   skillCategoryId?: number;
   onChange: (skillId: number) => void;
 }) => {
-  const { isPending } = useSkills();
-  const { skillCategories } = useSkillCategories();
+  const { skillCategories, isPending } = useSkillCategories();
 
   return (
     <select

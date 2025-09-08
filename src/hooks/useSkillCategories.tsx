@@ -9,6 +9,7 @@ export type SkillCategory = DbSkillCategory & {
 
 export type SkillCategories = {
   skillCategories: Array<SkillCategory> | undefined;
+  isPending: boolean;
   rootCategories: Array<SkillCategory> | undefined;
   findSkillCategory: (id: number) => SkillCategory | undefined;
   findChildSkillCategories: (
@@ -17,7 +18,7 @@ export type SkillCategories = {
 };
 
 const useSkillCategories = (): SkillCategories => {
-  const { data: skillCategoriesData } = useQuery({
+  const { data: skillCategoriesData, isPending } = useQuery({
     queryKey: ['skillCategories'],
     queryFn: async () => {
       const { data } = await supabase.from('skill_categories').select();
@@ -48,6 +49,7 @@ const useSkillCategories = (): SkillCategories => {
 
   return {
     skillCategories,
+    isPending,
     rootCategories: skillCategories?.filter(
       (category) => category.parent_skill_category_id === null
     ),
