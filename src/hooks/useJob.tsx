@@ -16,7 +16,7 @@ export type Skill = Pick<
 
 export type Requirement = Pick<JobRole, 'role_id' | 'percent' | 'role_level'>;
 
-export type Job = DbJob & {
+export type Job = Omit<DbJob, 'id' | 'company_id' | 'status'> & {
   company: Pick<Company, 'id' | 'name'>;
   requirements: Array<Requirement>;
   skills: Array<Skill>;
@@ -37,7 +37,7 @@ const useJob = (id: number): JobH => {
       const { data, error } = await supabase
         .from('jobs')
         .select(
-          `*,
+          `created_at, description, salary_low, salary_high, title,
           companies!inner(id, name),
           job_roles!inner(role_id, percent, role_level),
           skills!inner(id, name, skill_category_id, abbreviation),
