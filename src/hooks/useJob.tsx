@@ -39,9 +39,9 @@ const useJob = (id: number): JobH => {
         .select(
           `created_at, description, salary_low, salary_high, title,
           companies!inner(id, name),
-          job_roles!inner(role_id, percent, role_level),
-          skills!inner(id, name, skill_category_id, abbreviation),
-          applications!inner(status)`
+          job_roles(role_id, percent, role_level),
+          skills(id, name, skill_category_id, abbreviation),
+          applications(status)`
         )
         .filter('id', 'eq', id);
 
