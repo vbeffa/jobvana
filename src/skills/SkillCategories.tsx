@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import useSkillCategories from '../hooks/useSkillCategories';
-import useSkills from '../hooks/useSkills';
 import SkillCategoryTree from './SkillCategoryTree';
 
 const SkillCategories = () => {
   const [open, setOpen] = useState(false);
-  const { skills } = useSkills();
   const { rootCategories } = useSkillCategories();
 
   return (
@@ -14,7 +12,7 @@ const SkillCategories = () => {
       <div className="flex justify-center">
         <div className="my-4 w-[50%] min-w-[1000px]">
           <div>
-            {rootCategories && skills && (
+            {rootCategories && (
               <>
                 <div className="pl-13 pb-2">
                   <input
@@ -26,7 +24,6 @@ const SkillCategories = () => {
                 </div>
                 <SkillCategoryTree
                   skillCategories={rootCategories}
-                  skills={skills}
                   open={open}
                 />
               </>

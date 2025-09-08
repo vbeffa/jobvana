@@ -2,9 +2,12 @@ import { Route } from '../routes/jobvana.skill_categories.$id.skills.$skill_id.s
 import SkillVersionDetails from './SkillVersionDetails';
 
 const SkillVersion = () => {
-  const { skillVersionId } = Route.useLoaderData();
+  const { skillId, skillVersionId } = Route.useLoaderData();
+  console.log(skillId, skillVersionId);
 
-  return <SkillVersionDetails id={skillVersionId} />;
+  return (
+    <SkillVersionDetails skillId={skillId} skillVersionId={skillVersionId} />
+  );
 };
 
 export default SkillVersion;

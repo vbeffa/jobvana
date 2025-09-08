@@ -23,6 +23,7 @@ type QueryKey = {
 
 const useSkillsForCategory = (
   skillCategoryId: number,
+  countOnly?: boolean,
   params: SkillsParams = {
     paging: { page: 1, pageSize: 10 }
   }
@@ -47,7 +48,8 @@ const useSkillsForCategory = (
       let q = supabase
         .from('skills')
         .select('*', {
-          count: 'exact'
+          count: 'exact',
+          head: countOnly
         })
         .filter('skill_category_id', 'eq', skillCategoryId);
       const { filters } = params;

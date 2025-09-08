@@ -1,14 +1,22 @@
-import useSkills from '../hooks/useSkills';
+import Error from '../Error';
+import useSkill from '../hooks/useSkill';
 import useSkillVersion from '../hooks/useSkillVersion';
 
-const SkillVersionDetails = ({ id }: { id: number }) => {
-  const { findSkill } = useSkills();
-  const { skillVersion } = useSkillVersion({ id });
+const SkillVersionDetails = ({
+  skillId,
+  skillVersionId
+}: {
+  skillId: number;
+  skillVersionId: number;
+}) => {
+  const { skill, error } = useSkill(skillId);
+  const { skillVersion, error: error2 } = useSkillVersion({
+    id: skillVersionId
+  });
   // const { jobsForSkill } = useJobs();
   if (!skillVersion) {
     return null;
   }
-  const skill = findSkill(skillVersion.skill_id);
   if (!skill) {
     return null;
   }
@@ -18,6 +26,8 @@ const SkillVersionDetails = ({ id }: { id: number }) => {
 
   return (
     <div className="mx-4 flex flex-col gap-2">
+      {error && <Error error={error} />}
+      {error2 && <Error error={error2} />}
       <h2>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`}{' '}
@@ -30,9 +40,10 @@ const SkillVersionDetails = ({ id }: { id: number }) => {
       <h2>Released</h2>
       <div>{skillVersion.release_date}</div>
       <hr className="my-4 border-gray-400 shadow" />
-      {/* <h2>Jobs</h2>
-      <div>{jobs && <JobsList jobs={jobs} />}</div>
-      <hr className="my-4 border-gray-400 shadow" /> */}
+      <h2>Jobs</h2>
+      {/* <div>{jobs && <JobsList jobs={jobs} />}</div> */}
+      <div>TODO</div>
+      <hr className="my-4 border-gray-400 shadow" />
       <h2>Reference</h2>
       <div>
         {skillVersion.reference && (

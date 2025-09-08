@@ -6,7 +6,7 @@ import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 
 const SkillCategoryDetails = ({ id }: { id: number }) => {
-  const { skills } = useSkillsForCategory(id);
+  const { skills } = useSkillsForCategory(id); // TODO this is paged and only returns the first 10
   const { findSkillCategory, findChildSkillCategories } = useSkillCategories();
   const skillCategory = findSkillCategory(id);
   if (!skillCategory) {

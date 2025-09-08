@@ -22,7 +22,7 @@ const SkillVersionsList = ({
         .map((skillVersion) => {
           return (
             <li key={skillVersion.id}>
-              <SkillVersionLink {...skillVersion} {...skill} />
+              <SkillVersionLink {...skill} {...skillVersion} />
             </li>
           );
         })}

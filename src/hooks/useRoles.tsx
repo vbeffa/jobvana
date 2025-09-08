@@ -9,6 +9,7 @@ export type Roles = {
   error?: Error;
 };
 
+// roles are few - no paging needed
 const useRoles = (): Roles => {
   const {
     isPending,
