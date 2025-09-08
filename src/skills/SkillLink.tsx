@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router';
-import type { Skill } from '../hooks/types';
+import type { Skill } from '../hooks/useJob';
 import PillContainer from '../PillContainer';
 
 export type SkillLinkProps = {
-  skill: Pick<Skill, 'id' | 'skill_category_id' | 'name' | 'abbreviation'>;
+  skill: Skill;
   includeAbbrev?: boolean;
 };
 

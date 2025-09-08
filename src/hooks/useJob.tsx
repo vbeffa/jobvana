@@ -5,15 +5,22 @@ import type {
   Application,
   Company,
   Job as DbJob,
-  JobRole,
-  Skill
+  Skill as DbSkill,
+  JobRole
 } from './types';
 
+export type Skill = Pick<
+  DbSkill,
+  'id' | 'skill_category_id' | 'name' | 'abbreviation'
+>;
+
+export type Requirement = Pick<JobRole, 'role_id' | 'percent' | 'role_level'>;
+
 export type Job = DbJob & {
-  company: Company;
-  requirements: Array<JobRole>;
+  company: Pick<Company, 'id' | 'name'>;
+  requirements: Array<Requirement>;
   skills: Array<Skill>;
-  applications: Array<Application> | undefined;
+  applications: Array<Pick<Application, 'status'>> | undefined;
 };
 
 const useJob = ({ id }: { id: number }) => {
@@ -28,7 +35,11 @@ const useJob = ({ id }: { id: number }) => {
       const { error, data } = await supabase
         .from('jobs')
         .select(
-          '*, companies!jobs_company_id_fkey!inner(*), job_roles(*), skills(*), applications(*)'
+          `*,
+          companies!inner(id, name),
+          job_roles!inner(role_id, percent, role_level),
+          skills!inner(id, name, skill_category_id, abbreviation),
+          applications!inner(status)`
         )
         .filter('id', 'eq', id);
 

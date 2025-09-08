@@ -32,7 +32,7 @@ const JobDetails = ({ id }: { id: number }) => {
         </div>
       </h2>
       <div className="flex flex-row gap-x-2">
-        <CompanyLink company={job.company} />
+        <CompanyLink {...job.company} />
         <Salary {...job} />
         <div></div>
       </div>

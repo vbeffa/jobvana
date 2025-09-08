@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Job as DbJob, Params } from './types';
+import type { Params } from './types';
 
 export type CreatedRange =
   | 'all'
@@ -22,7 +22,9 @@ export type SearchFilters = {
   created?: CreatedRange;
 };
 
-export type JobSummary = Pick<DbJob, 'id' | 'title'> & {
+export type JobSummary = {
+  id: number;
+  title: string;
   companyName: string;
 };
 

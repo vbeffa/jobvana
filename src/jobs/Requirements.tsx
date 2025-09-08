@@ -1,9 +1,9 @@
-import type { JobRole } from '../hooks/types';
+import type { Requirement } from '../hooks/useJob';
 import useRoles from '../hooks/useRoles';
 import RoleLink from '../roles/RoleLink';
 
 export type RequirementsProps = {
-  requirements: Array<Pick<JobRole, 'role_id' | 'percent' | 'role_level'>>;
+  requirements: Array<Requirement>;
 };
 
 const Requirements = ({ requirements }: RequirementsProps) => {
