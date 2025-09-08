@@ -1,33 +1,28 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type {
-  Skill as DbSkill,
-  Params,
-  SkillCategory,
-  SkillVersion
-} from './types';
+import type { Params } from './types';
 
 export type SearchFilters = {
   name?: string;
   skillCategoryId?: number;
 };
 
-export type Skill = DbSkill & {
-  category: SkillCategory;
-  versions: Array<SkillVersion>;
-  relatedSkills: Array<DbSkill>;
+export type SkillSummary = {
+  id: number;
+  name: string;
+  skillCategory: string;
 };
 
 export type Skills = {
-  skills: Array<Skill> | undefined;
+  skills: Array<SkillSummary> | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
   skillsCount: number | undefined;
-  findSkill: (id: number) => Skill | undefined;
+  findSkill: (id: number) => SkillSummary | undefined;
 
-  findSiblingSkills: (skill: Skill) => Array<Skill> | undefined;
+  // findSiblingSkills: (skill: SkillSummary) => Array<SkillSummary> | undefined;
 };
 
 export type SkillsParams = Params<SearchFilters>;
@@ -47,22 +42,14 @@ const useSkills = (
     [params.filters, params.paging?.page]
   );
 
-  const {
-    isPending,
-    isPlaceholderData,
-    data: skillsData,
-    error
-  } = useQuery({
+  const { isPending, isPlaceholderData, data, error } = useQuery({
     queryKey: ['skills', queryKey],
     queryFn: async () => {
       let q = supabase
         .from('skills')
-        .select(
-          '*, skill_categories(*), skill_versions(*), skill_relations!skill_id(*, skills!related_skill_id(*))',
-          {
-            count: 'exact'
-          }
-        );
+        .select('id, name, skill_categories(name)', {
+          count: 'exact'
+        });
       const { filters } = params;
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
@@ -77,35 +64,26 @@ const useSkills = (
         )
         .order('name');
       console.log(data);
-      return { data, error, count };
+      return { skills: data, error, count };
     }
   });
 
   const skills = useMemo(() => {
-    if (!skillsData?.data) {
+    if (!data?.skills) {
       return undefined;
     }
-    const skills: Array<Skill> = skillsData.data
+
+    return data.skills
       .map((skill) => ({
         ...skill,
-        category: skill.skill_categories,
-        versions: skill.skill_versions,
-        relatedSkills: skill.skill_relations.map((sr) => sr.skills)
+        skillCategory: skill.skill_categories.name
       }))
       .sort((skill1, skill2) => {
-        if (skill1.skill_category_id === skill2.skill_category_id) {
-          return skill1.name.localeCompare(skill2.name);
-        }
-
-        return skill1.skill_category_id - skill2.skill_category_id;
+        return skill1.name.localeCompare(skill2.name);
       });
-    return skills;
-  }, [skillsData]);
+  }, [data?.skills]);
 
-  const skillsCount = useMemo(
-    () => skillsData?.count ?? undefined,
-    [skillsData?.count]
-  );
+  const skillsCount = useMemo(() => data?.count ?? undefined, [data?.count]);
 
   return {
     skills,
@@ -113,14 +91,14 @@ const useSkills = (
     isPending,
     isPlaceholderData,
     skillsCount,
-    findSkill: (id: number) => skills?.find((skill) => skill.id === id),
+    findSkill: (id: number) => skills?.find((skill) => skill.id === id)
 
     // TODO fix - skills are paginated
-    findSiblingSkills: (skill: Skill) =>
-      skills?.filter(
-        (s) =>
-          s.skill_category_id === skill.skill_category_id && s.id !== skill.id
-      )
+    // findSiblingSkills: (skill: SkillSummary) =>
+    //   skills?.filter(
+    //     (s) =>
+    //       s.skill_category_id === skill.skill_category_id && s.id !== skill.id
+    //   )
   };
 };
 

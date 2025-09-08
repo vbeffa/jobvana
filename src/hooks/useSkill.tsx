@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Skill } from './useSkills';
+import type { Skill as DbSkill } from './types';
 
 export type SearchFilters = {
   name?: string;
@@ -9,7 +9,7 @@ export type SearchFilters = {
 };
 
 export type SkillH = {
-  skill: Skill | undefined;
+  skill: DbSkill | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;

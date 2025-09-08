@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
 import FiltersContainer from '../FiltersContainer';
-import useSkillCategories from '../hooks/useSkillCategories';
 import useSkills, {
   type SearchFilters,
   type SkillsParams
@@ -44,18 +43,14 @@ const Skills = () => {
 
   const { skills, error, isPending, isPlaceholderData, skillsCount } =
     useSkills({ paging, filters });
-  const { findSkillCategory } = useSkillCategories();
 
   useEffect(() => {
     if (skills?.[0]) {
       setSkillId(skills[0].id);
+    } else {
+      setSkillId(null);
     }
   }, [skills]);
-
-  const selectedSkill = useMemo(
-    () => skills?.find((skill) => skill.id === skillId),
-    [skillId, skills]
-  );
 
   return (
     <div className="mx-4">
@@ -91,11 +86,7 @@ const Skills = () => {
                   selected={skillId === skill.id}
                   onClick={() => setSkillId(skill.id)}
                   title={skill.name}
-                  text={
-                    <div>
-                      {findSkillCategory(skill.skill_category_id)?.name}
-                    </div>
-                  }
+                  text={<div>{skill.skillCategory}</div>}
                   borderBottom={idx < skills.length - 1}
                 />
               );
@@ -103,12 +94,7 @@ const Skills = () => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {selectedSkill ? (
-            <SkillDetails
-              skill={selectedSkill}
-              isPlaceholderData={isPlaceholderData}
-            />
-          ) : undefined}
+          {skillId ? <SkillDetails id={skillId} /> : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </div>

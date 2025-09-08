@@ -1,17 +1,21 @@
-import { type Skill } from '../hooks/useSkills';
+import Error from '../Error';
+import useSkill from '../hooks/useSkill';
 import LoadingModal from '../LoadingModal';
 import PillContainer from '../PillContainer';
 import SkillCategoryLink from './SkillCategoryLink';
 import SkillsList from './SkillsList';
 import SkillVersionsList from './SkillVersionsList';
 
-export type SkillDetailsProps = {
-  skill: Skill;
-  isPlaceholderData: boolean;
-};
+const SkillDetails = ({ id }: { id: number }) => {
+  const { skill, error, isPlaceholderData, isPending } = useSkill(id);
 
-const SkillDetails = ({ skill, isPlaceholderData }: SkillDetailsProps) => {
-  // const { jobsForSkill } = useJobs();
+  if (error) {
+    return <Error error={error} />;
+  }
+
+  if (isPending) {
+    return <LoadingModal />;
+  }
 
   if (!skill) {
     return null;
