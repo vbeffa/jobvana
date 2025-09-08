@@ -7,17 +7,18 @@ import type {
   SkillVersion as DbSkillVersion
 } from './types';
 
-export type CompanyAddress = Omit<DbCompanyAddress, 'company_id'>;
-export type SkillVersion = Pick<DbSkillVersion, 'id' | 'skill_id' | 'version'>;
-
-export type Company = Omit<DbCompany, 'created_at' | 'industry_id'> & {
+export type FullCompany = Company & {
   industryName: string;
   addresses: Array<CompanyAddress>;
   techStack: Array<SkillVersion>;
 };
 
+export type Company = Omit<DbCompany, 'created_at' | 'industry_id'>;
+export type CompanyAddress = Omit<DbCompanyAddress, 'company_id'>;
+export type SkillVersion = Pick<DbSkillVersion, 'id' | 'skill_id' | 'version'>;
+
 export type CompanyH = {
-  company: Company | undefined;
+  company: FullCompany | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
@@ -43,7 +44,7 @@ const useCompany = (id: number): CompanyH => {
     placeholderData: keepPreviousData
   });
 
-  const company: Company | undefined = useMemo(() => {
+  const company: FullCompany | undefined = useMemo(() => {
     if (!data?.company) {
       return undefined;
     }

@@ -9,22 +9,22 @@ import type {
   JobRole
 } from './types';
 
-export type Skill = Pick<
-  DbSkill,
-  'id' | 'skill_category_id' | 'name' | 'abbreviation'
->;
-
-export type Requirement = Pick<JobRole, 'role_id' | 'percent' | 'role_level'>;
-
-export type Job = Omit<DbJob, 'id' | 'company_id' | 'status'> & {
+export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'>;
   requirements: Array<Requirement>;
   skills: Array<Skill>;
   applications: Array<Pick<Application, 'status'>> | undefined;
 };
 
+export type Job = Omit<DbJob, 'id' | 'company_id' | 'status'>;
+export type Skill = Pick<
+  DbSkill,
+  'id' | 'skill_category_id' | 'name' | 'abbreviation'
+>;
+export type Requirement = Pick<JobRole, 'role_id' | 'percent' | 'role_level'>;
+
 export type JobH = {
-  job: Job | undefined;
+  job: FullJob | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
@@ -51,7 +51,7 @@ const useJob = (id: number): JobH => {
     placeholderData: keepPreviousData
   });
 
-  const job: Job | undefined = useMemo(() => {
+  const job: FullJob | undefined = useMemo(() => {
     if (!data?.job) {
       return undefined;
     }

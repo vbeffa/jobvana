@@ -12,26 +12,25 @@ export type SearchFilters = {
   skillCategoryId?: number;
 };
 
-export type SkillCategory = Pick<DbSkillCategory, 'id' | 'name'>;
-
-export type SkillVersion = Pick<
-  DbSkillVersion,
-  'id' | 'ordinal' | 'skill_id' | 'version'
->;
-
-export type RelatedSkill = Pick<
-  DbSkill,
-  'id' | 'skill_category_id' | 'name' | 'abbreviation'
->;
-
-export type Skill = Omit<DbSkill, 'id'> & {
+export type FullSkill = Skill & {
   category: SkillCategory;
   versions: Array<SkillVersion>;
   relatedSkills: Array<RelatedSkill>;
 };
 
+export type Skill = Omit<DbSkill, 'id'>;
+export type SkillCategory = Pick<DbSkillCategory, 'id' | 'name'>;
+export type SkillVersion = Pick<
+  DbSkillVersion,
+  'id' | 'ordinal' | 'skill_id' | 'version'
+>;
+export type RelatedSkill = Pick<
+  DbSkill,
+  'id' | 'skill_category_id' | 'name' | 'abbreviation'
+>;
+
 export type SkillH = {
-  skill: Skill | undefined;
+  skill: FullSkill | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
