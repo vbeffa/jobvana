@@ -1,4 +1,4 @@
-import { type JobRole } from '../hooks/useJobs';
+import type { JobRole } from '../hooks/types';
 import useRoles from '../hooks/useRoles';
 import RoleLink from '../roles/RoleLink';
 

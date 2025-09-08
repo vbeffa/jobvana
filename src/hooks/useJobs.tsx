@@ -2,7 +2,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Database } from '../utils/types';
 import type {
   Application,
   Company,
@@ -36,12 +35,6 @@ export type Job = DbJob & {
   // skillVersions: Array<SkillVersion>;
   applications: Array<Application> | undefined;
 };
-
-export type Role = Database['public']['Tables']['roles']['Row'];
-export type JobRole = Database['public']['Tables']['job_roles']['Row'];
-export type JobSkill = Database['public']['Tables']['job_skills']['Row'];
-export type JobSkillVersion =
-  Database['public']['Tables']['job_skill_versions']['Row'];
 
 export type Jobs = {
   jobs: Array<Job> | undefined;
