@@ -73,7 +73,7 @@ const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
           return (
             <tr key={company.id}>
               <td>
-                <CompanyLink company={company} />
+                <CompanyLink {...company} />
               </td>
               <td>{company.industry.name}</td>
               <td>{findHeadquarters(company)?.state}</td>

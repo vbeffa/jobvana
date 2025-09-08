@@ -18,7 +18,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </div>
       <h2>Company</h2>
       <div>
-        <CompanyLink company={application.company} />
+        <CompanyLink {...application.company} />
       </div>
       <h2>Job Seeker</h2>
       <div>
