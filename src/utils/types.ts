@@ -129,6 +129,36 @@ export type Database = {
           },
         ]
       }
+      company_tech_stacks: {
+        Row: {
+          company_id: number
+          skill_version_id: number
+        }
+        Insert: {
+          company_id: number
+          skill_version_id: number
+        }
+        Update: {
+          company_id?: number
+          skill_version_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tech_stacks_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'tech_stacks_skill_version_id_fkey'
+            columns: ['skill_version_id']
+            isOneToOne: false
+            referencedRelation: 'skill_versions'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       industries: {
         Row: {
           id: number
@@ -556,36 +586,6 @@ export type Database = {
           reference?: string | null
         }
         Relationships: []
-      }
-      tech_stacks: {
-        Row: {
-          company_id: number
-          skill_version_id: number
-        }
-        Insert: {
-          company_id: number
-          skill_version_id: number
-        }
-        Update: {
-          company_id?: number
-          skill_version_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'tech_stacks_company_id_fkey'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'tech_stacks_skill_version_id_fkey'
-            columns: ['skill_version_id']
-            isOneToOne: false
-            referencedRelation: 'skill_versions'
-            referencedColumns: ['id']
-          },
-        ]
       }
       tool_versions: {
         Row: {

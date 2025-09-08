@@ -17,6 +17,8 @@ export type Application = Database['public']['Tables']['applications']['Row'];
 export type Company = Database['public']['Tables']['companies']['Row'];
 export type CompanyAddress =
   Database['public']['Tables']['company_addresses']['Row'];
+export type CompanyTechStack =
+  Database['public']['Tables']['company_tech_stacks']['Row'];
 export type Industry = Database['public']['Tables']['industries']['Row'];
 export type InterviewRound =
   Database['public']['Tables']['interview_rounds']['Row'];
@@ -31,7 +33,6 @@ export type JobSkillVersion =
 export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'] & {
   user: User;
 };
-export type TechStack = Database['public']['Tables']['tech_stacks']['Row'];
 export type Role = Database['public']['Tables']['roles']['Row'];
 export type Skill = Database['public']['Tables']['skills']['Row'];
 export type SkillRelation =

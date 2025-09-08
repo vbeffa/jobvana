@@ -34,7 +34,7 @@ const useCompany = (id: number): CompanyH => {
           `id, name, description, num_employees,
           industries(name),
           company_addresses(id, city, street, zip, state, type),
-          tech_stacks(skill_versions(id, skill_id, version))`
+          company_tech_stacks(skill_versions(id, skill_id, version))`
         )
         .filter('id', 'eq', id);
 
@@ -53,7 +53,7 @@ const useCompany = (id: number): CompanyH => {
       ...company,
       addresses: company.company_addresses,
       industryName: company.industries.name,
-      techStack: company.tech_stacks.map(
+      techStack: company.company_tech_stacks.map(
         (techStackRow) => techStackRow.skill_versions
       )
     };
