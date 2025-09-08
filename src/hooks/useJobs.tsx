@@ -40,6 +40,7 @@ type QueryKey = {
   page: number;
 } & SearchFilters;
 
+// TODO rename to useJobSummaries?
 const useJobs = (
   params: JobsParams = { paging: { page: 1, pageSize: 10 } }
 ): Jobs => {
@@ -61,7 +62,7 @@ const useJobs = (
     queryFn: async () => {
       let q = supabase
         .from('jobs')
-        .select('id, title, companies(name)', {
+        .select('id, title, companies!inner(name)', {
           count: 'exact'
         })
         .filter('status', 'eq', 'open');
