@@ -49,6 +49,8 @@ const Companies = () => {
   useEffect(() => {
     if (companies?.[0]) {
       setCompanyId(companies[0].id);
+    } else {
+      setCompanyId(null);
     }
   }, [companies]);
 
