@@ -9,7 +9,7 @@ const SummaryCardsContainer = ({
 }) => {
   return (
     <div
-      className={`${hasFilters ? 'h-[calc(100dvh-300px)]' : 'h-[calc(100dvh-228px)]'} overflow-y-auto`}
+      className={`${hasFilters ? 'h-[calc(100dvh-300px)]' : 'h-[calc(100dvh-166px)]'} overflow-y-auto`}
     >
       {children}
     </div>
