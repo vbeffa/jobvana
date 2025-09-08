@@ -20,15 +20,17 @@ function About() {
           (defined by the company).
         </p>
         <p>
-          Jobs have roles which are enumerated. Jobs can have multiple roles.
-          The exact ratio of each role depends on the job. Each role has a
-          percentage (1 - 100) and a level (1 - 5).
+          Jobs have roles. The exact ratio of each role depends on the job. Each
+          role has a percentage (1 - 100) and a level (1 - 5).
         </p>
-        <p>Jobs have role requirements. Roles are defined below.</p>
+        <p>
+          Jobs have requirements which are a list of skills and/or skill
+          versions.
+        </p>
         <h2>Roles</h2>
         <p>
           <Link to="/jobvana/roles">Roles</Link> are high-level descriptions of
-          a job's requirements.
+          a job's duties.
         </p>
         <h2>Skill Categories</h2>
         <p>
@@ -48,8 +50,8 @@ function About() {
         </p>
         <h2>Tech Stacks</h2>
         <p>
-          Tech stacks are a 1-N relationship between companies and tool
-          versions.
+          Companies have tech stacks which are a list of skill versions the
+          company uses.
         </p>
       </div>
     </div>

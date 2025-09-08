@@ -5,13 +5,13 @@ import type {
   Application,
   Company,
   Job as DbJob,
-  Skill as DbSkill,
-  JobRole
+  JobRole as DbJobRole,
+  Skill as DbSkill
 } from './types';
 
 export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'>;
-  requirements: Array<Requirement>;
+  jobRoles: Array<JobRole>;
   skills: Array<Skill>;
   applications: Array<Pick<Application, 'status'>> | undefined;
 };
@@ -21,7 +21,7 @@ export type Skill = Pick<
   DbSkill,
   'id' | 'skill_category_id' | 'name' | 'abbreviation'
 >;
-export type Requirement = Pick<JobRole, 'role_id' | 'percent' | 'role_level'>;
+export type JobRole = Pick<DbJobRole, 'role_id' | 'percent' | 'role_level'>;
 
 export type JobH = {
   job: FullJob | undefined;
@@ -59,7 +59,7 @@ const useJob = (id: number): JobH => {
     return {
       ...job,
       company: job.companies,
-      requirements: job.job_roles
+      jobRoles: job.job_roles
     };
   }, [data?.job]);
 

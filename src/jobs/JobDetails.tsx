@@ -4,7 +4,7 @@ import Error from '../Error';
 import useJob from '../hooks/useJob';
 import LoadingModal from '../LoadingModal';
 import SkillsList from '../skills/SkillsList';
-import Requirements from './Requirements';
+import JobRoles from './JobRoles';
 import Salary from './Salary';
 
 const JobDetails = ({ id }: { id: number }) => {
@@ -37,15 +37,20 @@ const JobDetails = ({ id }: { id: number }) => {
         <div></div>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Requirements</h2>
-      <div>
-        <Requirements {...job} />
-      </div>
-      <hr className="my-4 border-gray-400 shadow" />
       <h2>Description</h2>
       <div>{job.description}</div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Tech Stack</h2>
+      <h2>Roles</h2>
+      <div>
+        <JobRoles {...job} />
+      </div>
+      <hr className="my-4 border-gray-400 shadow" />
+      <h2>Requirements</h2>
+      <div className="pt-2">
+        <SkillsList skills={job.skills} />
+      </div>
+      <hr className="my-4 border-gray-400 shadow" />
+      <h2>Company Tech Stack</h2>
       <div className="pt-2">
         <SkillsList skills={job.skills} />
       </div>

@@ -1,12 +1,12 @@
-import type { Requirement } from '../hooks/useJob';
+import type { JobRole } from '../hooks/useJob';
 import useRoles from '../hooks/useRoles';
 import RoleLink from '../roles/RoleLink';
 
-export type RequirementsProps = {
-  requirements: Array<Requirement>;
+export type JobRolesProps = {
+  jobRoles: Array<JobRole>;
 };
 
-const Requirements = ({ requirements }: RequirementsProps) => {
+const JobRoles = ({ jobRoles }: JobRolesProps) => {
   const { roles } = useRoles();
 
   const levelBar = (level: number) => {
@@ -46,13 +46,13 @@ const Requirements = ({ requirements }: RequirementsProps) => {
 
   return (
     <ul>
-      {requirements.map((requirement) => {
-        const role = roles?.find((role) => role.id === requirement.role_id);
+      {jobRoles.map((jobRole) => {
+        const role = roles?.find((role) => role.id === jobRole.role_id);
         return (
           role && (
             <li key={role.id}>
-              <RoleLink {...role} /> ({requirement.percent}%,{' '}
-              {levelBar(requirement.role_level)})
+              <RoleLink {...role} /> ({jobRole.percent}%,{' '}
+              {levelBar(jobRole.role_level)})
             </li>
           )
         );
@@ -61,4 +61,4 @@ const Requirements = ({ requirements }: RequirementsProps) => {
   );
 };
 
-export default Requirements;
+export default JobRoles;

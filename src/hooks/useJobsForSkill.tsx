@@ -7,9 +7,9 @@ import type {
   Company,
   Job as DbJob,
   Skill as DbSkill,
-  JobRole,
   Params
 } from './types';
+import type { JobRole } from './useJob';
 
 export type CreatedRange =
   | 'all'
@@ -31,7 +31,7 @@ export type SearchFilters = {
 
 export type Job = DbJob & {
   company: Company;
-  requirements: Array<JobRole>;
+  jobRoles: Array<JobRole>;
   skills: Array<DbSkill>;
   // skillVersions: Array<SkillVersion>;
   applications: Array<Application> | undefined;
@@ -143,7 +143,7 @@ const useJobsForSkill = (
     placeholderData: keepPreviousData
   });
 
-  const jobs = useMemo(() => {
+  const jobs: Array<Job> | undefined = useMemo(() => {
     if (!jobsData?.data) {
       return undefined;
     }
@@ -152,7 +152,7 @@ const useJobsForSkill = (
       return {
         ...job,
         company: job.companies,
-        requirements: job.job_roles
+        jobRoles: job.job_roles
         // skillVersions: job.skill_versions
       };
     });
