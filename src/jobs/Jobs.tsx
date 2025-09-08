@@ -50,11 +50,7 @@ const Jobs = () => {
   });
 
   useEffect(() => {
-    if (jobs?.[0]) {
-      setJobId(jobs[0].id);
-    } else {
-      setJobId(null);
-    }
+    setJobId(jobs?.[0].id ?? null);
   }, [jobs]);
 
   return (

@@ -13,9 +13,7 @@ const Roles = () => {
   const [roleId, setRoleId] = useState<number | null>(null);
 
   useEffect(() => {
-    if (roles?.[0]) {
-      setRoleId(roles[0].id);
-    }
+    setRoleId(roles?.[0].id ?? null);
   }, [roles]);
 
   return (

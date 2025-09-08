@@ -47,11 +47,7 @@ const Companies = () => {
     useCompanies({ paging, filters });
 
   useEffect(() => {
-    if (companies?.[0]) {
-      setCompanyId(companies[0].id);
-    } else {
-      setCompanyId(null);
-    }
+    setCompanyId(companies?.[0].id ?? null);
   }, [companies]);
 
   return (
