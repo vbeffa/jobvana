@@ -23,7 +23,14 @@ export type Job = DbJob & {
   applications: Array<Pick<Application, 'status'>> | undefined;
 };
 
-const useJob = (id: number) => {
+export type JobH = {
+  job: Job | undefined;
+  error?: Error;
+  isPending: boolean;
+  isPlaceholderData: boolean;
+};
+
+const useJob = (id: number): JobH => {
   const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['jobs', id],
     queryFn: async () => {

@@ -16,7 +16,14 @@ export type Company = Omit<DbCompany, 'created_at' | 'industry_id'> & {
   techStack: Array<SkillVersion>;
 };
 
-const useCompany = (id: number) => {
+export type CompanyH = {
+  company: Company | undefined;
+  error?: Error;
+  isPending: boolean;
+  isPlaceholderData: boolean;
+};
+
+const useCompany = (id: number): CompanyH => {
   const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['companies', id],
     queryFn: async () => {
