@@ -1,12 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type {
-  CompanyAddress,
-  Company as DbCompany,
-  Industry,
-  Params
-} from './types';
+import type { CompanyAddress, Params } from './types';
 
 export type SearchFilters = {
   name?: string;
@@ -15,19 +10,19 @@ export type SearchFilters = {
   industryId?: number;
 };
 
-export type Company = DbCompany & {
-  addresses: Array<CompanyAddress>;
-  industry: Industry;
+export type CompanySummary = {
+  id: number;
+  name: string;
+  industryName: string;
+  headquarters: Pick<CompanyAddress, 'type' | 'city' | 'state'> | undefined;
 };
 
 export type Companies = {
-  companies: Array<Company> | undefined;
+  companies: Array<CompanySummary> | undefined;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
   companyCount: number | undefined;
-
-  findCompany: (id: number) => Company | undefined;
 };
 
 export type CompaniesParams = Params<SearchFilters>;
@@ -47,19 +42,20 @@ const useCompanies = (
     [params.filters, params.paging?.page]
   );
 
-  const {
-    isPlaceholderData,
-    isPending,
-    data: companiesData,
-    error
-  } = useQuery({
+  const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['companies', queryKey],
     queryFn: async () => {
       let q = supabase
         .from('companies')
-        .select(`*, company_addresses(*), industries(*)`, {
-          count: 'exact'
-        });
+        .select(
+          `id, name,
+          company_addresses(type, city, state),
+          industries!inner(name)`,
+          {
+            count: 'exact'
+          }
+        )
+        .filter('company_addresses.type', 'eq', 'headquarters');
       const { filters } = params;
       if (filters?.name) {
         q = q.ilike('name', `%${filters.name}%`);
@@ -74,7 +70,7 @@ const useCompanies = (
         q = q.filter('industry_id', 'eq', filters.industryId);
       }
 
-      const { error, data, count } = await q
+      const { data, error, count } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
@@ -82,38 +78,31 @@ const useCompanies = (
         .order('name');
 
       console.log(data);
-      return { error, data, count };
+      return { companies: data, error, count };
     },
     placeholderData: keepPreviousData
   });
 
-  const companies = useMemo(() => {
-    if (!companiesData?.data) {
+  const companies: Array<CompanySummary> | undefined = useMemo(() => {
+    if (!data?.companies) {
       return undefined;
     }
 
-    return companiesData.data.map((companyData) => ({
+    return data?.companies.map((companyData) => ({
       ...companyData,
-      addresses: companyData.company_addresses,
-      industry: companyData.industries
+      headquarters: companyData.company_addresses[0],
+      industryName: companyData.industries.name
     }));
-  }, [companiesData]);
+  }, [data?.companies]);
 
-  const companyCount = useMemo(
-    () => companiesData?.count ?? undefined,
-    [companiesData?.count]
-  );
+  const companyCount = useMemo(() => data?.count ?? undefined, [data?.count]);
 
   return {
     companies,
     error: error ?? undefined,
     isPlaceholderData,
     isPending,
-    companyCount,
-
-    findCompany: (id: number) => {
-      return companies?.find((company) => company.id === id);
-    }
+    companyCount
   };
 };
 

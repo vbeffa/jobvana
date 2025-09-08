@@ -1,12 +1,16 @@
 import { useMemo, useState } from 'react';
-import { type Company } from '../hooks/useCompanies';
+import { type CompanySummary } from '../hooks/useCompanies';
 import CompanyLink from './CompanyLink';
 import { findHeadquarters } from './companiesUtil';
 
 type SortCol = 'company' | 'num_employees';
 type SortDir = 'up' | 'down';
 
-const CompaniesTable = ({ companies }: { companies?: Array<Company> }) => {
+const CompaniesTable = ({
+  companies
+}: {
+  companies?: Array<CompanySummary>;
+}) => {
   const [sortCol, setSortCol] = useState<SortCol>('company');
   const [sortDir, setSortDir] = useState<SortDir>('up');
 

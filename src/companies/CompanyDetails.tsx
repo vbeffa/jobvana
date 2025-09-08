@@ -30,7 +30,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
       <h2>{company.name}</h2>
       <div className="flex flex-col">
         <div>
-          {company.industry.name}, {company.num_employees} employees
+          {company.industryName}, {company.num_employees} employees
         </div>
         {hq && (
           <div>
@@ -75,7 +75,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Jobs</h2>
       <div>
-        <JobsForCompany company={company} />
+        <JobsForCompany id={company.id} />
       </div>
     </>
   );

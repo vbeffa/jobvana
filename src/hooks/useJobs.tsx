@@ -54,12 +54,7 @@ const useJobs = (
     [params.filters, params.paging?.page]
   );
 
-  const {
-    isPlaceholderData,
-    isPending,
-    error,
-    data: jobsData
-  } = useQuery({
+  const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
       let q = supabase
@@ -119,28 +114,25 @@ const useJobs = (
       if (error) {
         console.log(JSON.stringify(error));
       }
-      return { error, data, count };
+      return { jobs: data, error, count };
     },
     placeholderData: keepPreviousData
   });
 
   const jobs: Array<JobSummary> | undefined = useMemo(() => {
-    if (!jobsData?.data) {
+    if (!data?.jobs) {
       return undefined;
     }
 
-    return jobsData.data.map((job) => {
+    return data.jobs.map((job) => {
       return {
         ...job,
         companyName: job.companies.name
       };
     });
-  }, [jobsData]);
+  }, [data?.jobs]);
 
-  const openJobCount = useMemo(
-    () => jobsData?.count ?? undefined,
-    [jobsData?.count]
-  );
+  const openJobCount = useMemo(() => data?.count ?? undefined, [data?.count]);
 
   return {
     jobs,

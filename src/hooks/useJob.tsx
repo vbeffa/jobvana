@@ -24,15 +24,10 @@ export type Job = DbJob & {
 };
 
 const useJob = ({ id }: { id: number }) => {
-  const {
-    isPlaceholderData,
-    isPending,
-    data: jobData,
-    error
-  } = useQuery({
+  const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['jobs', id],
     queryFn: async () => {
-      const { error, data } = await supabase
+      const { data, error } = await supabase
         .from('jobs')
         .select(
           `*,
@@ -44,22 +39,22 @@ const useJob = ({ id }: { id: number }) => {
         .filter('id', 'eq', id);
 
       console.log(data);
-      return { error, data };
+      return { job: data?.[0], error };
     },
     placeholderData: keepPreviousData
   });
 
   const job: Job | undefined = useMemo(() => {
-    if (!jobData?.data?.[0]) {
+    if (!data?.job) {
       return undefined;
     }
-    const job = jobData.data[0];
+    const job = data.job;
     return {
       ...job,
       company: job.companies,
       requirements: job.job_roles
     };
-  }, [jobData?.data]);
+  }, [data?.job]);
 
   return {
     job,

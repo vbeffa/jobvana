@@ -12,7 +12,6 @@ import ResourceListContainer from '../ResourceListContainer';
 import ResourcesContainer from '../ResourcesContainer';
 import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
-import { findHeadquarters } from './companiesUtil';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
 
@@ -80,7 +79,7 @@ const Companies = () => {
           />
           <SummaryCardsContainer>
             {companies?.map((company, idx) => {
-              const hq = findHeadquarters(company);
+              const hq = company.headquarters;
               return (
                 <SummaryCard
                   key={company.id}
@@ -89,7 +88,7 @@ const Companies = () => {
                   title={company.name}
                   text={
                     <>
-                      <div>{company.industry.name}</div>
+                      <div>{company.industryName}</div>
                       {hq && (
                         <div className="text-gray-500">
                           {hq.city}, {hq.state}
