@@ -1,4 +1,4 @@
-import type { Job as DbJob } from '../hooks/useJobs';
+import type { Job as DbJob } from '../hooks/types';
 import JobLink from './JobLink';
 
 const JobsList = ({ jobs }: { jobs: Array<DbJob> }) => {

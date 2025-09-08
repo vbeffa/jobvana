@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import type { Job } from '../hooks/types';
+import type { Job as DbJob } from '../hooks/types';
 
-export type JobLinkProps = Pick<Job, 'id' | 'title'>;
+export type JobLinkProps = Pick<DbJob, 'id' | 'title'>;
 
 const JobLink = ({ id, title }: JobLinkProps) => {
   return (
