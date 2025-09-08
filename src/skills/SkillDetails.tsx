@@ -2,7 +2,7 @@ import Error from '../Error';
 import useSkill from '../hooks/useSkill';
 import LoadingModal from '../LoadingModal';
 import PillContainer from '../PillContainer';
-import SkillCategoryLink from './SkillCategoryLink';
+import SkillCategoryLink from '../skill_categories/SkillCategoryLink';
 import SkillsList from './SkillsList';
 import SkillVersionsList from './SkillVersionsList';
 

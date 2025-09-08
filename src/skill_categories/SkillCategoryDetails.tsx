@@ -1,9 +1,9 @@
 import useSkillCategories from '../hooks/useSkillCategories';
 import useSkillsForCategory from '../hooks/useSkillsForCategory';
 import PillContainer from '../PillContainer';
+import SkillsList from '../skills/SkillsList';
 import SkillCategoriesList from './SkillCategoriesList';
 import SkillCategoryLink from './SkillCategoryLink';
-import SkillsList from './SkillsList';
 
 const SkillCategoryDetails = ({ id }: { id: number }) => {
   const { skills } = useSkillsForCategory(id); // TODO this is paged and only returns the first 10

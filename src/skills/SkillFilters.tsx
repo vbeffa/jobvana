@@ -1,6 +1,6 @@
 import Filter from '../Filter';
 import type { SearchFilters } from '../hooks/useSkills';
-import SkillCategorySelect from './SkillCategorySelect';
+import SkillCategorySelect from '../skill_categories/SkillCategorySelect';
 
 const SkillFilters = ({
   filters,
