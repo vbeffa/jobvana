@@ -8,7 +8,7 @@ import Requirements from './Requirements';
 import Salary from './Salary';
 
 const JobDetails = ({ id }: { id: number }) => {
-  const { job, error, isPlaceholderData, isPending } = useJob({ id });
+  const { job, error, isPlaceholderData, isPending } = useJob(id);
 
   if (error) {
     return <Error error={error} />;
