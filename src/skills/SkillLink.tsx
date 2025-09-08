@@ -4,10 +4,9 @@ import PillContainer from '../PillContainer';
 
 export type SkillLinkProps = {
   skill: Skill;
-  includeAbbrev?: boolean;
 };
 
-const SkillLink = ({ skill, includeAbbrev = false }: SkillLinkProps) => {
+const SkillLink = ({ skill }: { skill: Skill }) => {
   return (
     <PillContainer>
       <Link
@@ -19,7 +18,6 @@ const SkillLink = ({ skill, includeAbbrev = false }: SkillLinkProps) => {
       >
         {skill.name}
       </Link>
-      <>{includeAbbrev && skill.abbreviation && ` (${skill.abbreviation})`}</>
     </PillContainer>
   );
 };

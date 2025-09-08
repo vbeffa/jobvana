@@ -9,7 +9,7 @@ const SkillsList = ({ skills }: SkillsListProps) => {
     <div className="flex flex-wrap gap-2">
       {skills.map((skill) => (
         <div key={skill.id}>
-          <SkillLink skill={skill} includeAbbrev={true} />
+          <SkillLink skill={skill} />
         </div>
       ))}
     </div>
