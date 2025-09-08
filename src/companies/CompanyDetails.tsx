@@ -7,7 +7,7 @@ import SkillVersionLink from '../skills/SkillVersionLink';
 import { findHeadquarters, isHeadquarters } from './companiesUtil';
 
 const CompanyDetails = ({ id }: { id: number }) => {
-  const { company, error, isPlaceholderData, isPending } = useCompany({ id });
+  const { company, error, isPlaceholderData, isPending } = useCompany(id);
   const { findSkill } = useSkillsLite();
 
   if (error) {
