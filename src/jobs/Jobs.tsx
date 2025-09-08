@@ -91,7 +91,7 @@ const Jobs = () => {
                 title={job.title}
                 text={
                   <>
-                    <div>{job.company?.name}</div>
+                    <div>{job.companyName}</div>
                   </>
                 }
                 borderBottom={idx < jobs.length - 1}

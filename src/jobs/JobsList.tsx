@@ -1,7 +1,10 @@
-import type { Job as DbJob } from '../hooks/types';
-import JobLink from './JobLink';
+import JobLink, { type JobLinkProps } from './JobLink';
 
-const JobsList = ({ jobs }: { jobs: Array<DbJob> }) => {
+export type JobsListProps = {
+  jobs: Array<JobLinkProps>;
+};
+
+const JobsList = ({ jobs }: JobsListProps) => {
   return (
     <ul>
       {jobs.map((job) => (

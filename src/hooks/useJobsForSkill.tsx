@@ -2,7 +2,14 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import supabase from '../utils/supabase';
-import type { Job as DbJob, Params } from './types';
+import type {
+  Application,
+  Company,
+  Job as DbJob,
+  Skill as DbSkill,
+  JobRole,
+  Params
+} from './types';
 
 export type CreatedRange =
   | 'all'
@@ -22,16 +29,24 @@ export type SearchFilters = {
   created?: CreatedRange;
 };
 
-export type JobSummary = Pick<DbJob, 'id' | 'title'> & {
-  companyName: string;
+export type Job = DbJob & {
+  company: Company;
+  requirements: Array<JobRole>;
+  skills: Array<DbSkill>;
+  // skillVersions: Array<SkillVersion>;
+  applications: Array<Application> | undefined;
 };
 
 export type Jobs = {
-  jobs: Array<JobSummary> | undefined;
+  jobs: Array<Job> | undefined;
   error?: Error;
   isPlaceholderData: boolean;
   isPending: boolean;
   openJobCount: number | undefined;
+
+  /** Includes skill versions for skill. */
+  jobsForSkill: (skillId: number) => Array<Job> | undefined;
+  // jobsForSkillVersion: (skillVersionId: number) => Array<Job> | undefined;
 };
 
 export type JobsParams = Params<SearchFilters>;
@@ -40,7 +55,9 @@ type QueryKey = {
   page: number;
 } & SearchFilters;
 
-const useJobs = (
+// TODO this is unused, either use it or remove it
+const useJobsForSkill = (
+  // skillId: number,
   params: JobsParams = { paging: { page: 1, pageSize: 10 } }
 ): Jobs => {
   const queryKey: QueryKey = useMemo(
@@ -59,11 +76,15 @@ const useJobs = (
   } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
+      // console.log("query", params);
       let q = supabase
         .from('jobs')
-        .select('id, title, companies(name)', {
-          count: 'exact'
-        })
+        .select(
+          '*, companies!jobs_company_id_fkey!inner(*), job_roles(*), skills(*), applications(*)',
+          {
+            count: 'exact'
+          }
+        )
         .filter('status', 'eq', 'open');
 
       const { filters } = params;
@@ -102,6 +123,7 @@ const useJobs = (
               return dayjs().subtract(1, 'month').startOf('day').toDate();
           }
         })().toISOString();
+        // console.log(createdAfter);
         q = q.filter('created_at', 'gte', createdAfter);
       }
 
@@ -110,9 +132,9 @@ const useJobs = (
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
-        .order('created_at', { ascending: false });
-      // .overrideTypes<Array<{ companies: Company }>>();
-      console.log(data);
+        .order('created_at', { ascending: false })
+        .overrideTypes<Array<{ companies: Company }>>();
+      // console.log(data);
       if (error) {
         console.log(JSON.stringify(error));
       }
@@ -121,7 +143,7 @@ const useJobs = (
     placeholderData: keepPreviousData
   });
 
-  const jobs: Array<JobSummary> | undefined = useMemo(() => {
+  const jobs = useMemo(() => {
     if (!jobsData?.data) {
       return undefined;
     }
@@ -129,7 +151,9 @@ const useJobs = (
     return jobsData.data.map((job) => {
       return {
         ...job,
-        companyName: job.companies.name
+        company: job.companies,
+        requirements: job.job_roles
+        // skillVersions: job.skill_versions
       };
     });
   }, [jobsData]);
@@ -144,8 +168,26 @@ const useJobs = (
     error: error ?? undefined,
     isPlaceholderData,
     isPending,
-    openJobCount
+    openJobCount,
+
+    // TODO fix - jobs are now paged, this needs to be in a separate hook
+    jobsForSkill: (skillId: number) => {
+      return jobs?.filter(
+        (job) => job.skills.map((skill) => skill.id).includes(skillId)
+        //  ||
+        //   job.skill_versions
+        //     .map((skillVersion) => skillVersion.skill_id)
+        //     .includes(skillId)
+      );
+    }
+    // jobsForSkillVersion: (skillVersionId: number) => {
+    //   return jobs?.filter((job) =>
+    //     job.skill_versions
+    //       .map((skillVersion) => skillVersion.id)
+    //       .includes(skillVersionId)
+    //   );
+    // }
   };
 };
 
-export default useJobs;
+export default useJobsForSkill;

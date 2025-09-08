@@ -1,6 +1,4 @@
-import useJobs from '../hooks/useJobs';
 import { type Skill } from '../hooks/useSkills';
-import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
 import PillContainer from '../PillContainer';
 import SkillCategoryLink from './SkillCategoryLink';
@@ -13,13 +11,13 @@ export type SkillDetailsProps = {
 };
 
 const SkillDetails = ({ skill, isPlaceholderData }: SkillDetailsProps) => {
-  const { jobsForSkill } = useJobs();
+  // const { jobsForSkill } = useJobs();
 
   if (!skill) {
     return null;
   }
 
-  const jobs = jobsForSkill(skill.id);
+  // const jobs = jobsForSkill(skill.id);
 
   return (
     <div className="mx-4 flex flex-col gap-2">
@@ -37,9 +35,9 @@ const SkillDetails = ({ skill, isPlaceholderData }: SkillDetailsProps) => {
         </PillContainer>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Jobs</h2>
+      {/* <h2>Jobs</h2>
       <div>{jobs && <JobsList jobs={jobs} />}</div>
-      <hr className="my-4 border-gray-400 shadow" />
+      <hr className="my-4 border-gray-400 shadow" /> */}
       <h2>Versions</h2>
       <div>
         {skill.versions.length > 0 && (
