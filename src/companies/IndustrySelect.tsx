@@ -7,7 +7,7 @@ const IndustrySelect = ({
 }: {
   id: string;
   industryId?: number;
-  onChange: (industryId: number) => void;
+  onChange: (industryId: number | undefined) => void;
 }) => {
   const { isPending, industries } = useIndustries();
 
@@ -16,15 +16,17 @@ const IndustrySelect = ({
       id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={industryId}
-      onChange={(e) => onChange(parseInt(e.target.value))}
+      onChange={(e) =>
+        onChange(e.target.value ? parseInt(e.target.value) : undefined)
+      }
     >
       {isPending && (
-        <option key={0} value="0">
+        <option key={0} value="">
           Loading...
         </option>
       )}
       {!isPending && (
-        <option key={0} value="0">
+        <option key={0} value="">
           All
         </option>
       )}
