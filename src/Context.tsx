@@ -25,7 +25,7 @@ export type JobvanaContextProps = {
   setJobsContext: (props: JobvanaContextProps['jobsContext']) => void;
 };
 
-export const JobvanaContext = createContext<JobvanaContextProps>({
+export const defaultContext = {
   companiesContext: {
     page: 1,
     minSize: 1,
@@ -40,4 +40,7 @@ export const JobvanaContext = createContext<JobvanaContextProps>({
     maxSalary: 200000
   },
   setJobsContext: () => {}
-});
+};
+
+export const JobvanaContext =
+  createContext<JobvanaContextProps>(defaultContext);

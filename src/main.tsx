@@ -1,14 +1,15 @@
-import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
 // Import the generated route tree
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { defaultContext } from './Context';
 import { routeTree } from './routeTree.gen';
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({ routeTree, context: defaultContext });
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
