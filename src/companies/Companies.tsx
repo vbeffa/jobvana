@@ -49,7 +49,6 @@ const Companies = () => {
     () => ({ page: debouncedPage, pageSize: 10 }),
     [debouncedPage]
   );
-  console.log(paging);
 
   const { companies, error, isPending, isPlaceholderData, companyCount } =
     useCompanies({ paging, filters });
