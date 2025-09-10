@@ -35,10 +35,7 @@ const CompanyFilters = ({
           value={filters.minSize}
           onChange={(e) => {
             let minSize = parseInt(e.target.value);
-            if (isNaN(minSize)) {
-              return;
-            }
-            if (minSize < 1) {
+            if (isNaN(minSize) || minSize < 1) {
               minSize = 1;
             }
             setFilters({ ...filters, minSize });
@@ -55,10 +52,7 @@ const CompanyFilters = ({
           value={filters.maxSize}
           onChange={(e) => {
             let maxSize = parseInt(e.target.value);
-            if (isNaN(maxSize)) {
-              return;
-            }
-            if (maxSize > 1000) {
+            if (isNaN(maxSize) || maxSize > 1000) {
               maxSize = 1000;
             }
             setFilters({ ...filters, maxSize });
