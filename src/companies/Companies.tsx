@@ -20,8 +20,8 @@ import CompanyFilters from './CompanyFilters';
 
 const Companies = () => {
   const navigate = Route.useNavigate();
-  // const search = Route.useSearch();
-  const context = useContext(JobvanaContext).companies;
+  const { companiesContext: context, setCompaniesContext: setContext } =
+    useContext(JobvanaContext);
 
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false); // debounce when typing in a new page number
@@ -58,9 +58,10 @@ const Companies = () => {
   }, [context.page]);
 
   useEffect(() => {
-    setSearchFilters(
-      _.pick(context, ['name', 'minSize', 'maxSize', 'industryId'])
-    );
+    setSearchFilters({
+      ..._.pick(context, ['minSize', 'maxSize', 'industryId']),
+      name: context.name ?? ''
+    });
   }, [context]);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const Companies = () => {
       search: {
         page: debouncedPage,
         company_id: companyId ?? undefined,
-        name: debouncedName,
+        name: debouncedName || undefined,
         industry_id: filters.industryId,
         min_size: filters.minSize,
         max_size: filters.maxSize
@@ -102,9 +103,12 @@ const Companies = () => {
             setPage(1);
             setCompanyId(null);
             setSearchFilters(filters);
-            Object.assign(context, filters);
-            context.page = 1;
-            context.companyId = undefined;
+            setContext({
+              ...context,
+              ...filters,
+              page: 1,
+              companyId: undefined
+            });
           }}
         />
       </FiltersContainer>
@@ -118,8 +122,11 @@ const Companies = () => {
               setPage(page);
               setCompanyId(null);
               setDebouncePage(debounce);
-              context.page = page;
-              context.companyId = undefined;
+              setContext({
+                ...context,
+                page,
+                companyId: undefined
+              });
             }}
             isLoading={isPlaceholderData || isPending}
             type="companies"
@@ -134,6 +141,10 @@ const Companies = () => {
                   onClick={() => {
                     setCompanyId(company.id);
                     context.companyId = company.id;
+                    setContext({
+                      ...context,
+                      companyId: company.id
+                    });
                   }}
                   title={company.name}
                   text={

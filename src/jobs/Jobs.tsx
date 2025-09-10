@@ -18,7 +18,8 @@ import JobFilters from './JobFilters';
 const Jobs = () => {
   const navigate = Route.useNavigate();
   // const search = Route.useSearch();
-  const context = useContext(JobvanaContext).jobs;
+  const { jobsContext: context, setJobsContext: setContext } =
+    useContext(JobvanaContext);
 
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
@@ -63,24 +64,27 @@ const Jobs = () => {
   }, [context.page]);
 
   useEffect(() => {
-    setSearchFilters(
-      _.pick(context, [
-        'company',
-        'title',
+    setSearchFilters({
+      ...context
+    });
+    setSearchFilters({
+      ..._.pick(context, [
         'roleId',
         'minSalary',
         'maxSalary',
         'skillId',
         'created'
-      ])
-    );
+      ]),
+      company: context.company ?? '',
+      title: context.title ?? ''
+    });
   }, [context]);
 
   useEffect(() => {
     if (context.jobId) {
       setJobId(context.jobId);
     } else {
-      setJobId(jobs?.[0].id ?? null);
+      setJobId(jobs?.[0]?.id ?? null);
     }
   }, [context.jobId, jobs]);
 
@@ -89,8 +93,8 @@ const Jobs = () => {
       search: {
         page: debouncedPage,
         job_id: jobId ?? undefined,
-        company: debouncedCompany,
-        title: debouncedTitle,
+        company: debouncedCompany || undefined,
+        title: debouncedTitle || undefined,
         role_id: filters.roleId,
         min_salary: filters.minSalary,
         max_salary: filters.maxSalary,
@@ -122,8 +126,12 @@ const Jobs = () => {
             setJobId(null);
             setSearchFilters(filters);
             Object.assign(context, filters);
-            context.page = 1;
-            context.jobId = undefined;
+            setContext({
+              ...context,
+              ...filters,
+              page: 1,
+              jobId: undefined
+            });
           }}
         />
       </FiltersContainer>
@@ -137,8 +145,11 @@ const Jobs = () => {
               setPage(page);
               setJobId(null);
               setDebouncePage(debounce);
-              context.page = page;
-              context.jobId = undefined;
+              setContext({
+                ...context,
+                page,
+                jobId: undefined
+              });
             }}
             isLoading={isPlaceholderData || isPending}
             type="jobs"
@@ -150,7 +161,10 @@ const Jobs = () => {
                 selected={jobId === job.id}
                 onClick={() => {
                   setJobId(job.id);
-                  context.jobId = job.id;
+                  setContext({
+                    ...context,
+                    jobId: job.id
+                  });
                 }}
                 title={job.title}
                 text={

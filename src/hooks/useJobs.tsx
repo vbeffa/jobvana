@@ -12,12 +12,12 @@ export type CreatedRange =
   | 'last_month';
 
 export type SearchFilters = {
-  company: string;
+  company?: string;
   companyId?: number;
-  title: string;
+  title?: string;
   roleId?: number;
-  minSalary: number;
-  maxSalary: number;
+  minSalary?: number;
+  maxSalary?: number;
   skillId?: number;
   created?: CreatedRange;
 };

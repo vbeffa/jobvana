@@ -2,15 +2,16 @@ import { createContext } from 'react';
 import type { CreatedRange } from './hooks/useJobs';
 
 export type JobvanaContextProps = {
-  companies: {
+  companiesContext: {
     page: number;
     companyId?: number;
-    name: string;
+    name?: string;
     minSize: number;
     maxSize: number;
     industryId?: number;
   };
-  jobs: {
+  setCompaniesContext: (props: JobvanaContextProps['companiesContext']) => void;
+  jobsContext: {
     page: number;
     jobId?: number;
     company: string;
@@ -21,20 +22,22 @@ export type JobvanaContextProps = {
     skillId?: number;
     created?: CreatedRange;
   };
+  setJobsContext: (props: JobvanaContextProps['jobsContext']) => void;
 };
 
 export const JobvanaContext = createContext<JobvanaContextProps>({
-  companies: {
+  companiesContext: {
     page: 1,
-    name: '',
     minSize: 1,
     maxSize: 1000
   },
-  jobs: {
+  setCompaniesContext: () => {},
+  jobsContext: {
     page: 1,
     company: '',
     title: '',
     minSalary: 10000,
     maxSalary: 200000
-  }
+  },
+  setJobsContext: () => {}
 });
