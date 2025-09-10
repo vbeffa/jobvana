@@ -67,7 +67,7 @@ const PageNav = ({
                 min={1}
                 max={numPages}
                 disabled={isLoading}
-                className="border-[.05rem] h-6 w-fit max-w-10 text-center
+                className="pagenav border-[.05rem] h-6 w-fit max-w-10 text-center
                      border-gray-400 rounded
                      disabled:bg-gray-50"
                 value={total === 0 ? 0 : page}

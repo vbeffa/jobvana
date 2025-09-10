@@ -125,14 +125,14 @@ ul {
 }
 
  /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+input[type=number].pagenav::-webkit-outer-spin-button,
+input[type=number].pagenav::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type=number].pagenav {
   appearance: inherit;
   -moz-appearance: textfield;
 }
