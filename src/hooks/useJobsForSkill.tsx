@@ -10,24 +10,7 @@ import type {
   Params
 } from './types';
 import type { JobRole } from './useJob';
-
-export type CreatedRange =
-  | 'all'
-  | 'today'
-  | 'last_three_days'
-  | 'last_week'
-  | 'last_month';
-
-export type SearchFilters = {
-  company?: string;
-  companyId?: number;
-  title?: string;
-  roleId?: number;
-  minSalary?: number;
-  maxSalary?: number;
-  skillId?: number;
-  created?: CreatedRange;
-};
+import type { SearchFilters } from './useJobs';
 
 export type Job = DbJob & {
   company: Company;
