@@ -4,13 +4,16 @@ import type { SearchFilters as JobSearchFilters } from './useJobs';
 import type { SearchFilters as SkillSearchFilters } from './useSkills';
 
 export type Params<
-  SF extends CompanySearchFilters | JobSearchFilters | SkillSearchFilters
+  SearchFilters extends
+    | CompanySearchFilters
+    | JobSearchFilters
+    | SkillSearchFilters
 > = {
   paging: {
     page: number;
     pageSize: number;
   };
-  filters?: SF;
+  filters?: SearchFilters;
 };
 
 export type Application = Database['public']['Tables']['applications']['Row'];
