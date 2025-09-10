@@ -10,7 +10,7 @@ const JobFilters = ({
   setFilters
 }: {
   filters: SearchFilters;
-  setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>;
+  setFilters: (filters: SearchFilters) => void;
 }) => {
   return (
     <div className="border-[0.05rem] rounded-lg grid grid-cols-2">
@@ -22,11 +22,9 @@ const JobFilters = ({
             placeholder="Filter by company"
             value={filters.company}
             onChange={(company) => {
-              setFilters((filters) => ({ ...filters, company }));
+              setFilters({ ...filters, company });
             }}
-            onClear={() =>
-              setFilters((filters) => ({ ...filters, company: '' }))
-            }
+            onClear={() => setFilters({ ...filters, company: '' })}
           />
         </div>
         <div>Title:</div>
@@ -36,9 +34,9 @@ const JobFilters = ({
             placeholder="Filter by job title"
             value={filters.title}
             onChange={(title) => {
-              setFilters((filters) => ({ ...filters, title }));
+              setFilters({ ...filters, title });
             }}
-            onClear={() => setFilters((filters) => ({ ...filters, title: '' }))}
+            onClear={() => setFilters({ ...filters, title: '' })}
           />
         </div>
         <div>Role:</div>
@@ -48,9 +46,9 @@ const JobFilters = ({
             roleId={filters.roleId}
             onChange={(roleId) => {
               if (!roleId) {
-                setFilters((filters) => ({ ...filters, roleId: undefined }));
+                setFilters({ ...filters, roleId: undefined });
               } else {
-                setFilters((filters) => ({ ...filters, roleId }));
+                setFilters({ ...filters, roleId });
               }
             }}
           />
@@ -98,9 +96,9 @@ const JobFilters = ({
             skillId={filters.skillId}
             onChange={(skillId) => {
               if (skillId === 0) {
-                setFilters((filters) => ({ ...filters, skillId: undefined }));
+                setFilters({ ...filters, skillId: undefined });
               } else {
-                setFilters((filters) => ({ ...filters, skillId }));
+                setFilters({ ...filters, skillId });
               }
             }}
           />
@@ -112,9 +110,9 @@ const JobFilters = ({
             value={filters.created}
             onChange={(created) => {
               if (created === 'all') {
-                setFilters((filters) => ({ ...filters, created: undefined }));
+                setFilters({ ...filters, created: undefined });
               } else {
-                setFilters((filters) => ({ ...filters, created }));
+                setFilters({ ...filters, created });
               }
             }}
           />

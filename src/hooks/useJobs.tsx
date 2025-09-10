@@ -12,12 +12,12 @@ export type CreatedRange =
   | 'last_month';
 
 export type SearchFilters = {
-  company?: string;
+  company: string;
   companyId?: number;
-  title?: string;
+  title: string;
   roleId?: number;
-  minSalary?: number;
-  maxSalary?: number;
+  minSalary: number;
+  maxSalary: number;
   skillId?: number;
   created?: CreatedRange;
 };
@@ -43,12 +43,14 @@ type QueryKey = {
 } & SearchFilters;
 
 // TODO rename to useJobSummaries?
-const useJobs = (
-  params: JobsParams = { paging: { page: 1, pageSize: 10 } }
-): Jobs => {
+const useJobs = (params: JobsParams): Jobs => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
+      company: '',
+      title: '',
+      minSalary: 10000,
+      maxSalary: 200000,
       ...params.filters
     }),
     [params.filters, params.paging?.page]

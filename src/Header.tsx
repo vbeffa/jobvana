@@ -29,7 +29,20 @@ const Header = () => {
           </div>
         </div>
       )}
-      {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+      {currPage !== 'jobs' && (
+        <Link
+          to="/jobvana/jobs"
+          search={{
+            page: 1,
+            company: '',
+            title: '',
+            min_salary: 10000,
+            max_salary: 200000
+          }}
+        >
+          Jobs
+        </Link>
+      )}
       {currPage === 'jobs' && (
         <div>
           <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
@@ -38,7 +51,12 @@ const Header = () => {
         </div>
       )}
       {currPage !== 'companies' && (
-        <Link to="/jobvana/companies">Companies</Link>
+        <Link
+          to="/jobvana/companies"
+          search={{ page: 1, name: '', min_size: 1, max_size: 1000 }}
+        >
+          Companies
+        </Link>
       )}
       {currPage === 'companies' && (
         <div>
@@ -47,7 +65,11 @@ const Header = () => {
           </div>
         </div>
       )}
-      {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
+      {currPage !== 'roles' && (
+        <Link to="/jobvana/roles" search={{ page: 1 }}>
+          Roles
+        </Link>
+      )}
       {currPage === 'roles' && (
         <div>
           <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
@@ -55,7 +77,11 @@ const Header = () => {
           </div>
         </div>
       )}
-      {currPage !== 'skills' && <Link to="/jobvana/skills">Skills</Link>}
+      {currPage !== 'skills' && (
+        <Link to="/jobvana/skills" search={undefined}>
+          Skills
+        </Link>
+      )}
       {currPage === 'skills' && (
         <div>
           <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
@@ -64,7 +90,9 @@ const Header = () => {
         </div>
       )}
       {currPage !== 'skill_categories' && (
-        <Link to="/jobvana/skill_categories">Skill Categories</Link>
+        <Link to="/jobvana/skill_categories" search={undefined}>
+          Skill Categories
+        </Link>
       )}
       {currPage === 'skill_categories' && (
         <div>

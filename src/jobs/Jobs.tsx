@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import _ from 'lodash';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import { JobvanaContext } from '../Context';
 import Error from '../Error';
 import FiltersContainer from '../FiltersContainer';
 import useJobs, { type JobsParams, type SearchFilters } from '../hooks/useJobs';
@@ -7,18 +9,25 @@ import PageNav from '../PageNav';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
 import ResourcesContainer from '../ResourcesContainer';
+import { Route } from '../routes/jobvana.jobs.index';
 import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
 
 const Jobs = () => {
-  const [page, setPage] = useState<number>(1);
+  const navigate = Route.useNavigate();
+  // const search = Route.useSearch();
+  const context = useContext(JobvanaContext).jobs;
+
+  const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     company: '',
-    title: ''
+    title: '',
+    minSalary: 10000,
+    maxSalary: 200000
   });
   const [debouncedCompany] = useDebounce(
     searchFilters.company,
@@ -50,8 +59,57 @@ const Jobs = () => {
   });
 
   useEffect(() => {
-    setJobId(jobs?.[0].id ?? null);
-  }, [jobs]);
+    setPage(context.page);
+  }, [context.page]);
+
+  useEffect(() => {
+    setSearchFilters(
+      _.pick(context, [
+        'company',
+        'title',
+        'roleId',
+        'minSalary',
+        'maxSalary',
+        'skillId',
+        'created'
+      ])
+    );
+  }, [context]);
+
+  useEffect(() => {
+    if (context.jobId) {
+      setJobId(context.jobId);
+    } else {
+      setJobId(jobs?.[0].id ?? null);
+    }
+  }, [context.jobId, jobs]);
+
+  useEffect(() => {
+    navigate({
+      search: {
+        page: debouncedPage,
+        job_id: jobId ?? undefined,
+        company: debouncedCompany,
+        title: debouncedTitle,
+        role_id: filters.roleId,
+        min_salary: filters.minSalary,
+        max_salary: filters.maxSalary,
+        skill_id: filters.skillId,
+        created: filters.created
+      }
+    });
+  }, [
+    debouncedCompany,
+    debouncedPage,
+    debouncedTitle,
+    filters.created,
+    filters.maxSalary,
+    filters.minSalary,
+    filters.roleId,
+    filters.skillId,
+    jobId,
+    navigate
+  ]);
 
   return (
     <div className="mx-4">
@@ -61,7 +119,11 @@ const Jobs = () => {
           filters={searchFilters}
           setFilters={(filters) => {
             setPage(1);
+            setJobId(null);
             setSearchFilters(filters);
+            Object.assign(context, filters);
+            context.page = 1;
+            context.jobId = undefined;
           }}
         />
       </FiltersContainer>
@@ -73,7 +135,10 @@ const Jobs = () => {
             total={openJobCount}
             onSetPage={(page, debounce) => {
               setPage(page);
+              setJobId(null);
               setDebouncePage(debounce);
+              context.page = page;
+              context.jobId = undefined;
             }}
             isLoading={isPlaceholderData || isPending}
             type="jobs"
@@ -83,7 +148,10 @@ const Jobs = () => {
               <SummaryCard
                 key={job.id}
                 selected={jobId === job.id}
-                onClick={() => setJobId(job.id)}
+                onClick={() => {
+                  setJobId(job.id);
+                  context.jobId = job.id;
+                }}
                 title={job.title}
                 text={
                   <>

@@ -31,9 +31,8 @@ type QueryKey = {
   page: number;
 } & SearchFilters;
 
-const useCompanies = (
-  params: CompaniesParams = { paging: { page: 1, pageSize: 10 } }
-): Companies => {
+const useCompanies = (params: CompaniesParams): Companies => {
+  console.log('params', params);
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
@@ -41,6 +40,7 @@ const useCompanies = (
     }),
     [params.filters, params.paging?.page]
   );
+  console.log('queryKey', queryKey);
 
   const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['companies', queryKey],

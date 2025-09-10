@@ -7,7 +7,7 @@ const CompanyFilters = ({
   setFilters
 }: {
   filters: SearchFilters;
-  setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>;
+  setFilters: (filters: SearchFilters) => void;
 }) => {
   return (
     <div className="border-[0.05rem] rounded-lg grid grid-cols-3 gap-2 p-2">
@@ -18,9 +18,9 @@ const CompanyFilters = ({
           placeholder="Filter by company"
           value={filters.name}
           onChange={(name) => {
-            setFilters((filters) => ({ ...filters, name }));
+            setFilters({ ...filters, name });
           }}
-          onClear={() => setFilters((filters) => ({ ...filters, name: '' }))}
+          onClear={() => setFilters({ ...filters, name: '' })}
         />
       </div>
       <div>Size:</div>
@@ -41,7 +41,7 @@ const CompanyFilters = ({
             if (minSize < 1) {
               minSize = 1;
             }
-            setFilters((filters) => ({ ...filters, minSize }));
+            setFilters({ ...filters, minSize });
           }}
         />
         <div className="flex pt-1">-</div>
@@ -61,7 +61,7 @@ const CompanyFilters = ({
             if (maxSize > 1000) {
               maxSize = 1000;
             }
-            setFilters((filters) => ({ ...filters, maxSize }));
+            setFilters({ ...filters, maxSize });
           }}
         />
       </div>
@@ -71,7 +71,7 @@ const CompanyFilters = ({
           id="industry"
           industryId={filters.industryId}
           onChange={(industryId) => {
-            setFilters((filters) => ({ ...filters, industryId }));
+            setFilters({ ...filters, industryId });
           }}
         />
       </div>
