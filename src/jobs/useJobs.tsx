@@ -64,9 +64,12 @@ const useJobs = (params: JobsParams): Jobs => {
     queryFn: async () => {
       let q = supabase
         .from('jobs')
-        .select('id, title, companies!inner(name)', {
-          count: 'exact'
-        })
+        .select(
+          'id, title, companies!inner(name), job_roles!inner(roles!inner()), skills!inner()',
+          {
+            count: 'exact'
+          }
+        )
         .filter('status', 'eq', 'open');
 
       const { filters } = params;
@@ -80,7 +83,6 @@ const useJobs = (params: JobsParams): Jobs => {
         q = q.ilike('title', `%${filters.title}%`);
       }
       if (filters?.roleId) {
-        // TODO not working
         q = q.filter('job_roles.role_id', 'eq', filters.roleId);
       }
       if (filters?.minSalary) {
@@ -90,7 +92,6 @@ const useJobs = (params: JobsParams): Jobs => {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
       if (filters?.skillId) {
-        // TODO not working
         q = q.eq('skills.id', filters.skillId);
       }
       if (filters?.created && filters.created !== 'all') {
