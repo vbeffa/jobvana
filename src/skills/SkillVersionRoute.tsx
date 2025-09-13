@@ -3,7 +3,6 @@ import SkillVersionDetails from './SkillVersionDetails';
 
 const SkillVersion = () => {
   const { skillId, skillVersionId } = Route.useLoaderData();
-  console.log(skillId, skillVersionId);
 
   return (
     <SkillVersionDetails skillId={skillId} skillVersionId={skillVersionId} />

@@ -4,6 +4,9 @@ import { useMemo } from 'react';
 import type { Params } from '../types';
 import supabase from '../utils/supabase';
 
+export const MIN_SALARY = 10000;
+export const MAX_SALARY = 200000;
+
 export type CreatedRange =
   | 'all'
   | 'today'
@@ -42,19 +45,19 @@ type QueryKey = {
   page: number;
 } & SearchFilters;
 
-// TODO rename to useJobSummaries?
 const useJobs = (params: JobsParams): Jobs => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
-      company: '',
-      title: '',
-      minSalary: 10000,
-      maxSalary: 200000,
+      // company: '',
+      // title: '',
+      // minSalary: MIN_SALARY,
+      // maxSalary: MAX_SALARY,
       ...params.filters
     }),
     [params.filters, params.paging?.page]
   );
+  // console.log(queryKey);
 
   const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['jobs', queryKey],
@@ -87,6 +90,7 @@ const useJobs = (params: JobsParams): Jobs => {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
       if (filters?.skillId) {
+        // TODO not working
         q = q.eq('skills.id', filters.skillId);
       }
       if (filters?.created && filters.created !== 'all') {
@@ -112,7 +116,7 @@ const useJobs = (params: JobsParams): Jobs => {
         )
         .order('created_at', { ascending: false });
       // .overrideTypes<Array<{ companies: Company }>>();
-      console.log(data);
+      // console.log(data);
       if (error) {
         console.log(JSON.stringify(error));
       }

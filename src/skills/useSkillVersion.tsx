@@ -15,7 +15,7 @@ const useSkillVersion = ({ id }: { id: number }) => {
         .from('skill_versions')
         .select('*')
         .filter('id', 'eq', id);
-      console.log(data);
+      // console.log(data);
       return { error, data };
     }
   });

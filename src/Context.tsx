@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import type { CreatedRange } from './jobs/useJobs';
+import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
+import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
 
 export type JobvanaContextProps = {
   companiesContext: {
@@ -28,16 +29,16 @@ export type JobvanaContextProps = {
 export const defaultContext = {
   companiesContext: {
     page: 1,
-    minSize: 1,
-    maxSize: 1000
+    minSize: MIN_COMPANY_SIZE,
+    maxSize: MAX_COMPANY_SIZE
   },
   setCompaniesContext: () => {},
   jobsContext: {
     page: 1,
     company: '',
     title: '',
-    minSalary: 10000,
-    maxSalary: 200000
+    minSalary: MIN_SALARY,
+    maxSalary: MAX_SALARY
   },
   setJobsContext: () => {}
 };

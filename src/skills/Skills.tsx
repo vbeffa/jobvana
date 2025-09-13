@@ -42,11 +42,7 @@ const Skills = () => {
     useSkills({ paging, filters });
 
   useEffect(() => {
-    if (skills?.[0]) {
-      setSkillId(skills[0].id);
-    } else {
-      setSkillId(null);
-    }
+    setSkillId(skills?.[0]?.id ?? null);
   }, [skills]);
 
   return (
@@ -68,8 +64,8 @@ const Skills = () => {
             pageSize={10}
             total={skillsCount}
             onSetPage={(page, debounce) => {
-              console.log('setting page', page);
               setPage(page);
+              setSkillId(null);
               setDebouncePage(debounce);
             }}
             isLoading={isPlaceholderData || isPending}

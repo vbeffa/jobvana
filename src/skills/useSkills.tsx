@@ -63,7 +63,7 @@ const useSkills = (
           params.paging.page * params.paging.pageSize - 1
         )
         .order('name');
-      console.log(data);
+      // console.log(data);
       return { skills: data, error, count };
     }
   });

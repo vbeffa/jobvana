@@ -13,11 +13,15 @@ import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
-import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
+import useJobs, {
+  MAX_SALARY,
+  MIN_SALARY,
+  type JobsParams,
+  type SearchFilters
+} from './useJobs';
 
 const Jobs = () => {
   const navigate = Route.useNavigate();
-  // const search = Route.useSearch();
   const { jobsContext: context, setJobsContext: setContext } =
     useContext(JobvanaContext);
 
@@ -27,8 +31,8 @@ const Jobs = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     company: '',
     title: '',
-    minSalary: 10000,
-    maxSalary: 200000
+    minSalary: MIN_SALARY,
+    maxSalary: MAX_SALARY
   });
   const [debouncedCompany] = useDebounce(
     searchFilters.company,
@@ -64,9 +68,6 @@ const Jobs = () => {
   }, [context.page]);
 
   useEffect(() => {
-    setSearchFilters({
-      ...context
-    });
     setSearchFilters({
       ..._.pick(context, [
         'roleId',
@@ -125,7 +126,6 @@ const Jobs = () => {
             setPage(1);
             setJobId(null);
             setSearchFilters(filters);
-            Object.assign(context, filters);
             setContext({
               ...context,
               ...filters,

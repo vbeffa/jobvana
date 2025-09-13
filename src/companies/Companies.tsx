@@ -14,6 +14,8 @@ import SummaryCardsContainer from '../SummaryCardsContainer';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
 import useCompanies, {
+  MAX_COMPANY_SIZE,
+  MIN_COMPANY_SIZE,
   type CompaniesParams,
   type SearchFilters
 } from './useCompanies';
@@ -24,25 +26,29 @@ const Companies = () => {
     useContext(JobvanaContext);
 
   const [page, setPage] = useState<number>(context.page);
-  const [debouncePage, setDebouncePage] = useState(false); // debounce when typing in a new page number
+  const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     name: '',
-    minSize: 1,
-    maxSize: 1000
+    minSize: MIN_COMPANY_SIZE,
+    maxSize: MAX_COMPANY_SIZE
   });
   const [debouncedName] = useDebounce(
     searchFilters.name,
     searchFilters.name ? 500 : 0
   );
+  const [debouncedMinSize] = useDebounce(searchFilters.minSize, 500);
+  const [debouncedMaxSize] = useDebounce(searchFilters.maxSize, 500);
   const [companyId, setCompanyId] = useState<number | null>(null);
 
   const filters: SearchFilters = useMemo(
     () => ({
       ...searchFilters,
-      name: debouncedName
+      name: debouncedName,
+      minSize: debouncedMinSize,
+      maxSize: debouncedMaxSize
     }),
-    [debouncedName, searchFilters]
+    [debouncedMaxSize, debouncedMinSize, debouncedName, searchFilters]
   );
 
   const paging: CompaniesParams['paging'] = useMemo(
@@ -79,12 +85,14 @@ const Companies = () => {
         company_id: companyId ?? undefined,
         name: debouncedName || undefined,
         industry_id: filters.industryId,
-        min_size: filters.minSize,
-        max_size: filters.maxSize
+        min_size: debouncedMinSize,
+        max_size: debouncedMaxSize
       }
     });
   }, [
     companyId,
+    debouncedMaxSize,
+    debouncedMinSize,
     debouncedName,
     debouncedPage,
     filters.industryId,

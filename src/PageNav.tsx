@@ -6,6 +6,7 @@ export type PageNavProps = {
   page: number;
   pageSize?: number;
   total?: number;
+  // debounce: true when typing in a new page number, false when clicking arrows
   onSetPage: (page: number, debounce: boolean) => void;
   isLoading: boolean;
   type: NavType;
@@ -54,7 +55,6 @@ const PageNav = ({
                 disabled={page === 1}
                 className={navButtonStyles}
                 onClick={() => {
-                  console.log('click', page);
                   onSetPage(page - 1, false);
                 }}
                 value="<"

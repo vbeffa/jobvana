@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import Companies from '../companies/Companies';
+import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from '../companies/useCompanies';
 
 export type CompanySearch = {
   page?: number;
@@ -16,8 +17,8 @@ export const Route = createFileRoute('/jobvana/companies/')({
       page: Number(search.page) || 1,
       company_id: Number(search.company_id) || undefined,
       name: search.name as string,
-      min_size: Number(search.min_size) || 1,
-      max_size: Number(search.max_size) || 1000,
+      min_size: Number(search.min_size) || MIN_COMPANY_SIZE,
+      max_size: Number(search.max_size) || MAX_COMPANY_SIZE,
       industry_id: Number(search.industry_id) || undefined
     };
   },

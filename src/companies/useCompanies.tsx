@@ -3,6 +3,9 @@ import { useMemo } from 'react';
 import type { CompanyAddress, Params } from '../types';
 import supabase from '../utils/supabase';
 
+export const MIN_COMPANY_SIZE = 1;
+export const MAX_COMPANY_SIZE = 1000;
+
 export type SearchFilters = {
   name?: string;
   minSize?: number;
@@ -39,6 +42,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
     }),
     [params.filters, params.paging?.page]
   );
+  // console.log(queryKey);
 
   const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['companies', queryKey],
@@ -75,7 +79,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
         )
         .order('name');
 
-      console.log(data);
+      // console.log(data);
       return { companies: data, error, count };
     },
     placeholderData: keepPreviousData

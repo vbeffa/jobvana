@@ -1,6 +1,7 @@
 import _ from 'lodash';
+import { MAX_SALARY, MIN_SALARY } from './useJobs';
 
-const salaries = _.range(10000, 200001, 10000);
+const salaries = _.range(MIN_SALARY, MAX_SALARY + 1, 10000);
 
 const SalarySelect = ({
   elementId,

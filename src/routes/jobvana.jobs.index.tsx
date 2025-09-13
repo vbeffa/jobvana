@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import Jobs from '../jobs/Jobs';
-import type { CreatedRange } from '../jobs/useJobs';
+import { MAX_SALARY, MIN_SALARY, type CreatedRange } from '../jobs/useJobs';
 
 export type JobSearch = {
   page?: number;
@@ -22,8 +22,8 @@ export const Route = createFileRoute('/jobvana/jobs/')({
       company: search.company as string,
       title: search.title as string,
       role_id: Number(search.role_id) || undefined,
-      min_salary: Number(search.min_salary) || 10000,
-      max_salary: Number(search.max_salary) || 200000,
+      min_salary: Number(search.min_salary) || MIN_SALARY,
+      max_salary: Number(search.max_salary) || MAX_SALARY,
       skill_id: Number(search.skill_id) || undefined,
       created: search.created_range as CreatedRange
     };

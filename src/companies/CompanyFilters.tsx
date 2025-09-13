@@ -1,6 +1,10 @@
 import Filter from '../Filter';
 import IndustrySelect from './IndustrySelect';
-import type { SearchFilters } from './useCompanies';
+import {
+  MAX_COMPANY_SIZE,
+  MIN_COMPANY_SIZE,
+  type SearchFilters
+} from './useCompanies';
 
 const CompanyFilters = ({
   filters,
@@ -29,15 +33,15 @@ const CompanyFilters = ({
           id="min_size"
           type="number"
           step={1}
-          min={1}
-          max={1000}
+          min={MIN_COMPANY_SIZE}
+          max={MAX_COMPANY_SIZE}
           className="border h-8 pr-1 text-center
                      border-gray-500 rounded-lg"
           value={filters.minSize}
           onChange={(e) => {
             let minSize = parseInt(e.target.value);
-            if (isNaN(minSize) || minSize < 1) {
-              minSize = 1;
+            if (isNaN(minSize) || minSize < MIN_COMPANY_SIZE) {
+              minSize = MIN_COMPANY_SIZE;
             }
             setFilters({ ...filters, minSize });
           }}
@@ -47,15 +51,15 @@ const CompanyFilters = ({
           id="max_size"
           type="number"
           step={1}
-          min={1}
-          max={1000}
+          min={MIN_COMPANY_SIZE}
+          max={MAX_COMPANY_SIZE}
           className="border h-8 pr-1 text-center
                      border-gray-500 rounded-lg"
           value={filters.maxSize}
           onChange={(e) => {
             let maxSize = parseInt(e.target.value);
-            if (isNaN(maxSize) || maxSize > 1000) {
-              maxSize = 1000;
+            if (isNaN(maxSize) || maxSize > MAX_COMPANY_SIZE) {
+              maxSize = MAX_COMPANY_SIZE;
             }
             setFilters({ ...filters, maxSize });
           }}

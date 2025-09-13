@@ -38,7 +38,7 @@ const useCompany = (id: number): CompanyH => {
         )
         .filter('id', 'eq', id);
 
-      console.log(data);
+      // console.log(data);
       return { company: data?.[0], error };
     },
     placeholderData: keepPreviousData
