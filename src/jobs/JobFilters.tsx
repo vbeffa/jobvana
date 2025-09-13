@@ -92,7 +92,7 @@ const JobFilters = ({
         <div>Skill:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <SkillSelect
-            id="role"
+            id="skill"
             skillId={filters.skillId}
             onChange={(skillId) => {
               if (skillId === 0) {
@@ -106,7 +106,7 @@ const JobFilters = ({
         <div>Posted:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <CreatedSelect
-            id="role"
+            id="created"
             value={filters.created}
             onChange={(created) => {
               if (created === 'all') {

@@ -26,6 +26,7 @@ const CompanyFilters = ({
       <div>Size:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
         <input
+          id="min_size"
           type="number"
           step={1}
           min={1}
@@ -43,6 +44,7 @@ const CompanyFilters = ({
         />
         <div className="flex pt-1">-</div>
         <input
+          id="max_size"
           type="number"
           step={1}
           min={1}

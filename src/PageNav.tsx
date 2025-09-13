@@ -62,6 +62,7 @@ const PageNav = ({
             </div>
             <div className="content-center ml-2">
               <input
+                id="page"
                 type="number"
                 step={1}
                 min={1}
