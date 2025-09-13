@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import useApplications from '../hooks/useApplications';
 import SummaryCard from '../SummaryCard';
 import ApplicationDetails from './ApplicationDetails';
+import useApplications from './useApplications';
 
 const Applications = () => {
   const { applications } = useApplications();

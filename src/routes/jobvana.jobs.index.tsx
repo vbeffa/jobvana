@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import type { CreatedRange } from '../hooks/useJobs';
 import Jobs from '../jobs/Jobs';
+import type { CreatedRange } from '../jobs/useJobs';
 
 export type JobSearch = {
   page?: number;

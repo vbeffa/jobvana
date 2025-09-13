@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { Interview } from '../hooks/types';
+import type { Interview } from '../types';
 
 const InterviewLink = ({ interview }: { interview: Interview }) => {
   return (

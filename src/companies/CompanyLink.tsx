@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { Company } from '../hooks/types';
+import type { Company } from '../types';
 
 export type CompanyLinkProps = Pick<Company, 'id' | 'name'>;
 

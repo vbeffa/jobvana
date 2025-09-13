@@ -4,10 +4,6 @@ import { useDebounce } from 'use-debounce';
 import { JobvanaContext } from '../Context';
 import Error from '../Error';
 import FiltersContainer from '../FiltersContainer';
-import useCompanies, {
-  type CompaniesParams,
-  type SearchFilters
-} from '../hooks/useCompanies';
 import PageNav from '../PageNav';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
@@ -17,6 +13,10 @@ import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
+import useCompanies, {
+  type CompaniesParams,
+  type SearchFilters
+} from './useCompanies';
 
 const Companies = () => {
   const navigate = Route.useNavigate();

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { Role } from '../types';
 import supabase from '../utils/supabase';
-import type { Role } from './types';
 
 export type Roles = {
   roles: Array<Role> | undefined;

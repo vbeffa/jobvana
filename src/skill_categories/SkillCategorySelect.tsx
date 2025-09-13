@@ -1,11 +1,11 @@
-import useSkillCategories from '../hooks/useSkillCategories';
+import useSkillCategories from './useSkillCategories';
 
 const SkillCategorySelect = ({
-  id,
+  elementId,
   skillCategoryId,
   onChange
 }: {
-  id: string;
+  elementId: string;
   skillCategoryId?: number;
   onChange: (skillId: number) => void;
 }) => {
@@ -13,7 +13,7 @@ const SkillCategorySelect = ({
 
   return (
     <select
-      id={id}
+      id={elementId}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={skillCategoryId}
       onChange={(e) => onChange(parseInt(e.target.value))}

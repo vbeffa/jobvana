@@ -1,11 +1,11 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import supabase from '../utils/supabase';
 import type {
   Company as DbCompany,
   CompanyAddress as DbCompanyAddress,
   SkillVersion as DbSkillVersion
-} from './types';
+} from '../types';
+import supabase from '../utils/supabase';
 
 export type FullCompany = Company & {
   industryName: string;

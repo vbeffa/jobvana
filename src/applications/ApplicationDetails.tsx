@@ -1,7 +1,7 @@
 import { capitalize } from 'lodash';
 import CompanyLink from '../companies/CompanyLink';
-import useApplication from '../hooks/useApplication';
 import JobLink from '../jobs/JobLink';
+import useApplication from './useApplication';
 
 const ApplicationDetails = ({ id }: { id: number }) => {
   const { application } = useApplication({ id });

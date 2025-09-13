@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import useInterviews from '../hooks/useInterviews';
 import SummaryCard from '../SummaryCard';
 import InterviewDetails from './InterviewDetails';
+import useInterviews from './useInterviews';
 
 const Interviews = () => {
   const { interviews } = useInterviews();

@@ -1,4 +1,4 @@
-import type { Application } from '../hooks/useApplications';
+import type { Application } from './useApplications';
 
 export type ApplicationsListParams = {
   applications: Array<Pick<Application, 'status'>>;

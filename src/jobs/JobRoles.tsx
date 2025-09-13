@@ -1,6 +1,6 @@
-import type { JobRole } from '../hooks/useJob';
-import useRoles from '../hooks/useRoles';
 import RoleLink from '../roles/RoleLink';
+import useRoles from '../roles/useRoles';
+import type { JobRole } from './useJob';
 
 export type JobRolesProps = {
   jobRoles: Array<JobRole>;

@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { CompanyAddress, Params } from '../types';
 import supabase from '../utils/supabase';
-import type { CompanyAddress, Params } from './types';
 
 export type SearchFilters = {
   name?: string;

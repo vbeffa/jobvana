@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import type { Skill } from '../types';
 import supabase from '../utils/supabase';
-import type { Skill } from './types';
 
 export type SkillsLite = {
   skills: Array<Skill> | undefined;

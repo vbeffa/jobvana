@@ -3,17 +3,17 @@ import _ from 'lodash';
 const salaries = _.range(10000, 200001, 10000);
 
 const SalarySelect = ({
-  id,
+  elementId,
   value,
   onChange
 }: {
-  id: string;
+  elementId: string;
   value?: number;
   onChange: (salary: number) => void;
 }) => {
   return (
     <select
-      id={id}
+      id={elementId}
       className="border border-gray-500 rounded-lg h-8 px-2 py-0.5"
       value={value}
       onChange={(e) => onChange(parseInt(e.target.value))}

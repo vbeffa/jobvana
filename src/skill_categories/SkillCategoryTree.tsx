@@ -1,5 +1,5 @@
-import type { SkillCategory } from '../hooks/useSkillCategories';
 import SkillCategoryLinkWithNumSkills from './SkillCategoryLinkWithNumSkills';
+import type { SkillCategory } from './useSkillCategories';
 
 const SkillCategoryTree = ({
   skillCategories,

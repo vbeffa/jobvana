@@ -1,11 +1,11 @@
 import ApplicationsList from '../applications/ApplicationsList';
 import CompanyLink from '../companies/CompanyLink';
 import Error from '../Error';
-import useJob from '../hooks/useJob';
 import LoadingModal from '../LoadingModal';
 import SkillsList from '../skills/SkillsList';
 import JobRoles from './JobRoles';
 import Salary from './Salary';
+import useJob from './useJob';
 
 const JobDetails = ({ id }: { id: number }) => {
   const { job, error, isPlaceholderData, isPending } = useJob(id);

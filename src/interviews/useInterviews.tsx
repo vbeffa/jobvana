@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { Interview } from '../types';
 import supabase from '../utils/supabase';
-import type { Interview } from './types';
 
 export type Interviews = {
   interviews: Array<Interview> | undefined;

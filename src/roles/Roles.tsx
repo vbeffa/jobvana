@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import Error from '../Error';
-import useRoles from '../hooks/useRoles';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
 import ResourcesContainer from '../ResourcesContainer';
 import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
 import RoleDetails from './RoleDetails';
+import useRoles from './useRoles';
 
 const Roles = () => {
   const { roles, error } = useRoles();

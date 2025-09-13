@@ -1,10 +1,10 @@
 import Error from '../Error';
-import useCompany from '../hooks/useCompany';
-import useSkillsLite from '../hooks/useSkillsLite';
 import JobsForCompany from '../jobs/JobsForCompany';
 import LoadingModal from '../LoadingModal';
 import SkillVersionLink from '../skills/SkillVersionLink';
-import { findHeadquarters, isHeadquarters } from './companiesUtil';
+import useSkillsLite from '../skills/useSkillsLite';
+import useCompany from './useCompany';
+import { findHeadquarters, isHeadquarters } from './utils';
 
 const CompanyDetails = ({ id }: { id: number }) => {
   const { company, error, isPlaceholderData, isPending } = useCompany(id);

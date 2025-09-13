@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import useRole from '../hooks/useRole';
+import useRole from './useRole';
 
 const RoleDetails = ({ id }: { id: number }) => {
   const { role } = useRole({ id });

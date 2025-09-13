@@ -1,9 +1,9 @@
 import Filter from '../Filter';
-import type { SearchFilters } from '../hooks/useJobs';
 import CreatedSelect from './CreatedSelect';
 import RoleSelect from './RoleSelect';
 import SalarySelect from './SalarySelect';
 import SkillSelect from './SkillSelect';
+import type { SearchFilters } from './useJobs';
 
 const JobFilters = ({
   filters,
@@ -42,7 +42,7 @@ const JobFilters = ({
         <div>Role:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <RoleSelect
-            id="role"
+            elementId="role"
             roleId={filters.roleId}
             onChange={(roleId) => {
               if (!roleId) {
@@ -58,7 +58,7 @@ const JobFilters = ({
         <div>Salary Range:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <SalarySelect
-            id="min_salary"
+            elementId="min_salary"
             value={filters.minSalary}
             onChange={(minSalary) => {
               const newFilters = {
@@ -74,7 +74,7 @@ const JobFilters = ({
           />
           <div className="flex pt-1">-</div>
           <SalarySelect
-            id="max_salary"
+            elementId="max_salary"
             value={filters.maxSalary}
             onChange={(maxSalary) => {
               const newFilters = {
@@ -92,7 +92,7 @@ const JobFilters = ({
         <div>Skill:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <SkillSelect
-            id="skill"
+            elementId="skill"
             skillId={filters.skillId}
             onChange={(skillId) => {
               if (skillId === 0) {
@@ -106,7 +106,7 @@ const JobFilters = ({
         <div>Posted:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <CreatedSelect
-            id="created"
+            elementId="created"
             value={filters.created}
             onChange={(created) => {
               if (created === 'all') {

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { Skill, SkillVersion } from '../hooks/types';
+import type { Skill, SkillVersion } from '../types';
 
 // TODO redo these props, too confusing
 export type SkillVersionLinkProps = Pick<Skill, 'skill_category_id' | 'name'> &

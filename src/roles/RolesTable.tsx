@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import useRoles from '../hooks/useRoles';
 import Loading from '../Loading';
 import RoleLink from './RoleLink';
+import useRoles from './useRoles';
 
 type SortCol = 'name';
 type SortDir = 'up' | 'down';

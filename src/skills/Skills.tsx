@@ -2,10 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
 import FiltersContainer from '../FiltersContainer';
-import useSkills, {
-  type SearchFilters,
-  type SkillsParams
-} from '../hooks/useSkills';
 import PageNav from '../PageNav';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
@@ -14,6 +10,7 @@ import SkillDetails from '../skills/SkillDetails';
 import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
 import SkillFilters from './SkillFilters';
+import useSkills, { type SearchFilters, type SkillsParams } from './useSkills';
 
 const Skills = () => {
   const [page, setPage] = useState<number>(1);

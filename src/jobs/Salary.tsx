@@ -1,4 +1,4 @@
-import type { Job as DbJob } from '../hooks/types';
+import type { Job as DbJob } from '../types';
 
 export type SalaryProps = Pick<DbJob, 'salary_low' | 'salary_high'>;
 

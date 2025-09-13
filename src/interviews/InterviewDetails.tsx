@@ -1,4 +1,4 @@
-import useInterview from '../hooks/useInterview';
+import useInterview from './useInterview';
 
 const InterviewDetails = ({ id }: { id: number }) => {
   const { interview } = useInterview({ id });

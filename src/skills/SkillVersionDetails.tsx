@@ -1,6 +1,6 @@
 import Error from '../Error';
-import useSkill from '../hooks/useSkill';
-import useSkillVersion from '../hooks/useSkillVersion';
+import useSkill from './useSkill';
+import useSkillVersion from './useSkillVersion';
 
 const SkillVersionDetails = ({
   skillId,

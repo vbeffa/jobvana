@@ -1,6 +1,6 @@
 import Error from '../Error';
-import useJobs from '../hooks/useJobs';
 import JobsList from './JobsList';
+import useJobs from './useJobs';
 
 const JobsForCompany = ({ id }: { id: number }) => {
   // TODO fix this is paged, not correct if company has more than 10 jobs

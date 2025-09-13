@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { SkillCategory as DbSkillCategory } from '../types';
 import supabase from '../utils/supabase';
-import type { SkillCategory as DbSkillCategory } from './types';
 
 export type SkillCategory = DbSkillCategory & {
   childCategories: Array<SkillCategory>;

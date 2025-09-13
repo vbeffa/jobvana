@@ -1,7 +1,7 @@
-import type { Database } from '../utils/types';
-import type { SearchFilters as CompanySearchFilters } from './useCompanies';
-import type { SearchFilters as JobSearchFilters } from './useJobs';
-import type { SearchFilters as SkillSearchFilters } from './useSkills';
+import type { SearchFilters as CompanySearchFilters } from './companies/useCompanies';
+import type { SearchFilters as JobSearchFilters } from './jobs/useJobs';
+import type { SearchFilters as SkillSearchFilters } from './skills/useSkills';
+import type { Database } from './utils/types';
 
 export type Params<
   SearchFilters extends

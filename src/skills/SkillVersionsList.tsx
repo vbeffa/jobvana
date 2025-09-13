@@ -1,5 +1,5 @@
-import type { Skill, SkillVersion } from '../hooks/useSkill';
 import SkillVersionLink from './SkillVersionLink';
+import type { Skill, SkillVersion } from './useSkill';
 
 export type SkillVersionsListProps = {
   skillVersions: Array<SkillVersion>;

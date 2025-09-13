@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Error from '../Error';
-import useSkillCategories from '../hooks/useSkillCategories';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
 import ResourcesContainer from '../ResourcesContainer';
@@ -8,6 +7,7 @@ import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
 import SkillCategoryDetails from './SkillCategoryDetails';
 import SkillCategoryTree from './SkillCategoryTree';
+import useSkillCategories from './useSkillCategories';
 
 const SkillCategories = () => {
   const [view, setView] = useState<'list' | 'tree'>('list');

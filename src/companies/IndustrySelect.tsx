@@ -1,11 +1,11 @@
-import useIndustries from '../hooks/useIndustries';
+import useIndustries from './useIndustries';
 
 const IndustrySelect = ({
-  id,
+  elementId,
   industryId,
   onChange
 }: {
-  id: string;
+  elementId: string;
   industryId?: number;
   onChange: (industryId: number | undefined) => void;
 }) => {
@@ -13,7 +13,7 @@ const IndustrySelect = ({
 
   return (
     <select
-      id={id}
+      id={elementId}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={industryId}
       onChange={(e) =>

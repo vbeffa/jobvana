@@ -1,7 +1,7 @@
 import Error from '../Error';
-import type { SkillCategory } from '../hooks/types';
-import useSkillsForCategory from '../hooks/useSkillsForCategory';
+import type { SkillCategory } from '../types';
 import SkillCategoryLink from './SkillCategoryLink';
+import useSkillsForCategory from './useSkillsForCategory';
 
 export type SkillCategoryLinkWithNumSkillsProps = Pick<
   SkillCategory,

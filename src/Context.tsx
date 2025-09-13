@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { CreatedRange } from './hooks/useJobs';
+import type { CreatedRange } from './jobs/useJobs';
 
 export type JobvanaContextProps = {
   companiesContext: {
