@@ -12,11 +12,11 @@ const Header = () => {
   }, [location.pathname]);
 
   return (
-    <div className="bg-blue-300 w-full h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
+    <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
       {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
       {currPage === 'home' && (
         <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 content-center">
+          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
             Home
           </div>
         </div>
