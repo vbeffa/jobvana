@@ -3,14 +3,18 @@ import { useMemo } from 'react';
 import type {
   Company as DbCompany,
   CompanyAddress as DbCompanyAddress,
+  Job as DbJob,
   SkillVersion as DbSkillVersion
 } from '../types';
 import supabase from '../utils/supabase';
+
+export type CompanyJob = Pick<DbJob, 'id' | 'title'>;
 
 export type FullCompany = Company & {
   industryName: string;
   addresses: Array<CompanyAddress>;
   techStack: Array<SkillVersion>;
+  jobs: Array<CompanyJob>;
 };
 
 export type Company = Omit<DbCompany, 'created_at' | 'industry_id'>;
@@ -34,9 +38,11 @@ const useCompany = (id: number): CompanyH => {
           `id, name, description, num_employees,
           industries(name),
           company_addresses(id, city, street, zip, state, type),
-          company_tech_stacks(skill_versions(id, skill_id, version))`
+          company_tech_stacks(skill_versions(id, skill_id, version)),
+          jobs(id, title)`
         )
-        .filter('id', 'eq', id);
+        .filter('id', 'eq', id)
+        .filter('jobs.status', 'eq', 'open');
 
       // console.log(data);
       return { company: data?.[0], error };

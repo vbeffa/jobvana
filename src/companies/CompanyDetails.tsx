@@ -1,5 +1,5 @@
 import Error from '../Error';
-import JobsForCompany from '../jobs/JobsForCompany';
+import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
 import SkillVersionLink from '../skills/SkillVersionLink';
 import useSkillsLite from '../skills/useSkillsLite';
@@ -28,7 +28,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
     <>
       {isPlaceholderData && <LoadingModal />}
       <h2>{company.name}</h2>
-      <div className="flex flex-col">
+      <div className="flex flex-col h-12">
         <div>
           {company.industryName}, {company.num_employees} employees
         </div>
@@ -40,10 +40,10 @@ const CompanyDetails = ({ id }: { id: number }) => {
       </div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Description</h2>
-      <div>{company.description}</div>
+      <div className="h-12">{company.description}</div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Offices</h2>
-      <div>
+      <div className="h-12 overflow-scroll">
         {company.addresses.length > 0 && (
           <ul>
             {company.addresses.map((address) => (
@@ -57,7 +57,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
       </div>
       <hr className="my-4 border-gray-400 shadow" />
       <h2>Tech Stack</h2>
-      <div>
+      <div className="h-12">
         <ul>
           {company.techStack.map((techStackRow) => {
             const skill = findSkill(techStackRow.skill_id);
@@ -73,9 +73,9 @@ const CompanyDetails = ({ id }: { id: number }) => {
         </ul>
       </div>
       <hr className="my-4 border-gray-400 shadow" />
-      <h2>Jobs</h2>
+      <h2>Current Jobs</h2>
       <div>
-        <JobsForCompany id={company.id} />
+        <JobsList jobs={company.jobs} />
       </div>
     </>
   );
