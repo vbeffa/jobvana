@@ -1,6 +1,4 @@
-import ApplicationsList from '../applications/ApplicationsList';
 import CompanyLink from '../companies/CompanyLink';
-import TechStack from '../companies/TechStack';
 import Error from '../Error';
 import LoadingModal from '../LoadingModal';
 import Section from '../Section';
@@ -44,19 +42,14 @@ const JobDetails = ({ id }: { id: number }) => {
       <Section title="Roles">
         <JobRoles {...job} />
       </Section>
-      <Section title="Requirements">
-        <div className="pt-2">
-          <SkillsList skills={job.skills} />
-        </div>
+      <Section title="Skills" isLast={true}>
+        <SkillsList skills={job.skills} />
       </Section>
-      <Section title="Company Tech Stack">
-        <TechStack {...job.company} />
-      </Section>
-      <Section title="Applications" isLast={true}>
+      {/* <Section title="Applications" isLast={true}>
         {job.applications ? (
           <ApplicationsList applications={job.applications} />
         ) : null}
-      </Section>
+      </Section> */}
     </>
   );
 };

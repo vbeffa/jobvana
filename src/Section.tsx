@@ -14,7 +14,7 @@ const Section = ({
     <>
       <h2>{title}</h2>
       <div
-        className={`min-h-12 max-h-24 overflow-auto ${isLast ? 'mb-2' : ''}`}
+        className={`min-h-12 max-h-32 overflow-auto ${isLast ? 'mb-2' : ''}`}
       >
         {children}
       </div>

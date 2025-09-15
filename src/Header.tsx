@@ -31,14 +31,14 @@ const Header = () => {
         <Link to="/jobvana/companies">Companies</Link>
       )}
       {currPage === 'companies' && activeHeaderItem('Companies')}
-      {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
+      {/* {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
       {currPage === 'roles' && activeHeaderItem('Roles')}
       {currPage !== 'skills' && <Link to="/jobvana/skills">Skills</Link>}
       {currPage === 'skills' && activeHeaderItem('Skills')}
       {currPage !== 'skill_categories' && (
         <Link to="/jobvana/skill_categories">Skill Categories</Link>
       )}
-      {currPage === 'skill_categories' && activeHeaderItem('Skill Categories')}
+      {currPage === 'skill_categories' && activeHeaderItem('Skill Categories')} */}
       {/* {currPage !== 'applications' && (
         <Link to="/jobvana/applications">Applications</Link>
       )}

@@ -2,7 +2,6 @@ import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
 import Section from '../Section';
-import TechStack from './TechStack';
 import useCompany from './useCompany';
 import { findHeadquarters, isHeadquarters } from './utils';
 
@@ -48,9 +47,6 @@ const CompanyDetails = ({ id }: { id: number }) => {
             ))}
           </ul>
         ) : null}
-      </Section>
-      <Section title="Tech Stack">
-        <TechStack {...company} />
       </Section>
       <Section title="Current Jobs" isLast={true}>
         <JobsList jobs={company.jobs} />
