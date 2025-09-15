@@ -11,9 +11,7 @@ const RoleDetails = ({ id }: { id: number }) => {
 
   return (
     <>
-      <Section height={24} title={role.name}>
-        {role.description}
-      </Section>
+      <Section title={role.name}>{role.description}</Section>
       <Section title="Reference" isLast={true}>
         {role.reference && (
           <Link to={role.reference} target="_blank">

@@ -26,7 +26,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
   return (
     <>
       {isPlaceholderData && <LoadingModal />}
-      <Section height={12} title={company.name}>
+      <Section title={company.name}>
         <div>
           {company.industryName}, {company.num_employees} employees
         </div>

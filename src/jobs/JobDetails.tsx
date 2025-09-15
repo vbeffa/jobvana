@@ -28,7 +28,6 @@ const JobDetails = ({ id }: { id: number }) => {
     <>
       {isPlaceholderData && <LoadingModal />}
       <Section
-        height={12}
         title={
           <div className="flex justify-between">
             <div>{job.title}</div>
