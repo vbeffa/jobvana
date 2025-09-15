@@ -11,89 +11,38 @@ const Header = () => {
     setCurrPage(location.pathname.substring(9) || 'home');
   }, [location.pathname]);
 
+  const activeHeaderItem = (title: string) => (
+    <div>
+      <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
+        {title}
+      </div>
+    </div>
+  );
+
   return (
     <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
       {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
-      {currPage === 'home' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Home
-          </div>
-        </div>
-      )}
+      {currPage === 'home' && activeHeaderItem('Home')}
       {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
-      {currPage === 'about' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            About
-          </div>
-        </div>
-      )}
+      {currPage === 'about' && activeHeaderItem('About')}
       {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
-      {currPage === 'jobs' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Jobs
-          </div>
-        </div>
-      )}
+      {currPage === 'jobs' && activeHeaderItem('Jobs')}
       {currPage !== 'companies' && (
         <Link to="/jobvana/companies">Companies</Link>
       )}
-      {currPage === 'companies' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Companies
-          </div>
-        </div>
-      )}
+      {currPage === 'companies' && activeHeaderItem('Companies')}
       {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
-      {currPage === 'roles' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Roles
-          </div>
-        </div>
-      )}
-      {currPage !== 'skills' && (
-        <Link to="/jobvana/skills" search={undefined}>
-          Skills
-        </Link>
-      )}
-      {currPage === 'skills' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Skills
-          </div>
-        </div>
-      )}
+      {currPage === 'roles' && activeHeaderItem('Roles')}
+      {currPage !== 'skills' && <Link to="/jobvana/skills">Skills</Link>}
+      {currPage === 'skills' && activeHeaderItem('Skills')}
       {currPage !== 'skill_categories' && (
-        <Link to="/jobvana/skill_categories" search={undefined}>
-          Skill Categories
-        </Link>
+        <Link to="/jobvana/skill_categories">Skill Categories</Link>
       )}
-      {currPage === 'skill_categories' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Skill Categories
-          </div>
-        </div>
-      )}
+      {currPage === 'skill_categories' && activeHeaderItem('Skill Categories')}
       {/* {currPage !== 'applications' && (
-        <Link
-          to="/jobvana/applications"
-          onClick={() => setCurrPage('applications')}
-        >
-          Applications
-        </Link>
+        <Link to="/jobvana/applications">Applications</Link>
       )}
-      {currPage === 'applications' && (
-        <div>
-          <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
-            Applications
-          </div>
-        </div>
-      )} */}
+      {currPage === 'applications' && activeHeaderItem('Applications')} */}
     </div>
   );
 };
