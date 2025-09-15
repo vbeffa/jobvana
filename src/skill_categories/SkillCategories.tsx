@@ -23,7 +23,7 @@ const SkillCategories = () => {
     <div className="mx-4 relative">
       {error && <Error error={error} />}
       <h1>Skill Categories</h1>
-      <div className="absolute right-2 top-8">
+      <div className="absolute right-[12.5%] text-right w-[75%] min-w-[1100px] top-8">
         <input
           type="button"
           value={`${view === 'list' ? 'Switch to Tree View' : 'Switch to List View'}`}

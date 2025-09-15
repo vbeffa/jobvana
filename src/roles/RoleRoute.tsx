@@ -4,7 +4,11 @@ import RoleDetails from './RoleDetails';
 const RoleRoute = () => {
   const { id } = Route.useLoaderData();
 
-  return <RoleDetails id={id} />;
+  return (
+    <div className="mx-4 flex flex-col gap-2">
+      <RoleDetails id={id} />
+    </div>
+  );
 };
 
 export default RoleRoute;

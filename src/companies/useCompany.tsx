@@ -19,7 +19,10 @@ export type FullCompany = Company & {
 
 export type Company = Omit<DbCompany, 'created_at' | 'industry_id'>;
 export type CompanyAddress = Omit<DbCompanyAddress, 'company_id'>;
-export type SkillVersion = Pick<DbSkillVersion, 'id' | 'skill_id' | 'version'>;
+export type SkillVersion = Pick<
+  DbSkillVersion,
+  'id' | 'skill_id' | 'version' | 'ordinal'
+>;
 
 export type CompanyH = {
   company: FullCompany | undefined;
@@ -38,7 +41,7 @@ const useCompany = (id: number): CompanyH => {
           `id, name, description, num_employees,
           industries(name),
           company_addresses(id, city, street, zip, state, type),
-          company_tech_stacks(skill_versions(id, skill_id, version)),
+          company_tech_stacks(skill_versions(id, skill_id, version, ordinal)),
           jobs(id, title)`
         )
         .filter('id', 'eq', id)

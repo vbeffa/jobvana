@@ -4,7 +4,11 @@ import SkillCategoryDetails from './SkillCategoryDetails';
 const SkillCategoryRoute = () => {
   const { skillCategoryId } = Route.useLoaderData();
 
-  return <SkillCategoryDetails id={skillCategoryId} />;
+  return (
+    <div className="mx-4 flex flex-col gap-2">
+      <SkillCategoryDetails id={skillCategoryId} />
+    </div>
+  );
 };
 
 export default SkillCategoryRoute;

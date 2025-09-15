@@ -6,7 +6,7 @@ export type SkillsListProps = {
 
 const SkillsList = ({ skills }: SkillsListProps) => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="pt-2 flex flex-wrap gap-2">
       {skills.map((skill) => (
         <div key={skill.id}>
           <SkillLink skill={skill} />

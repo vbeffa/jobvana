@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import Section from '../Section';
 import useRole from './useRole';
 
 const RoleDetails = ({ id }: { id: number }) => {
@@ -9,19 +10,18 @@ const RoleDetails = ({ id }: { id: number }) => {
   }
 
   return (
-    <div className="mx-4 flex flex-col gap-2">
-      <h2>{role.name}</h2>
-      <div>{role.description}</div>
-      <hr className="my-4 border-gray-400 shadow" />
-      <h2>Reference</h2>
-      <div>
+    <>
+      <Section height={24} title={role.name}>
+        {role.description}
+      </Section>
+      <Section title="Reference" isLast={true}>
         {role.reference && (
           <Link to={role.reference} target="_blank">
             {role.reference}
           </Link>
         )}
-      </div>
-    </div>
+      </Section>
+    </>
   );
 };
 

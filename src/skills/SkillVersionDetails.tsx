@@ -25,7 +25,7 @@ const SkillVersionDetails = ({
   // const jobs = jobsForSkill(skillVersion.skill_id);
 
   return (
-    <div className="mx-4 flex flex-col gap-2">
+    <>
       {error && <Error error={error} />}
       {error2 && <Error error={error2} />}
       <h2>
@@ -52,7 +52,7 @@ const SkillVersionDetails = ({
           </a>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

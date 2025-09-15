@@ -1,14 +1,13 @@
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
-import SkillVersionLink from '../skills/SkillVersionLink';
-import useSkillsLite from '../skills/useSkillsLite';
+import Section from '../Section';
+import TechStack from './TechStack';
 import useCompany from './useCompany';
 import { findHeadquarters, isHeadquarters } from './utils';
 
 const CompanyDetails = ({ id }: { id: number }) => {
   const { company, error, isPlaceholderData, isPending } = useCompany(id);
-  const { findSkill } = useSkillsLite();
 
   if (error) {
     return <Error error={error} />;
@@ -27,8 +26,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
   return (
     <>
       {isPlaceholderData && <LoadingModal />}
-      <h2>{company.name}</h2>
-      <div className="flex flex-col h-12">
+      <Section height={12} title={company.name}>
         <div>
           {company.industryName}, {company.num_employees} employees
         </div>
@@ -37,14 +35,10 @@ const CompanyDetails = ({ id }: { id: number }) => {
             {hq.city}, {hq.state}
           </div>
         )}
-      </div>
-      <hr className="my-4 border-gray-400 shadow" />
-      <h2>Description</h2>
-      <div className="h-12">{company.description}</div>
-      <hr className="my-4 border-gray-400 shadow" />
-      <h2>Offices</h2>
-      <div className="h-12 overflow-scroll">
-        {company.addresses.length > 0 && (
+      </Section>
+      <Section title="Description">{company.description}</Section>
+      <Section title="Offices">
+        {company.addresses.length > 0 ? (
           <ul>
             {company.addresses.map((address) => (
               <li key={address.id}>
@@ -53,30 +47,14 @@ const CompanyDetails = ({ id }: { id: number }) => {
               </li>
             ))}
           </ul>
-        )}
-      </div>
-      <hr className="my-4 border-gray-400 shadow" />
-      <h2>Tech Stack</h2>
-      <div className="h-12">
-        <ul>
-          {company.techStack.map((techStackRow) => {
-            const skill = findSkill(techStackRow.skill_id);
-            if (!skill) {
-              return null;
-            }
-            return (
-              <li key={techStackRow.id}>
-                <SkillVersionLink {...skill} {...techStackRow} />
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <hr className="my-4 border-gray-400 shadow" />
-      <h2>Current Jobs</h2>
-      <div>
+        ) : null}
+      </Section>
+      <Section title="Tech Stack">
+        <TechStack {...company} />
+      </Section>
+      <Section title="Current Jobs" isLast={true}>
         <JobsList jobs={company.jobs} />
-      </div>
+      </Section>
     </>
   );
 };

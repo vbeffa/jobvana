@@ -5,7 +5,9 @@ const SkillVersion = () => {
   const { skillId, skillVersionId } = Route.useLoaderData();
 
   return (
-    <SkillVersionDetails skillId={skillId} skillVersionId={skillVersionId} />
+    <div className="mx-4 flex flex-col gap-2">
+      <SkillVersionDetails skillId={skillId} skillVersionId={skillVersionId} />
+    </div>
   );
 };
 

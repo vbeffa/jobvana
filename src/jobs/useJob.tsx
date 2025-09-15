@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { SkillVersion } from '../companies/useCompany';
 import type {
   Application,
   Company,
@@ -10,7 +11,7 @@ import type {
 import supabase from '../utils/supabase';
 
 export type FullJob = Job & {
-  company: Pick<Company, 'id' | 'name'>;
+  company: Pick<Company, 'id' | 'name'> & { techStack: Array<SkillVersion> };
   jobRoles: Array<JobRole>;
   skills: Array<Skill>;
   applications: Array<Pick<Application, 'status'>> | undefined;
@@ -38,7 +39,7 @@ const useJob = (id: number): JobH => {
         .from('jobs')
         .select(
           `created_at, description, salary_low, salary_high, title,
-          companies!inner(id, name),
+          companies!inner(id, name, company_tech_stacks(skill_versions(id, skill_id, version, ordinal))),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
           applications(status)`
@@ -58,7 +59,13 @@ const useJob = (id: number): JobH => {
     const job = data.job;
     return {
       ...job,
-      company: job.companies,
+      company: {
+        id: job.companies.id,
+        name: job.companies.name,
+        techStack: job.companies.company_tech_stacks.map(
+          (techStack) => techStack.skill_versions
+        )
+      },
       jobRoles: job.job_roles
     };
   }, [data?.job]);

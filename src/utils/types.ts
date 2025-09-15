@@ -493,7 +493,7 @@ export type Database = {
           notes: string | null
           ordinal: number
           reference: string | null
-          release_date: string | null
+          release_date: string
           skill_id: number
           version: string
         }
@@ -502,7 +502,7 @@ export type Database = {
           notes?: string | null
           ordinal: number
           reference?: string | null
-          release_date?: string | null
+          release_date: string
           skill_id: number
           version: string
         }
@@ -511,7 +511,7 @@ export type Database = {
           notes?: string | null
           ordinal?: number
           reference?: string | null
-          release_date?: string | null
+          release_date?: string
           skill_id?: number
           version?: string
         }
@@ -559,113 +559,6 @@ export type Database = {
             columns: ['skill_category_id']
             isOneToOne: false
             referencedRelation: 'skill_categories'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      skills_v2: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: number
-          name: string
-          reference: string | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name: string
-          reference?: string | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name?: string
-          reference?: string | null
-        }
-        Relationships: []
-      }
-      tool_versions: {
-        Row: {
-          id: number
-          notes: string | null
-          ordinal: number
-          reference: string | null
-          release_date: string | null
-          tool_id: number
-          version: string
-        }
-        Insert: {
-          id?: number
-          notes?: string | null
-          ordinal: number
-          reference?: string | null
-          release_date?: string | null
-          tool_id: number
-          version: string
-        }
-        Update: {
-          id?: number
-          notes?: string | null
-          ordinal?: number
-          reference?: string | null
-          release_date?: string | null
-          tool_id?: number
-          version?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'tool_versions_skill_id_fkey'
-            columns: ['tool_id']
-            isOneToOne: false
-            referencedRelation: 'skills'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'tool_versions_tool_id_fkey'
-            columns: ['tool_id']
-            isOneToOne: false
-            referencedRelation: 'tools'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      tools: {
-        Row: {
-          abbreviation: string | null
-          description: string | null
-          id: number
-          name: string
-          notes: string | null
-          reference: string | null
-          skill_v2_id: number | null
-        }
-        Insert: {
-          abbreviation?: string | null
-          description?: string | null
-          id?: number
-          name: string
-          notes?: string | null
-          reference?: string | null
-          skill_v2_id?: number | null
-        }
-        Update: {
-          abbreviation?: string | null
-          description?: string | null
-          id?: number
-          name?: string
-          notes?: string | null
-          reference?: string | null
-          skill_v2_id?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'tools_skill_v2_id_fkey'
-            columns: ['skill_v2_id']
-            isOneToOne: false
-            referencedRelation: 'skills_v2'
             referencedColumns: ['id']
           },
         ]

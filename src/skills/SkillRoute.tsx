@@ -4,7 +4,11 @@ import SkillDetails from './SkillDetails';
 const SkillRoute = () => {
   const { skillId } = Route.useLoaderData();
 
-  return <SkillDetails id={skillId} />;
+  return (
+    <div className="mx-4 flex flex-col gap-2">
+      <SkillDetails id={skillId} />
+    </div>
+  );
 };
 
 export default SkillRoute;
