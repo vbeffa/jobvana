@@ -26,13 +26,13 @@ const useApplications = (): Applications => {
       const { data } = await supabase
         .from('applications')
         .select(
-          '*, job_seekers!inner(*, users!inner(*)), jobs!inner(*, companies!inner(*))'
+          '*, job_seekers!inner(*, users_old!inner(*)), jobs!inner(*, companies!inner(*))'
         );
       return data;
     }
   });
 
-  const applications = useMemo(
+  const applications: Array<Application> | undefined = useMemo(
     () =>
       applicationsData
         ?.sort(
@@ -45,7 +45,7 @@ const useApplications = (): Applications => {
           company: applicationData.jobs.companies,
           jobSeeker: {
             ...applicationData.job_seekers,
-            user: applicationData.job_seekers.users
+            user: applicationData.job_seekers.users_old
           }
         })),
     [applicationsData]

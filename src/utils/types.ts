@@ -290,7 +290,15 @@ export type Database = {
           id?: number
           user_id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'job_seekers_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users_old'
+            referencedColumns: ['id']
+          },
+        ]
       }
       job_skill_versions: {
         Row: {

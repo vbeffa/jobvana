@@ -17,7 +17,7 @@ export type FullJob = Job & {
   applications: Array<Pick<Application, 'status'>> | undefined;
 };
 
-export type Job = Omit<DbJob, 'id' | 'company_id' | 'status'>;
+export type Job = Omit<DbJob, 'id' | 'company_id' | 'status' | 'user_id'>;
 export type Skill = Pick<
   DbSkill,
   'id' | 'skill_category_id' | 'name' | 'abbreviation'
