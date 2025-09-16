@@ -4,7 +4,7 @@ import { JobvanaContext } from './Context';
 
 const Header = () => {
   const location = useLocation();
-  const { loggedIn, logout } = useContext(JobvanaContext);
+  const { loggedIn, authContext, logout } = useContext(JobvanaContext);
   const [currPage, setCurrPage] = useState(
     () => location.pathname.substring(9) || 'home'
   );
@@ -31,12 +31,26 @@ const Header = () => {
           {currPage === 'about' && activeHeaderItem('About')}
           {loggedIn && (
             <>
-              {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
-              {currPage === 'jobs' && activeHeaderItem('Jobs')}
-              {currPage !== 'companies' && (
-                <Link to="/jobvana/companies">Companies</Link>
+              {authContext?.type === 'company' && (
+                <>
+                  {currPage !== 'companies' && (
+                    <Link to="/jobvana/companies/$id" params={{ id: '1' }}>
+                      My Company
+                    </Link>
+                  )}
+                  {currPage === 'companies' && activeHeaderItem('My Company')}
+                </>
               )}
-              {currPage === 'companies' && activeHeaderItem('Companies')}
+              {authContext?.type === 'job_seeker' && (
+                <>
+                  {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+                  {currPage === 'jobs' && activeHeaderItem('Jobs')}
+                  {currPage !== 'companies' && (
+                    <Link to="/jobvana/companies">Companies</Link>
+                  )}
+                  {currPage === 'companies' && activeHeaderItem('Companies')}
+                </>
+              )}
               <Link to="/jobvana" onClick={logout}>
                 Log out
               </Link>

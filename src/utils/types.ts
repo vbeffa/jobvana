@@ -64,6 +64,7 @@ export type Database = {
           industry_id: number
           name: string
           num_employees: number
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -72,6 +73,7 @@ export type Database = {
           industry_id: number
           name: string
           num_employees: number
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -80,6 +82,7 @@ export type Database = {
           industry_id?: number
           name?: string
           num_employees?: number
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -287,15 +290,7 @@ export type Database = {
           id?: number
           user_id?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: 'job_seekers_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       job_skill_versions: {
         Row: {
@@ -367,6 +362,7 @@ export type Database = {
           salary_low: number
           status: Database['public']['Enums']['job_status']
           title: string
+          user_id: string | null
         }
         Insert: {
           company_id: number
@@ -377,6 +373,7 @@ export type Database = {
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
           title: string
+          user_id?: string | null
         }
         Update: {
           company_id?: number
@@ -387,6 +384,7 @@ export type Database = {
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
           title?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -565,6 +563,21 @@ export type Database = {
       }
       users: {
         Row: {
+          type: Database['public']['Enums']['user_type']
+          user_id: string
+        }
+        Insert: {
+          type: Database['public']['Enums']['user_type']
+          user_id: string
+        }
+        Update: {
+          type?: Database['public']['Enums']['user_type']
+          user_id?: string
+        }
+        Relationships: []
+      }
+      users_old: {
+        Row: {
           created_at: string
           email: string
           first_name: string
@@ -601,6 +614,7 @@ export type Database = {
       address_type: 'headquarters' | 'office'
       application_status: 'accepted' | 'rejected'
       job_status: 'open' | 'filled' | 'closed'
+      user_type: 'company' | 'job_seeker'
     }
     CompositeTypes: {
       [_ in never]: never
@@ -731,6 +745,7 @@ export const Constants = {
       address_type: ['headquarters', 'office'],
       application_status: ['accepted', 'rejected'],
       job_status: ['open', 'filled', 'closed'],
+      user_type: ['company', 'job_seeker'],
     },
   },
 } as const

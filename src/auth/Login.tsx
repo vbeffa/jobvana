@@ -4,9 +4,10 @@ import Button from '../Button';
 import { JobvanaContext } from '../Context';
 import Error from '../Error';
 import supabase from '../utils/supabase';
+import { getSession, getUserType } from './utils';
 
 const Login = () => {
-  const { loggedIn } = useContext(JobvanaContext);
+  const { loggedIn, setAuthContext } = useContext(JobvanaContext);
   const [mode, setMode] = useState<'register' | 'login'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,11 +39,15 @@ const Login = () => {
       if (error) {
         setError(error);
       } else {
+        const userType = await getUserType(getSession()?.user.id);
         window.dispatchEvent(new Event('login'));
+        if (userType) {
+          setAuthContext({ type: userType });
+        }
       }
     }
     setLoginDisabled(false);
-  }, [email, mode, password]);
+  }, [email, mode, password, setAuthContext]);
 
   const activeModeStyle = 'border-b-3 border-b-blue-600';
 

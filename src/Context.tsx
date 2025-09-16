@@ -1,12 +1,10 @@
-import type { Session } from '@supabase/supabase-js';
 import { createContext } from 'react';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
 
 export type JobvanaContextProps = {
   authContext: {
-    session?: Session;
-    type?: 'company' | 'job_seeker';
+    type: 'company' | 'job_seeker';
   } | null;
   setAuthContext: (authContext: JobvanaContextProps['authContext']) => void;
   loggedIn?: boolean;
@@ -37,7 +35,7 @@ export type JobvanaContextProps = {
 };
 
 export const defaultContext: JobvanaContextProps = {
-  authContext: {},
+  authContext: null,
   setAuthContext: () => {},
   logout: () => {},
   companiesContext: {

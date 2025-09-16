@@ -23,7 +23,7 @@ export type FullCompany = Company & {
   jobs: Array<CompanyJob>;
 };
 
-export type Company = Omit<DbCompany, 'created_at' | 'industry_id'>;
+export type Company = Omit<DbCompany, 'created_at' | 'industry_id' | 'user_id'>;
 export type CompanyAddress = Omit<DbCompanyAddress, 'company_id'>;
 export type SkillVersion = Pick<
   DbSkillVersion,
