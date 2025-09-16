@@ -40,36 +40,42 @@ const Login = () => {
       if (error) {
         setError(error);
       } else {
-        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new Event('login'));
       }
     }
     setLoginDisabled(false);
   }, [email, mode, password]);
 
+  const activeModeStyle = 'border-b-3 border-b-blue-600';
+
   return (
-    <div className="mt-8">
+    <div className="mt-4">
       {loggedIn === false && (
         <>
           <div className="grid grid-cols-3 gap-y-2 w-72">
-            <div className="col-span-3 flex justify-center mb-2 gap-2">
-              <Link
-                to="."
-                onClick={() => {
-                  setError(null);
-                  setMode('register');
-                }}
-              >
-                Register
-              </Link>
-              <Link
-                to="."
-                onClick={() => {
-                  setError(null);
-                  setMode('login');
-                }}
-              >
-                Log In
-              </Link>
+            <div className="col-span-3 flex justify-center mb-2 gap-16">
+              <div className={mode === 'register' ? activeModeStyle : ''}>
+                <Link
+                  to="."
+                  onClick={() => {
+                    setError(null);
+                    setMode('register');
+                  }}
+                >
+                  Register
+                </Link>
+              </div>
+              <div className={mode === 'login' ? activeModeStyle : ''}>
+                <Link
+                  to="."
+                  onClick={() => {
+                    setError(null);
+                    setMode('login');
+                  }}
+                >
+                  Log In
+                </Link>
+              </div>
             </div>
             <label htmlFor="email" className="content-center">
               Email:

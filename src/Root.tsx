@@ -46,6 +46,8 @@ const Root = () => {
           refresh_token: session.refresh_token
         });
         setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
       }
     })();
   }, [isLoggedIn, session]);
@@ -55,9 +57,8 @@ const Root = () => {
     setLoggedIn(false);
   }, []);
 
-  window.addEventListener('storage', () => {
-    console.log('Change to local storage!');
-    setLoggedIn(isLoggedIn());
+  window.addEventListener('login', () => {
+    setLoggedIn(true);
   });
 
   return (
