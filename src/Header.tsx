@@ -13,8 +13,6 @@ const Header = () => {
     setCurrPage(location.pathname.substring(9) || 'home');
   }, [location.pathname]);
 
-  console.log(loggedIn);
-
   const activeHeaderItem = (title: string) => (
     <div>
       <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">

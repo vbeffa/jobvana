@@ -14,8 +14,6 @@ const Login = () => {
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  console.log(loggedIn);
-
   const doLogin = useCallback(async () => {
     console.log(email, password);
     setLoginDisabled(true);

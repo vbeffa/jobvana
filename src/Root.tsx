@@ -22,7 +22,6 @@ const Root = () => {
     JobvanaContextProps['jobsContext']
   >(defaultContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
-  console.log(loggedIn);
 
   const session = useMemo(() => {
     const authToken = window.localStorage.getItem(
