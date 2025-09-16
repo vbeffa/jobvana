@@ -11,7 +11,7 @@ const Section = ({
   isLast?: boolean;
 }) => {
   return (
-    <>
+    <div className="relative">
       <h2>{title}</h2>
       <div
         className={`min-h-12 max-h-32 overflow-auto ${isLast ? 'mb-2' : ''}`}
@@ -19,7 +19,7 @@ const Section = ({
         {children}
       </div>
       {!isLast && <hr className="my-4 border-gray-400 shadow" />}
-    </>
+    </div>
   );
 };
 

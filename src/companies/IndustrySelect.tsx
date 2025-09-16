@@ -3,10 +3,12 @@ import useIndustries from './useIndustries';
 const IndustrySelect = ({
   elementId,
   industryId,
+  showAll = true,
   onChange
 }: {
   elementId: string;
   industryId?: number;
+  showAll?: boolean;
   onChange: (industryId: number | undefined) => void;
 }) => {
   const { isPending, industries } = useIndustries();
@@ -25,7 +27,7 @@ const IndustrySelect = ({
           Loading...
         </option>
       )}
-      {!isPending && (
+      {!isPending && showAll && (
         <option key={0} value="">
           All
         </option>

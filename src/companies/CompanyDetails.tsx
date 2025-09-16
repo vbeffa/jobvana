@@ -1,12 +1,28 @@
+import _ from 'lodash';
+import { useCallback, useState } from 'react';
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
+import PillContainer from '../PillContainer';
 import Section from '../Section';
-import useCompany from './useCompany';
+import UpdatingModal from '../UpdatingModal';
+import IndustrySelect from './IndustrySelect';
+import SizeInput from './SizeInput';
+import useCompany, { type FullCompany } from './useCompany';
 import { findHeadquarters, isHeadquarters } from './utils';
 
 const CompanyDetails = ({ id }: { id: number }) => {
-  const { company, error, isPlaceholderData, isPending } = useCompany(id);
+  const [editMode, setEditMode] = useState(false);
+  const { company, update, error, isPlaceholderData, isPending } =
+    useCompany(id);
+  const [editCompany, setEditCompany] = useState<FullCompany>();
+
+  const updateCompany = useCallback(() => {
+    if (!editCompany) {
+      return;
+    }
+    update.mutate(editCompany);
+  }, [editCompany, update]);
 
   if (error) {
     return <Error error={error} />;
@@ -25,17 +41,112 @@ const CompanyDetails = ({ id }: { id: number }) => {
   return (
     <>
       {isPlaceholderData && <LoadingModal />}
+      {update.isPending && <UpdatingModal />}
       <Section title={company.name}>
-        <div>
-          {company.industryName}, {company.num_employees} employees
+        <div className="absolute right-0 top-0 flex flex-row gap-2">
+          {editMode && (
+            <input
+              type="button"
+              value="Cancel"
+              className="border-[0.5px] border-blue-500 text-blue-500"
+              onClick={() => setEditMode(false)}
+            />
+          )}
+          <input
+            type="button"
+            value={`${editMode ? 'Save' : 'Edit'}`}
+            className="border-[0.5px] border-blue-500 text-blue-500"
+            onClick={() =>
+              setEditMode((editMode) => {
+                if (!editMode) {
+                  setEditCompany(_.cloneDeep(company));
+                } else {
+                  updateCompany();
+                }
+                return !editMode;
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-row gap-1">
+          {!editMode && (
+            <div className="pt-1 flex flex-row gap-1">
+              <PillContainer>{company.industry.name}</PillContainer>
+              <div className="content-center">
+                {company.num_employees} employees
+              </div>
+            </div>
+          )}
+          {editMode && editCompany && (
+            <div className="pt-2 h-[38px] flex flex-row gap-2">
+              <IndustrySelect
+                elementId="edit_industry"
+                industryId={editCompany.industry.id}
+                showAll={false}
+                onChange={(industryId) => {
+                  if (industryId) {
+                    setEditCompany((company) =>
+                      company
+                        ? {
+                            ...company,
+                            industry: {
+                              id: industryId,
+                              name: company.industry.name
+                            }
+                          }
+                        : undefined
+                    );
+                  }
+                }}
+              />
+              <div className="content-center">Size:</div>
+              <SizeInput
+                elementId="size"
+                size={editCompany.num_employees}
+                onChange={(size: number) => {
+                  setEditCompany((company) =>
+                    company
+                      ? {
+                          ...company,
+                          num_employees: size
+                        }
+                      : undefined
+                  );
+                }}
+              />
+            </div>
+          )}
         </div>
         {hq && (
-          <div>
+          <div className="pt-1">
             {hq.city}, {hq.state}
           </div>
         )}
       </Section>
-      <Section title="Description">{company.description}</Section>
+      <Section title="Description">
+        <div>
+          {!editMode && <div className="h-[87px]">{company.description}</div>}
+          {editMode && editCompany && (
+            <textarea
+              id="description"
+              className="p-1 border-[0.5px]"
+              value={editCompany.description ?? ''}
+              onChange={(e) => {
+                setEditCompany((company) =>
+                  company
+                    ? {
+                        ...company,
+                        description: e.target.value
+                      }
+                    : undefined
+                );
+              }}
+              rows={3}
+              cols={80}
+            />
+          )}
+        </div>
+      </Section>
       <Section title="Offices">
         {company.addresses.length > 0 ? (
           <ul>

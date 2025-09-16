@@ -1,10 +1,7 @@
 import Filter from '../Filter';
 import IndustrySelect from './IndustrySelect';
-import {
-  MAX_COMPANY_SIZE,
-  MIN_COMPANY_SIZE,
-  type SearchFilters
-} from './useCompanies';
+import SizeInput from './SizeInput';
+import { type SearchFilters } from './useCompanies';
 
 const CompanyFilters = ({
   filters,
@@ -29,39 +26,19 @@ const CompanyFilters = ({
       </div>
       <div>Size:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
-        <input
-          id="min_size"
-          type="number"
-          step={1}
-          min={MIN_COMPANY_SIZE}
-          max={MAX_COMPANY_SIZE}
-          className="border h-8 pr-1 text-center
-                     border-gray-500 rounded-lg"
-          value={filters.minSize}
-          onChange={(e) => {
-            let minSize = parseInt(e.target.value);
-            if (isNaN(minSize) || minSize < MIN_COMPANY_SIZE) {
-              minSize = MIN_COMPANY_SIZE;
-            }
-            setFilters({ ...filters, minSize });
+        <SizeInput
+          elementId="min_size"
+          size={filters.minSize}
+          onChange={(size: number) => {
+            setFilters({ ...filters, minSize: size });
           }}
         />
         <div className="flex pt-1">-</div>
-        <input
-          id="max_size"
-          type="number"
-          step={1}
-          min={MIN_COMPANY_SIZE}
-          max={MAX_COMPANY_SIZE}
-          className="border h-8 pr-1 text-center
-                     border-gray-500 rounded-lg"
-          value={filters.maxSize}
-          onChange={(e) => {
-            let maxSize = parseInt(e.target.value);
-            if (isNaN(maxSize) || maxSize > MAX_COMPANY_SIZE) {
-              maxSize = MAX_COMPANY_SIZE;
-            }
-            setFilters({ ...filters, maxSize });
+        <SizeInput
+          elementId="max_size"
+          size={filters.maxSize}
+          onChange={(size: number) => {
+            setFilters({ ...filters, maxSize: size });
           }}
         />
       </div>
