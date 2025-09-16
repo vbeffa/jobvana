@@ -1,16 +1,16 @@
-import type { Session, User } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 import { createContext } from 'react';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
 
 export type JobvanaContextProps = {
   authContext: {
-    user?: User;
     session?: Session;
     type?: 'company' | 'job_seeker';
   } | null;
   setAuthContext: (authContext: JobvanaContextProps['authContext']) => void;
-  isLoggedIn: (authContext: JobvanaContextProps['authContext']) => boolean;
+  loggedIn?: boolean;
+  logout: () => void;
   companiesContext: {
     page: number;
     companyId?: number;
@@ -39,12 +39,7 @@ export type JobvanaContextProps = {
 export const defaultContext: JobvanaContextProps = {
   authContext: {},
   setAuthContext: () => {},
-  isLoggedIn: (authContext: JobvanaContextProps['authContext']) => {
-    return (
-      authContext?.session?.expires_at !== undefined &&
-      authContext?.session.expires_at * 1000 > Date.now()
-    );
-  },
+  logout: () => {},
   companiesContext: {
     page: 1,
     minSize: MIN_COMPANY_SIZE,

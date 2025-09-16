@@ -6,15 +6,15 @@ import Error from '../Error';
 import supabase from '../utils/supabase';
 
 const Login = () => {
-  const { authContext, setAuthContext, isLoggedIn } =
-    useContext(JobvanaContext);
+  const { loggedIn } = useContext(JobvanaContext);
   const [mode, setMode] = useState<'register' | 'login'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  console.log(authContext);
+
+  console.log(loggedIn);
 
   const doLogin = useCallback(async () => {
     console.log(email, password);
@@ -40,15 +40,15 @@ const Login = () => {
       if (error) {
         setError(error);
       } else {
-        setAuthContext({ ...data });
+        window.dispatchEvent(new Event('storage'));
       }
     }
     setLoginDisabled(false);
-  }, [email, mode, password, setAuthContext]);
+  }, [email, mode, password]);
 
   return (
     <div className="mt-8">
-      {!isLoggedIn(authContext) && (
+      {loggedIn === false && (
         <>
           <div className="grid grid-cols-3 gap-y-2 w-72">
             <div className="col-span-3 flex justify-center mb-2 gap-2">

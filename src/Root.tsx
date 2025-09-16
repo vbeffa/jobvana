@@ -1,11 +1,15 @@
+import type { Session } from '@supabase/supabase-js';
 import { Outlet } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   type JobvanaContextProps,
   defaultContext,
   JobvanaContext
 } from './Context';
 import Header from './Header';
+import supabase from './utils/supabase';
+
+const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
 
 const Root = () => {
   const [authContext, setAuthContext] = useState<
@@ -17,13 +21,52 @@ const Root = () => {
   const [jobsContext, setJobsContext] = useState<
     JobvanaContextProps['jobsContext']
   >(defaultContext.jobsContext);
+  const [loggedIn, setLoggedIn] = useState<boolean>();
+  console.log(loggedIn);
+
+  const session = useMemo(() => {
+    const authToken = window.localStorage.getItem(
+      `sb-${PROJECT_ID}-auth-token`
+    );
+    return authToken ? (JSON.parse(authToken) as Session) : null;
+  }, []);
+
+  const isLoggedIn = useCallback(() => {
+    return (
+      session !== null &&
+      session.expires_at !== undefined &&
+      session.expires_at * 1000 > Date.now()
+    );
+  }, [session]);
+
+  useEffect(() => {
+    (async () => {
+      if (session !== null && isLoggedIn()) {
+        await supabase.auth.refreshSession({
+          refresh_token: session.refresh_token
+        });
+        setLoggedIn(true);
+      }
+    })();
+  }, [isLoggedIn, session]);
+
+  const logout = useCallback(() => {
+    supabase.auth.signOut({ scope: 'local' });
+    setLoggedIn(false);
+  }, []);
+
+  window.addEventListener('storage', () => {
+    console.log('Change to local storage!');
+    setLoggedIn(isLoggedIn());
+  });
 
   return (
     <JobvanaContext.Provider
       value={{
         authContext,
         setAuthContext,
-        isLoggedIn: defaultContext.isLoggedIn,
+        loggedIn,
+        logout,
         companiesContext,
         setCompaniesContext,
         jobsContext,
