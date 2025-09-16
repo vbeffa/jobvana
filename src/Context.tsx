@@ -2,11 +2,9 @@ import { createContext } from 'react';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
 
+export type UserType = 'company' | 'job_seeker';
+
 export type JobvanaContextProps = {
-  authContext: {
-    type: 'company' | 'job_seeker';
-  } | null;
-  setAuthContext: (authContext: JobvanaContextProps['authContext']) => void;
   loggedIn?: boolean;
   logout: () => void;
   companiesContext: {
@@ -35,8 +33,6 @@ export type JobvanaContextProps = {
 };
 
 export const defaultContext: JobvanaContextProps = {
-  authContext: null,
-  setAuthContext: () => {},
   logout: () => {},
   companiesContext: {
     page: 1,

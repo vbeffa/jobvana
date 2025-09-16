@@ -1,10 +1,11 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { useContext, useEffect, useState } from 'react';
 import { JobvanaContext } from './Context';
+import { getUserType } from './auth/utils';
 
 const Header = () => {
   const location = useLocation();
-  const { loggedIn, authContext, logout } = useContext(JobvanaContext);
+  const { loggedIn, logout } = useContext(JobvanaContext);
   const [currPage, setCurrPage] = useState(
     () => location.pathname.substring(9) || 'home'
   );
@@ -12,6 +13,8 @@ const Header = () => {
   useEffect(() => {
     setCurrPage(location.pathname.substring(9) || 'home');
   }, [location.pathname]);
+
+  const userType = getUserType();
 
   const activeHeaderItem = (title: string) => (
     <div>
@@ -23,7 +26,7 @@ const Header = () => {
 
   return (
     <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
-      {loggedIn !== undefined && (
+      {loggedIn !== undefined && userType && (
         <>
           {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
           {currPage === 'home' && activeHeaderItem('Home')}
@@ -31,7 +34,7 @@ const Header = () => {
           {currPage === 'about' && activeHeaderItem('About')}
           {loggedIn && (
             <>
-              {authContext?.type === 'company' && (
+              {userType === 'company' && (
                 <>
                   {currPage !== 'companies' && (
                     <Link to="/jobvana/companies/$id" params={{ id: '1' }}>
@@ -41,7 +44,7 @@ const Header = () => {
                   {currPage === 'companies' && activeHeaderItem('My Company')}
                 </>
               )}
-              {authContext?.type === 'job_seeker' && (
+              {userType === 'job_seeker' && (
                 <>
                   {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
                   {currPage === 'jobs' && activeHeaderItem('Jobs')}

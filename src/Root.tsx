@@ -1,6 +1,6 @@
 import { Outlet } from '@tanstack/react-router';
-import { useCallback, useEffect, useState } from 'react';
-import { getSession } from './auth/utils';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getSession, refreshSession } from './auth/utils';
 import {
   type JobvanaContextProps,
   defaultContext,
@@ -12,9 +12,6 @@ import supabase from './utils/supabase';
 export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
 
 const Root = () => {
-  const [authContext, setAuthContext] = useState<
-    JobvanaContextProps['authContext']
-  >(defaultContext.authContext);
   const [companiesContext, setCompaniesContext] = useState<
     JobvanaContextProps['companiesContext']
   >(defaultContext.companiesContext);
@@ -25,7 +22,7 @@ const Root = () => {
 
   const session = getSession();
 
-  const isLoggedIn = useCallback(() => {
+  const isLoggedIn = useMemo(() => {
     return (
       session !== null &&
       session.expires_at !== undefined &&
@@ -34,17 +31,16 @@ const Root = () => {
   }, [session]);
 
   useEffect(() => {
-    (async () => {
-      if (session !== null && isLoggedIn()) {
-        await supabase.auth.refreshSession({
-          refresh_token: session.refresh_token
-        });
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-    })();
+    setLoggedIn(session !== null && isLoggedIn);
   }, [isLoggedIn, session]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      refreshSession();
+    }
+  }, [isLoggedIn]);
+
+  // console.log(isLoggedIn);
 
   const logout = useCallback(async () => {
     await supabase.auth.signOut({ scope: 'local' });
@@ -58,8 +54,6 @@ const Root = () => {
   return (
     <JobvanaContext.Provider
       value={{
-        authContext,
-        setAuthContext,
         loggedIn,
         logout,
         companiesContext,

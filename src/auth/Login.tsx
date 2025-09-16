@@ -1,16 +1,21 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useContext, useState } from 'react';
 import Button from '../Button';
-import { JobvanaContext } from '../Context';
+import { JobvanaContext, type UserType } from '../Context';
 import Error from '../Error';
+import TextInput from '../TextInput';
 import supabase from '../utils/supabase';
-import { getSession, getUserType } from './utils';
 
 const Login = () => {
-  const { loggedIn, setAuthContext } = useContext(JobvanaContext);
+  const { loggedIn } = useContext(JobvanaContext);
   const [mode, setMode] = useState<'register' | 'login'>('login');
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userType, setUserType] = useState<UserType | null>(null);
+
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -22,7 +27,14 @@ const Login = () => {
     if (mode === 'register') {
       const { data, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            type: userType
+          }
+        }
       });
       console.log(data, error);
       if (error) {
@@ -39,15 +51,11 @@ const Login = () => {
       if (error) {
         setError(error);
       } else {
-        const userType = await getUserType(getSession()?.user.id);
         window.dispatchEvent(new Event('login'));
-        if (userType) {
-          setAuthContext({ type: userType });
-        }
       }
     }
     setLoginDisabled(false);
-  }, [email, mode, password, setAuthContext]);
+  }, [email, firstName, lastName, mode, password, userType]);
 
   const activeModeStyle = 'border-b-3 border-b-blue-600';
 
@@ -80,32 +88,77 @@ const Login = () => {
                 </Link>
               </div>
             </div>
-            <label htmlFor="email" className="content-center">
-              Email:
-            </label>
-            <input
+            <TextInput
               id="email"
-              type="text"
+              label="Email"
               autoComplete="email"
-              className="p-1 border-[0.5px] col-span-2"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(email) => setEmail(email)}
             />
-            <label htmlFor="password" className="content-center">
-              Password:
-            </label>
-            <input
+            <TextInput
               id="password"
+              label="Password"
               type="password"
               autoComplete={
                 mode === 'register' ? 'new-password' : 'current-password'
               }
-              className="p-1 border-[0.5px] col-span-2"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(password) => setPassword(password)}
             />
+            {mode === 'register' && (
+              <>
+                <TextInput
+                  id="first_name"
+                  label="First name"
+                  autoComplete="given-name"
+                  onChange={setFirstName}
+                />
+                <TextInput
+                  id="last_name"
+                  label="Last name"
+                  autoComplete="family-name"
+                  onChange={setLastName}
+                />
+                <div></div>
+                <div className="col-span-2 flex justify-start mt-2 gap-2">
+                  <input
+                    id="company_checkbox"
+                    name="registration_type"
+                    type="radio"
+                    onClick={() => setUserType('company')}
+                  />
+                  <label htmlFor="company_checkbox" className="content-center">
+                    I represent a company
+                  </label>
+                </div>
+                <div></div>
+                <div className="col-span-2 flex justify-start mb-2 gap-2">
+                  <input
+                    id="job_seeker_checkbox"
+                    name="registration_type"
+                    type="radio"
+                    onClick={() => setUserType('job_seeker')}
+                  />
+                  <label
+                    htmlFor="job_seeker_checkbox"
+                    className="content-center"
+                  >
+                    I am a job seeker
+                  </label>
+                </div>
+              </>
+            )}
             <div className="col-span-3 flex justify-center mt-2">
               <Button
                 label={mode === 'register' ? 'Sign Up' : 'Log In'}
-                disabled={loginDisabled}
+                disabled={
+                  mode === 'register'
+                    ? !email ||
+                      !password ||
+                      !firstName ||
+                      !lastName ||
+                      !userType ||
+                      loginDisabled
+                    : loginDisabled
+                }
                 onClick={doLogin}
               />
             </div>

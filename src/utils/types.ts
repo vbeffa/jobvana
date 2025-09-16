@@ -569,21 +569,6 @@ export type Database = {
           },
         ]
       }
-      users: {
-        Row: {
-          type: Database['public']['Enums']['user_type']
-          user_id: string
-        }
-        Insert: {
-          type: Database['public']['Enums']['user_type']
-          user_id: string
-        }
-        Update: {
-          type?: Database['public']['Enums']['user_type']
-          user_id?: string
-        }
-        Relationships: []
-      }
       users_old: {
         Row: {
           created_at: string
@@ -605,6 +590,21 @@ export type Database = {
           first_name?: string
           id?: number
           last_name?: string
+        }
+        Relationships: []
+      }
+      users_old_2: {
+        Row: {
+          type: Database['public']['Enums']['user_type']
+          user_id: string
+        }
+        Insert: {
+          type: Database['public']['Enums']['user_type']
+          user_id: string
+        }
+        Update: {
+          type?: Database['public']['Enums']['user_type']
+          user_id?: string
         }
         Relationships: []
       }

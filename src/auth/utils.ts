@@ -1,4 +1,5 @@
 import type { Session } from '@supabase/supabase-js';
+import type { UserType } from '../Context';
 import { PROJECT_ID } from '../Root';
 import supabase from '../utils/supabase';
 
@@ -7,15 +8,43 @@ const getSession = () => {
   return authToken ? (JSON.parse(authToken) as Session) : null;
 };
 
-const getUserType = async (userId?: string) => {
-  if (!userId) {
-    return undefined;
-  }
-  const { data } = await supabase
-    .from('users')
-    .select('type')
-    .filter('user_id', 'eq', userId);
-  return data?.[0].type;
+const isStale = (seconds: number) => {
+  const session = getSession();
+  return (
+    session !== null &&
+    session.expires_at !== undefined &&
+    Date.now() - (session.expires_at - session.expires_in) * 1000 >
+      seconds * 1000
+  );
 };
 
-export { getSession, getUserType };
+const getUserType = (): UserType | undefined => {
+  const session = getSession();
+
+  return session?.user.user_metadata.type as UserType;
+};
+
+// refresh session every five minutes, checking if stale every five seconds
+const refreshSession = async () => {
+  // console.log('refreshing session');
+  window.setTimeout(() => refreshSession(), 1000 * 5);
+
+  const session = getSession();
+  if (session === null) {
+    return;
+  }
+
+  if (!isStale(300)) {
+    // console.log('not stale');
+    return;
+  }
+
+  const authResponse = await supabase.auth.refreshSession({
+    refresh_token: session.refresh_token
+  });
+  if (authResponse.error) {
+    console.log(authResponse.error);
+  }
+};
+
+export { getSession, getUserType, refreshSession };
