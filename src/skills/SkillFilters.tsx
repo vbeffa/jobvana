@@ -26,7 +26,7 @@ const SkillFilters = ({
       <div>Category:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
         <SkillCategorySelect
-          elementId="role"
+          id="role"
           skillCategoryId={filters.skillCategoryId}
           onChange={(skillCategoryId) => {
             if (!skillCategoryId) {

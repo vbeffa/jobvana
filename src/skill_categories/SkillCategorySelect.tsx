@@ -1,11 +1,11 @@
 import useSkillCategories from './useSkillCategories';
 
 const SkillCategorySelect = ({
-  elementId,
+  id,
   skillCategoryId,
   onChange
 }: {
-  elementId: string;
+  id: string;
   skillCategoryId?: number;
   onChange: (skillId: number) => void;
 }) => {
@@ -13,7 +13,7 @@ const SkillCategorySelect = ({
 
   return (
     <select
-      id={elementId}
+      id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={skillCategoryId}
       onChange={(e) => onChange(parseInt(e.target.value))}

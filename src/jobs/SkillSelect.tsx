@@ -1,11 +1,11 @@
 import useSkillsLite from '../skills/useSkillsLite';
 
 const SkillSelect = ({
-  elementId,
+  id,
   skillId,
   onChange
 }: {
-  elementId: string;
+  id: string;
   skillId?: number;
   onChange: (skillId: number) => void;
 }) => {
@@ -13,7 +13,7 @@ const SkillSelect = ({
 
   return (
     <select
-      id={elementId}
+      id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={skillId}
       onChange={(e) => onChange(parseInt(e.target.value))}

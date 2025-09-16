@@ -1,17 +1,17 @@
 import type { CreatedRange } from '../jobs/useJobs';
 
 const CreatedSelect = ({
-  elementId,
+  id,
   value,
   onChange
 }: {
-  elementId: string;
+  id: string;
   value?: CreatedRange;
   onChange: (value: CreatedRange) => void;
 }) => {
   return (
     <select
-      id={elementId}
+      id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={value}
       onChange={(e) => onChange(e.target.value as CreatedRange)}

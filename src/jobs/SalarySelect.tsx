@@ -4,17 +4,17 @@ import { MAX_SALARY, MIN_SALARY } from './useJobs';
 const salaries = _.range(MIN_SALARY, MAX_SALARY + 1, 10000);
 
 const SalarySelect = ({
-  elementId,
+  id,
   value,
   onChange
 }: {
-  elementId: string;
+  id: string;
   value?: number;
   onChange: (salary: number) => void;
 }) => {
   return (
     <select
-      id={elementId}
+      id={id}
       className="border border-gray-500 rounded-lg h-8 px-2 py-0.5"
       value={value}
       onChange={(e) => onChange(parseInt(e.target.value))}

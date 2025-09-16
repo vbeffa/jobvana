@@ -1,17 +1,17 @@
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './useCompanies';
 
 const SizeInput = ({
-  elementId,
+  id,
   size,
   onChange
 }: {
-  elementId: string;
+  id: string;
   size?: number;
   onChange: (size: number) => void;
 }) => {
   return (
     <input
-      id={elementId}
+      id={id}
       type="number"
       step={1}
       min={MIN_COMPANY_SIZE}

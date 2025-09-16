@@ -1,11 +1,11 @@
 import useRoles from '../roles/useRoles';
 
 const RoleSelect = ({
-  elementId,
+  id,
   roleId,
   onChange
 }: {
-  elementId: string;
+  id: string;
   roleId?: number;
   onChange: (roleId: number) => void;
 }) => {
@@ -13,7 +13,7 @@ const RoleSelect = ({
 
   return (
     <select
-      id={elementId}
+      id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={roleId}
       onChange={(e) => onChange(parseInt(e.target.value))}

@@ -74,7 +74,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
           {editMode && editCompany && (
             <div className="pt-2 h-[38px] flex flex-row gap-2">
               <IndustrySelect
-                elementId="edit_industry"
+                id="edit_industry"
                 industryId={editCompany.industry.id}
                 showAll={false}
                 onChange={(industryId) => {
@@ -95,7 +95,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
               />
               <div className="content-center">Size:</div>
               <SizeInput
-                elementId="size"
+                id="size"
                 size={editCompany.num_employees}
                 onChange={(size: number) => {
                   setEditCompany((company) =>

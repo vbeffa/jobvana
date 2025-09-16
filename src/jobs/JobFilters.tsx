@@ -42,7 +42,7 @@ const JobFilters = ({
         <div>Role:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <RoleSelect
-            elementId="role"
+            id="role"
             roleId={filters.roleId}
             onChange={(roleId) => {
               if (!roleId) {
@@ -58,7 +58,7 @@ const JobFilters = ({
         <div>Salary Range:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <SalarySelect
-            elementId="min_salary"
+            id="min_salary"
             value={filters.minSalary}
             onChange={(minSalary) => {
               const newFilters = {
@@ -74,7 +74,7 @@ const JobFilters = ({
           />
           <div className="flex pt-1">-</div>
           <SalarySelect
-            elementId="max_salary"
+            id="max_salary"
             value={filters.maxSalary}
             onChange={(maxSalary) => {
               const newFilters = {
@@ -92,7 +92,7 @@ const JobFilters = ({
         <div>Skill:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <SkillSelect
-            elementId="skill"
+            id="skill"
             skillId={filters.skillId}
             onChange={(skillId) => {
               if (skillId === 0) {
@@ -106,7 +106,7 @@ const JobFilters = ({
         <div>Posted:</div>
         <div className="col-span-2 flex flex-row gap-x-2">
           <CreatedSelect
-            elementId="created"
+            id="created"
             value={filters.created}
             onChange={(created) => {
               if (created === 'all') {

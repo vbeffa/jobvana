@@ -27,7 +27,7 @@ const CompanyFilters = ({
       <div>Size:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
         <SizeInput
-          elementId="min_size"
+          id="min_size"
           size={filters.minSize}
           onChange={(size: number) => {
             setFilters({ ...filters, minSize: size });
@@ -35,7 +35,7 @@ const CompanyFilters = ({
         />
         <div className="flex pt-1">-</div>
         <SizeInput
-          elementId="max_size"
+          id="max_size"
           size={filters.maxSize}
           onChange={(size: number) => {
             setFilters({ ...filters, maxSize: size });
@@ -45,7 +45,7 @@ const CompanyFilters = ({
       <div>Industry:</div>
       <div className="col-span-2">
         <IndustrySelect
-          elementId="industry"
+          id="industry"
           industryId={filters.industryId}
           onChange={(industryId) => {
             setFilters({ ...filters, industryId });

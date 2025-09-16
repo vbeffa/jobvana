@@ -1,12 +1,12 @@
 import useIndustries from './useIndustries';
 
 const IndustrySelect = ({
-  elementId,
+  id,
   industryId,
   showAll = true,
   onChange
 }: {
-  elementId: string;
+  id: string;
   industryId?: number;
   showAll?: boolean;
   onChange: (industryId: number | undefined) => void;
@@ -15,7 +15,7 @@ const IndustrySelect = ({
 
   return (
     <select
-      id={elementId}
+      id={id}
       className="border border-gray-500 rounded-lg h-8 w-60 px-2 py-0.5"
       value={industryId}
       onChange={(e) =>
