@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
+import Button from '../Button';
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
@@ -45,17 +46,10 @@ const CompanyDetails = ({ id }: { id: number }) => {
       <Section title={company.name}>
         <div className="absolute right-0 top-0 flex flex-row gap-2">
           {editMode && (
-            <input
-              type="button"
-              value="Cancel"
-              className="border-[0.5px] border-blue-500 text-blue-500"
-              onClick={() => setEditMode(false)}
-            />
+            <Button label="Cancel" onClick={() => setEditMode(false)} />
           )}
-          <input
-            type="button"
-            value={`${editMode ? 'Save' : 'Edit'}`}
-            className="border-[0.5px] border-blue-500 text-blue-500"
+          <Button
+            label={`${editMode ? 'Save' : 'Edit'}`}
             onClick={() =>
               setEditMode((editMode) => {
                 if (!editMode) {

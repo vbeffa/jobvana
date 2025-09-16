@@ -76,7 +76,6 @@ h2 {
 input[type=button] {
   /* border: 1px solid black; */
   padding: 2px 6px 2px 6px;
-  cursor: pointer;
 }
 
 table th, td {

@@ -1,8 +1,16 @@
+import type { Session, User } from '@supabase/supabase-js';
 import { createContext } from 'react';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
 
 export type JobvanaContextProps = {
+  authContext: {
+    user?: User;
+    session?: Session;
+    type?: 'company' | 'job_seeker';
+  } | null;
+  setAuthContext: (authContext: JobvanaContextProps['authContext']) => void;
+  isLoggedIn: (authContext: JobvanaContextProps['authContext']) => boolean;
   companiesContext: {
     page: number;
     companyId?: number;
@@ -11,7 +19,9 @@ export type JobvanaContextProps = {
     maxSize: number;
     industryId?: number;
   };
-  setCompaniesContext: (props: JobvanaContextProps['companiesContext']) => void;
+  setCompaniesContext: (
+    companiesContext: JobvanaContextProps['companiesContext']
+  ) => void;
   jobsContext: {
     page: number;
     jobId?: number;
@@ -23,10 +33,18 @@ export type JobvanaContextProps = {
     skillId?: number;
     created?: CreatedRange;
   };
-  setJobsContext: (props: JobvanaContextProps['jobsContext']) => void;
+  setJobsContext: (jobsContext: JobvanaContextProps['jobsContext']) => void;
 };
 
-export const defaultContext = {
+export const defaultContext: JobvanaContextProps = {
+  authContext: {},
+  setAuthContext: () => {},
+  isLoggedIn: (authContext: JobvanaContextProps['authContext']) => {
+    return (
+      authContext?.session?.expires_at !== undefined &&
+      authContext?.session.expires_at * 1000 > Date.now()
+    );
+  },
   companiesContext: {
     page: 1,
     minSize: MIN_COMPANY_SIZE,

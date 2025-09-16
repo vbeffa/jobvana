@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Button from '../Button';
 import Error from '../Error';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';
@@ -24,10 +25,8 @@ const SkillCategories = () => {
       {error && <Error error={error} />}
       <h1>Skill Categories</h1>
       <div className="absolute right-[12.5%] text-right w-[75%] min-w-[1100px] top-8">
-        <input
-          type="button"
-          value={`${view === 'list' ? 'Switch to Tree View' : 'Switch to List View'}`}
-          className="border-[0.5px] border-blue-500 text-blue-500"
+        <Button
+          label={`${view === 'list' ? 'Switch to Tree View' : 'Switch to List View'}`}
           onClick={() => setView((view) => (view === 'list' ? 'tree' : 'list'))}
         />
       </div>
@@ -64,10 +63,8 @@ const SkillCategories = () => {
       {view === 'tree' && (
         <div className="w-[50%]">
           <div className="pl-12">
-            <input
-              type="button"
-              value={`${open ? 'Collapse Tree' : 'Expand Tree'}`}
-              className="border-[0.5px] border-blue-500 text-blue-500"
+            <Button
+              label={`${open ? 'Collapse Tree' : 'Expand Tree'}`}
               onClick={() => setOpen((open) => !open)}
             />
           </div>

@@ -61,16 +61,15 @@ const useCompany = (id: number): CompanyH => {
   });
 
   const mutation = useMutation({
-    mutationFn: async (company: FullCompany) => {
-      console.log(company);
+    mutationFn: async (editCompany: FullCompany) => {
       const { error } = await supabase
         .from('companies')
         .update({
-          num_employees: company.num_employees,
-          description: company.description
+          industry_id: editCompany.industry.id,
+          num_employees: editCompany.num_employees,
+          description: editCompany.description
         })
-        .filter('id', 'eq', company.id);
-      console.log(error);
+        .filter('id', 'eq', editCompany.id);
       await refetch();
       return { error };
     }

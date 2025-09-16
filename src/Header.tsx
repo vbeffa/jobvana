@@ -1,8 +1,11 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { JobvanaContext } from './Context';
 
 const Header = () => {
   const location = useLocation();
+  const { authContext, setAuthContext, isLoggedIn } =
+    useContext(JobvanaContext);
   const [currPage, setCurrPage] = useState(
     () => location.pathname.substring(9) || 'home'
   );
@@ -25,24 +28,33 @@ const Header = () => {
       {currPage === 'home' && activeHeaderItem('Home')}
       {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
       {currPage === 'about' && activeHeaderItem('About')}
-      {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
-      {currPage === 'jobs' && activeHeaderItem('Jobs')}
-      {currPage !== 'companies' && (
-        <Link to="/jobvana/companies">Companies</Link>
+      {!isLoggedIn(authContext) && <></>}
+      {isLoggedIn(authContext) && (
+        <>
+          {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+          {currPage === 'jobs' && activeHeaderItem('Jobs')}
+          {currPage !== 'companies' && (
+            <Link to="/jobvana/companies">Companies</Link>
+          )}
+          {currPage === 'companies' && activeHeaderItem('Companies')}
+          <Link to="/jobvana" onClick={() => setAuthContext(null)}>
+            Log out
+          </Link>
+          {/* {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
+          {currPage === 'roles' && activeHeaderItem('Roles')}
+          {currPage !== 'skills' && <Link to="/jobvana/skills">Skills</Link>}
+          {currPage === 'skills' && activeHeaderItem('Skills')}
+          {currPage !== 'skill_categories' && (
+            <Link to="/jobvana/skill_categories">Skill Categories</Link>
+          )}
+          {currPage === 'skill_categories' &&
+            activeHeaderItem('Skill Categories')} */}
+          {/* {currPage !== 'applications' && (
+            <Link to="/jobvana/applications">Applications</Link>
+          )}
+          {currPage === 'applications' && activeHeaderItem('Applications')} */}
+        </>
       )}
-      {currPage === 'companies' && activeHeaderItem('Companies')}
-      {/* {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
-      {currPage === 'roles' && activeHeaderItem('Roles')}
-      {currPage !== 'skills' && <Link to="/jobvana/skills">Skills</Link>}
-      {currPage === 'skills' && activeHeaderItem('Skills')}
-      {currPage !== 'skill_categories' && (
-        <Link to="/jobvana/skill_categories">Skill Categories</Link>
-      )}
-      {currPage === 'skill_categories' && activeHeaderItem('Skill Categories')} */}
-      {/* {currPage !== 'applications' && (
-        <Link to="/jobvana/applications">Applications</Link>
-      )}
-      {currPage === 'applications' && activeHeaderItem('Applications')} */}
     </div>
   );
 };
