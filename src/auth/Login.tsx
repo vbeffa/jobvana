@@ -1,15 +1,14 @@
 import { Link } from '@tanstack/react-router';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Button from '../Button';
 import IndustrySelect from '../companies/IndustrySelect';
 import SizeInput from '../companies/SizeInput';
-import { JobvanaContext, type UserType } from '../Context';
+import { type UserType } from '../Context';
 import Error from '../Error';
 import TextInput from '../TextInput';
 import supabase from '../utils/supabase';
 
 const Login = () => {
-  const { loggedIn } = useContext(JobvanaContext);
   const [mode, setMode] = useState<'register' | 'login'>('register');
 
   const [userType, setUserType] = useState<UserType | null>('company');
@@ -135,152 +134,145 @@ const Login = () => {
 
   return (
     <div className="mt-4">
-      {loggedIn === false && (
-        <>
-          <div
-            className={`grid grid-cols-3 gap-y-2 ${mode === 'register' && userType === 'company' ? 'w-96' : 'w-96'} `}
-          >
-            <div className="col-span-3 flex justify-center mb-2 gap-16">
-              <div className={mode === 'register' ? activeModeStyle : ''}>
-                <Link
-                  to="."
-                  onClick={() => {
-                    setError(null);
-                    setMode('register');
-                  }}
-                >
-                  Register
-                </Link>
-              </div>
-              <div className={mode === 'login' ? activeModeStyle : ''}>
-                <Link
-                  to="."
-                  onClick={() => {
-                    setError(null);
-                    setMode('login');
-                  }}
-                >
-                  Log In
-                </Link>
-              </div>
-            </div>
-            {mode === 'register' && (
-              <>
-                <div />
-                <div className="col-span-2 flex justify-start mt-2 gap-2">
-                  <input
-                    id="company_checkbox"
-                    name="registration_type"
-                    type="radio"
-                    checked={userType === 'company'}
-                    onChange={() => setUserType('company')}
-                  />
-                  <label htmlFor="company_checkbox" className="content-center">
-                    I represent a company
-                  </label>
-                </div>
-                <div />
-                <div className="col-span-2 flex justify-start mb-2 gap-2">
-                  <input
-                    id="job_seeker_checkbox"
-                    name="registration_type"
-                    type="radio"
-                    checked={userType === 'job_seeker'}
-                    onChange={() => setUserType('job_seeker')}
-                  />
-                  <label
-                    htmlFor="job_seeker_checkbox"
-                    className="content-center"
-                  >
-                    I am a job seeker
-                  </label>
-                </div>
-              </>
-            )}
-            <TextInput
-              id="email"
-              label="Email"
-              autoComplete="email"
-              onChange={(email) => setEmail(email)}
-            />
-            <TextInput
-              id="password"
-              label="Password"
-              type="password"
-              autoComplete={
-                mode === 'register' ? 'new-password' : 'current-password'
-              }
-              onChange={(password) => setPassword(password)}
-            />
-            {mode === 'register' && (
-              <>
-                <TextInput
-                  id="first_name"
-                  label="First name"
-                  autoComplete="given-name"
-                  onChange={setFirstName}
-                />
-                <TextInput
-                  id="last_name"
-                  label="Last name"
-                  autoComplete="family-name"
-                  onChange={setLastName}
-                />
-                {userType === 'company' && (
-                  <>
-                    <TextInput
-                      id="company_name"
-                      label="Company name"
-                      autoComplete="organization"
-                      onChange={setCompanyName}
-                    />
-                    <SizeInput
-                      id="num_employees"
-                      label="Num employees"
-                      size={numEmployees}
-                      onChange={setNumEmployees}
-                    />
-                    <IndustrySelect
-                      id="industry"
-                      label="Industry"
-                      industryId={industryId ?? undefined}
-                      showAll={false}
-                      showEmpty={true}
-                      onChange={(industryId) => {
-                        if (industryId) {
-                          setIndustryId(industryId);
-                        }
-                      }}
-                    />
-                  </>
-                )}
-              </>
-            )}
-            <div className="col-span-3 flex justify-center mt-2">
-              <Button
-                label={mode === 'register' ? 'Sign Up' : 'Log In'}
-                disabled={
-                  mode === 'register'
-                    ? !email ||
-                      !password ||
-                      !firstName ||
-                      !lastName ||
-                      !userType ||
-                      loginDisabled
-                    : loginDisabled
-                }
-                onClick={() => (mode === 'register' ? doRegister() : doLogin())}
-              />
-            </div>
-            <div className="col-span-3 flex justify-center mt-2">
-              {registrationSuccess && (
-                <>Success! Please check your email for a verification link.</>
-              )}
-              {error && <Error error={error} />}
-            </div>
+      <div
+        className={`grid grid-cols-3 gap-y-2 ${mode === 'register' && userType === 'company' ? 'w-96' : 'w-96'} `}
+      >
+        <div className="col-span-3 flex justify-center mb-2 gap-16">
+          <div className={mode === 'register' ? activeModeStyle : ''}>
+            <Link
+              to="."
+              onClick={() => {
+                setError(null);
+                setMode('register');
+              }}
+            >
+              Register
+            </Link>
           </div>
-        </>
-      )}
+          <div className={mode === 'login' ? activeModeStyle : ''}>
+            <Link
+              to="."
+              onClick={() => {
+                setError(null);
+                setMode('login');
+              }}
+            >
+              Log In
+            </Link>
+          </div>
+        </div>
+        {mode === 'register' && (
+          <>
+            <div />
+            <div className="col-span-2 flex justify-start mt-2 gap-2">
+              <input
+                id="company_checkbox"
+                name="registration_type"
+                type="radio"
+                checked={userType === 'company'}
+                onChange={() => setUserType('company')}
+              />
+              <label htmlFor="company_checkbox" className="content-center">
+                I represent a company
+              </label>
+            </div>
+            <div />
+            <div className="col-span-2 flex justify-start mb-2 gap-2">
+              <input
+                id="job_seeker_checkbox"
+                name="registration_type"
+                type="radio"
+                checked={userType === 'job_seeker'}
+                onChange={() => setUserType('job_seeker')}
+              />
+              <label htmlFor="job_seeker_checkbox" className="content-center">
+                I am a job seeker
+              </label>
+            </div>
+          </>
+        )}
+        <TextInput
+          id="email"
+          label="Email"
+          autoComplete="email"
+          onChange={(email) => setEmail(email)}
+        />
+        <TextInput
+          id="password"
+          label="Password"
+          type="password"
+          autoComplete={
+            mode === 'register' ? 'new-password' : 'current-password'
+          }
+          onChange={(password) => setPassword(password)}
+        />
+        {mode === 'register' && (
+          <>
+            <TextInput
+              id="first_name"
+              label="First name"
+              autoComplete="given-name"
+              onChange={setFirstName}
+            />
+            <TextInput
+              id="last_name"
+              label="Last name"
+              autoComplete="family-name"
+              onChange={setLastName}
+            />
+            {userType === 'company' && (
+              <>
+                <TextInput
+                  id="company_name"
+                  label="Company name"
+                  autoComplete="organization"
+                  onChange={setCompanyName}
+                />
+                <SizeInput
+                  id="num_employees"
+                  label="Num employees"
+                  size={numEmployees}
+                  onChange={setNumEmployees}
+                />
+                <IndustrySelect
+                  id="industry"
+                  label="Industry"
+                  industryId={industryId ?? undefined}
+                  showAll={false}
+                  showEmpty={true}
+                  onChange={(industryId) => {
+                    if (industryId) {
+                      setIndustryId(industryId);
+                    }
+                  }}
+                />
+              </>
+            )}
+          </>
+        )}
+        <div className="col-span-3 flex justify-center mt-2">
+          <Button
+            label={mode === 'register' ? 'Sign Up' : 'Log In'}
+            disabled={
+              mode === 'register'
+                ? !email ||
+                  !password ||
+                  !firstName ||
+                  !lastName ||
+                  !userType ||
+                  loginDisabled
+                : loginDisabled
+            }
+            onClick={() => (mode === 'register' ? doRegister() : doLogin())}
+          />
+        </div>
+        <div className="col-span-3 flex justify-center mt-2">
+          {registrationSuccess && (
+            <>Success! Please check your email for a verification link.</>
+          )}
+          {error && <Error error={error} />}
+        </div>
+      </div>
     </div>
   );
 };
