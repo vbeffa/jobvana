@@ -1,7 +1,11 @@
 import Filter from '../Filter';
 import IndustrySelect from './IndustrySelect';
 import SizeInput from './SizeInput';
-import { type SearchFilters } from './useCompanies';
+import {
+  MAX_COMPANY_SIZE,
+  MIN_COMPANY_SIZE,
+  type SearchFilters
+} from './useCompanies';
 
 const CompanyFilters = ({
   filters,
@@ -28,17 +32,21 @@ const CompanyFilters = ({
       <div className="col-span-2 flex flex-row gap-x-2">
         <SizeInput
           id="min_size"
-          size={filters.minSize}
-          onChange={(size: number) => {
-            setFilters({ ...filters, minSize: size });
+          size={filters.minSize ?? MIN_COMPANY_SIZE}
+          onChange={(size) => {
+            if (size !== '') {
+              setFilters({ ...filters, minSize: size });
+            }
           }}
         />
         <div className="flex pt-1">-</div>
         <SizeInput
           id="max_size"
-          size={filters.maxSize}
-          onChange={(size: number) => {
-            setFilters({ ...filters, maxSize: size });
+          size={filters.maxSize ?? MAX_COMPANY_SIZE}
+          onChange={(size) => {
+            if (size !== '') {
+              setFilters({ ...filters, maxSize: size });
+            }
           }}
         />
       </div>

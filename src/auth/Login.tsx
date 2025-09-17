@@ -1,6 +1,8 @@
 import { Link } from '@tanstack/react-router';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import Button from '../Button';
+import IndustrySelect from '../companies/IndustrySelect';
+import SizeInput from '../companies/SizeInput';
 import { JobvanaContext, type UserType } from '../Context';
 import Error from '../Error';
 import TextInput from '../TextInput';
@@ -8,54 +10,120 @@ import supabase from '../utils/supabase';
 
 const Login = () => {
   const { loggedIn } = useContext(JobvanaContext);
-  const [mode, setMode] = useState<'register' | 'login'>('login');
+  const [mode, setMode] = useState<'register' | 'login'>('register');
 
+  const [userType, setUserType] = useState<UserType | null>('company');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [userType, setUserType] = useState<UserType | null>(null);
+  const [companyName, setCompanyName] = useState('');
+  const [numEmployees, setNumEmployees] = useState<number | ''>('');
+  const [industryId, setIndustryId] = useState<number | null>(null);
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [loginDisabled, setLoginDisabled] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  const loginDisabled = useMemo(
+    () =>
+      isLoggingIn ||
+      !email ||
+      !password ||
+      (mode === 'register' &&
+        (!userType ||
+          !firstName ||
+          !lastName ||
+          !companyName ||
+          !numEmployees ||
+          !industryId)),
+    [
+      companyName,
+      email,
+      firstName,
+      industryId,
+      isLoggingIn,
+      lastName,
+      mode,
+      numEmployees,
+      password,
+      userType
+    ]
+  );
+
+  const doRegister = useCallback(async () => {
+    if (!numEmployees || !industryId) {
+      return;
+    }
+    console.log(email, password);
+    setIsLoggingIn(true);
+    setError(null);
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          type: userType
+        }
+      }
+    });
+
+    if (error) {
+      console.log(error);
+      setError(error);
+      return;
+    }
+    console.log(data);
+
+    const { error: error2 } = await supabase.from('companies').insert({
+      name: companyName,
+      num_employees: numEmployees,
+      industry_id: industryId,
+      user_id: data.user?.id
+    });
+
+    if (error2) {
+      console.log(error2);
+      setError(error2);
+      return;
+    }
+
+    setRegistrationSuccess(true);
+    setIsLoggingIn(false);
+  }, [
+    companyName,
+    email,
+    firstName,
+    industryId,
+    lastName,
+    numEmployees,
+    password,
+    userType
+  ]);
 
   const doLogin = useCallback(async () => {
     console.log(email, password);
-    setLoginDisabled(true);
+    setIsLoggingIn(true);
     setError(null);
-    if (mode === 'register') {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            type: userType
-          }
-        }
-      });
-      console.log(data, error);
-      if (error) {
-        setError(error);
-      } else {
-        setRegistrationSuccess(true);
-      }
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-      console.log(data, error);
-      if (error) {
-        setError(error);
-      } else {
-        window.dispatchEvent(new Event('login'));
-      }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      console.log(error);
+      setError(error);
+      return;
     }
-    setLoginDisabled(false);
-  }, [email, firstName, lastName, mode, password, userType]);
+    console.log(data);
+
+    window.dispatchEvent(new Event('login'));
+    setIsLoggingIn(false);
+  }, [email, password]);
 
   const activeModeStyle = 'border-b-3 border-b-blue-600';
 
@@ -63,7 +131,9 @@ const Login = () => {
     <div className="mt-4">
       {loggedIn === false && (
         <>
-          <div className="grid grid-cols-3 gap-y-2 w-72">
+          <div
+            className={`grid grid-cols-3 gap-y-2 ${mode === 'register' && userType === 'company' ? 'w-96' : 'w-96'} `}
+          >
             <div className="col-span-3 flex justify-center mb-2 gap-16">
               <div className={mode === 'register' ? activeModeStyle : ''}>
                 <Link
@@ -88,6 +158,39 @@ const Login = () => {
                 </Link>
               </div>
             </div>
+            {mode === 'register' && (
+              <>
+                <div />
+                <div className="col-span-2 flex justify-start mt-2 gap-2">
+                  <input
+                    id="company_checkbox"
+                    name="registration_type"
+                    type="radio"
+                    checked={userType === 'company'}
+                    onChange={() => setUserType('company')}
+                  />
+                  <label htmlFor="company_checkbox" className="content-center">
+                    I represent a company
+                  </label>
+                </div>
+                <div />
+                <div className="col-span-2 flex justify-start mb-2 gap-2">
+                  <input
+                    id="job_seeker_checkbox"
+                    name="registration_type"
+                    type="radio"
+                    checked={userType === 'job_seeker'}
+                    onChange={() => setUserType('job_seeker')}
+                  />
+                  <label
+                    htmlFor="job_seeker_checkbox"
+                    className="content-center"
+                  >
+                    I am a job seeker
+                  </label>
+                </div>
+              </>
+            )}
             <TextInput
               id="email"
               label="Email"
@@ -117,33 +220,34 @@ const Login = () => {
                   autoComplete="family-name"
                   onChange={setLastName}
                 />
-                <div></div>
-                <div className="col-span-2 flex justify-start mt-2 gap-2">
-                  <input
-                    id="company_checkbox"
-                    name="registration_type"
-                    type="radio"
-                    onClick={() => setUserType('company')}
-                  />
-                  <label htmlFor="company_checkbox" className="content-center">
-                    I represent a company
-                  </label>
-                </div>
-                <div></div>
-                <div className="col-span-2 flex justify-start mb-2 gap-2">
-                  <input
-                    id="job_seeker_checkbox"
-                    name="registration_type"
-                    type="radio"
-                    onClick={() => setUserType('job_seeker')}
-                  />
-                  <label
-                    htmlFor="job_seeker_checkbox"
-                    className="content-center"
-                  >
-                    I am a job seeker
-                  </label>
-                </div>
+                {userType === 'company' && (
+                  <>
+                    <TextInput
+                      id="company_name"
+                      label="Company name"
+                      autoComplete="organization"
+                      onChange={setCompanyName}
+                    />
+                    <SizeInput
+                      id="num_employees"
+                      label="Num employees"
+                      size={numEmployees}
+                      onChange={setNumEmployees}
+                    />
+                    <IndustrySelect
+                      id="industry"
+                      label="Industry"
+                      industryId={industryId ?? undefined}
+                      showAll={false}
+                      showEmpty={true}
+                      onChange={(industryId) => {
+                        if (industryId) {
+                          setIndustryId(industryId);
+                        }
+                      }}
+                    />
+                  </>
+                )}
               </>
             )}
             <div className="col-span-3 flex justify-center mt-2">
@@ -159,7 +263,7 @@ const Login = () => {
                       loginDisabled
                     : loginDisabled
                 }
-                onClick={doLogin}
+                onClick={() => (mode === 'register' ? doRegister() : doLogin())}
               />
             </div>
             <div className="col-span-3 flex justify-center mt-2">

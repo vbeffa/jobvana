@@ -40,8 +40,6 @@ const Root = () => {
     }
   }, [isLoggedIn]);
 
-  // console.log(isLoggedIn);
-
   const logout = useCallback(async () => {
     await supabase.auth.signOut({ scope: 'local' });
     setLoggedIn(false);

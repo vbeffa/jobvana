@@ -97,15 +97,17 @@ const CompanyDetails = ({ id }: { id: number }) => {
               <SizeInput
                 id="size"
                 size={editCompany.num_employees}
-                onChange={(size: number) => {
-                  setEditCompany((company) =>
-                    company
-                      ? {
-                          ...company,
-                          num_employees: size
-                        }
-                      : undefined
-                  );
+                onChange={(size) => {
+                  if (size) {
+                    setEditCompany((company) =>
+                      company
+                        ? {
+                            ...company,
+                            num_employees: size
+                          }
+                        : undefined
+                    );
+                  }
                 }}
               />
             </div>

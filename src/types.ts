@@ -44,5 +44,4 @@ export type SkillVersion =
   Database['public']['Tables']['skill_versions']['Row'];
 export type SkillCategory =
   Database['public']['Tables']['skill_categories']['Row'];
-export type User = Database['public']['Tables']['users']['Row'];
 export type UserOld = Database['public']['Tables']['users_old']['Row'];
