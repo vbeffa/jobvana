@@ -59,40 +59,43 @@ const Login = () => {
     setIsLoggingIn(true);
     setError(null);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          type: userType
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            type: userType
+          }
         }
+      });
+
+      if (error) {
+        console.log(error);
+        setError(error);
+        return;
       }
-    });
+      console.log(data);
 
-    if (error) {
-      console.log(error);
-      setError(error);
-      return;
-    }
-    console.log(data);
+      const { error: error2 } = await supabase.from('companies').insert({
+        name: companyName,
+        num_employees: numEmployees,
+        industry_id: industryId,
+        user_id: data.user?.id
+      });
 
-    const { error: error2 } = await supabase.from('companies').insert({
-      name: companyName,
-      num_employees: numEmployees,
-      industry_id: industryId,
-      user_id: data.user?.id
-    });
-
-    if (error2) {
-      console.log(error2);
-      setError(error2);
-      return;
+      if (error2) {
+        console.log(error2);
+        setError(error2);
+        return;
+      }
+    } finally {
+      setIsLoggingIn(false);
     }
 
     setRegistrationSuccess(true);
-    setIsLoggingIn(false);
   }, [
     companyName,
     email,
@@ -109,20 +112,23 @@ const Login = () => {
     setIsLoggingIn(true);
     setError(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    if (error) {
-      console.log(error);
-      setError(error);
-      return;
+      if (error) {
+        console.log(error);
+        setError(error);
+        return;
+      }
+      console.log(data);
+    } finally {
+      setIsLoggingIn(false);
     }
-    console.log(data);
 
     window.dispatchEvent(new Event('login'));
-    setIsLoggingIn(false);
   }, [email, password]);
 
   const activeModeStyle = 'border-b-3 border-b-blue-600';
