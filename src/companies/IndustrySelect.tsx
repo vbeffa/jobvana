@@ -19,12 +19,14 @@ const IndustrySelect = ({
 
   return (
     <>
-      <label htmlFor={id} className="content-center">
-        {label}:
-      </label>
+      {label && (
+        <label htmlFor={id} className="content-center">
+          {label}:
+        </label>
+      )}
       <select
         id={id}
-        className="border-[0.5px] h-8 px-2 py-0.5 col-span-3"
+        className="border-[0.5px] h-8 px-2 py-0.5 col-span-2"
         value={industryId}
         onChange={(e) =>
           onChange(e.target.value ? parseInt(e.target.value) : undefined)

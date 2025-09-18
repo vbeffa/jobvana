@@ -22,8 +22,8 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </div>
       <h2>Job Seeker</h2>
       <div>
-        {application.jobSeeker.user.first_name}{' '}
-        {application.jobSeeker.user.last_name}
+        {/* {application.jobSeeker.user.first_name}{' '}
+        {application.jobSeeker.user.last_name} */}
       </div>
       <h2>Status</h2>
       <div>{capitalize(application.status ?? 'pending')}</div>

@@ -33,9 +33,7 @@ export type JobRole = Database['public']['Tables']['job_roles']['Row'];
 export type JobSkill = Database['public']['Tables']['job_skills']['Row'];
 export type JobSkillVersion =
   Database['public']['Tables']['job_skill_versions']['Row'];
-export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'] & {
-  user: UserOld;
-};
+export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'];
 export type Role = Database['public']['Tables']['roles']['Row'];
 export type Skill = Database['public']['Tables']['skills']['Row'];
 export type SkillRelation =
@@ -44,4 +42,3 @@ export type SkillVersion =
   Database['public']['Tables']['skill_versions']['Row'];
 export type SkillCategory =
   Database['public']['Tables']['skill_categories']['Row'];
-export type UserOld = Database['public']['Tables']['users_old']['Row'];

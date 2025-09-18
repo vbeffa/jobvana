@@ -35,7 +35,7 @@ const TextInput = ({
         placeholder={placeholder}
         disabled={disabled}
         autoComplete={autoComplete}
-        className="p-1 border-[0.5px] w-full col-span-3"
+        className="p-1 border-[0.5px] w-full col-span-2"
         onChange={(e) => onChange(e.target.value)}
       />
     </>

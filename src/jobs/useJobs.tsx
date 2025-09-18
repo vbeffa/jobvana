@@ -65,7 +65,8 @@ const useJobs = (params: JobsParams): Jobs => {
       let q = supabase
         .from('jobs')
         .select(
-          'id, title, companies!inner(name), job_roles!inner(roles!inner()), skills!inner()',
+          // 'id, title, companies!inner(name), job_roles!inner(roles!inner()), skills!inner()',
+          'id, title, companies!inner(name), job_roles!inner(roles!inner()), job_skills!inner(skills!inner())',
           {
             count: 'exact'
           }
@@ -92,7 +93,7 @@ const useJobs = (params: JobsParams): Jobs => {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
       if (filters?.skillId) {
-        q = q.eq('skills.id', filters.skillId);
+        q = q.eq('job_skills.skill_id', filters.skillId);
       }
       if (filters?.created && filters.created !== 'all') {
         const createdAfter = (() => {
@@ -117,7 +118,7 @@ const useJobs = (params: JobsParams): Jobs => {
         )
         .order('created_at', { ascending: false });
       // .overrideTypes<Array<{ companies: Company }>>();
-      // console.log(data);
+      console.log(data);
       if (error) {
         console.log(JSON.stringify(error));
       }

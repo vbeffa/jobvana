@@ -278,27 +278,16 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          user_id: number
         }
         Insert: {
           created_at?: string
           id?: number
-          user_id: number
         }
         Update: {
           created_at?: string
           id?: number
-          user_id?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: 'job_seekers_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'users_old'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       job_skill_versions: {
         Row: {
@@ -568,45 +557,6 @@ export type Database = {
             referencedColumns: ['id']
           },
         ]
-      }
-      users_old: {
-        Row: {
-          created_at: string
-          email: string
-          first_name: string
-          id: number
-          last_name: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          first_name: string
-          id?: number
-          last_name: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          first_name?: string
-          id?: number
-          last_name?: string
-        }
-        Relationships: []
-      }
-      users_old_2: {
-        Row: {
-          type: Database['public']['Enums']['user_type']
-          user_id: string
-        }
-        Insert: {
-          type: Database['public']['Enums']['user_type']
-          user_id: string
-        }
-        Update: {
-          type?: Database['public']['Enums']['user_type']
-          user_id?: string
-        }
-        Relationships: []
       }
     }
     Views: {
