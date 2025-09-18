@@ -19,7 +19,7 @@ type NewCompany =
     user_id: string;
   };
 
-const AddCompany = ({ userId }: { userId: string }) => {
+const AddEditCompany = ({ userId }: { userId: string }) => {
   const { setCompany } = useContext(JobvanaContext);
   const [newCompany, setNewCompany] = useState<NewCompany>({
     // name: '',
@@ -150,4 +150,4 @@ const AddCompany = ({ userId }: { userId: string }) => {
   );
 };
 
-export default AddCompany;
+export default AddEditCompany;

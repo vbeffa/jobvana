@@ -1,7 +1,7 @@
 const Jobs = () => {
   return (
     <div>
-      <h1>My Jobs</h1>
+      <h1>My Company's Jobs</h1>
     </div>
   );
 };
