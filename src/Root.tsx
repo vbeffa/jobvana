@@ -1,12 +1,14 @@
 import { Outlet } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getSession, refreshSession } from './auth/utils';
+import { getSession, getUserType, refreshSession } from './auth/utils';
+import { findCompany } from './companies/utils';
 import {
   type JobvanaContextProps,
   defaultContext,
   JobvanaContext
 } from './Context';
 import Header from './Header';
+import type { Company } from './types';
 import supabase from './utils/supabase';
 
 export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
@@ -19,6 +21,7 @@ const Root = () => {
     JobvanaContextProps['jobsContext']
   >(defaultContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
+  const [company, setCompany] = useState<Company>();
 
   const session = getSession();
 
@@ -29,6 +32,8 @@ const Root = () => {
       session.expires_at * 1000 > Date.now()
     );
   }, [session]);
+  console.log(isLoggedIn);
+  console.log(company);
 
   useEffect(() => {
     setLoggedIn(session !== null && isLoggedIn);
@@ -40,8 +45,19 @@ const Root = () => {
     }
   }, [isLoggedIn]);
 
+  const userType = getUserType();
+  useEffect(() => {
+    (async () => {
+      if (session && isLoggedIn && userType === 'company' && !company) {
+        const company = await findCompany(session.user.id);
+        setCompany(company);
+      }
+    })();
+  }, [company, isLoggedIn, session, userType]);
+
   const logout = useCallback(async () => {
     await supabase.auth.signOut({ scope: 'local' });
+    setCompany(undefined);
     setLoggedIn(false);
   }, []);
 
@@ -52,6 +68,8 @@ const Root = () => {
   return (
     <JobvanaContext.Provider
       value={{
+        company,
+        setCompany,
         loggedIn,
         logout,
         companiesContext,
@@ -61,7 +79,17 @@ const Root = () => {
       }}
     >
       <Header />
+      {/* {!loggedIn && <Login />} */}
+      {/* {loggedIn && <Outlet />} */}
+      {/* {session && userType === 'company' && (
+        <>
+          {company === undefined && <LoadingModal />}
+          {company === null && <AddCompany userId={session?.user.id} />}
+          {company && <Outlet />}
+        </>
+      )} */}
       <Outlet />
+
       {/* <TanStackRouterDevtools /> */}
     </JobvanaContext.Provider>
   );

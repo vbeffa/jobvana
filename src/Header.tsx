@@ -5,7 +5,7 @@ import { getUserType } from './auth/utils';
 
 const Header = () => {
   const location = useLocation();
-  const { loggedIn, logout } = useContext(JobvanaContext);
+  const { loggedIn, logout, company } = useContext(JobvanaContext);
   const [currPage, setCurrPage] = useState(
     () => location.pathname.substring(9) || 'home'
   );
@@ -34,10 +34,13 @@ const Header = () => {
           {currPage === 'about' && activeHeaderItem('About')}
           {loggedIn && (
             <>
-              {userType === 'company' && (
+              {userType === 'company' && company && (
                 <>
                   {currPage !== 'companies' && (
-                    <Link to="/jobvana/companies/$id" params={{ id: '1' }}>
+                    <Link
+                      to="/jobvana/companies/$id"
+                      params={{ id: company.id.toString() }}
+                    >
                       My Company
                     </Link>
                   )}

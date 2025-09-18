@@ -6,7 +6,7 @@ const UpdatingModal = () => {
                     bg-blue-300 rounded-lg text-center content-center
                     opacity-70`}
       >
-        Loading...
+        Updating...
       </div>
     </div>
   );

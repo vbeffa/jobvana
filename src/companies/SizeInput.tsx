@@ -13,9 +13,11 @@ const SizeInput = ({
 }) => {
   return (
     <>
-      <label htmlFor={id} className="content-center">
-        {label}:
-      </label>
+      {label && (
+        <label htmlFor={id} className="content-center">
+          {label}:
+        </label>
+      )}
       <input
         id={id}
         type="number"
@@ -23,7 +25,7 @@ const SizeInput = ({
         min={MIN_COMPANY_SIZE}
         max={MAX_COMPANY_SIZE}
         placeholder={`${MIN_COMPANY_SIZE} - ${MAX_COMPANY_SIZE}`}
-        className="p-1 border-[0.5px] h-8 border-gray-500 col-span-2"
+        className="p-1 border-[0.5px] h-8 border-gray-500 col-span-1"
         value={size}
         onChange={(e) => {
           let minSize: number | '' = parseInt(e.target.value);

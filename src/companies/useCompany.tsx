@@ -2,6 +2,8 @@ import {
   keepPreviousData,
   useMutation,
   useQuery,
+  type QueryObserverResult,
+  type RefetchOptions,
   type UseMutationResult
 } from '@tanstack/react-query';
 import { useMemo } from 'react';
@@ -23,7 +25,7 @@ export type FullCompany = Company & {
   jobs: Array<CompanyJob>;
 };
 
-export type Company = Omit<DbCompany, 'created_at' | 'industry_id' | 'user_id'>;
+export type Company = Omit<DbCompany, 'created_at' | 'industry_id'>;
 export type CompanyAddress = Omit<DbCompanyAddress, 'company_id'>;
 export type SkillVersion = Pick<
   DbSkillVersion,
@@ -31,21 +33,25 @@ export type SkillVersion = Pick<
 >;
 
 export type CompanyH = {
-  company: FullCompany | undefined;
-  update: UseMutationResult<unknown, Error, FullCompany>;
+  company: FullCompany | null;
+  update: UseMutationResult<unknown, Error, Partial<DbCompany>>;
+  refetch: (options?: RefetchOptions) => Promise<QueryObserverResult>;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
 };
 
-const useCompany = (id: number): CompanyH => {
+const useCompany = (id?: number): CompanyH => {
   const { data, isPlaceholderData, isPending, error, refetch } = useQuery({
     queryKey: ['companies', id],
     queryFn: async () => {
+      if (!id) {
+        return { data: null, error: null };
+      }
       const { data, error } = await supabase
         .from('companies')
         .select(
-          `id, name, description, num_employees,
+          `id, name, description, num_employees, user_id,
           industries(id, name),
           company_addresses(id, city, street, zip, state, type),
           company_tech_stacks(skill_versions(id, skill_id, version, ordinal)),
@@ -61,27 +67,42 @@ const useCompany = (id: number): CompanyH => {
   });
 
   const mutation = useMutation({
-    mutationFn: async (editCompany: FullCompany) => {
-      const { error } = await supabase
-        .from('companies')
-        .update({
-          industry_id: editCompany.industry.id,
-          num_employees: editCompany.num_employees,
-          description: editCompany.description
-        })
-        .filter('id', 'eq', editCompany.id);
-      await refetch();
+    mutationFn: async (editCompany: Partial<DbCompany>) => {
+      console.log(editCompany);
+
+      let q = supabase.from('companies').upsert(editCompany as DbCompany, {
+        ignoreDuplicates: false,
+        onConflict: 'user_id'
+      });
+      if (editCompany.id) {
+        q = q.filter('id', 'eq', editCompany.id);
+      }
+      const { error } = await q;
       return { error };
     }
   });
 
-  const company: FullCompany | undefined = useMemo(() => {
+  const company: FullCompany | null = useMemo(() => {
     if (!data?.company) {
-      return undefined;
+      return null;
     }
     const company = data.company;
     return {
-      ...company,
+      // ...company,
+      // ..._.pick(company, [
+      //   'id',
+      //   'name',
+      //   'industry_id',
+      //   'description',
+      //   'num_employees',
+      //   'user_id'
+      // ]),
+      id: company.id,
+      name: company.name,
+      description: company.description,
+      num_employees: company.num_employees,
+      user_id: company.user_id,
+      jobs: company.jobs,
       addresses: company.company_addresses,
       industry: company.industries,
       techStack: company.company_tech_stacks.map(
@@ -93,6 +114,7 @@ const useCompany = (id: number): CompanyH => {
   return {
     company,
     update: mutation,
+    refetch,
     error: error ?? undefined,
     isPlaceholderData,
     isPending

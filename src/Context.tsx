@@ -1,10 +1,13 @@
 import { createContext } from 'react';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
+import type { Company } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
 export type JobvanaContextProps = {
+  company?: Company;
+  setCompany: (company: Company) => void;
   loggedIn?: boolean;
   logout: () => void;
   companiesContext: {
@@ -33,6 +36,7 @@ export type JobvanaContextProps = {
 };
 
 export const defaultContext: JobvanaContextProps = {
+  setCompany: () => {},
   logout: () => {},
   companiesContext: {
     page: 1,

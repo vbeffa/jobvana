@@ -1,24 +1,22 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import Button from '../Button';
-import IndustrySelect from '../companies/IndustrySelect';
-import SizeInput from '../companies/SizeInput';
 import { type UserType } from '../Context';
 import Error from '../Error';
 import TextInput from '../TextInput';
 import supabase from '../utils/supabase';
 
 const Login = () => {
-  const [mode, setMode] = useState<'register' | 'login'>('register');
+  const [mode, setMode] = useState<'register' | 'login'>('login');
 
   const [userType, setUserType] = useState<UserType | null>('company');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [numEmployees, setNumEmployees] = useState<number | ''>('');
-  const [industryId, setIndustryId] = useState<number | null>(null);
+  // const [companyName, setCompanyName] = useState('');
+  // const [numEmployees, setNumEmployees] = useState<number | ''>('');
+  // const [industryId, setIndustryId] = useState<number | null>(null);
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -29,82 +27,55 @@ const Login = () => {
       isLoggingIn ||
       !email ||
       !password ||
-      (mode === 'register' &&
-        (!userType ||
-          !firstName ||
-          !lastName ||
-          !companyName ||
-          !numEmployees ||
-          !industryId)),
-    [
-      companyName,
-      email,
-      firstName,
-      industryId,
-      isLoggingIn,
-      lastName,
-      mode,
-      numEmployees,
-      password,
-      userType
-    ]
+      (mode === 'register' && (!userType || !firstName || !lastName)),
+    // ||
+    // (userType === 'company' &&
+    //   (!companyName || !numEmployees || !industryId))
+    [email, firstName, isLoggingIn, lastName, mode, password, userType]
   );
 
   const doRegister = useCallback(async () => {
-    if (!numEmployees || !industryId) {
-      return;
-    }
+    // if (!numEmployees || !industryId) {
+    //   return;
+    // }
     console.log(email, password);
     setIsLoggingIn(true);
     setError(null);
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            type: userType
-          }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          type: userType
         }
-      });
-
-      if (error) {
-        console.log(error);
-        setError(error);
-        return;
       }
-      console.log(data);
+    });
 
-      const { error: error2 } = await supabase.from('companies').insert({
-        name: companyName,
-        num_employees: numEmployees,
-        industry_id: industryId,
-        user_id: data.user?.id
-      });
-
-      if (error2) {
-        console.log(error2);
-        setError(error2);
-        return;
-      }
-    } finally {
+    if (error) {
+      console.log(error);
+      setError(error);
       setIsLoggingIn(false);
+      return;
     }
-
+    console.log(data);
     setRegistrationSuccess(true);
-  }, [
-    companyName,
-    email,
-    firstName,
-    industryId,
-    lastName,
-    numEmployees,
-    password,
-    userType
-  ]);
+
+    // const { error: error2 } = await supabase.from('companies').insert({
+    //   name: companyName,
+    //   num_employees: numEmployees,
+    //   industry_id: industryId,
+    //   user_id: data.user?.id
+    // });
+
+    // if (error2) {
+    //   console.log(error2);
+    //   setError(error2);
+    //   return;
+    // }
+  }, [email, firstName, lastName, password, userType]);
 
   const doLogin = useCallback(async () => {
     console.log(email, password);
@@ -133,7 +104,7 @@ const Login = () => {
   const activeModeStyle = 'border-b-3 border-b-blue-600';
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 flex justify-center">
       <div
         className={`grid grid-cols-3 gap-y-2 ${mode === 'register' && userType === 'company' ? 'w-96' : 'w-96'} `}
       >
@@ -222,7 +193,7 @@ const Login = () => {
             />
             {userType === 'company' && (
               <>
-                <TextInput
+                {/* <TextInput
                   id="company_name"
                   label="Company name"
                   autoComplete="organization"
@@ -245,7 +216,7 @@ const Login = () => {
                       setIndustryId(industryId);
                     }
                   }}
-                />
+                /> */}
               </>
             )}
           </>
@@ -253,16 +224,7 @@ const Login = () => {
         <div className="col-span-3 flex justify-center mt-2">
           <Button
             label={mode === 'register' ? 'Sign Up' : 'Log In'}
-            disabled={
-              mode === 'register'
-                ? !email ||
-                  !password ||
-                  !firstName ||
-                  !lastName ||
-                  !userType ||
-                  loginDisabled
-                : loginDisabled
-            }
+            disabled={loginDisabled}
             onClick={() => (mode === 'register' ? doRegister() : doLogin())}
           />
         </div>

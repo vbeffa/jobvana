@@ -1,29 +1,76 @@
-import _ from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '../Button';
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
 import PillContainer from '../PillContainer';
 import Section from '../Section';
+import TextInput from '../TextInput';
+import type { Company } from '../types';
 import UpdatingModal from '../UpdatingModal';
 import IndustrySelect from './IndustrySelect';
 import SizeInput from './SizeInput';
-import useCompany, { type FullCompany } from './useCompany';
-import { findHeadquarters, isHeadquarters } from './utils';
+import useCompany from './useCompany';
+import { companyFields, findHeadquarters, isHeadquarters } from './utils';
 
-const CompanyDetails = ({ id }: { id: number }) => {
+const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
   const [editMode, setEditMode] = useState(false);
-  const { company, update, error, isPlaceholderData, isPending } =
+  const { company, update, error, isPlaceholderData, isPending, refetch } =
     useCompany(id);
-  const [editCompany, setEditCompany] = useState<FullCompany>();
+  const [editCompany, setEditCompany] = useState<Partial<Company> | null>();
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const updateCompany = useCallback(() => {
+  const updateCompany = useCallback(async () => {
     if (!editCompany) {
       return;
     }
-    update.mutate(editCompany);
-  }, [editCompany, update]);
+    setIsUpdating(true);
+    try {
+      console.log('updating');
+      await update.mutateAsync(editCompany);
+      console.log('refetching');
+      await refetch();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [editCompany, refetch, update]);
+
+  useEffect(() => {
+    setEditMode(company === null);
+  }, [company]);
+
+  useEffect(() => {
+    if (company === null) {
+      setEditCompany({
+        user_id: userId
+      });
+    }
+  }, [company, userId]);
+
+  const isValid = useMemo(() => {
+    return Boolean(
+      editCompany &&
+        editCompany.name &&
+        editCompany.description &&
+        editCompany.num_employees &&
+        editCompany.industry_id &&
+        editCompany.user_id
+    );
+  }, [editCompany]);
+
+  const isDirty = useMemo(() => {
+    return Boolean(
+      editCompany &&
+        company &&
+        (editCompany.name !== company.name ||
+          editCompany.description !== company.description ||
+          editCompany.num_employees !== company.num_employees ||
+          editCompany.industry_id !== company.industry.id)
+    );
+  }, [editCompany, company]);
+  // console.log(editCompany, isValid, isDirty);
 
   if (error) {
     return <Error error={error} />;
@@ -33,29 +80,30 @@ const CompanyDetails = ({ id }: { id: number }) => {
     return <LoadingModal />;
   }
 
-  if (!company) {
-    return null;
-  }
+  // if (!company) {
+  //   return null;
+  // }
 
-  const hq = findHeadquarters(company);
+  const hq = company ? findHeadquarters(company) : undefined;
 
   return (
     <>
-      {isPlaceholderData && <LoadingModal />}
       {update.isPending && <UpdatingModal />}
-      <Section title={company.name}>
+      {isPlaceholderData && <LoadingModal />}
+      <Section title={company?.name ?? 'New Company'}>
         <div className="absolute right-0 top-0 flex flex-row gap-2">
-          {editMode && (
+          {editMode && company && (
             <Button label="Cancel" onClick={() => setEditMode(false)} />
           )}
           <Button
             label={`${editMode ? 'Save' : 'Edit'}`}
+            disabled={editMode && (!isValid || !isDirty || isUpdating)}
             onClick={() =>
               setEditMode((editMode) => {
-                if (!editMode) {
-                  setEditCompany(_.cloneDeep(company));
-                } else {
+                if (editMode) {
                   updateCompany();
+                } else {
+                  setEditCompany(company ? companyFields(company) : {});
                 }
                 return !editMode;
               })
@@ -63,7 +111,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
           />
         </div>
         <div className="flex flex-row gap-1">
-          {!editMode && (
+          {!editMode && company && (
             <div className="pt-1 flex flex-row gap-1">
               <PillContainer>{company.industry.name}</PillContainer>
               <div className="content-center">
@@ -73,30 +121,39 @@ const CompanyDetails = ({ id }: { id: number }) => {
           )}
           {editMode && editCompany && (
             <div className="pt-2 h-[38px] flex flex-row gap-2">
+              <TextInput
+                id="name"
+                label="Name"
+                value={editCompany.name ?? ''}
+                onChange={(name) => {
+                  setEditCompany((company) =>
+                    company ? { ...company, name } : undefined
+                  );
+                }}
+              />
               <IndustrySelect
                 id="edit_industry"
-                industryId={editCompany.industry.id}
+                label="Industry"
+                industryId={editCompany.industry_id}
                 showAll={false}
+                showEmpty={company === null}
                 onChange={(industryId) => {
                   if (industryId) {
                     setEditCompany((company) =>
                       company
                         ? {
                             ...company,
-                            industry: {
-                              id: industryId,
-                              name: company.industry.name
-                            }
+                            industry_id: industryId
                           }
                         : undefined
                     );
                   }
                 }}
               />
-              <div className="content-center">Size:</div>
               <SizeInput
                 id="size"
-                size={editCompany.num_employees}
+                label="Size"
+                size={editCompany.num_employees ?? ''}
                 onChange={(size) => {
                   if (size) {
                     setEditCompany((company) =>
@@ -121,7 +178,9 @@ const CompanyDetails = ({ id }: { id: number }) => {
       </Section>
       <Section title="Description">
         <div>
-          {!editMode && <div className="h-[87px]">{company.description}</div>}
+          {!editMode && company && (
+            <div className="h-[87px]">{company.description}</div>
+          )}
           {editMode && editCompany && (
             <textarea
               id="description"
@@ -144,7 +203,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
         </div>
       </Section>
       <Section title="Offices">
-        {company.addresses.length > 0 ? (
+        {company && company.addresses.length > 0 ? (
           <ul>
             {company.addresses.map((address) => (
               <li key={address.id}>
@@ -156,7 +215,7 @@ const CompanyDetails = ({ id }: { id: number }) => {
         ) : null}
       </Section>
       <Section title="Current Jobs" isLast={true}>
-        <JobsList jobs={company.jobs} />
+        {(company && <JobsList jobs={company.jobs} />) ?? ''}
       </Section>
     </>
   );

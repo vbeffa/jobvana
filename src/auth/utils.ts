@@ -8,6 +8,15 @@ const getSession = () => {
   return authToken ? (JSON.parse(authToken) as Session) : null;
 };
 
+const isLoggedIn = () => {
+  const session = getSession();
+  return (
+    session !== null &&
+    session.expires_at !== undefined &&
+    session.expires_at * 1000 > Date.now()
+  );
+};
+
 const isStale = (seconds: number) => {
   const session = getSession();
   return (
@@ -47,4 +56,4 @@ const refreshSession = async () => {
   }
 };
 
-export { getSession, getUserType, refreshSession };
+export { getSession, getUserType, isLoggedIn, refreshSession };

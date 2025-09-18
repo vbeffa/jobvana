@@ -1,27 +1,29 @@
+import TextInput from './TextInput';
+
 const Filter = ({
   id,
+  label,
   placeholder,
   value,
   onChange,
   onClear
 }: {
   id: string;
+  label: string;
   placeholder: string;
   value?: string;
   onChange: (value: string) => void;
   onClear: () => void;
 }) => {
   return (
-    <div className="relative">
-      <input
+    <div className="flex flex-row col-span-4 gap-2 relative">
+      <TextInput
         id={id}
         type="text"
-        className="border border-gray-500 w-full rounded-md pl-1 h-8"
+        label={label}
         placeholder={placeholder}
         value={value}
-        onChange={(e) => {
-          onChange(e.target.value);
-        }}
+        onChange={onChange}
       />
       <div
         className="absolute right-1.75 top-1 text-gray-400 cursor-pointer"
