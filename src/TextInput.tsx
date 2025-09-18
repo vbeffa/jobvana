@@ -2,7 +2,7 @@ import type { HTMLInputAutoCompleteAttribute } from 'react';
 
 export type TextInputProps = {
   id: string;
-  label: string;
+  label?: string;
   type?: 'text' | 'password';
   value?: string;
   placeholder?: string;
@@ -23,9 +23,11 @@ const TextInput = ({
 }: TextInputProps) => {
   return (
     <>
-      <label htmlFor={id} className="content-center">
-        {label}:
-      </label>
+      {label && (
+        <label htmlFor={id} className="content-center">
+          {label}:
+        </label>
+      )}
       <input
         id={id}
         type={type}
