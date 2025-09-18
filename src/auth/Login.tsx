@@ -14,9 +14,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  // const [companyName, setCompanyName] = useState('');
-  // const [numEmployees, setNumEmployees] = useState<number | ''>('');
-  // const [industryId, setIndustryId] = useState<number | null>(null);
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -28,16 +25,10 @@ const Login = () => {
       !email ||
       !password ||
       (mode === 'register' && (!userType || !firstName || !lastName)),
-    // ||
-    // (userType === 'company' &&
-    //   (!companyName || !numEmployees || !industryId))
     [email, firstName, isLoggingIn, lastName, mode, password, userType]
   );
 
   const doRegister = useCallback(async () => {
-    // if (!numEmployees || !industryId) {
-    //   return;
-    // }
     console.log(email, password);
     setIsLoggingIn(true);
     setError(null);
@@ -62,19 +53,6 @@ const Login = () => {
     }
     console.log(data);
     setRegistrationSuccess(true);
-
-    // const { error: error2 } = await supabase.from('companies').insert({
-    //   name: companyName,
-    //   num_employees: numEmployees,
-    //   industry_id: industryId,
-    //   user_id: data.user?.id
-    // });
-
-    // if (error2) {
-    //   console.log(error2);
-    //   setError(error2);
-    //   return;
-    // }
   }, [email, firstName, lastName, password, userType]);
 
   const doLogin = useCallback(async () => {
@@ -109,17 +87,6 @@ const Login = () => {
         className={`grid grid-cols-3 gap-y-2 ${mode === 'register' && userType === 'company' ? 'w-96' : 'w-96'} `}
       >
         <div className="col-span-3 flex justify-center mb-2 gap-16">
-          <div className={mode === 'register' ? activeModeStyle : ''}>
-            <Link
-              to="."
-              onClick={() => {
-                setError(null);
-                setMode('register');
-              }}
-            >
-              Register
-            </Link>
-          </div>
           <div className={mode === 'login' ? activeModeStyle : ''}>
             <Link
               to="."
@@ -129,6 +96,17 @@ const Login = () => {
               }}
             >
               Log In
+            </Link>
+          </div>
+          <div className={mode === 'register' ? activeModeStyle : ''}>
+            <Link
+              to="."
+              onClick={() => {
+                setError(null);
+                setMode('register');
+              }}
+            >
+              Register
             </Link>
           </div>
         </div>
@@ -191,34 +169,6 @@ const Login = () => {
               autoComplete="family-name"
               onChange={setLastName}
             />
-            {userType === 'company' && (
-              <>
-                {/* <TextInput
-                  id="company_name"
-                  label="Company name"
-                  autoComplete="organization"
-                  onChange={setCompanyName}
-                />
-                <SizeInput
-                  id="num_employees"
-                  label="Num employees"
-                  size={numEmployees}
-                  onChange={setNumEmployees}
-                />
-                <IndustrySelect
-                  id="industry"
-                  label="Industry"
-                  industryId={industryId ?? undefined}
-                  showAll={false}
-                  showEmpty={true}
-                  onChange={(industryId) => {
-                    if (industryId) {
-                      setIndustryId(industryId);
-                    }
-                  }}
-                /> */}
-              </>
-            )}
           </>
         )}
         <div className="col-span-3 flex justify-center mt-2">

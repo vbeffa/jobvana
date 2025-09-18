@@ -48,9 +48,7 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
   }, [company]);
 
   useEffect(() => {
-    console.log('checking company');
     if (company) {
-      console.log('setting company');
       setCompany(companyFields(company));
     }
   }, [company, setCompany]);

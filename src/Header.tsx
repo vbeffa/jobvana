@@ -1,17 +1,18 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import { JobvanaContext } from './Context';
 import { getUserType } from './auth/utils';
 
 const Header = () => {
   const location = useLocation();
   const { logout, company } = useContext(JobvanaContext);
-  const [currPage, setCurrPage] = useState(
-    () => location.pathname.substring(9) || 'home'
-  );
 
-  useEffect(() => {
-    setCurrPage(location.pathname.substring(9) || 'home');
+  const currPage = useMemo(() => {
+    let trimmed = location.pathname.substring(9);
+    if (trimmed.includes('/')) {
+      trimmed = trimmed.substring(0, trimmed.indexOf('/'));
+    }
+    return trimmed;
   }, [location.pathname]);
 
   const userType = getUserType();
@@ -26,20 +27,12 @@ const Header = () => {
 
   return (
     <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
-      {!userType && (
-        <>
-          {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
-          {currPage === 'home' && activeHeaderItem('Home')}
-          {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
-          {currPage === 'about' && activeHeaderItem('About')}
-        </>
-      )}
+      {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
+      {currPage === 'home' && activeHeaderItem('Home')}
+      {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
+      {currPage === 'about' && activeHeaderItem('About')}
       {userType && (
         <>
-          {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
-          {currPage === 'home' && activeHeaderItem('Home')}
-          {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
-          {currPage === 'about' && activeHeaderItem('About')}
           {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
           {currPage === 'jobs' && activeHeaderItem('Jobs')}
           {userType === 'company' && (

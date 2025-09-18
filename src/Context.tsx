@@ -1,13 +1,15 @@
 import { createContext } from 'react';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
-import type { Company } from './types';
+import type { Company as DbCompany } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
+type Company = Omit<DbCompany, 'created_at'>;
+
 export type JobvanaContextProps = {
-  company?: Omit<Company, 'created_at'>;
-  setCompany: (company: Omit<Company, 'created_at'>) => void;
+  company?: Company;
+  setCompany: (company: Company) => void;
   loggedIn?: boolean;
   logout: () => void;
   companiesContext: {

@@ -17,21 +17,31 @@ export type JobSearch = {
 };
 
 const userType = getUserType();
+console.log(userType);
 
 export const Route = createFileRoute('/jobvana/jobs/')({
-  validateSearch: (search: Record<string, unknown>): JobSearch => {
-    return {
-      page: Number(search.page) || 1,
-      job_id: Number(search.job_id) || undefined,
-      company: search.company as string,
-      title: search.title as string,
-      role_id: Number(search.role_id) || undefined,
-      min_salary: Number(search.min_salary) || MIN_SALARY,
-      max_salary: Number(search.max_salary) || MAX_SALARY,
-      skill_id: Number(search.skill_id) || undefined,
-      created: search.created_range as CreatedRange
-    };
+  validateSearch: (search: Record<string, unknown>): JobSearch | undefined => {
+    return userType === 'job_seeker'
+      ? {
+          page: Number(search.page) || 1,
+          job_id: Number(search.job_id) || undefined,
+          company: search.company as string,
+          title: search.title as string,
+          role_id: Number(search.role_id) || undefined,
+          min_salary: Number(search.min_salary) || MIN_SALARY,
+          max_salary: Number(search.max_salary) || MAX_SALARY,
+          skill_id: Number(search.skill_id) || undefined,
+          created: search.created_range as CreatedRange
+        }
+      : undefined;
   },
 
-  component: userType === 'company' ? CompanyJobs : Jobs
+  component: Switcher
 });
+
+function Switcher() {
+  const userType = getUserType();
+  console.log(userType);
+
+  return userType === 'company' ? <CompanyJobs /> : <Jobs />;
+}
