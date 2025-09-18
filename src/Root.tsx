@@ -79,16 +79,23 @@ const Root = () => {
       }}
     >
       <Header />
-      {/* {!loggedIn && <Login />} */}
-      {/* {loggedIn && <Outlet />} */}
-      {/* {session && userType === 'company' && (
-        <>
-          {company === undefined && <LoadingModal />}
-          {company === null && <AddCompany userId={session?.user.id} />}
-          {company && <Outlet />}
-        </>
-      )} */}
-      <Outlet />
+      {userType === 'company' && (
+        <div className="flex flex-row w-screen">
+          <div className="bg-amber-300 w-64 pl-4 pt-4 h-screen top-16 left-0 fixed z-10 flex gap-[5%]">
+            <div className="flex flex-col gap-2">
+              <div>My Account</div>
+              <div>Company</div>
+              <div>Offices</div>
+              <div>Jobs</div>
+              <div>Applications</div>
+            </div>
+          </div>
+          <div className="ml-64 w-full">
+            <Outlet />
+          </div>
+        </div>
+      )}
+      {userType !== 'company' && <Outlet />}
 
       {/* <TanStackRouterDevtools /> */}
     </JobvanaContext.Provider>

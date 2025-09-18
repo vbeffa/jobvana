@@ -32,6 +32,8 @@ const Header = () => {
           {currPage === 'home' && activeHeaderItem('Home')}
           {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
           {currPage === 'about' && activeHeaderItem('About')}
+          {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+          {currPage === 'jobs' && activeHeaderItem('Jobs')}
           {loggedIn && (
             <>
               {userType === 'company' && company && (
@@ -41,38 +43,33 @@ const Header = () => {
                       to="/jobvana/companies/$id"
                       params={{ id: company.id.toString() }}
                     >
-                      My Company
+                      Company
                     </Link>
                   )}
                   {currPage === 'companies' && activeHeaderItem('My Company')}
+                  {currPage !== 'applications' && (
+                    <Link to="/jobvana/applications">Applications</Link>
+                  )}
+                  {currPage === 'applications' &&
+                    activeHeaderItem('Applications')}
                 </>
               )}
               {userType === 'job_seeker' && (
                 <>
-                  {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
-                  {currPage === 'jobs' && activeHeaderItem('Jobs')}
                   {currPage !== 'companies' && (
                     <Link to="/jobvana/companies">Companies</Link>
                   )}
                   {currPage === 'companies' && activeHeaderItem('Companies')}
                 </>
               )}
+              {currPage !== 'account' && (
+                <Link to="/jobvana/account">Account</Link>
+              )}
+              {currPage === 'account' && activeHeaderItem('Account')}
+
               <Link to="/jobvana" onClick={logout}>
                 Log out
               </Link>
-              {/* {currPage !== 'roles' && <Link to="/jobvana/roles">Roles</Link>}
-          {currPage === 'roles' && activeHeaderItem('Roles')}
-          {currPage !== 'skills' && <Link to="/jobvana/skills">Skills</Link>}
-          {currPage === 'skills' && activeHeaderItem('Skills')}
-          {currPage !== 'skill_categories' && (
-            <Link to="/jobvana/skill_categories">Skill Categories</Link>
-          )}
-          {currPage === 'skill_categories' &&
-            activeHeaderItem('Skill Categories')} */}
-              {/* {currPage !== 'applications' && (
-            <Link to="/jobvana/applications">Applications</Link>
-          )}
-          {currPage === 'applications' && activeHeaderItem('Applications')} */}
             </>
           )}
         </>
