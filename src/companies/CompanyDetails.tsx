@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from '../Button';
+import { JobvanaContext } from '../Context';
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
 import PillContainer from '../PillContainer';
+import { Route } from '../routes/jobvana.companies.$id';
 import Section from '../Section';
 import TextInput from '../TextInput';
 import type { Company } from '../types';
@@ -14,6 +16,8 @@ import useCompany from './useCompany';
 import { companyFields, findHeadquarters, isHeadquarters } from './utils';
 
 const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
+  const navigate = Route.useNavigate();
+  const { setCompany } = useContext(JobvanaContext);
   const [editMode, setEditMode] = useState(false);
   const { company, update, error, isPlaceholderData, isPending, refetch } =
     useCompany(id);
@@ -26,20 +30,30 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
     }
     setIsUpdating(true);
     try {
-      console.log('updating');
-      await update.mutateAsync(editCompany);
-      console.log('refetching');
+      const data = await update.mutateAsync(editCompany);
       await refetch();
+      navigate({
+        to: '/jobvana/companies/$id',
+        params: { id: data?.data?.[0].id?.toString() }
+      });
     } catch (err) {
       console.log(err);
     } finally {
       setIsUpdating(false);
     }
-  }, [editCompany, refetch, update]);
+  }, [editCompany, navigate, refetch, update]);
 
   useEffect(() => {
     setEditMode(company === null);
   }, [company]);
+
+  useEffect(() => {
+    console.log('checking company');
+    if (company) {
+      console.log('setting company');
+      setCompany(companyFields(company));
+    }
+  }, [company, setCompany]);
 
   useEffect(() => {
     if (company === null) {
@@ -61,6 +75,9 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
   }, [editCompany]);
 
   const isDirty = useMemo(() => {
+    if (!company) {
+      return true; // onboarding
+    }
     return Boolean(
       editCompany &&
         company &&
@@ -70,7 +87,6 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
           editCompany.industry_id !== company.industry.id)
     );
   }, [editCompany, company]);
-  // console.log(editCompany, isValid, isDirty);
 
   if (error) {
     return <Error error={error} />;
@@ -125,6 +141,7 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
                 id="name"
                 label="Name"
                 value={editCompany.name ?? ''}
+                autoComplete="organization"
                 onChange={(name) => {
                   setEditCompany((company) =>
                     company ? { ...company, name } : undefined

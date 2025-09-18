@@ -1,4 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { getUserType } from '../auth/utils';
+import CompanyJobs from '../companies/Jobs';
 import Jobs from '../jobs/Jobs';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from '../jobs/useJobs';
 
@@ -13,6 +15,8 @@ export type JobSearch = {
   skill_id?: number;
   created?: CreatedRange;
 };
+
+const userType = getUserType();
 
 export const Route = createFileRoute('/jobvana/jobs/')({
   validateSearch: (search: Record<string, unknown>): JobSearch => {
@@ -29,5 +33,5 @@ export const Route = createFileRoute('/jobvana/jobs/')({
     };
   },
 
-  component: Jobs
+  component: userType === 'company' ? CompanyJobs : Jobs
 });

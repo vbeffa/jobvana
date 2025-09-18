@@ -6,8 +6,8 @@ import type { Company } from './types';
 export type UserType = 'company' | 'job_seeker';
 
 export type JobvanaContextProps = {
-  company?: Company;
-  setCompany: (company: Company) => void;
+  company?: Omit<Company, 'created_at'>;
+  setCompany: (company: Omit<Company, 'created_at'>) => void;
   loggedIn?: boolean;
   logout: () => void;
   companiesContext: {

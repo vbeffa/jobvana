@@ -5,7 +5,7 @@ import { getUserType } from './auth/utils';
 
 const Header = () => {
   const location = useLocation();
-  const { loggedIn, logout, company } = useContext(JobvanaContext);
+  const { logout, company } = useContext(JobvanaContext);
   const [currPage, setCurrPage] = useState(
     () => location.pathname.substring(9) || 'home'
   );
@@ -26,7 +26,15 @@ const Header = () => {
 
   return (
     <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
-      {loggedIn !== undefined && userType && (
+      {!userType && (
+        <>
+          {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
+          {currPage === 'home' && activeHeaderItem('Home')}
+          {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
+          {currPage === 'about' && activeHeaderItem('About')}
+        </>
+      )}
+      {userType && (
         <>
           {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
           {currPage === 'home' && activeHeaderItem('Home')}
@@ -34,44 +42,39 @@ const Header = () => {
           {currPage === 'about' && activeHeaderItem('About')}
           {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
           {currPage === 'jobs' && activeHeaderItem('Jobs')}
-          {loggedIn && (
+          {userType === 'company' && (
             <>
-              {userType === 'company' && company && (
+              {currPage !== 'companies' && (
                 <>
-                  {currPage !== 'companies' && (
-                    <Link
-                      to="/jobvana/companies/$id"
-                      params={{ id: company.id.toString() }}
-                    >
-                      Company
-                    </Link>
-                  )}
-                  {currPage === 'companies' && activeHeaderItem('My Company')}
-                  {currPage !== 'applications' && (
-                    <Link to="/jobvana/applications">Applications</Link>
-                  )}
-                  {currPage === 'applications' &&
-                    activeHeaderItem('Applications')}
+                  <Link
+                    to={company ? '/jobvana/companies/$id' : '.'}
+                    params={company ? { id: company.id.toString() } : undefined}
+                  >
+                    Company
+                  </Link>
                 </>
               )}
-              {userType === 'job_seeker' && (
-                <>
-                  {currPage !== 'companies' && (
-                    <Link to="/jobvana/companies">Companies</Link>
-                  )}
-                  {currPage === 'companies' && activeHeaderItem('Companies')}
-                </>
-              )}
-              {currPage !== 'account' && (
-                <Link to="/jobvana/account">Account</Link>
-              )}
-              {currPage === 'account' && activeHeaderItem('Account')}
-
-              <Link to="/jobvana" onClick={logout}>
-                Log out
-              </Link>
+              {currPage === 'companies' && activeHeaderItem('Company')}
             </>
           )}
+          {userType === 'job_seeker' && (
+            <>
+              {currPage !== 'companies' && (
+                <Link to="/jobvana/companies">Companies</Link>
+              )}
+              {currPage === 'companies' && activeHeaderItem('Companies')}
+            </>
+          )}
+          {currPage !== 'applications' && (
+            <Link to="/jobvana/applications">Applications</Link>
+          )}
+          {currPage === 'applications' && activeHeaderItem('Applications')}
+          {currPage !== 'account' && <Link to="/jobvana/account">Account</Link>}
+          {currPage === 'account' && activeHeaderItem('Account')}
+
+          <Link to="/jobvana" onClick={logout}>
+            Log out
+          </Link>
         </>
       )}
     </div>

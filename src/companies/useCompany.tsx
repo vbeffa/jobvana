@@ -1,3 +1,4 @@
+import type { PostgrestError } from '@supabase/supabase-js';
 import {
   keepPreviousData,
   useMutation,
@@ -34,7 +35,12 @@ export type SkillVersion = Pick<
 
 export type CompanyH = {
   company: FullCompany | null;
-  update: UseMutationResult<unknown, Error, Partial<DbCompany>>;
+  update: UseMutationResult<
+    { data: Partial<DbCompany>[] | null; error: PostgrestError | null },
+    Error,
+    Partial<DbCompany>,
+    unknown
+  >;
   refetch: (options?: RefetchOptions) => Promise<QueryObserverResult>;
   error?: Error;
   isPending: boolean;
@@ -66,7 +72,12 @@ const useCompany = (id?: number): CompanyH => {
     placeholderData: keepPreviousData
   });
 
-  const mutation = useMutation({
+  const mutation: UseMutationResult<
+    { data: Partial<DbCompany>[] | null; error: PostgrestError | null },
+    Error,
+    Partial<DbCompany>,
+    unknown
+  > = useMutation({
     mutationFn: async (editCompany: Partial<DbCompany>) => {
       console.log(editCompany);
 
@@ -77,8 +88,13 @@ const useCompany = (id?: number): CompanyH => {
       if (editCompany.id) {
         q = q.filter('id', 'eq', editCompany.id);
       }
-      const { error } = await q;
-      return { error };
+      const { data, error } = await q.select();
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+      return { data, error };
     }
   });
 

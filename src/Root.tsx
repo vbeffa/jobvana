@@ -21,7 +21,7 @@ const Root = () => {
     JobvanaContextProps['jobsContext']
   >(defaultContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
-  const [company, setCompany] = useState<Company>();
+  const [company, setCompany] = useState<Omit<Company, 'created_at'>>();
 
   const session = getSession();
 
@@ -32,8 +32,6 @@ const Root = () => {
       session.expires_at * 1000 > Date.now()
     );
   }, [session]);
-  console.log(isLoggedIn);
-  console.log(company);
 
   useEffect(() => {
     setLoggedIn(session !== null && isLoggedIn);
@@ -79,23 +77,7 @@ const Root = () => {
       }}
     >
       <Header />
-      {userType === 'company' && (
-        <div className="flex flex-row w-screen">
-          <div className="bg-amber-300 w-64 pl-4 pt-4 h-screen top-16 left-0 fixed z-10 flex gap-[5%]">
-            <div className="flex flex-col gap-2">
-              <div>My Account</div>
-              <div>Company</div>
-              <div>Offices</div>
-              <div>Jobs</div>
-              <div>Applications</div>
-            </div>
-          </div>
-          <div className="ml-64 w-full">
-            <Outlet />
-          </div>
-        </div>
-      )}
-      {userType !== 'company' && <Outlet />}
+      <Outlet />
 
       {/* <TanStackRouterDevtools /> */}
     </JobvanaContext.Provider>
