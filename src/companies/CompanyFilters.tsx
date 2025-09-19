@@ -34,7 +34,9 @@ const CompanyFilters = ({
               onChange({ ...filters, minSize: size ?? undefined });
             }}
           />
-          <div className="flex pt-1">-</div>
+          <label htmlFor="max_size" className="content-center">
+            -
+          </label>
           <NumberInput
             id="max_size"
             size={filters.maxSize ?? null}
