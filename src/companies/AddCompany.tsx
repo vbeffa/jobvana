@@ -14,6 +14,7 @@ const AddCompany = ({ userId }: { userId: string }) => {
   const { setCompany } = useContext(JobvanaContext);
   const [newCompany, setNewCompany] = useState<Partial<ToInsert>>({
     name: '', // prevent "changing uncontrolled input to be controlled" error
+    description: '',
     user_id: userId
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
