@@ -17,7 +17,6 @@ export type JobSearch = {
 };
 
 const userType = getUserType();
-console.log(userType);
 
 export const Route = createFileRoute('/jobvana/jobs/')({
   validateSearch: (search: Record<string, unknown>): JobSearch | undefined => {

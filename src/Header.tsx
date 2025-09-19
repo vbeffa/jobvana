@@ -5,7 +5,7 @@ import { getUserType } from './auth/utils';
 
 const Header = () => {
   const location = useLocation();
-  const { logout, company } = useContext(JobvanaContext);
+  const { logout, company, loggedIn } = useContext(JobvanaContext);
 
   const currPage = useMemo(() => {
     let trimmed = location.pathname.substring(9);
@@ -31,12 +31,12 @@ const Header = () => {
       {currPage === 'home' && activeHeaderItem('Home')}
       {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
       {currPage === 'about' && activeHeaderItem('About')}
-      {userType && (
+      {loggedIn && (
         <>
-          {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
-          {currPage === 'jobs' && activeHeaderItem('Jobs')}
-          {userType === 'company' && (
+          {userType === 'company' && company !== null && (
             <>
+              {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+              {currPage === 'jobs' && activeHeaderItem('Jobs')}
               {currPage !== 'companies' && (
                 <>
                   <Link
@@ -48,20 +48,26 @@ const Header = () => {
                 </>
               )}
               {currPage === 'companies' && activeHeaderItem('Company')}
+              {currPage !== 'applications' && (
+                <Link to="/jobvana/applications">Applications</Link>
+              )}
+              {currPage === 'applications' && activeHeaderItem('Applications')}
             </>
           )}
           {userType === 'job_seeker' && (
             <>
+              {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+              {currPage === 'jobs' && activeHeaderItem('Jobs')}
               {currPage !== 'companies' && (
                 <Link to="/jobvana/companies">Companies</Link>
               )}
               {currPage === 'companies' && activeHeaderItem('Companies')}
+              {currPage !== 'applications' && (
+                <Link to="/jobvana/applications">Applications</Link>
+              )}
+              {currPage === 'applications' && activeHeaderItem('Applications')}
             </>
           )}
-          {currPage !== 'applications' && (
-            <Link to="/jobvana/applications">Applications</Link>
-          )}
-          {currPage === 'applications' && activeHeaderItem('Applications')}
           {currPage !== 'account' && <Link to="/jobvana/account">Account</Link>}
           {currPage === 'account' && activeHeaderItem('Account')}
 

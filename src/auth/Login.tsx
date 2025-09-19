@@ -83,10 +83,8 @@ const Login = () => {
 
   return (
     <div className="mt-4 flex justify-center">
-      <div
-        className={`grid grid-cols-3 gap-y-2 ${mode === 'register' && userType === 'company' ? 'w-96' : 'w-96'} `}
-      >
-        <div className="col-span-3 flex justify-center mb-2 gap-16">
+      <div className="grid grid-cols-[35%_65%] w-[24rem] gap-2">
+        <div className="col-span-2 flex justify-center gap-8 mb-2">
           <div className={mode === 'login' ? activeModeStyle : ''}>
             <Link
               to="."
@@ -110,36 +108,6 @@ const Login = () => {
             </Link>
           </div>
         </div>
-        {mode === 'register' && (
-          <>
-            <div />
-            <div className="col-span-2 flex justify-start mt-2 gap-2">
-              <input
-                id="company_checkbox"
-                name="registration_type"
-                type="radio"
-                checked={userType === 'company'}
-                onChange={() => setUserType('company')}
-              />
-              <label htmlFor="company_checkbox" className="content-center">
-                I represent a company
-              </label>
-            </div>
-            <div />
-            <div className="col-span-2 flex justify-start mb-2 gap-2">
-              <input
-                id="job_seeker_checkbox"
-                name="registration_type"
-                type="radio"
-                checked={userType === 'job_seeker'}
-                onChange={() => setUserType('job_seeker')}
-              />
-              <label htmlFor="job_seeker_checkbox" className="content-center">
-                I am a job seeker
-              </label>
-            </div>
-          </>
-        )}
         <TextInput
           id="email"
           label="Email"
@@ -150,6 +118,7 @@ const Login = () => {
           id="password"
           label="Password"
           type="password"
+          placeholder={mode === 'register' ? 'Min 6 characters' : ''}
           autoComplete={
             mode === 'register' ? 'new-password' : 'current-password'
           }
@@ -169,16 +138,42 @@ const Login = () => {
               autoComplete="family-name"
               onChange={setLastName}
             />
+            <div />
+            <div className="flex justify-start gap-2">
+              <input
+                id="company_checkbox"
+                name="registration_type"
+                type="radio"
+                checked={userType === 'company'}
+                onChange={() => setUserType('company')}
+              />
+              <label htmlFor="company_checkbox" className="content-center">
+                I represent a company
+              </label>
+            </div>
+            <div />
+            <div className="flex justify-start mb-2 gap-2">
+              <input
+                id="job_seeker_checkbox"
+                name="registration_type"
+                type="radio"
+                checked={userType === 'job_seeker'}
+                onChange={() => setUserType('job_seeker')}
+              />
+              <label htmlFor="job_seeker_checkbox" className="content-center">
+                I am a job seeker
+              </label>
+            </div>
           </>
         )}
-        <div className="col-span-3 flex justify-center mt-2">
+        <div className="col-span-2 flex justify-center mt-2">
           <Button
             label={mode === 'register' ? 'Sign Up' : 'Log In'}
             disabled={loginDisabled}
             onClick={() => (mode === 'register' ? doRegister() : doLogin())}
           />
         </div>
-        <div className="col-span-3 flex justify-center mt-2">
+        <div className="col-span-2 flex justify-center mt-2">
           {registrationSuccess && (
             <>Success! Please check your email for a verification link.</>
           )}

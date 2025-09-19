@@ -5,6 +5,7 @@ export type TextInputProps = {
   label?: string;
   type?: 'text' | 'password';
   value?: string;
+  maxLength?: number;
   placeholder?: string;
   disabled?: boolean;
   autoComplete?: HTMLInputAutoCompleteAttribute;
@@ -16,6 +17,7 @@ const TextInput = ({
   label,
   type = 'text',
   value,
+  maxLength,
   placeholder,
   disabled,
   autoComplete,
@@ -28,16 +30,24 @@ const TextInput = ({
           {label}:
         </label>
       )}
-      <input
-        id={id}
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        disabled={disabled}
-        autoComplete={autoComplete}
-        className="p-1 border-[0.5px] w-full col-span-2"
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <div className="relative">
+        <input
+          id={id}
+          type={type}
+          value={value}
+          maxLength={maxLength}
+          placeholder={placeholder}
+          disabled={disabled}
+          autoComplete={autoComplete}
+          className="p-1 pr-16 border-[0.5px] w-full"
+          onChange={(e) => onChange(e.target.value)}
+        />
+        {maxLength && value !== undefined && (
+          <div className="absolute text-gray-500 top-[0.6rem] right-2 text-xs">
+            {value.length} / {maxLength}
+          </div>
+        )}
+      </div>
     </>
   );
 };

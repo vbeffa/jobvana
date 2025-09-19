@@ -3,12 +3,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getSession, getUserType, refreshSession } from './auth/utils';
 import { findCompany } from './companies/utils';
 import {
+  type Company,
   type JobvanaContextProps,
   defaultContext,
   JobvanaContext
 } from './Context';
 import Header from './Header';
-import type { Company } from './types';
 import supabase from './utils/supabase';
 
 export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
@@ -21,7 +21,7 @@ const Root = () => {
     JobvanaContextProps['jobsContext']
   >(defaultContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
-  const [company, setCompany] = useState<Omit<Company, 'created_at'>>();
+  const [company, setCompany] = useState<Company | null>();
 
   const session = getSession();
 
@@ -44,6 +44,7 @@ const Root = () => {
   }, [isLoggedIn]);
 
   const userType = getUserType();
+
   useEffect(() => {
     (async () => {
       if (session && isLoggedIn && userType === 'company' && !company) {

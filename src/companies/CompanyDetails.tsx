@@ -10,8 +10,8 @@ import Section from '../Section';
 import TextInput from '../TextInput';
 import type { Company } from '../types';
 import UpdatingModal from '../UpdatingModal';
+import CompanySize from './CompanySize';
 import IndustrySelect from './IndustrySelect';
-import SizeInput from './SizeInput';
 import useCompany from './useCompany';
 import { companyFields, findHeadquarters, isHeadquarters } from './utils';
 
@@ -134,54 +134,34 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
             </div>
           )}
           {editMode && editCompany && (
-            <div className="pt-2 h-[38px] flex flex-row gap-2">
-              <TextInput
-                id="name"
-                label="Name"
-                value={editCompany.name ?? ''}
-                autoComplete="organization"
-                onChange={(name) => {
-                  setEditCompany((company) =>
-                    company ? { ...company, name } : undefined
-                  );
-                }}
-              />
-              <IndustrySelect
-                id="edit_industry"
-                label="Industry"
-                industryId={editCompany.industry_id}
-                showAll={false}
-                showEmpty={company === null}
-                onChange={(industryId) => {
-                  if (industryId) {
+            <div className="pt-2 flex flex-col gap-2">
+              <div className="flex flex-row gap-2">
+                <TextInput
+                  id="name"
+                  label="Name"
+                  value={editCompany.name ?? ''}
+                  autoComplete="organization"
+                  onChange={(name) => {
                     setEditCompany((company) =>
-                      company
-                        ? {
-                            ...company,
-                            industry_id: industryId
-                          }
-                        : undefined
+                      company ? { ...company, name } : undefined
                     );
-                  }
-                }}
-              />
-              <SizeInput
-                id="size"
-                label="Size"
-                size={editCompany.num_employees ?? ''}
-                onChange={(size) => {
-                  if (size) {
-                    setEditCompany((company) =>
-                      company
-                        ? {
-                            ...company,
-                            num_employees: size
-                          }
-                        : undefined
-                    );
-                  }
-                }}
-              />
+                  }}
+                />{' '}
+              </div>
+              <div className="flex flex-row gap-2">
+                <IndustrySelect
+                  industryId={editCompany.industry_id}
+                  showAll={false}
+                  showEmpty={company === null}
+                  handleUpdate={setEditCompany}
+                />
+              </div>
+              <div className="flex flex-row gap-2">
+                <CompanySize
+                  size={editCompany.num_employees}
+                  handleUpdate={setEditCompany}
+                />
+              </div>
             </div>
           )}
         </div>

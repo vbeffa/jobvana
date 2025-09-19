@@ -1,18 +1,14 @@
 import Filter from '../Filter';
 import IndustrySelect from './IndustrySelect';
-import SizeInput from './SizeInput';
-import {
-  MAX_COMPANY_SIZE,
-  MIN_COMPANY_SIZE,
-  type SearchFilters
-} from './useCompanies';
+import NumberInput from './NumberInput';
+import { type SearchFilters } from './useCompanies';
 
 const CompanyFilters = ({
   filters,
   setFilters
 }: {
   filters: SearchFilters;
-  setFilters: (filters: SearchFilters) => void;
+  setFilters: (value: React.SetStateAction<SearchFilters>) => void;
 }) => {
   return (
     <div className="border-[0.05rem] rounded-lg grid grid-cols-3 gap-2 p-2">
@@ -30,34 +26,27 @@ const CompanyFilters = ({
       </div>
       <div>Size:</div>
       <div className="col-span-2 flex flex-row gap-x-2">
-        <SizeInput
+        <NumberInput
           id="min_size"
-          size={filters.minSize ?? MIN_COMPANY_SIZE}
+          size={filters.minSize ?? 0}
           onChange={(size) => {
-            if (size !== '') {
-              setFilters({ ...filters, minSize: size });
-            }
+            setFilters({ ...filters, minSize: size ?? undefined });
           }}
         />
         <div className="flex pt-1">-</div>
-        <SizeInput
+        <NumberInput
           id="max_size"
-          size={filters.maxSize ?? MAX_COMPANY_SIZE}
+          size={filters.maxSize ?? 0}
           onChange={(size) => {
-            if (size !== '') {
-              setFilters({ ...filters, maxSize: size });
-            }
+            setFilters({ ...filters, maxSize: size ?? undefined });
           }}
         />
       </div>
       <div>Industry:</div>
       <div className="col-span-2">
         <IndustrySelect
-          id="industry"
           industryId={filters.industryId}
-          onChange={(industryId) => {
-            setFilters({ ...filters, industryId });
-          }}
+          handleUpdate={setFilters}
         />
       </div>
     </div>

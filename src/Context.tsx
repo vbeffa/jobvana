@@ -5,10 +5,10 @@ import type { Company as DbCompany } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
-type Company = Omit<DbCompany, 'created_at'>;
+export type Company = Omit<DbCompany, 'created_at'>;
 
 export type JobvanaContextProps = {
-  company?: Company;
+  company?: Company | null;
   setCompany: (company: Company) => void;
   loggedIn?: boolean;
   logout: () => void;

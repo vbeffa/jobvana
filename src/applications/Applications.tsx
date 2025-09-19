@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getUserType } from '../auth/utils';
 import SummaryCard from '../SummaryCard';
 import ApplicationDetails from './ApplicationDetails';
 import useApplications from './useApplications';
@@ -6,10 +7,11 @@ import useApplications from './useApplications';
 const Applications = () => {
   const { applications } = useApplications();
   const [applicationId, setApplicationId] = useState<number | null>(null);
+  const userType = getUserType();
 
   return (
     <>
-      <h1>Applications</h1>
+      <h1>{userType === 'job_seeker' && 'My'} Applications</h1>
       <div className="flex flex-row gap-x-2">
         <div className="w-[20%]">
           {applications?.map((application, idx) => (

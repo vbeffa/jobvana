@@ -1,22 +1,39 @@
 export type TextInputProps = {
   id: string;
   label: string;
+  value?: string;
+  maxLength?: number;
   onChange: (value: string) => void;
 };
 
-const TextArea = ({ id, label, onChange }: TextInputProps) => {
+const TextArea = ({
+  id,
+  label,
+  value,
+  maxLength,
+  onChange
+}: TextInputProps) => {
   return (
     <>
-      <label htmlFor={id} className="content-center">
+      <label htmlFor={id} className="content-start">
         {label}:
       </label>
-      <textarea
-        id={id}
-        className="p-1 border-[0.5px] col-span-2"
-        onChange={(e) => onChange(e.target.value)}
-        rows={3}
-        cols={80}
-      />
+      <div className="relative">
+        <textarea
+          id={id}
+          value={value}
+          maxLength={maxLength}
+          className="p-1 border-[0.5px] min-h-24 w-full"
+          onChange={(e) => onChange(e.target.value)}
+          rows={6}
+          cols={80}
+        />
+        {maxLength && value !== undefined && (
+          <div className="absolute text-gray-500 bottom-[0.7rem] right-2 text-xs">
+            {value.length} / {maxLength}
+          </div>
+        )}
+      </div>
     </>
   );
 };
