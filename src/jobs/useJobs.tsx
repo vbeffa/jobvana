@@ -83,7 +83,7 @@ const useJobs = (params: JobsParams): Jobs => {
       if (filters?.title) {
         q = q.ilike('title', `%${filters.title}%`);
       }
-      if (filters?.roleId) {
+      if (filters?.roleId && filters.roleId > 0) {
         q = q.filter('job_roles.role_id', 'eq', filters.roleId);
       }
       if (filters?.minSalary) {

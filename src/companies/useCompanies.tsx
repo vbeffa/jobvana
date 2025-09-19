@@ -70,7 +70,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
       if (filters?.maxSize) {
         q = q.lte('num_employees', filters.maxSize);
       }
-      if (filters?.industryId) {
+      if (filters?.industryId && filters.industryId > 0) {
         q = q.filter('industry_id', 'eq', filters.industryId);
       }
 

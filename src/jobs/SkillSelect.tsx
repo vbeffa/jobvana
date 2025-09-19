@@ -19,12 +19,12 @@ const SkillSelect = ({
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {isPending && (
-        <option key={0} value="0">
+        <option key={0} value={Number.NEGATIVE_INFINITY}>
           Loading...
         </option>
       )}
       {!isPending && (
-        <option key={0} value="0">
+        <option key={0} value={0}>
           Any
         </option>
       )}

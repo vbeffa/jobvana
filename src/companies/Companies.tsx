@@ -20,6 +20,13 @@ import useCompanies, {
   type SearchFilters
 } from './useCompanies';
 
+const INITIAL_FILTERS: SearchFilters = {
+  name: '',
+  minSize: MIN_COMPANY_SIZE,
+  maxSize: MAX_COMPANY_SIZE,
+  industryId: 0
+};
+
 const Companies = () => {
   const navigate = Route.useNavigate();
   const { companiesContext: context, setCompaniesContext: setContext } =
@@ -28,11 +35,8 @@ const Companies = () => {
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    name: '',
-    minSize: MIN_COMPANY_SIZE,
-    maxSize: MAX_COMPANY_SIZE
-  });
+  const [searchFilters, setSearchFilters] =
+    useState<SearchFilters>(INITIAL_FILTERS);
   const [debouncedName] = useDebounce(
     searchFilters.name,
     searchFilters.name ? 500 : 0
@@ -104,7 +108,20 @@ const Companies = () => {
   return (
     <div className="mx-4">
       {error && <Error error={error} />}
-      <FiltersContainer>
+      <FiltersContainer
+        reset={() => {
+          setPage(1);
+          setCompanyId(null);
+          setSearchFilters(INITIAL_FILTERS);
+          setContext({
+            ...context,
+            ...filters,
+            page: 1,
+            companyId: undefined
+          });
+        }}
+        resetDisabled={_.isEqual(filters, INITIAL_FILTERS)}
+      >
         <CompanyFilters
           filters={searchFilters}
           onChange={(filters) => {

@@ -15,7 +15,8 @@ const AddCompany = ({ userId }: { userId: string }) => {
   const [newCompany, setNewCompany] = useState<Partial<ToInsert>>({
     name: '', // prevent "changing uncontrolled input to be controlled" error
     description: '',
-    user_id: userId
+    user_id: userId,
+    industry_id: -1
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();

@@ -43,15 +43,18 @@ export const defaultContext: JobvanaContextProps = {
   companiesContext: {
     page: 1,
     minSize: MIN_COMPANY_SIZE,
-    maxSize: MAX_COMPANY_SIZE
+    maxSize: MAX_COMPANY_SIZE,
+    industryId: 0
   },
   setCompaniesContext: () => {},
   jobsContext: {
     page: 1,
     company: '',
     title: '',
+    roleId: 0,
     minSalary: MIN_SALARY,
-    maxSalary: MAX_SALARY
+    maxSalary: MAX_SALARY,
+    skillId: 0
   },
   setJobsContext: () => {}
 };

@@ -24,6 +24,10 @@ const IndustrySelect = <
   onChange?: (industryId: number | undefined) => void;
   handleUpdate?: (value: React.SetStateAction<T>) => void;
 }) => {
+  if (showAll && showEmpty) {
+    throw new Error('cannot set both showAll and showEmpty');
+  }
+
   const { isPending, industries } = useIndustries();
 
   return (
@@ -45,7 +49,7 @@ const IndustrySelect = <
             }
             if (handleUpdate) {
               handleUpdate((val) => {
-                if (!val) {
+                if (val === undefined || val === null) {
                   return val;
                 }
                 // SearchFilters uses industryId, db types use industry_id :/
@@ -59,16 +63,16 @@ const IndustrySelect = <
           }}
         >
           {isPending && (
-            <option key={0} value="">
+            <option key={0} value={Number.NEGATIVE_INFINITY}>
               Loading...
             </option>
           )}
+          {!isPending && showEmpty && <option key={0} value={-1} />}
           {!isPending && showAll && (
-            <option key={0} value="">
+            <option key={0} value={0}>
               All
             </option>
           )}
-          {!isPending && showEmpty && <option key={0} value="" />}
           {industries?.map((industry, idx) => (
             <option key={idx} value={industry.id}>
               {industry.name}

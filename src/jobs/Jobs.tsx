@@ -20,6 +20,15 @@ import useJobs, {
   type SearchFilters
 } from './useJobs';
 
+const INITIAL_FILTERS: SearchFilters = {
+  company: '',
+  title: '',
+  roleId: 0,
+  minSalary: MIN_SALARY,
+  maxSalary: MAX_SALARY,
+  skillId: 0
+};
+
 const Jobs = () => {
   const navigate = Route.useNavigate();
   const { jobsContext: context, setJobsContext: setContext } =
@@ -28,12 +37,8 @@ const Jobs = () => {
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    company: '',
-    title: '',
-    minSalary: MIN_SALARY,
-    maxSalary: MAX_SALARY
-  });
+  const [searchFilters, setSearchFilters] =
+    useState<SearchFilters>(INITIAL_FILTERS);
   const [debouncedCompany] = useDebounce(
     searchFilters.company,
     searchFilters.company ? 500 : 0
@@ -119,7 +124,20 @@ const Jobs = () => {
   return (
     <div className="mx-4">
       {error && <Error error={error} />}
-      <FiltersContainer>
+      <FiltersContainer
+        reset={() => {
+          setPage(1);
+          setJobId(null);
+          setSearchFilters(INITIAL_FILTERS);
+          setContext({
+            ...context,
+            ...filters,
+            page: 1,
+            jobId: undefined
+          });
+        }}
+        resetDisabled={_.isEqual(filters, INITIAL_FILTERS)}
+      >
         <JobFilters
           filters={searchFilters}
           setFilters={(filters) => {

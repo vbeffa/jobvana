@@ -49,6 +49,7 @@ export const isValid = (company: Partial<ToInsert>) => {
     company.num_employees >= MIN_COMPANY_SIZE &&
     company.num_employees <= MAX_COMPANY_SIZE &&
     company.industry_id &&
+    company.industry_id > 0 &&
     company.description &&
     company.description.length <= MAX_DESCRIPTION_LENGTH &&
     company.user_id

@@ -12,7 +12,7 @@ const CompanyFilters = ({
 }) => {
   return (
     <div className="p-2 w-[24rem]">
-      <div className="grid grid-cols-[25%_75%] gap-y-2">
+      <div className="grid grid-cols-[25%_75%] w-[20rem] gap-y-2">
         <Filter
           id="company_filter"
           label="Name"
