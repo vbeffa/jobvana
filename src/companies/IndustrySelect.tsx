@@ -13,11 +13,13 @@ const IndustrySelect = <
     | undefined
 >({
   industryId,
+  showLabel = true,
   showAll = true,
   showEmpty = false,
   handleUpdate
 }: {
   industryId?: number;
+  showLabel?: boolean;
   showAll?: boolean;
   showEmpty?: boolean;
   handleUpdate: (value: React.SetStateAction<T>) => void;
@@ -26,9 +28,11 @@ const IndustrySelect = <
 
   return (
     <>
-      <label htmlFor="industry" className="content-center">
-        Industry:
-      </label>
+      {showLabel && (
+        <label htmlFor="industry" className="content-center">
+          Industry:
+        </label>
+      )}
       <div>
         <select
           id="industry"

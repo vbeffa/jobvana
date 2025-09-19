@@ -46,6 +46,7 @@ const CompanyFilters = ({
       <div className="col-span-2">
         <IndustrySelect
           industryId={filters.industryId}
+          showLabel={false}
           handleUpdate={setFilters}
         />
       </div>
