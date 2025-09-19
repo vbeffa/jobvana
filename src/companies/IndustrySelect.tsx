@@ -34,7 +34,7 @@ const IndustrySelect = <
       <div>
         <select
           id="industry"
-          className="border-[0.5px] h-8 w-full"
+          className="border-[0.5px] border-gray-500 h-8 w-full"
           value={industryId}
           onChange={(e) => {
             const industryId = e.target.value

@@ -32,7 +32,7 @@ const NumberInput = ({
           min={MIN_COMPANY_SIZE}
           max={MAX_COMPANY_SIZE}
           placeholder={`${MIN_COMPANY_SIZE} - ${MAX_COMPANY_SIZE}`}
-          className="p-1 border-[0.5px] h-8 w-full"
+          className="p-1 border-[0.5px] border-gray-500 h-8 w-full"
           value={size ?? ''}
           onChange={(e) => {
             if (e.target.value !== '-') {

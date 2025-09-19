@@ -14,7 +14,7 @@ const RoleSelect = ({
   return (
     <select
       id={id}
-      className="border border-gray-500 h-8 px-2 py-0.5"
+      className="border-[0.5px] border-gray-500 h-8 px-2 py-0.5"
       value={roleId}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >

@@ -13,9 +13,9 @@ const JobFilters = ({
   setFilters: (filters: SearchFilters) => void;
 }) => {
   return (
-    <div className="border-[0.05rem] rounded-lg p-2 w-[48rem]">
-      <div className="grid grid-cols-2 gap-x-2">
-        <div className="grid grid-cols-[35%_65%] gap-y-2">
+    <div className="p-2">
+      <div className="grid grid-cols-2">
+        <div className="grid grid-cols-[25%_75%] w-[20rem] gap-y-2">
           <Filter
             id="company_filter"
             label="Name"
@@ -51,7 +51,7 @@ const JobFilters = ({
             }}
           />
         </div>
-        <div className="grid grid-cols-[35%_65%] gap-y-2">
+        <div className="grid grid-cols-[35%_65%] w-[24rem] gap-y-2">
           <label htmlFor="min_salary" className="content-center">
             Salary Range:
           </label>
@@ -71,7 +71,9 @@ const JobFilters = ({
                 setFilters(newFilters);
               }}
             />
-            <div className="flex pt-1">-</div>
+            <label htmlFor="max_salary" className="content-center">
+              -
+            </label>
             <SalarySelect
               id="max_salary"
               value={filters.maxSalary}
