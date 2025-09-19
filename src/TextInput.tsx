@@ -10,7 +10,9 @@ export type TextInputProps = {
   placeholder?: string;
   disabled?: boolean;
   autoComplete?: HTMLInputAutoCompleteAttribute;
+  showClear?: boolean;
   onChange: (value: string) => void;
+  onClear?: () => void;
 };
 
 const TextInput = ({
@@ -23,7 +25,9 @@ const TextInput = ({
   placeholder,
   disabled,
   autoComplete,
-  onChange
+  showClear,
+  onChange,
+  onClear
 }: TextInputProps) => {
   return (
     <>
@@ -48,6 +52,17 @@ const TextInput = ({
         {maxLength && value !== undefined && (
           <div className="absolute text-gray-500 top-[0.6rem] right-2 text-xs">
             {value.length} / {maxLength}
+          </div>
+        )}
+        {showClear && onClear && (
+          <div
+            className="absolute right-1.75 top-1 text-gray-400 cursor-pointer"
+            onClick={() => {
+              onClear();
+              document.getElementById(id)?.focus();
+            }}
+          >
+            {value && 'X'}
           </div>
         )}
       </div>

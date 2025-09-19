@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { getUserType } from '../auth/utils';
 import Button from '../Button';
 import { JobvanaContext } from '../Context';
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
-import PillContainer from '../PillContainer';
 import { Route } from '../routes/jobvana.companies.$id';
 import Section from '../Section';
 import TextInput from '../TextInput';
@@ -23,6 +23,7 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
     useCompany(id);
   const [editCompany, setEditCompany] = useState<Partial<Company> | null>();
   const [isUpdating, setIsUpdating] = useState(false);
+  const userType = getUserType();
 
   const updateCompany = useCallback(async () => {
     if (!editCompany) {
@@ -109,59 +110,55 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
           {editMode && company && (
             <Button label="Cancel" onClick={() => setEditMode(false)} />
           )}
-          <Button
-            label={`${editMode ? 'Save' : 'Edit'}`}
-            disabled={editMode && (!isValid || !isDirty || isUpdating)}
-            onClick={() =>
-              setEditMode((editMode) => {
-                if (editMode) {
-                  updateCompany();
-                } else {
-                  setEditCompany(company ? companyFields(company) : {});
-                }
-                return !editMode;
-              })
-            }
-          />
+          {userType === 'company' && (
+            <Button
+              label={`${editMode ? 'Save' : 'Edit'}`}
+              disabled={editMode && (!isValid || !isDirty || isUpdating)}
+              onClick={() =>
+                setEditMode((editMode) => {
+                  if (editMode) {
+                    updateCompany();
+                  } else {
+                    setEditCompany(company ? companyFields(company) : {});
+                  }
+                  return !editMode;
+                })
+              }
+            />
+          )}
         </div>
         <div className="flex flex-row gap-1">
           {!editMode && company && (
-            <div className="pt-1 flex flex-row gap-1">
-              <PillContainer>{company.industry.name}</PillContainer>
+            <div className="pt-1 flex flex-col gap-1">
+              <div>Industry: {company.industry.name}</div>
               <div className="content-center">
-                {company.num_employees} employees
+                Size: {company.num_employees} employees
               </div>
             </div>
           )}
           {editMode && editCompany && (
-            <div className="pt-2 flex flex-col gap-2">
-              <div className="flex flex-row gap-2">
-                <TextInput
-                  id="name"
-                  label="Name"
-                  value={editCompany.name ?? ''}
-                  autoComplete="organization"
-                  onChange={(name) => {
-                    setEditCompany((company) =>
-                      company ? { ...company, name } : undefined
-                    );
-                  }}
-                />{' '}
-              </div>
-              <div className="flex flex-row gap-2">
-                <IndustrySelect
-                  industryId={editCompany.industry_id}
-                  showAll={false}
-                  showEmpty={company === null}
-                  handleUpdate={setEditCompany}
-                />
-              </div>
-              <div className="flex flex-row gap-2">
-                <CompanySize
-                  size={editCompany.num_employees}
-                  handleUpdate={setEditCompany}
-                />
-              </div>
+            <div className="grid grid-cols-[25%_75%] w-[32rem] gap-y-2">
+              <TextInput
+                id="name"
+                label="Name"
+                value={editCompany.name ?? ''}
+                autoComplete="organization"
+                onChange={(name) => {
+                  setEditCompany((company) =>
+                    company ? { ...company, name } : undefined
+                  );
+                }}
+              />
+              <IndustrySelect
+                industryId={editCompany.industry_id}
+                showAll={false}
+                showEmpty={company === null}
+                handleUpdate={setEditCompany}
+              />
+              <CompanySize
+                size={editCompany.num_employees}
+                handleUpdate={setEditCompany}
+              />
             </div>
           )}
         </div>

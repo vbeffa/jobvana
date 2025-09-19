@@ -53,7 +53,7 @@ const AddCompany = ({ userId }: { userId: string }) => {
       <h1>Onboarding</h1>
       {error && <Error error={error} />}
       <div className="mt-4 flex justify-center">
-        <div className="grid grid-cols-[25%_75%] w-[32rem] gap-4">
+        <div className="grid grid-cols-[25%_75%] w-[32rem] gap-y-2">
           <CompanyName name={newCompany.name} handleUpdate={setNewCompany} />
           <IndustrySelect
             showAll={false}

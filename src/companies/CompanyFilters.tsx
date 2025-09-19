@@ -5,49 +5,49 @@ import { type SearchFilters } from './useCompanies';
 
 const CompanyFilters = ({
   filters,
-  setFilters
+  onChange
 }: {
   filters: SearchFilters;
-  setFilters: (value: React.SetStateAction<SearchFilters>) => void;
+  onChange: (filters: SearchFilters) => void;
 }) => {
   return (
-    <div className="border-[0.05rem] rounded-lg grid grid-cols-3 gap-2 p-2">
-      <div>Name:</div>
-      <div className="col-span-2">
+    <div className="border-[0.05rem] rounded-lg p-2">
+      <div className="grid grid-cols-[25%_75%] gap-y-2 ">
         <Filter
           id="company_filter"
+          label="Name"
           placeholder="Filter by company"
           value={filters.name}
           onChange={(name) => {
-            setFilters({ ...filters, name });
+            onChange({ ...filters, name });
           }}
-          onClear={() => setFilters({ ...filters, name: '' })}
+          onClear={() => onChange({ ...filters, name: '' })}
         />
-      </div>
-      <div>Size:</div>
-      <div className="col-span-2 flex flex-row gap-x-2">
-        <NumberInput
-          id="min_size"
-          size={filters.minSize ?? 0}
-          onChange={(size) => {
-            setFilters({ ...filters, minSize: size ?? undefined });
-          }}
-        />
-        <div className="flex pt-1">-</div>
-        <NumberInput
-          id="max_size"
-          size={filters.maxSize ?? 0}
-          onChange={(size) => {
-            setFilters({ ...filters, maxSize: size ?? undefined });
-          }}
-        />
-      </div>
-      <div>Industry:</div>
-      <div className="col-span-2">
+        <label htmlFor="min_size" className="content-center">
+          Size:
+        </label>
+        <div className="flex flex-row gap-x-2">
+          <NumberInput
+            id="min_size"
+            size={filters.minSize ?? null}
+            onChange={(size) => {
+              onChange({ ...filters, minSize: size ?? undefined });
+            }}
+          />
+          <div className="flex pt-1">-</div>
+          <NumberInput
+            id="max_size"
+            size={filters.maxSize ?? null}
+            onChange={(size) => {
+              onChange({ ...filters, maxSize: size ?? undefined });
+            }}
+          />
+        </div>
         <IndustrySelect
           industryId={filters.industryId}
-          showLabel={false}
-          handleUpdate={setFilters}
+          onChange={(industryId) => {
+            onChange({ ...filters, industryId });
+          }}
         />
       </div>
     </div>

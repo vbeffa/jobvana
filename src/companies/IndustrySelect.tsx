@@ -13,50 +13,49 @@ const IndustrySelect = <
     | undefined
 >({
   industryId,
-  showLabel = true,
   showAll = true,
   showEmpty = false,
+  onChange,
   handleUpdate
 }: {
   industryId?: number;
-  showLabel?: boolean;
   showAll?: boolean;
   showEmpty?: boolean;
-  handleUpdate: (value: React.SetStateAction<T>) => void;
+  onChange?: (industryId: number | undefined) => void;
+  handleUpdate?: (value: React.SetStateAction<T>) => void;
 }) => {
   const { isPending, industries } = useIndustries();
 
   return (
     <>
-      {showLabel && (
-        <label htmlFor="industry" className="content-center">
-          Industry:
-        </label>
-      )}
+      <label htmlFor="industry" className="content-center">
+        Industry:
+      </label>
       <div>
         <select
           id="industry"
           className="border-[0.5px] h-8 w-full"
           value={industryId}
           onChange={(e) => {
-            handleUpdate((val) => {
-              const industryId = e.target.value
-                ? parseInt(e.target.value)
-                : undefined;
-              if (!val) {
-                return val;
-              }
-              if ('industryId' in val) {
+            const industryId = e.target.value
+              ? parseInt(e.target.value)
+              : undefined;
+            if (onChange) {
+              onChange(industryId);
+            }
+            if (handleUpdate) {
+              handleUpdate((val) => {
+                if (!val) {
+                  return val;
+                }
+                // SearchFilters uses industryId, db types use industry_id :/
                 return {
                   ...val,
-                  industryId
+                  industryId,
+                  industry_id: industryId
                 };
-              }
-              return {
-                ...val,
-                industry_id: industryId
-              };
-            });
+              });
+            }
           }}
         >
           {isPending && (

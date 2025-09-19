@@ -41,11 +41,13 @@ const NumberInput = ({
             }
           }}
           onBlur={(e) => {
-            let size: number | null = parseInt(e.target.value);
-            if (isNaN(size)) {
-              size = null;
+            let newSize: number | null = parseInt(e.target.value);
+            if (isNaN(newSize)) {
+              newSize = null;
             }
-            onChange(size);
+            if (newSize !== size) {
+              onChange(newSize);
+            }
           }}
         />
         {outOfRange && (

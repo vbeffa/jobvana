@@ -107,7 +107,7 @@ const Companies = () => {
       <FiltersContainer>
         <CompanyFilters
           filters={searchFilters}
-          setFilters={(filters) => {
+          onChange={(filters) => {
             setPage(1);
             setCompanyId(null);
             setSearchFilters(filters);
