@@ -13,12 +13,12 @@ const JobFilters = ({
   setFilters: (filters: SearchFilters) => void;
 }) => {
   return (
-    <div className="border-[0.05rem] rounded-lg grid grid-cols-2">
-      <div className="grid grid-cols-3 gap-2 p-2">
-        <div>Company:</div>
-        <div className="col-span-2">
+    <div className="border-[0.05rem] rounded-lg p-2 w-[48rem]">
+      <div className="grid grid-cols-2 gap-x-2">
+        <div className="grid grid-cols-[35%_65%] gap-y-2">
           <Filter
             id="company_filter"
+            label="Name"
             placeholder="Filter by company"
             value={filters.company}
             onChange={(company) => {
@@ -26,11 +26,9 @@ const JobFilters = ({
             }}
             onClear={() => setFilters({ ...filters, company: '' })}
           />
-        </div>
-        <div>Title:</div>
-        <div className="col-span-2">
           <Filter
             id="job_title_filter"
+            label="Title"
             placeholder="Filter by job title"
             value={filters.title}
             onChange={(title) => {
@@ -38,9 +36,9 @@ const JobFilters = ({
             }}
             onClear={() => setFilters({ ...filters, title: '' })}
           />
-        </div>
-        <div>Role:</div>
-        <div className="col-span-2 flex flex-row gap-x-2">
+          <label htmlFor="role" className="content-center">
+            Role:
+          </label>
           <RoleSelect
             id="role"
             roleId={filters.roleId}
@@ -53,44 +51,46 @@ const JobFilters = ({
             }}
           />
         </div>
-      </div>
-      <div className="grid grid-cols-3 gap-2 p-2">
-        <div>Salary Range:</div>
-        <div className="col-span-2 flex flex-row gap-x-2">
-          <SalarySelect
-            id="min_salary"
-            value={filters.minSalary}
-            onChange={(minSalary) => {
-              const newFilters = {
-                ...filters,
-                minSalary,
-                maxSalary:
-                  filters.maxSalary && minSalary > filters.maxSalary
-                    ? minSalary
-                    : filters.maxSalary
-              };
-              setFilters(newFilters);
-            }}
-          />
-          <div className="flex pt-1">-</div>
-          <SalarySelect
-            id="max_salary"
-            value={filters.maxSalary}
-            onChange={(maxSalary) => {
-              const newFilters = {
-                ...filters,
-                maxSalary,
-                minSalary:
-                  filters.minSalary && maxSalary < filters.minSalary
-                    ? maxSalary
-                    : filters.minSalary
-              };
-              setFilters(newFilters);
-            }}
-          />
-        </div>
-        <div>Skill:</div>
-        <div className="col-span-2 flex flex-row gap-x-2">
+        <div className="grid grid-cols-[35%_65%] gap-y-2">
+          <label htmlFor="min_salary" className="content-center">
+            Salary Range:
+          </label>
+          <div className="flex flex-row gap-x-2">
+            <SalarySelect
+              id="min_salary"
+              value={filters.minSalary}
+              onChange={(minSalary) => {
+                const newFilters = {
+                  ...filters,
+                  minSalary,
+                  maxSalary:
+                    filters.maxSalary && minSalary > filters.maxSalary
+                      ? minSalary
+                      : filters.maxSalary
+                };
+                setFilters(newFilters);
+              }}
+            />
+            <div className="flex pt-1">-</div>
+            <SalarySelect
+              id="max_salary"
+              value={filters.maxSalary}
+              onChange={(maxSalary) => {
+                const newFilters = {
+                  ...filters,
+                  maxSalary,
+                  minSalary:
+                    filters.minSalary && maxSalary < filters.minSalary
+                      ? maxSalary
+                      : filters.minSalary
+                };
+                setFilters(newFilters);
+              }}
+            />
+          </div>
+          <label htmlFor="skill" className="content-center">
+            Skill:
+          </label>
           <SkillSelect
             id="skill"
             skillId={filters.skillId}
@@ -102,9 +102,9 @@ const JobFilters = ({
               }
             }}
           />
-        </div>
-        <div>Posted:</div>
-        <div className="col-span-2 flex flex-row gap-x-2">
+          <label htmlFor="created" className="content-center">
+            Posted:
+          </label>
           <CreatedSelect
             id="created"
             value={filters.created}

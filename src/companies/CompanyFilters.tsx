@@ -11,8 +11,8 @@ const CompanyFilters = ({
   onChange: (filters: SearchFilters) => void;
 }) => {
   return (
-    <div className="border-[0.05rem] rounded-lg p-2">
-      <div className="grid grid-cols-[25%_75%] gap-y-2 ">
+    <div className="border-[0.05rem] rounded-lg p-2 w-[24rem]">
+      <div className="grid grid-cols-[25%_75%] gap-y-2">
         <Filter
           id="company_filter"
           label="Name"
