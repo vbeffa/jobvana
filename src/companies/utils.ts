@@ -42,7 +42,6 @@ export const companyFields = (
 });
 
 export const isValid = (company: Partial<ToInsert>) => {
-  console.log(company);
   return (
     company.name &&
     company.name.length <= MAX_NAME_LENGTH &&
