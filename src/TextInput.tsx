@@ -5,6 +5,7 @@ export type TextInputProps = {
   label?: string;
   type?: 'text' | 'password';
   value?: string;
+  minLength?: number;
   maxLength?: number;
   placeholder?: string;
   disabled?: boolean;
@@ -17,6 +18,7 @@ const TextInput = ({
   label,
   type = 'text',
   value,
+  minLength,
   maxLength,
   placeholder,
   disabled,
@@ -35,11 +37,12 @@ const TextInput = ({
           id={id}
           type={type}
           value={value}
+          minLength={minLength}
           maxLength={maxLength}
           placeholder={placeholder}
           disabled={disabled}
           autoComplete={autoComplete}
-          className="p-1 pr-16 border-[0.5px] w-full"
+          className="p-1 pr-14 border-[0.5px] w-full"
           onChange={(e) => onChange(e.target.value)}
         />
         {maxLength && value !== undefined && (

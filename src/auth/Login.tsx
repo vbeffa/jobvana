@@ -6,6 +6,9 @@ import Error from '../Error';
 import TextInput from '../TextInput';
 import supabase from '../utils/supabase';
 
+const MIN_PASSWORD_LENGTH = 6;
+const MAX_PASSWORD_LENGTH = 32;
+
 const Login = () => {
   const [mode, setMode] = useState<'register' | 'login'>('login');
 
@@ -24,39 +27,42 @@ const Login = () => {
       isLoggingIn ||
       !email ||
       !password ||
+      password.length < MIN_PASSWORD_LENGTH ||
+      password.length > MAX_PASSWORD_LENGTH ||
       (mode === 'register' && (!userType || !firstName || !lastName)),
     [email, firstName, isLoggingIn, lastName, mode, password, userType]
   );
 
   const doRegister = useCallback(async () => {
-    console.log(email, password);
     setIsLoggingIn(true);
     setError(null);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          type: userType
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            type: userType
+          }
         }
-      }
-    });
+      });
 
-    if (error) {
-      console.log(error);
-      setError(error);
+      if (error) {
+        console.log(error);
+        setError(error);
+        return;
+      }
+      console.log(data);
+      setRegistrationSuccess(true);
+    } finally {
       setIsLoggingIn(false);
-      return;
     }
-    console.log(data);
-    setRegistrationSuccess(true);
   }, [email, firstName, lastName, password, userType]);
 
   const doLogin = useCallback(async () => {
-    console.log(email, password);
     setIsLoggingIn(true);
     setError(null);
 
@@ -118,6 +124,9 @@ const Login = () => {
           id="password"
           label="Password"
           type="password"
+          value={password}
+          minLength={MIN_PASSWORD_LENGTH}
+          maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
           placeholder={mode === 'register' ? 'Min 6 characters' : ''}
           autoComplete={
             mode === 'register' ? 'new-password' : 'current-password'
@@ -138,8 +147,7 @@ const Login = () => {
               autoComplete="family-name"
               onChange={setLastName}
             />
-            <div />
-            <div className="flex justify-start gap-2">
+            <div className="col-start-2 flex justify-start gap-2">
               <input
                 id="company_checkbox"
                 name="registration_type"
@@ -151,8 +159,7 @@ const Login = () => {
                 I represent a company
               </label>
             </div>
-            <div />
-            <div className="flex justify-start mb-2 gap-2">
+            <div className="col-start-2 flex justify-start gap-2">
               <input
                 id="job_seeker_checkbox"
                 name="registration_type"
