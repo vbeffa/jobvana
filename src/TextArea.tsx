@@ -23,7 +23,7 @@ const TextArea = ({
           id={id}
           value={value}
           maxLength={maxLength}
-          className="p-1 border-[0.5px] min-h-24 w-full"
+          className="p-1 border-[0.5px] border-gray-500 min-h-24 w-full"
           onChange={(e) => onChange(e.target.value)}
           rows={6}
           cols={80}

@@ -115,7 +115,7 @@ const Companies = () => {
           setSearchFilters(INITIAL_FILTERS);
           setContext({
             ...context,
-            ...filters,
+            ...INITIAL_FILTERS,
             page: 1,
             companyId: undefined
           });

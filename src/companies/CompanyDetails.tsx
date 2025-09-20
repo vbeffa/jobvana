@@ -1,91 +1,22 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getUserType } from '../auth/utils';
-import Button from '../Button';
+import { useContext, useEffect } from 'react';
 import { JobvanaContext } from '../Context';
 import Error from '../Error';
 import JobsList from '../jobs/JobsList';
 import LoadingModal from '../LoadingModal';
-import { Route } from '../routes/jobvana.companies.$id';
+import PillContainer from '../PillContainer';
 import Section from '../Section';
-import TextInput from '../TextInput';
-import type { Company } from '../types';
-import UpdatingModal from '../UpdatingModal';
-import CompanySize from './CompanySize';
-import IndustrySelect from './IndustrySelect';
 import useCompany from './useCompany';
 import { companyFields, findHeadquarters, isHeadquarters } from './utils';
 
-const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
-  const navigate = Route.useNavigate();
+const CompanyDetails = ({ id }: { id?: number }) => {
   const { setCompany } = useContext(JobvanaContext);
-  const [editMode, setEditMode] = useState(false);
-  const { company, update, error, isPlaceholderData, isPending, refetch } =
-    useCompany(id);
-  const [editCompany, setEditCompany] = useState<Partial<Company> | null>();
-  const [isUpdating, setIsUpdating] = useState(false);
-  const userType = getUserType();
-
-  const updateCompany = useCallback(async () => {
-    if (!editCompany) {
-      return;
-    }
-    setIsUpdating(true);
-    try {
-      const data = await update.mutateAsync(editCompany);
-      await refetch();
-      navigate({
-        to: '/jobvana/companies/$id',
-        params: { id: data?.data?.[0].id?.toString() }
-      });
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsUpdating(false);
-    }
-  }, [editCompany, navigate, refetch, update]);
-
-  useEffect(() => {
-    setEditMode(company === null);
-  }, [company]);
+  const { company, error, isPlaceholderData, isPending } = useCompany(id);
 
   useEffect(() => {
     if (company) {
       setCompany(companyFields(company));
     }
   }, [company, setCompany]);
-
-  useEffect(() => {
-    if (company === null) {
-      setEditCompany({
-        user_id: userId
-      });
-    }
-  }, [company, userId]);
-
-  const isValid = useMemo(() => {
-    return Boolean(
-      editCompany &&
-        editCompany.name &&
-        editCompany.description &&
-        editCompany.num_employees &&
-        editCompany.industry_id &&
-        editCompany.user_id
-    );
-  }, [editCompany]);
-
-  const isDirty = useMemo(() => {
-    if (!company) {
-      return true; // onboarding
-    }
-    return Boolean(
-      editCompany &&
-        company &&
-        (editCompany.name !== company.name ||
-          editCompany.description !== company.description ||
-          editCompany.num_employees !== company.num_employees ||
-          editCompany.industry_id !== company.industry.id)
-    );
-  }, [editCompany, company]);
 
   if (error) {
     return <Error error={error} />;
@@ -95,70 +26,23 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
     return <LoadingModal />;
   }
 
-  // if (!company) {
-  //   return null;
-  // }
+  if (!company) {
+    return null;
+  }
 
   const hq = company ? findHeadquarters(company) : undefined;
 
   return (
     <>
-      {update.isPending && <UpdatingModal />}
       {isPlaceholderData && <LoadingModal />}
-      <Section title={company?.name ?? 'New Company'}>
-        <div className="absolute right-0 top-0 flex flex-row gap-2">
-          {editMode && company && (
-            <Button label="Cancel" onClick={() => setEditMode(false)} />
-          )}
-          {userType === 'company' && (
-            <Button
-              label={`${editMode ? 'Save' : 'Edit'}`}
-              disabled={editMode && (!isValid || !isDirty || isUpdating)}
-              onClick={() =>
-                setEditMode((editMode) => {
-                  if (editMode) {
-                    updateCompany();
-                  } else {
-                    setEditCompany(company ? companyFields(company) : {});
-                  }
-                  return !editMode;
-                })
-              }
-            />
-          )}
-        </div>
+      <Section title={company.name}>
         <div className="flex flex-row gap-1">
-          {!editMode && company && (
-            <div className="pt-1 flex flex-col gap-1">
-              <div>Industry: {company.industry.name}</div>
+          {company && (
+            <div className="pt-1 flex flex-row gap-2">
+              <PillContainer>{company.industry.name}</PillContainer>
               <div className="content-center">
-                Size: {company.num_employees} employees
+                {company.num_employees} employees
               </div>
-            </div>
-          )}
-          {editMode && editCompany && (
-            <div className="grid grid-cols-[25%_75%] w-[32rem] gap-y-2">
-              <TextInput
-                id="name"
-                label="Name"
-                value={editCompany.name ?? ''}
-                autoComplete="organization"
-                onChange={(name) => {
-                  setEditCompany((company) =>
-                    company ? { ...company, name } : undefined
-                  );
-                }}
-              />
-              <IndustrySelect
-                industryId={editCompany.industry_id}
-                showAll={false}
-                showEmpty={company === null}
-                handleUpdate={setEditCompany}
-              />
-              <CompanySize
-                size={editCompany.num_employees}
-                handleUpdate={setEditCompany}
-              />
             </div>
           )}
         </div>
@@ -170,28 +54,7 @@ const CompanyDetails = ({ id, userId }: { id?: number; userId?: string }) => {
       </Section>
       <Section title="Description">
         <div>
-          {!editMode && company && (
-            <div className="h-[87px]">{company.description}</div>
-          )}
-          {editMode && editCompany && (
-            <textarea
-              id="description"
-              className="p-1 border-[0.5px]"
-              value={editCompany.description ?? ''}
-              onChange={(e) => {
-                setEditCompany((company) =>
-                  company
-                    ? {
-                        ...company,
-                        description: e.target.value
-                      }
-                    : undefined
-                );
-              }}
-              rows={3}
-              cols={80}
-            />
-          )}
+          {company && <div className="h-[87px]">{company.description}</div>}
         </div>
       </Section>
       <Section title="Offices">

@@ -7,10 +7,10 @@ import type { SearchFilters } from './useJobs';
 
 const JobFilters = ({
   filters,
-  setFilters
+  onChange
 }: {
   filters: SearchFilters;
-  setFilters: (filters: SearchFilters) => void;
+  onChange: (filters: SearchFilters) => void;
 }) => {
   return (
     <div className="p-2">
@@ -22,9 +22,9 @@ const JobFilters = ({
             placeholder="Filter by company"
             value={filters.company}
             onChange={(company) => {
-              setFilters({ ...filters, company });
+              onChange({ ...filters, company });
             }}
-            onClear={() => setFilters({ ...filters, company: '' })}
+            onClear={() => onChange({ ...filters, company: '' })}
           />
           <Filter
             id="job_title_filter"
@@ -32,9 +32,9 @@ const JobFilters = ({
             placeholder="Filter by job title"
             value={filters.title}
             onChange={(title) => {
-              setFilters({ ...filters, title });
+              onChange({ ...filters, title });
             }}
-            onClear={() => setFilters({ ...filters, title: '' })}
+            onClear={() => onChange({ ...filters, title: '' })}
           />
           <label htmlFor="role" className="content-center">
             Role:
@@ -44,9 +44,9 @@ const JobFilters = ({
             roleId={filters.roleId}
             onChange={(roleId) => {
               if (!roleId) {
-                setFilters({ ...filters, roleId: undefined });
+                onChange({ ...filters, roleId: undefined });
               } else {
-                setFilters({ ...filters, roleId });
+                onChange({ ...filters, roleId });
               }
             }}
           />
@@ -68,7 +68,7 @@ const JobFilters = ({
                       ? minSalary
                       : filters.maxSalary
                 };
-                setFilters(newFilters);
+                onChange(newFilters);
               }}
             />
             <label htmlFor="max_salary" className="content-center">
@@ -86,7 +86,7 @@ const JobFilters = ({
                       ? maxSalary
                       : filters.minSalary
                 };
-                setFilters(newFilters);
+                onChange(newFilters);
               }}
             />
           </div>
@@ -98,9 +98,9 @@ const JobFilters = ({
             skillId={filters.skillId}
             onChange={(skillId) => {
               if (skillId === 0) {
-                setFilters({ ...filters, skillId: undefined });
+                onChange({ ...filters, skillId: undefined });
               } else {
-                setFilters({ ...filters, skillId });
+                onChange({ ...filters, skillId });
               }
             }}
           />
@@ -112,9 +112,9 @@ const JobFilters = ({
             value={filters.created}
             onChange={(created) => {
               if (created === 'all') {
-                setFilters({ ...filters, created: undefined });
+                onChange({ ...filters, created: undefined });
               } else {
-                setFilters({ ...filters, created });
+                onChange({ ...filters, created });
               }
             }}
           />

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Error from '../Error';
@@ -12,13 +13,17 @@ import SummaryCardsContainer from '../SummaryCardsContainer';
 import SkillFilters from './SkillFilters';
 import useSkills, { type SearchFilters, type SkillsParams } from './useSkills';
 
+const INITIAL_FILTERS: SearchFilters = {
+  name: '',
+  skillCategoryId: 0
+};
+
 const Skills = () => {
   const [page, setPage] = useState<number>(1);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    name: ''
-  });
+  const [searchFilters, setSearchFilters] =
+    useState<SearchFilters>(INITIAL_FILTERS);
   const [debouncedName] = useDebounce(
     searchFilters.name,
     searchFilters.name ? 500 : 0
@@ -38,6 +43,7 @@ const Skills = () => {
     [debouncedPage]
   );
 
+  console.log(paging, searchFilters, filters);
   const { skills, error, isPending, isPlaceholderData, skillsCount } =
     useSkills({ paging, filters });
 
@@ -48,11 +54,19 @@ const Skills = () => {
   return (
     <div className="mx-4">
       {error && <Error error={error} />}
-      <FiltersContainer>
+      <FiltersContainer
+        reset={() => {
+          setPage(1);
+          setSkillId(null);
+          setSearchFilters(INITIAL_FILTERS);
+        }}
+        resetDisabled={_.isEqual(filters, INITIAL_FILTERS)}
+      >
         <SkillFilters
           filters={searchFilters}
-          setFilters={(filters) => {
+          onChange={(filters) => {
             setPage(1);
+            setSkillId(null);
             setSearchFilters(filters);
           }}
         />

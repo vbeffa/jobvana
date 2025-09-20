@@ -6,6 +6,7 @@ import supabase from '../utils/supabase';
 export type Industries = {
   industries: Array<Industry> | undefined;
   isPending: boolean;
+  findIndustry: (industryId: number) => Industry | undefined;
 };
 
 const useIndustries = (): Industries => {
@@ -26,8 +27,10 @@ const useIndustries = (): Industries => {
   );
 
   return {
-    industries: industries,
-    isPending
+    industries,
+    isPending,
+    findIndustry: (industryId: number) =>
+      industries?.find((industry) => industry.id === industryId)
   };
 };
 

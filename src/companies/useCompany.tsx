@@ -1,12 +1,4 @@
-import type { PostgrestError } from '@supabase/supabase-js';
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  type QueryObserverResult,
-  type RefetchOptions,
-  type UseMutationResult
-} from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type {
   Company as DbCompany,
@@ -35,20 +27,13 @@ export type SkillVersion = Pick<
 
 export type CompanyH = {
   company: FullCompany | null;
-  update: UseMutationResult<
-    { data: Partial<DbCompany>[] | null; error: PostgrestError | null },
-    Error,
-    Partial<DbCompany>,
-    unknown
-  >;
-  refetch: (options?: RefetchOptions) => Promise<QueryObserverResult>;
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
 };
 
 const useCompany = (id?: number): CompanyH => {
-  const { data, isPlaceholderData, isPending, error, refetch } = useQuery({
+  const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['companies', id],
     queryFn: async () => {
       if (!id) {
@@ -72,47 +57,12 @@ const useCompany = (id?: number): CompanyH => {
     placeholderData: keepPreviousData
   });
 
-  const mutation: UseMutationResult<
-    { data: Partial<DbCompany>[] | null; error: PostgrestError | null },
-    Error,
-    Partial<DbCompany>,
-    unknown
-  > = useMutation({
-    mutationFn: async (editCompany: Partial<DbCompany>) => {
-      console.log(editCompany);
-
-      let q = supabase.from('companies').upsert(editCompany as DbCompany, {
-        ignoreDuplicates: false,
-        onConflict: 'user_id'
-      });
-      if (editCompany.id) {
-        q = q.filter('id', 'eq', editCompany.id);
-      }
-      const { data, error } = await q.select();
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(data);
-      }
-      return { data, error };
-    }
-  });
-
   const company: FullCompany | null = useMemo(() => {
     if (!data?.company) {
       return null;
     }
     const company = data.company;
     return {
-      // ...company,
-      // ..._.pick(company, [
-      //   'id',
-      //   'name',
-      //   'industry_id',
-      //   'description',
-      //   'num_employees',
-      //   'user_id'
-      // ]),
       id: company.id,
       name: company.name,
       description: company.description,
@@ -129,8 +79,6 @@ const useCompany = (id?: number): CompanyH => {
 
   return {
     company,
-    update: mutation,
-    refetch,
     error: error ?? undefined,
     isPlaceholderData,
     isPending

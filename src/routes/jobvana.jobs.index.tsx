@@ -40,7 +40,6 @@ export const Route = createFileRoute('/jobvana/jobs/')({
 
 function Switcher() {
   const userType = getUserType();
-  console.log(userType);
 
   return userType === 'company' ? <CompanyJobs /> : <Jobs />;
 }

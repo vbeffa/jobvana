@@ -4,43 +4,39 @@ import type { SearchFilters } from './useSkills';
 
 const SkillFilters = ({
   filters,
-  setFilters
+  onChange
 }: {
   filters: SearchFilters;
-  setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>;
+  onChange: (filters: SearchFilters) => void;
 }) => {
   return (
-    <div className="border-[0.05rem] rounded-lg grid grid-cols-3 gap-2 p-2">
-      <div>Name:</div>
-      <div className="col-span-2">
+    <div className="p-2 w-[24rem]">
+      <div className="grid grid-cols-[25%_75%] w-[20rem] gap-y-2">
         <Filter
           id="skill_filter"
+          label="Name"
           placeholder="Filter by skill"
           value={filters.name}
           onChange={(name) => {
-            setFilters((filters) => ({ ...filters, name }));
+            onChange({ ...filters, name });
           }}
-          onClear={() => setFilters((filters) => ({ ...filters, name: '' }))}
+          onClear={() => onChange({ ...filters, name: '' })}
         />
-      </div>
-      <div>Category:</div>
-      <div className="col-span-2 flex flex-row gap-x-2">
         <SkillCategorySelect
-          id="role"
           skillCategoryId={filters.skillCategoryId}
           onChange={(skillCategoryId) => {
             if (!skillCategoryId) {
-              setFilters((filters) => ({
+              onChange({
                 ...filters,
                 skillCategoryId: undefined
-              }));
+              });
             } else {
-              setFilters((filters) => ({ ...filters, skillCategoryId }));
+              onChange({ ...filters, skillCategoryId });
             }
           }}
         />
+        <div className="col-span-2 h-12" />
       </div>
-      <div className="col-span-3 h-12" />
     </div>
   );
 };

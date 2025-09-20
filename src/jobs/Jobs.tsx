@@ -131,7 +131,7 @@ const Jobs = () => {
           setSearchFilters(INITIAL_FILTERS);
           setContext({
             ...context,
-            ...filters,
+            ...INITIAL_FILTERS,
             page: 1,
             jobId: undefined
           });
@@ -140,7 +140,7 @@ const Jobs = () => {
       >
         <JobFilters
           filters={searchFilters}
-          setFilters={(filters) => {
+          onChange={(filters) => {
             setPage(1);
             setJobId(null);
             setSearchFilters(filters);
@@ -185,11 +185,7 @@ const Jobs = () => {
                   });
                 }}
                 title={job.title}
-                text={
-                  <>
-                    <div>{job.companyName}</div>
-                  </>
-                }
+                text={job.companyName}
                 borderBottom={idx < jobs.length - 1}
               />
             ))}
