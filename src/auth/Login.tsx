@@ -88,7 +88,7 @@ const Login = () => {
   const activeModeStyle = 'border-b-3 border-b-blue-600';
 
   return (
-    <div className="mt-4 flex justify-center">
+    <div className="flex justify-center">
       <div
         className={`relative border-[0.5px] border-blue-300 rounded-lg w-[24rem] ${mode === 'register' ? 'h-[20rem]' : 'h-[10.75rem]'}`}
       >
