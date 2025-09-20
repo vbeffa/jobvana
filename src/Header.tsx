@@ -12,7 +12,7 @@ const Header = () => {
     if (trimmed.includes('/')) {
       trimmed = trimmed.substring(0, trimmed.indexOf('/'));
     }
-    return trimmed;
+    return trimmed || 'home';
   }, [location.pathname]);
 
   const userType = getUserType();
