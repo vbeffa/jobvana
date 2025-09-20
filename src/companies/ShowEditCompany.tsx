@@ -106,7 +106,7 @@ const ShowEditCompany = ({ company }: { company: Company }) => {
                   {company.num_employees}
                 </div>
                 <div className="pt-[1px] content-start">Description:</div>
-                <div className="h-[156px] pl-[4.5px] pt-[5.5px]">
+                <div className="h-[160px] pl-[4.5px] pt-[5.5px]">
                   {company.description}
                 </div>
               </>

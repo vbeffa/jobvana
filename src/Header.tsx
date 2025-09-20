@@ -35,19 +35,19 @@ const Header = () => {
         <>
           {userType === 'company' && company !== null && (
             <>
-              {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
-              {currPage === 'jobs' && activeHeaderItem('Jobs')}
               {currPage !== 'companies' && (
                 <>
                   <Link
                     to={company ? '/jobvana/companies/$id' : '.'}
                     params={company ? { id: company.id.toString() } : undefined}
                   >
-                    Company
+                    My Company
                   </Link>
                 </>
               )}
-              {currPage === 'companies' && activeHeaderItem('Company')}
+              {currPage === 'companies' && activeHeaderItem('My Company')}
+              {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
+              {currPage === 'jobs' && activeHeaderItem('Jobs')}
               {currPage !== 'applications' && (
                 <Link to="/jobvana/applications">Applications</Link>
               )}

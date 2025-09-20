@@ -89,8 +89,10 @@ const Login = () => {
 
   return (
     <div className="mt-4 flex justify-center">
-      <div className="grid grid-cols-[35%_65%] w-[24rem] gap-2">
-        <div className="col-span-2 flex justify-center gap-8 mb-2">
+      <div
+        className={`relative border-[0.5px] border-blue-300 rounded-lg w-[24rem] ${mode === 'register' ? 'h-[20rem]' : 'h-[10.75rem]'}`}
+      >
+        <div className="flex justify-center gap-8 mt-2 mb-2">
           <div className={mode === 'login' ? activeModeStyle : ''}>
             <Link
               to="."
@@ -114,66 +116,69 @@ const Login = () => {
             </Link>
           </div>
         </div>
-        <TextInput
-          id="email"
-          label="Email"
-          autoComplete="email"
-          onChange={(email) => setEmail(email)}
-        />
-        <TextInput
-          id="password"
-          label="Password"
-          type="password"
-          value={password}
-          minLength={MIN_PASSWORD_LENGTH}
-          maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
-          placeholder={mode === 'register' ? 'Min 6 characters' : ''}
-          autoComplete={
-            mode === 'register' ? 'new-password' : 'current-password'
-          }
-          onChange={(password) => setPassword(password)}
-        />
-        {mode === 'register' && (
-          <>
-            <TextInput
-              id="first_name"
-              label="First name"
-              autoComplete="given-name"
-              onChange={setFirstName}
-            />
-            <TextInput
-              id="last_name"
-              label="Last name"
-              autoComplete="family-name"
-              onChange={setLastName}
-            />
-            <div className="col-start-2 flex justify-start gap-2">
-              <input
-                id="company_checkbox"
-                name="registration_type"
-                type="radio"
-                checked={userType === 'company'}
-                onChange={() => setUserType('company')}
+        <div className="border-b-[0.5px] border-blue-300" />
+        <div className="grid grid-cols-[35%_65%] gap-y-2 mt-2 px-2">
+          <TextInput
+            id="email"
+            label="Email"
+            autoComplete="email"
+            onChange={(email) => setEmail(email)}
+          />
+          <TextInput
+            id="password"
+            label="Password"
+            type="password"
+            value={password}
+            minLength={MIN_PASSWORD_LENGTH}
+            maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
+            placeholder={mode === 'register' ? 'Min 6 characters' : ''}
+            autoComplete={
+              mode === 'register' ? 'new-password' : 'current-password'
+            }
+            onChange={(password) => setPassword(password)}
+          />
+          {mode === 'register' && (
+            <>
+              <TextInput
+                id="first_name"
+                label="First name"
+                autoComplete="given-name"
+                onChange={setFirstName}
               />
-              <label htmlFor="company_checkbox" className="content-center">
-                I represent a company
-              </label>
-            </div>
-            <div className="col-start-2 flex justify-start gap-2">
-              <input
-                id="job_seeker_checkbox"
-                name="registration_type"
-                type="radio"
-                checked={userType === 'job_seeker'}
-                onChange={() => setUserType('job_seeker')}
+              <TextInput
+                id="last_name"
+                label="Last name"
+                autoComplete="family-name"
+                onChange={setLastName}
               />
-              <label htmlFor="job_seeker_checkbox" className="content-center">
-                I am a job seeker
-              </label>
-            </div>
-          </>
-        )}
-        <div className="col-span-2 flex justify-center mt-2">
+              <div className="col-start-2 flex justify-start gap-2">
+                <input
+                  id="company_checkbox"
+                  name="registration_type"
+                  type="radio"
+                  checked={userType === 'company'}
+                  onChange={() => setUserType('company')}
+                />
+                <label htmlFor="company_checkbox" className="content-center">
+                  I represent a company
+                </label>
+              </div>
+              <div className="col-start-2 flex justify-start gap-2">
+                <input
+                  id="job_seeker_checkbox"
+                  name="registration_type"
+                  type="radio"
+                  checked={userType === 'job_seeker'}
+                  onChange={() => setUserType('job_seeker')}
+                />
+                <label htmlFor="job_seeker_checkbox" className="content-center">
+                  I am a job seeker
+                </label>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="flex justify-center mt-2">
           <Button
             label={mode === 'register' ? 'Sign Up' : 'Log In'}
             disabled={loginDisabled}
