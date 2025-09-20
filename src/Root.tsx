@@ -1,5 +1,6 @@
 import { Outlet } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Login from './auth/Login';
 import { getSession, getUserType, refreshSession } from './auth/utils';
 import { findCompany } from './companies/utils';
 import {
@@ -82,7 +83,8 @@ const Root = () => {
       }}
     >
       <Header />
-      <Outlet />
+      {isLoggedIn && <Outlet />}
+      {!isLoggedIn && <Login />}
 
       {/* <TanStackRouterDevtools /> */}
     </JobvanaContext.Provider>
