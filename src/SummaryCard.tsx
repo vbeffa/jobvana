@@ -10,7 +10,7 @@ const SummaryCard = ({
   selected: boolean;
   onClick: () => void;
   title: string;
-  text: JSX.Element | string;
+  text?: JSX.Element | string;
   borderBottom: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
