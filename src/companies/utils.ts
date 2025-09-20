@@ -55,3 +55,7 @@ export const isValid = (company: Partial<ToInsert>) => {
     company.user_id
   );
 };
+
+export const isValidAddress = (address: CompanyAddress) => {
+  return address.street && address.city && address.state && address.zip;
+};

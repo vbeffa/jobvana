@@ -1,6 +1,6 @@
 import type { Company as DbCompany } from '../types';
 
-class Company {
+class CompanyClass {
   private readonly id: number;
 
   private constructor(company: DbCompany) {
@@ -8,9 +8,9 @@ class Company {
     console.log(this.id);
   }
 
-  static fromDbCompany(company: DbCompany): Company {
-    return new Company(company);
+  static fromDbCompany(company: DbCompany): CompanyClass {
+    return new CompanyClass(company);
   }
 }
 
-export default Company;
+export default CompanyClass;

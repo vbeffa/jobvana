@@ -12,11 +12,11 @@ import { MAX_DESCRIPTION_LENGTH } from './useCompanies';
 import useIndustries from './useIndustries';
 import { isValid, type ToUpdate } from './utils';
 
-export type ShowEditCompanyMainProps = {
+export type MyCompanyMainProps = {
   company: Company;
 };
 
-const ShowEditCompanyMain = ({ company }: ShowEditCompanyMainProps) => {
+const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
   const { setCompany } = useContext(JobvanaContext);
   const { findIndustry } = useIndustries();
   const [editCompany, setEditCompany] = useState<ToUpdate>(company);
@@ -118,4 +118,4 @@ const ShowEditCompanyMain = ({ company }: ShowEditCompanyMainProps) => {
   );
 };
 
-export default ShowEditCompanyMain;
+export default MyCompanyMain;

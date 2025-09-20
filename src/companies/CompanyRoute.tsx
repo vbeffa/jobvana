@@ -3,7 +3,7 @@ import { getUserType } from '../auth/utils';
 import { JobvanaContext } from '../Context';
 import { Route } from '../routes/jobvana.companies.$id';
 import CompanyDetails from './CompanyDetails';
-import ShowEditCompany from './ShowEditCompany';
+import MyCompany from './MyCompany';
 
 const CompanyRoute = () => {
   const { id } = Route.useLoaderData();
@@ -12,9 +12,7 @@ const CompanyRoute = () => {
 
   return (
     <div className="mx-4 flex flex-col gap-2">
-      {userType === 'company' && company && (
-        <ShowEditCompany company={company} />
-      )}
+      {userType === 'company' && company && <MyCompany company={company} />}
       {userType === 'job_seeker' && <CompanyDetails id={id} />}
     </div>
   );

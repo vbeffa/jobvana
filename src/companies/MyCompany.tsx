@@ -5,13 +5,20 @@ import ResourceListContainer from '../ResourceListContainer';
 import ResourcesContainer from '../ResourcesContainer';
 import SummaryCard from '../SummaryCard';
 import SummaryCardsContainer from '../SummaryCardsContainer';
-import ShowEditCompanyMain from './ShowEditCompanyMain';
+import MyCompanyAddresses from './MyCompanyAddresses';
+import MyCompanyMain from './MyCompanyMain';
+import useCompanyAddresses from './useCompanyAddresses';
 
-const ShowEditCompany = ({ company }: { company: Company }) => {
+const MyCompany = ({ company }: { company: Company }) => {
   const [card, setCard] = useState('main');
+  const { addresses } = useCompanyAddresses(company.id);
 
   const currComponent =
-    card === 'main' ? <ShowEditCompanyMain company={company} /> : undefined;
+    card === 'main' ? (
+      <MyCompanyMain company={company} />
+    ) : addresses ? (
+      <MyCompanyAddresses addresses={addresses} />
+    ) : undefined;
 
   return (
     <>
@@ -22,14 +29,16 @@ const ShowEditCompany = ({ company }: { company: Company }) => {
               key={1}
               selected={card === 'main'}
               onClick={() => setCard('main')}
-              title={'Main'}
+              title="Main"
+              text="&nbsp;"
               borderBottom={true}
             />
             <SummaryCard
               key={2}
               selected={card === 'addresses'}
               onClick={() => setCard('addresses')}
-              title={'Addresses'}
+              title="Addresses"
+              text="&nbsp;"
               borderBottom={true}
             />
           </SummaryCardsContainer>
@@ -40,4 +49,4 @@ const ShowEditCompany = ({ company }: { company: Company }) => {
   );
 };
 
-export default ShowEditCompany;
+export default MyCompany;
