@@ -11,7 +11,8 @@ export type JobvanaContextProps = {
   company?: Company | null;
   setCompany: (company: Company) => void;
   loggedIn?: boolean;
-  logout: () => void;
+  loggingOut?: boolean;
+  logout: () => Promise<void>;
   companiesContext: {
     page: number;
     companyId?: number;
@@ -39,7 +40,7 @@ export type JobvanaContextProps = {
 
 export const defaultContext: JobvanaContextProps = {
   setCompany: () => {},
-  logout: () => {},
+  logout: () => Promise.resolve(),
   companiesContext: {
     page: 1,
     minSize: MIN_COMPANY_SIZE,

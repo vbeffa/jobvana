@@ -21,6 +21,7 @@ const Root = () => {
     JobvanaContextProps['jobsContext']
   >(defaultContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
+  const [loggingOut, setLoggingOut] = useState<boolean>();
   const [company, setCompany] = useState<Company | null>();
 
   const session = getSession();
@@ -55,9 +56,11 @@ const Root = () => {
   }, [company, isLoggedIn, session, userType]);
 
   const logout = useCallback(async () => {
+    setLoggingOut(true);
     await supabase.auth.signOut({ scope: 'local' });
     setCompany(undefined);
     setLoggedIn(false);
+    setLoggingOut(false);
   }, []);
 
   window.addEventListener('login', () => {
@@ -70,6 +73,7 @@ const Root = () => {
         company,
         setCompany,
         loggedIn,
+        loggingOut,
         logout,
         companiesContext,
         setCompaniesContext,
