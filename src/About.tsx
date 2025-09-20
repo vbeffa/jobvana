@@ -4,7 +4,7 @@ const About = () => {
   return (
     <div className="flex justify-center">
       <div className="border-[0.5px] border-blue-300 rounded-lg flex flex-col gap-2 max-w-[600px]">
-        <span className="self-center pt-2">Terms</span>
+        <span className="self-center pt-2">Definitions</span>
         <div className="border-b-[0.5px] border-blue-300" />
         <div className="flex flex-col gap-2 px-2 pb-2">
           <h2>Companies</h2>
