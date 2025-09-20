@@ -1,17 +1,7 @@
-import type { Company } from '../types';
-import type { SearchFilters } from './useCompanies';
 import useIndustries from './useIndustries';
 import type { ToInsert, ToUpdate } from './utils';
 
-const IndustrySelect = <
-  T extends
-    | Partial<ToInsert>
-    | ToUpdate
-    | Partial<Company>
-    | SearchFilters
-    | null
-    | undefined
->({
+const IndustrySelect = <T extends Partial<ToInsert> | ToUpdate>({
   industryId,
   showAll = true,
   showEmpty = false,
@@ -52,10 +42,8 @@ const IndustrySelect = <
                 if (val === undefined || val === null) {
                   return val;
                 }
-                // SearchFilters uses industryId, db types use industry_id :/
                 return {
                   ...val,
-                  industryId,
                   industry_id: industryId
                 };
               });
