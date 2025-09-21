@@ -46,6 +46,7 @@ const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
         console.log(error);
         setError(error);
       } else {
+        console.log(data);
         setCompany(data?.[0]);
       }
     } finally {

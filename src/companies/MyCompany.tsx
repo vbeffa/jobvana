@@ -10,19 +10,19 @@ import MyCompanyMain from './MyCompanyMain';
 import useCompanyAddresses from './useCompanyAddresses';
 
 const MyCompany = ({ company }: { company: Company }) => {
-  const [card, setCard] = useState('main');
-  const { addresses } = useCompanyAddresses(company.id);
+  const [card, setCard] = useState('addresses');
+  const { count } = useCompanyAddresses(company.id);
 
   const currComponent =
     card === 'main' ? (
       <MyCompanyMain company={company} />
-    ) : addresses ? (
-      <MyCompanyAddresses addresses={addresses} />
-    ) : undefined;
+    ) : (
+      <MyCompanyAddresses companyId={company.id} />
+    );
 
   return (
     <>
-      <ResourcesContainer>
+      <ResourcesContainer minWidth="min-w-[800px]">
         <ResourceListContainer>
           <SummaryCardsContainer>
             <SummaryCard
@@ -30,7 +30,7 @@ const MyCompany = ({ company }: { company: Company }) => {
               selected={card === 'main'}
               onClick={() => setCard('main')}
               title="Main"
-              text="&nbsp;"
+              text="Name, Industry, Size"
               borderBottom={true}
             />
             <SummaryCard
@@ -38,7 +38,7 @@ const MyCompany = ({ company }: { company: Company }) => {
               selected={card === 'addresses'}
               onClick={() => setCard('addresses')}
               title="Addresses"
-              text="&nbsp;"
+              text={`${count ?? 0} total`}
               borderBottom={true}
             />
           </SummaryCardsContainer>

@@ -10,21 +10,23 @@ const STATES = [
 
 const StateSelect = ({
   state,
+  idx,
   onChange,
   showEmpty
 }: {
   state?: string;
-  onChange: (stateId: number) => void;
+  idx?: number;
+  onChange: (stateId: string) => void;
   showEmpty?: boolean;
 }) => {
   return (
     <select
-      id="state"
-      className="border-[0.5px] border-gray-500 h-8 px-2 py-0.5"
+      id={`state${idx ? `_${idx}` : ''}`}
+      className="border-[0.5px] border-gray-500 h-[2.05rem] px-2 py-0.5"
       value={state}
-      onChange={(e) => onChange(parseInt(e.target.value))}
+      onChange={(e) => onChange(e.target.value)}
     >
-      {showEmpty && <option key={0} value={-1} />}
+      {showEmpty && <option key={0} value="" />}
       {STATES?.map((state, idx) => (
         <option key={idx} value={state}>
           {state}

@@ -56,6 +56,6 @@ export const isValid = (company: Partial<ToInsert>) => {
   );
 };
 
-export const isValidAddress = (address: CompanyAddress) => {
+export const isValidAddress = (address: Partial<CompanyAddress>) => {
   return address.street && address.city && address.state && address.zip;
 };

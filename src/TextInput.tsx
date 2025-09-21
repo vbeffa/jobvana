@@ -46,7 +46,7 @@ const TextInput = ({
           placeholder={placeholder}
           disabled={disabled}
           autoComplete={autoComplete}
-          className="p-1 pr-14 border-[0.5px] border-gray-500 w-full"
+          className={`p-1 ${maxLength ? 'pr-14' : ''} border-[0.5px] border-gray-500 w-full`}
           onChange={(e) => onChange(e.target.value)}
         />
         {maxLength && value !== undefined && (

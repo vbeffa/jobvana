@@ -1,28 +1,34 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CompanyAddress } from '../types';
 import supabase from '../utils/supabase';
 
 export type CompanyAddresses = {
   addresses: Array<CompanyAddress> | undefined;
+  count?: number;
   isPending: boolean;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 const useCompanyAddresses = (companyId: number): CompanyAddresses => {
-  const { isPending, data: addressesData } = useQuery({
+  const {
+    isPending,
+    data: addressesData,
+    refetch
+  } = useQuery({
     queryKey: ['addresses'],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error, count } = await supabase
         .from('company_addresses')
-        .select()
+        .select('*', { count: 'exact' })
         .filter('company_id', 'eq', companyId);
-      return data;
+      return { data, error, count };
     }
   });
 
   const addresses = useMemo(
     () =>
-      addressesData?.sort((address1, address2) =>
+      addressesData?.data?.sort((address1, address2) =>
         address1.zip.localeCompare(address2.zip)
       ),
     [addressesData]
@@ -30,7 +36,9 @@ const useCompanyAddresses = (companyId: number): CompanyAddresses => {
 
   return {
     addresses: addresses,
-    isPending
+    count: addressesData?.count ?? undefined,
+    isPending,
+    refetch
   };
 };
 
