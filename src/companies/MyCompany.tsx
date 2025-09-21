@@ -10,7 +10,7 @@ import MyCompanyMain from './MyCompanyMain';
 import useCompanyAddresses from './useCompanyAddresses';
 
 const MyCompany = ({ company }: { company: Company }) => {
-  const [card, setCard] = useState('addresses');
+  const [card, setCard] = useState<'main' | 'addresses'>('main');
   const { count } = useCompanyAddresses(company.id);
 
   const currComponent =

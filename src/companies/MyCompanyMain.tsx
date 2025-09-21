@@ -57,7 +57,7 @@ const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
   return (
     <>
       {error && <Error error={error} />}
-      <div className="mx-2 grid grid-cols-[25%_55%] gap-y-4 relative">
+      <div className="grid grid-cols-[25%_55%] gap-y-4 relative">
         <EditButtons
           editMode={editMode}
           setEditMode={setEditMode}

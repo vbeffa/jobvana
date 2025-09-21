@@ -17,7 +17,7 @@ const MyCompanyNewAddress = ({
 }: {
   companyId: number;
   setError: (err: Error | undefined) => void;
-  onCreate: (newAddress: CompanyAddress) => void;
+  onCreate: () => void;
   onCancel: () => void;
 }) => {
   const emptyAddress: ToInsert = useMemo(
@@ -40,33 +40,26 @@ const MyCompanyNewAddress = ({
   );
 
   const createAddress = useCallback(async () => {
-    console.log(newAddress);
     if (!isValidAddress(newAddress)) {
-      console.log('invalid');
       return;
     }
     setIsSubmitting(true);
     setError(undefined);
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('company_addresses')
-        .insert(newAddress)
-        .select();
+        .insert(newAddress);
 
       if (error) {
         console.log(error);
         setError(error);
       } else {
-        console.log(data);
-        // address = data?.[0];
-        onCreate(data[0]);
+        onCreate();
       }
     } finally {
       setIsSubmitting(false);
     }
   }, [newAddress, onCreate, setError]);
-
-  console.log(newAddress);
 
   return (
     <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">

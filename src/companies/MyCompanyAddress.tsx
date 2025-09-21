@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import EditDelete from '../EditDelete';
 import TextInput from '../TextInput';
 import type { CompanyAddress } from '../types';
@@ -16,11 +16,15 @@ const MyCompanyAddress = ({
   address: CompanyAddress;
   idx: number;
   setError: (err: Error | undefined) => void;
-  onUpdate: (company: CompanyAddress) => void;
+  onUpdate: () => void;
 }) => {
   const [editAddress, setEditAddress] = useState<CompanyAddress>(address);
   const [editMode, setEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setEditAddress(address);
+  }, [address]);
 
   const isDirty = useMemo(
     () => !_.isEqual(address, editAddress),
@@ -28,15 +32,13 @@ const MyCompanyAddress = ({
   );
 
   const updateAddress = useCallback(async () => {
-    console.log(editAddress);
     if (!isValidAddress(editAddress)) {
-      console.log('invalid');
       return;
     }
     setIsSubmitting(true);
     setError(undefined);
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('company_addresses')
         .update(editAddress)
         .eq('id', editAddress.id)
@@ -46,9 +48,7 @@ const MyCompanyAddress = ({
         console.log(error);
         setError(error);
       } else {
-        console.log(data);
-        // address = data?.[0];
-        onUpdate(data?.[0]);
+        onUpdate();
       }
     } finally {
       setIsSubmitting(false);
@@ -58,7 +58,6 @@ const MyCompanyAddress = ({
   const deleteAddress = useCallback(async () => {
     setIsSubmitting(true);
     setError(undefined);
-    console.log(editAddress);
     try {
       const { error } = await supabase
         .from('company_addresses')
@@ -68,11 +67,14 @@ const MyCompanyAddress = ({
       if (error) {
         console.log(error);
         setError(error);
+      } else {
+        console.log('update');
+        onUpdate();
       }
     } finally {
       setIsSubmitting(false);
     }
-  }, [editAddress, setError]);
+  }, [editAddress, onUpdate, setError]);
 
   return (
     <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">
