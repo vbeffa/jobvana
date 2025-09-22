@@ -43,6 +43,7 @@ const Login = () => {
 
   const doRegister = useCallback(async () => {
     setIsLoggingIn(true);
+    setRegistrationSuccess(false);
     setError(null);
 
     try {
@@ -68,6 +69,8 @@ const Login = () => {
       }
       console.log(data);
       setRegistrationSuccess(true);
+      resetForm();
+      setMode('login');
     } finally {
       setIsLoggingIn(false);
     }
@@ -75,6 +78,7 @@ const Login = () => {
 
   const doLogin = useCallback(async () => {
     setIsLoggingIn(true);
+    setRegistrationSuccess(false);
     setError(null);
 
     try {
@@ -220,7 +224,7 @@ const Login = () => {
             onClick={() => (mode === 'register' ? doRegister() : doLogin())}
           />
         </div>
-        <div className="col-span-2 flex justify-center mt-4">
+        <div className="col-span-2 flex justify-center text-sm mt-4">
           {registrationSuccess && (
             <>Success! Please check your email for a verification link.</>
           )}
