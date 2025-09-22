@@ -13,6 +13,9 @@ const MAX_PASSWORD_LENGTH = 32;
 const MAX_FIRST_NAME_LENGTH = 100;
 const MAX_LAST_NAME_LENGTH = 100;
 
+const REGISTER_REDIRECT_TO_DEV = 'http://localhost:5173/';
+const REGISTER_REDIRECT_TO_PROD = 'https://vbeffa.github.io/jobvana/';
+
 const Login = () => {
   const [mode, setMode] = useState<'register' | 'login'>('login');
 
@@ -51,7 +54,10 @@ const Login = () => {
             first_name: firstName,
             last_name: lastName,
             type: userType
-          }
+          },
+          emailRedirectTo: import.meta.env.DEV
+            ? REGISTER_REDIRECT_TO_DEV
+            : REGISTER_REDIRECT_TO_PROD
         }
       });
 
