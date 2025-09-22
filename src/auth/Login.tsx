@@ -19,6 +19,7 @@ const Login = () => {
   const [userType, setUserType] = useState<UserType | null>('company');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
@@ -94,7 +95,7 @@ const Login = () => {
   return (
     <div className="flex justify-center">
       <div
-        className={`relative border-[0.5px] border-blue-300 rounded-lg w-[24rem] ${mode === 'register' ? 'h-[20rem]' : 'h-[10.75rem]'}`}
+        className={`relative border-[0.5px] border-blue-300 rounded-lg w-[24rem] ${mode === 'register' ? 'h-[20.25rem]' : 'h-[11rem]'}`}
       >
         <div className="flex justify-center gap-8 mt-2 mb-2">
           <div className={mode === 'login' ? activeModeStyle : ''}>
@@ -127,7 +128,7 @@ const Login = () => {
             label="Email"
             value={email}
             minLength={MIN_EMAIL_LENGTH}
-            maxLength={MAX_EMAIL_LENGTH}
+            maxLength={mode === 'register' ? MAX_EMAIL_LENGTH : undefined}
             showLength={mode === 'register'}
             placeholder={
               mode === 'register' ? `Min ${MIN_EMAIL_LENGTH} characters` : ''
@@ -138,10 +139,12 @@ const Login = () => {
           <TextInput
             id="password"
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             minLength={MIN_PASSWORD_LENGTH}
             maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
+            showEye={true}
+            onClickEye={() => setShowPassword((showPassword) => !showPassword)}
             placeholder={
               mode === 'register' ? `Min ${MIN_PASSWORD_LENGTH} characters` : ''
             }
@@ -202,7 +205,7 @@ const Login = () => {
             onClick={() => (mode === 'register' ? doRegister() : doLogin())}
           />
         </div>
-        <div className="col-span-2 flex justify-center mt-2">
+        <div className="col-span-2 flex justify-center mt-4">
           {registrationSuccess && (
             <>Success! Please check your email for a verification link.</>
           )}
