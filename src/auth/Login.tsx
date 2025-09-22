@@ -6,8 +6,12 @@ import Error from '../Error';
 import TextInput from '../TextInput';
 import supabase from '../utils/supabase';
 
+const MIN_EMAIL_LENGTH = 6;
+const MAX_EMAIL_LENGTH = 100;
 const MIN_PASSWORD_LENGTH = 6;
 const MAX_PASSWORD_LENGTH = 32;
+const MAX_FIRST_NAME_LENGTH = 100;
+const MAX_LAST_NAME_LENGTH = 100;
 
 const Login = () => {
   const [mode, setMode] = useState<'register' | 'login'>('login');
@@ -121,6 +125,13 @@ const Login = () => {
           <TextInput
             id="email"
             label="Email"
+            value={email}
+            minLength={MIN_EMAIL_LENGTH}
+            maxLength={MAX_EMAIL_LENGTH}
+            showLength={mode === 'register'}
+            placeholder={
+              mode === 'register' ? `Min ${MIN_EMAIL_LENGTH} characters` : ''
+            }
             autoComplete="email"
             onChange={(email) => setEmail(email)}
           />
@@ -131,7 +142,9 @@ const Login = () => {
             value={password}
             minLength={MIN_PASSWORD_LENGTH}
             maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
-            placeholder={mode === 'register' ? 'Min 6 characters' : ''}
+            placeholder={
+              mode === 'register' ? `Min ${MIN_PASSWORD_LENGTH} characters` : ''
+            }
             autoComplete={
               mode === 'register' ? 'new-password' : 'current-password'
             }
@@ -142,16 +155,20 @@ const Login = () => {
               <TextInput
                 id="first_name"
                 label="First name"
+                value={firstName}
+                maxLength={MAX_FIRST_NAME_LENGTH}
                 autoComplete="given-name"
                 onChange={setFirstName}
               />
               <TextInput
                 id="last_name"
                 label="Last name"
+                value={lastName}
+                maxLength={MAX_LAST_NAME_LENGTH}
                 autoComplete="family-name"
                 onChange={setLastName}
               />
-              <div className="col-start-2 flex justify-start gap-2">
+              <div className="col-start-2 flex gap-2">
                 <input
                   id="company_checkbox"
                   name="registration_type"
@@ -163,7 +180,7 @@ const Login = () => {
                   I represent a company
                 </label>
               </div>
-              <div className="col-start-2 flex justify-start gap-2">
+              <div className="col-start-2 flex gap-2">
                 <input
                   id="job_seeker_checkbox"
                   name="registration_type"

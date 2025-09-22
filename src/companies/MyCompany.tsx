@@ -22,7 +22,7 @@ const MyCompany = ({ company }: { company: Company }) => {
 
   return (
     <>
-      <ResourcesContainer minWidth="min-w-[800px]">
+      <ResourcesContainer minWidth="min-w-[840px]">
         <ResourceListContainer>
           <SummaryCardsContainer>
             <SummaryCard

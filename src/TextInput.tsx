@@ -10,6 +10,7 @@ export type TextInputProps = {
   placeholder?: string;
   disabled?: boolean;
   autoComplete?: HTMLInputAutoCompleteAttribute;
+  showLength?: boolean;
   showClear?: boolean;
   onChange: (value: string) => void;
   onClear?: () => void;
@@ -25,6 +26,7 @@ const TextInput = ({
   placeholder,
   disabled,
   autoComplete,
+  showLength = true,
   showClear,
   onChange,
   onClear
@@ -49,7 +51,7 @@ const TextInput = ({
           className={`p-1 ${maxLength ? 'pr-14' : ''} border-[0.5px] border-gray-500 w-full`}
           onChange={(e) => onChange(e.target.value)}
         />
-        {maxLength && value !== undefined && (
+        {showLength && maxLength && value !== undefined && (
           <div className="absolute text-gray-500 top-[0.6rem] right-2 text-xs">
             {value.length} / {maxLength}
           </div>
