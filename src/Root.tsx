@@ -15,6 +15,7 @@ import supabase from './utils/supabase';
 export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
 
 const Root = () => {
+  const [currPage, setCurrPage] = useState('home');
   const [companiesContext, setCompaniesContext] = useState<
     JobvanaContextProps['companiesContext']
   >(defaultContext.companiesContext);
@@ -71,6 +72,8 @@ const Root = () => {
   return (
     <JobvanaContext.Provider
       value={{
+        currPage,
+        setCurrPage,
         company,
         setCompany,
         loggedIn,
@@ -83,8 +86,8 @@ const Root = () => {
       }}
     >
       <Header />
-      {isLoggedIn && <Outlet />}
-      {!isLoggedIn && <Login />}
+      {(isLoggedIn || currPage === 'about') && <Outlet />}
+      {!isLoggedIn && currPage !== 'about' && <Login />}
 
       {/* <TanStackRouterDevtools /> */}
     </JobvanaContext.Provider>

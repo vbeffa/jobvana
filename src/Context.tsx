@@ -8,6 +8,8 @@ export type UserType = 'company' | 'job_seeker';
 export type Company = Omit<DbCompany, 'created_at'>;
 
 export type JobvanaContextProps = {
+  currPage: string;
+  setCurrPage: (page: string) => void;
   company?: Company | null;
   setCompany: (company: Company) => void;
   loggedIn?: boolean;
@@ -39,6 +41,8 @@ export type JobvanaContextProps = {
 };
 
 export const defaultContext: JobvanaContextProps = {
+  currPage: 'home',
+  setCurrPage: () => {},
   setCompany: () => {},
   logout: () => Promise.resolve(),
   companiesContext: {

@@ -1,19 +1,20 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect } from 'react';
 import { JobvanaContext } from './Context';
 import { getUserType } from './auth/utils';
 
 const Header = () => {
   const location = useLocation();
-  const { logout, company, loggedIn } = useContext(JobvanaContext);
+  const { logout, company, loggedIn, currPage, setCurrPage } =
+    useContext(JobvanaContext);
 
-  const currPage = useMemo(() => {
+  useEffect(() => {
     let trimmed = location.pathname.substring(9);
     if (trimmed.includes('/')) {
       trimmed = trimmed.substring(0, trimmed.indexOf('/'));
     }
-    return trimmed || 'home';
-  }, [location.pathname]);
+    setCurrPage(trimmed || 'home');
+  }, [location.pathname, setCurrPage]);
 
   const userType = getUserType();
 
