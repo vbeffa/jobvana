@@ -66,7 +66,7 @@ const TextInput = ({
         />
         {showLength && maxLength && value !== undefined && (
           <div
-            className={`absolute text-gray-500 top-[0.525rem] ${showEye ? 'right-7' : 'right-2'} text-xs`}
+            className={`absolute text-gray-500 top-[0.525rem] ${showEye && value ? 'right-7' : 'right-2'} text-xs`}
           >
             {value.length} / {maxLength}
           </div>
@@ -82,7 +82,7 @@ const TextInput = ({
             {value && <FaX />}
           </div>
         )}
-        {showEye && onClickEye && (
+        {showEye && onClickEye && value && (
           <div
             className="absolute right-[0.45rem] top-[0.525rem] text-gray-400 cursor-pointer"
             onClick={() => {
@@ -90,7 +90,7 @@ const TextInput = ({
               document.getElementById(id)?.focus();
             }}
           >
-            {value && (type === 'password' ? <FaEye /> : <FaEyeSlash />)}
+            {type === 'password' ? <FaEye /> : <FaEyeSlash />}
           </div>
         )}
       </div>

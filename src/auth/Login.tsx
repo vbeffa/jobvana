@@ -90,6 +90,13 @@ const Login = () => {
     window.dispatchEvent(new Event('login'));
   }, [email, password]);
 
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+    setFirstName('');
+    setLastName('');
+  };
+
   const activeModeStyle = 'border-b-3 border-b-blue-600';
 
   return (
@@ -104,6 +111,7 @@ const Login = () => {
               onClick={() => {
                 setError(null);
                 setMode('login');
+                resetForm();
               }}
             >
               Log In
@@ -115,6 +123,7 @@ const Login = () => {
               onClick={() => {
                 setError(null);
                 setMode('register');
+                resetForm();
               }}
             >
               Register
