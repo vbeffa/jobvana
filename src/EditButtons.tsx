@@ -14,7 +14,7 @@ const EditButtons = ({
   onSave: () => void;
 }) => {
   return (
-    <div className="absolute right-0 top-0 flex flex-row gap-2">
+    <div className="absolute ml-4 right-0 top-0 flex flex-row gap-2">
       {editMode && <Button label="Cancel" onClick={() => setEditMode(false)} />}
       <Button
         label={`${editMode ? 'Save' : 'Edit'}`}
