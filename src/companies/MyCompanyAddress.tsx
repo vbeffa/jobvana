@@ -77,7 +77,7 @@ const MyCompanyAddress = ({
   }, [editAddress, onUpdate, setError]);
 
   return (
-    <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">
+    <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-33">
       <div className="relative">
         <EditDelete
           editMode={editMode}
@@ -89,7 +89,7 @@ const MyCompanyAddress = ({
         />
       </div>
       {editMode && (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <div className="w-[204px]">
             <TextInput
               id={`street_${idx}`}
@@ -143,13 +143,13 @@ const MyCompanyAddress = ({
       {!editMode && (
         <div>
           <div className="h-[38px] pl-[4.5px] pt-[4.5px]">{address.street}</div>
-          <div className="h-[38px] pl-[4.5px] pt-[3.5px]">
+          <div className="h-[40px] pl-[4.5px] pt-[7.5px]">
             <div className="flex flex-row">
               <div className="w-[216px]">{address.city}</div>
               <div>{address.state}</div>
             </div>
           </div>
-          <div className="h-[38px] pl-[4.5px] pt-[2.5px]">{address.zip}</div>
+          <div className="h-[38px] pl-[4.5px] pt-[8.5px]">{address.zip}</div>
         </div>
       )}
     </div>

@@ -21,7 +21,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   return (
     <>
       {error && <Error error={error} />}
-      <div className="flex flex-col gap-y-4 mb-4 overflow-auto">
+      <div className="grid grid-flow-col grid-rows-3 gap-4 mb-4">
         {addresses.map((address, idx) => (
           <div key={idx}>
             <MyCompanyAddress

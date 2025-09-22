@@ -62,7 +62,7 @@ const MyCompanyNewAddress = ({
   }, [newAddress, onCreate, setError]);
 
   return (
-    <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">
+    <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-33">
       <div className="relative">
         <SaveCancel
           disabled={
@@ -73,7 +73,7 @@ const MyCompanyNewAddress = ({
           onSave={createAddress}
         />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <div className="w-[204px]">
           <TextInput
             id={`street_new`}
@@ -87,7 +87,7 @@ const MyCompanyNewAddress = ({
             }
           />
         </div>
-        <div className="flex flex-row justify-between gap-1">
+        <div className="flex flex-row gap-1">
           <div className="w-[204px]">
             <TextInput
               id={`city_new`}
