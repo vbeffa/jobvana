@@ -43,7 +43,6 @@ const Skills = () => {
     [debouncedPage]
   );
 
-  console.log(paging, searchFilters, filters);
   const { skills, error, isPending, isPlaceholderData, skillsCount } =
     useSkills({ paging, filters });
 

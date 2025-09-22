@@ -45,7 +45,6 @@ const useSkills = (
   const { isPending, isPlaceholderData, data, error } = useQuery({
     queryKey: ['skills', queryKey],
     queryFn: async () => {
-      console.log('querying');
       let q = supabase
         .from('skills')
         .select('id, name, skill_categories!inner(name)', {
