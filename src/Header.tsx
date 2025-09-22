@@ -26,7 +26,7 @@ const Header = () => {
   );
 
   return (
-    <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-[5%]">
+    <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-8">
       {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
       {currPage === 'home' && activeHeaderItem('Home')}
       {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
