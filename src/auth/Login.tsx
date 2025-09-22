@@ -41,6 +41,8 @@ const Login = () => {
     [email, firstName, isLoggingIn, lastName, mode, password, userType]
   );
 
+  console.log(import.meta.env.DEV, import.meta.env.MODE, import.meta.env.PROD);
+
   const doRegister = useCallback(async () => {
     setIsLoggingIn(true);
     setRegistrationSuccess(false);
