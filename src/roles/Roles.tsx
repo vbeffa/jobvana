@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import Error from '../Error';
-import ResourceDetailsContainer from '../ResourceDetailsContainer';
-import ResourceListContainer from '../ResourceListContainer';
-import ResourcesContainer from '../ResourcesContainer';
 import SummaryCard from '../SummaryCard';
-import SummaryCardsContainer from '../SummaryCardsContainer';
+import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
+import ResourceListContainer from '../containers/ResourceListContainer';
+import ResourcesContainer from '../containers/ResourcesContainer';
+import SummaryCardsContainer from '../containers/SummaryCardsContainer';
 import RoleDetails from './RoleDetails';
 import useRoles from './useRoles';
 

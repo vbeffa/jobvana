@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
+import PillContainer from '../../containers/PillContainer';
 import { JobvanaContext } from '../../Context';
 import Error from '../../Error';
 import JobsList from '../../jobs/JobsList';
 import LoadingModal from '../../LoadingModal';
-import PillContainer from '../../PillContainer';
 import Section from '../../Section';
 import { companyFields, findHeadquarters, isHeadquarters } from '../utils';
 import useCompany from './useCompany';

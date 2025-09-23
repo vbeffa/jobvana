@@ -1,4 +1,4 @@
-import PillContainer from '../PillContainer';
+import PillContainer from '../containers/PillContainer';
 import { type SkillLinkProps } from './SkillLink';
 
 export type SkillsListProps = {

@@ -1,4 +1,4 @@
-import PillContainer from '../PillContainer';
+import PillContainer from '../containers/PillContainer';
 import Section from '../Section';
 import SkillsList from '../skills/SkillsList';
 import SkillCategoriesList from './SkillCategoriesList';

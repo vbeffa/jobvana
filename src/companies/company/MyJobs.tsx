@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import ResourceDetailsContainer from '../../ResourceDetailsContainer';
-import ResourceListContainer from '../../ResourceListContainer';
-import ResourcesContainer from '../../ResourcesContainer';
+import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
+import ResourceListContainer from '../../containers/ResourceListContainer';
+import ResourcesContainer from '../../containers/ResourcesContainer';
+import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import SummaryCard from '../../SummaryCard';
-import SummaryCardsContainer from '../../SummaryCardsContainer';
 import type { Job } from '../../types';
 import MyJob from './MyJob';
 import useJobsForCompany from './useJobsForCompany';

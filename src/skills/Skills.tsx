@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import FiltersContainer from '../containers/FiltersContainer';
+import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
+import ResourceListContainer from '../containers/ResourceListContainer';
+import ResourcesContainer from '../containers/ResourcesContainer';
+import SummaryCardsContainer from '../containers/SummaryCardsContainer';
 import Error from '../Error';
-import FiltersContainer from '../FiltersContainer';
 import PageNav from '../PageNav';
-import ResourceDetailsContainer from '../ResourceDetailsContainer';
-import ResourceListContainer from '../ResourceListContainer';
-import ResourcesContainer from '../ResourcesContainer';
 import SkillDetails from '../skills/SkillDetails';
 import SummaryCard from '../SummaryCard';
-import SummaryCardsContainer from '../SummaryCardsContainer';
 import SkillFilters from './SkillFilters';
 import useSkills, { type SearchFilters, type SkillsParams } from './useSkills';
 

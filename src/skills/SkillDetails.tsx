@@ -1,6 +1,6 @@
+import PillContainer from '../containers/PillContainer';
 import Error from '../Error';
 import LoadingModal from '../LoadingModal';
-import PillContainer from '../PillContainer';
 import Section from '../Section';
 import SkillCategoryLink from '../skill_categories/SkillCategoryLink';
 import SkillsList from './SkillsList';
