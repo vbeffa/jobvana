@@ -1,3 +1,4 @@
+import type { FullJob } from '../jobs/useJob';
 import type { Company as DbCompany } from '../types';
 import supabase from '../utils/supabase';
 import {
@@ -57,5 +58,11 @@ export const isValid = (company: Partial<ToInsert>) => {
 };
 
 export const isValidAddress = (address: Partial<CompanyAddress>) => {
-  return address.street && address.city && address.state && address.zip;
+  return Boolean(
+    address.street && address.city && address.state && address.zip
+  );
+};
+
+export const isValidJob = (job: Partial<FullJob>) => {
+  return Boolean(job.description);
 };

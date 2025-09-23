@@ -68,7 +68,6 @@ const MyCompanyAddress = ({
         console.log(error);
         setError(error);
       } else {
-        console.log('update');
         onUpdate();
       }
     } finally {

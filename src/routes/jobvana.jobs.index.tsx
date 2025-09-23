@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
-import CompanyJobs from '../companies/Jobs';
+import CompanyJobs from '../companies/MyJobs';
+import { JobvanaContext } from '../Context';
 import Jobs from '../jobs/Jobs';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from '../jobs/useJobs';
 
@@ -40,6 +42,11 @@ export const Route = createFileRoute('/jobvana/jobs/')({
 
 function Switcher() {
   const userType = getUserType();
+  const { company } = useContext(JobvanaContext);
 
-  return userType === 'company' ? <CompanyJobs /> : <Jobs />;
+  return userType === 'company' ? (
+    company && <CompanyJobs companyId={company.id} />
+  ) : (
+    <Jobs />
+  );
 }
