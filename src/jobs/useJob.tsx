@@ -38,7 +38,7 @@ const useJob = (id: number): JobH => {
       const { data, error } = await supabase
         .from('jobs')
         .select(
-          `created_at, description, salary_low, salary_high, title,
+          `created_at, updated_at, description, salary_low, salary_high, title,
           companies!inner(id, name, company_tech_stacks(skill_versions(id, skill_id, version, ordinal))),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
