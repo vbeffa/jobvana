@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { PAGE_NAV_HEIGHT } from './page';
 
 export type NavType = 'jobs' | 'companies' | 'skills';
 
@@ -35,9 +36,9 @@ const PageNav = ({
 
   return (
     <div
-      className={`${borderBottom ? 'border-b-[0.5px] border-b-blue-300' : ''} flex justify-center`}
+      className={`${borderBottom ? 'border-b-[0.5px] border-b-blue-300' : ''} h-${PAGE_NAV_HEIGHT} flex justify-center`}
     >
-      <div className="text-gray-500 flex flex-col h-16 justify-evenly items-center">
+      <div className="text-gray-500 flex flex-col justify-evenly items-center">
         {total !== 0 && (
           <div className="flex flex-row">
             <div>

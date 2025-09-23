@@ -11,7 +11,7 @@ const CompanyRoute = () => {
   const { company } = useContext(JobvanaContext);
 
   return (
-    <div className="mx-4 flex flex-col gap-2">
+    <div className="mx-4">
       {userType === 'company' && company && <MyCompany company={company} />}
       {userType === 'job_seeker' && <CompanyDetails id={id} />}
     </div>

@@ -24,15 +24,14 @@ const SkillCategories = () => {
     <div className="mx-4 relative">
       {error && <Error error={error} />}
       <h1>Skill Categories</h1>
-      <div className="absolute right-[12.5%] text-right w-[75%] min-w-[1100px] top-8">
+      <div className="absolute top-5 right-[12.5%] text-right w-[75%] min-w-[1100px]">
         <Button
           label={`${view === 'list' ? 'Switch to Tree View' : 'Switch to List View'}`}
           onClick={() => setView((view) => (view === 'list' ? 'tree' : 'list'))}
         />
       </div>
-      <div className="h-4" />
       {view === 'list' && (
-        <ResourcesContainer>
+        <ResourcesContainer hasFilters={false} hasTitle={true}>
           <ResourceListContainer>
             <SummaryCardsContainer hasFilters={false}>
               {skillCategories?.map((skillCategory, idx) => {
@@ -53,7 +52,7 @@ const SkillCategories = () => {
               })}
             </SummaryCardsContainer>
           </ResourceListContainer>
-          <ResourceDetailsContainer hasFilters={false}>
+          <ResourceDetailsContainer>
             {skillCategoryId ? (
               <SkillCategoryDetails id={skillCategoryId} />
             ) : undefined}

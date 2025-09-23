@@ -2,6 +2,7 @@ import { Link, useLocation } from '@tanstack/react-router';
 import { useContext, useEffect } from 'react';
 import { JobvanaContext } from './Context';
 import { getUserType } from './auth/utils';
+import { HEADER_HEIGHT, HEADER_MARGIN_BOTTOM } from './page';
 
 const Header = () => {
   const location = useLocation();
@@ -27,7 +28,9 @@ const Header = () => {
   );
 
   return (
-    <div className="bg-blue-300 w-screen h-16 items-center justify-center mb-4 top-0 left-0 sticky z-10 flex gap-8">
+    <div
+      className={`bg-blue-300 w-screen h-${HEADER_HEIGHT} items-center justify-center mb-${HEADER_MARGIN_BOTTOM} top-0 left-0 sticky z-10 flex gap-8`}
+    >
       {currPage !== 'home' && <Link to="/jobvana">Home</Link>}
       {currPage === 'home' && activeHeaderItem('Home')}
       {currPage !== 'about' && <Link to="/jobvana/about">About</Link>}
