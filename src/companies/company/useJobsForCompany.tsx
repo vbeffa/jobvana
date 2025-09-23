@@ -28,9 +28,7 @@ const useJobsForCompany = (companyId: number): Jobs => {
   } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
-      const { error, data, count } = await supabase.from('jobs').select('*', {
-        count: 'exact'
-      });
+      const { error, data, count } = await supabase.from('jobs').select('*');
       // console.log(data);
       if (error) {
         console.log(error);
@@ -41,7 +39,11 @@ const useJobsForCompany = (companyId: number): Jobs => {
   });
 
   const jobs: Array<DbJob> | undefined = useMemo(() => {
-    return jobsData?.data?.sort((job1, job2) => job1.id - job2.id);
+    return jobsData?.data?.sort(
+      (job1, job2) =>
+        new Date(job2.updated_at ?? job2.created_at).getTime() -
+        new Date(job1.updated_at ?? job1.created_at).getTime()
+    );
   }, [jobsData?.data]);
 
   return {

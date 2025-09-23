@@ -337,6 +337,7 @@ export type Database = {
           salary_low: number
           status: Database['public']['Enums']['job_status']
           title: string
+          updated_at: string | null
           user_id: string | null
         }
         Insert: {
@@ -348,6 +349,7 @@ export type Database = {
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
           title: string
+          updated_at?: string | null
           user_id?: string | null
         }
         Update: {
@@ -359,6 +361,7 @@ export type Database = {
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
           title?: string
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [

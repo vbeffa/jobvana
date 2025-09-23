@@ -35,7 +35,7 @@ const MyJob = ({ job, onUpdate }: MyCompanyJobProps) => {
     try {
       const { error } = await supabase
         .from('jobs')
-        .update(editJob)
+        .update({ ...editJob, updated_at: new Date().toISOString() })
         .eq('id', job.id)
         .select();
 

@@ -13,10 +13,10 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   const { jobs, refetch } = useJobsForCompany(companyId);
 
   useEffect(() => {
-    if (jobs && jobs.length > 0) {
+    if (!selectedJob && jobs && jobs.length > 0) {
       setSelectedJob(jobs[0]);
     }
-  }, [jobs]);
+  }, [jobs, selectedJob]);
 
   return (
     <>
@@ -30,7 +30,11 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                 selected={selectedJob?.id === job.id}
                 onClick={() => setSelectedJob(job)}
                 title={job.title}
-                text={new Date(job.created_at).toLocaleDateString()}
+                text={
+                  job.updated_at
+                    ? `Updated ${new Date(job.updated_at).toLocaleDateString()}`
+                    : `Created ${new Date(job.created_at).toLocaleDateString()}`
+                }
                 borderBottom={true}
               />
             ))}
