@@ -1,4 +1,4 @@
-import Filter from '../../Filter';
+import Filter from '../../inputs/Filter';
 import CompanySize from '../company/CompanySize';
 import IndustrySelect from '../IndustrySelect';
 import { type SearchFilters } from './useCompanies';

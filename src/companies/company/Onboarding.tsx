@@ -1,8 +1,8 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
-import Button from '../../Button';
 import { JobvanaContext } from '../../Context';
+import Button from '../../controls/Button';
 import Error from '../../Error';
-import TextArea from '../../TextArea';
+import TextArea from '../../inputs/TextArea';
 import supabase from '../../utils/supabase';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';

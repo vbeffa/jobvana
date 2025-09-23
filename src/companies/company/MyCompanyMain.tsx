@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { JobvanaContext, type Company } from '../../Context';
-import EditButtons from '../../EditButtons';
+import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
-import TextArea from '../../TextArea';
+import TextArea from '../../inputs/TextArea';
 import supabase from '../../utils/supabase';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import Button from './Button';
+import Button from './controls/Button';
 
 export const FILTERS_HEIGHT_PX = 131;
 export const FILTERS_MARGIN_BOTTOM = 4;

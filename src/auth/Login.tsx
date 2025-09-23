@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
-import Button from '../Button';
 import { type UserType } from '../Context';
+import Button from '../controls/Button';
 import Error from '../Error';
-import TextInput from '../TextInput';
+import TextInput from '../inputs/TextInput';
 import supabase from '../utils/supabase';
 
 const MIN_EMAIL_LENGTH = 6;

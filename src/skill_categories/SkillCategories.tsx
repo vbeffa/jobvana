@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Button from '../Button';
+import Button from '../controls/Button';
 import Error from '../Error';
 import ResourceDetailsContainer from '../ResourceDetailsContainer';
 import ResourceListContainer from '../ResourceListContainer';

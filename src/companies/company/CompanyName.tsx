@@ -1,4 +1,4 @@
-import TextInput from '../../TextInput';
+import TextInput from '../../inputs/TextInput';
 import { MAX_NAME_LENGTH } from '../job_seeker/useCompanies';
 import type { ToInsert, ToUpdate } from '../utils';
 

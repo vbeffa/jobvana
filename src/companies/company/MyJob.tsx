@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import EditDeleteIcons from '../../EditDeleteIcons';
+import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
+import TextArea from '../../inputs/TextArea';
 import type { ToUpdate } from '../../jobs/utils';
-import TextArea from '../../TextArea';
 import type { Job } from '../../types';
 import supabase from '../../utils/supabase';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';

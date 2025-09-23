@@ -1,4 +1,4 @@
-import NumberInput from '../../NumberInput';
+import NumberInput from '../../inputs/NumberInput';
 import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from '../job_seeker/useCompanies';
 import type { ToInsert, ToUpdate } from '../utils';
 

@@ -1,4 +1,4 @@
-import Filter from '../Filter';
+import Filter from '../inputs/Filter';
 import CreatedSelect from './CreatedSelect';
 import RoleSelect from './RoleSelect';
 import SalarySelect from './SalarySelect';

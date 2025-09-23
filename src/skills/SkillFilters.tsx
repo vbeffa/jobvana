@@ -1,4 +1,4 @@
-import Filter from '../Filter';
+import Filter from '../inputs/Filter';
 import SkillCategorySelect from '../skill_categories/SkillCategorySelect';
 import type { SearchFilters } from './useSkills';
 

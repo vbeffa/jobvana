@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import EditDeleteIcons from '../../EditDeleteIcons';
-import TextInput from '../../TextInput';
+import EditDeleteIcons from '../../controls/EditDeleteIcons';
+import TextInput from '../../inputs/TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
 import StateSelect from '../StateSelect';

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import SaveCancel from '../../SaveCancel';
-import TextInput from '../../TextInput';
+import SaveCancel from '../../controls/SaveCancel';
+import TextInput from '../../inputs/TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
 import StateSelect from '../StateSelect';
