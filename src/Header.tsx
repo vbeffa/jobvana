@@ -2,7 +2,11 @@ import { Link, useLocation } from '@tanstack/react-router';
 import { useContext, useEffect } from 'react';
 import { JobvanaContext } from './Context';
 import { getUserType } from './auth/utils';
-import { HEADER_HEIGHT, HEADER_MARGIN_BOTTOM } from './page';
+
+export const HEADER_HEIGHT = 16;
+export const HEADER_MARGIN_BOTTOM = 4;
+export const HEADER_TOTAL_HEIGHT_PX =
+  4 * (HEADER_HEIGHT + HEADER_MARGIN_BOTTOM);
 
 const Header = () => {
   const location = useLocation();

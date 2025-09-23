@@ -1,16 +1,3 @@
-export const HEADER_HEIGHT = 16;
-export const HEADER_MARGIN_BOTTOM = 4;
-export const HEADER_TOTAL_HEIGHT_PX =
-  4 * (HEADER_HEIGHT + HEADER_MARGIN_BOTTOM);
-
-export const FILTERS_HEIGHT_PX = 131;
-export const FILTERS_MARGIN_BOTTOM = 4;
-export const FILTERS_TOTAL_HEIGHT_PX =
-  FILTERS_HEIGHT_PX + 4 * FILTERS_MARGIN_BOTTOM;
-
-export const PAGE_NAV_HEIGHT = 16;
-export const PAGE_NAV_HEIGHT_PX = 4 * PAGE_NAV_HEIGHT;
-
 // where is this being set?
 const PAGE_MARGIN_BOTTOM = 4;
 export const PAGE_MARGIN_BOTTOM_PX = 4 * PAGE_MARGIN_BOTTOM;

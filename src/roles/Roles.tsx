@@ -20,7 +20,7 @@ const Roles = () => {
     <div className="mx-4">
       {error && <Error error={error} />}
       <h1>Roles</h1>
-      <ResourcesContainer hasFilters={false} hasTitle={true}>
+      <ResourcesContainer hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer hasFilters={false}>
             {roles?.map((role, idx) => {

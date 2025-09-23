@@ -1,6 +1,10 @@
 import type { JSX } from 'react';
 import Button from './Button';
-import { FILTERS_HEIGHT_PX, FILTERS_MARGIN_BOTTOM } from './page';
+
+export const FILTERS_HEIGHT_PX = 131;
+export const FILTERS_MARGIN_BOTTOM = 4;
+export const FILTERS_TOTAL_HEIGHT_PX =
+  FILTERS_HEIGHT_PX + 4 * FILTERS_MARGIN_BOTTOM;
 
 const FiltersContainer = ({
   children,

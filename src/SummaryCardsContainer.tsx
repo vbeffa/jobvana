@@ -1,32 +1,27 @@
-import { useMemo, type JSX } from 'react';
-import {
-  FILTERS_TOTAL_HEIGHT_PX,
-  HEADER_TOTAL_HEIGHT_PX,
-  PAGE_MARGIN_BOTTOM_PX,
-  PAGE_NAV_HEIGHT_PX,
-  TITLE_TOTAL_HEIGHT_PX
-} from './page';
+import { type JSX } from 'react';
 
 const SummaryCardsContainer = ({
   children,
-  hasFilters = true,
-  hasTitle
+  hasFilters = true
 }: {
   children?: Array<JSX.Element>;
   hasFilters?: boolean;
-  hasTitle?: boolean;
 }) => {
-  const height = useMemo(() => {
-    let heightPx =
-      HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + PAGE_NAV_HEIGHT_PX;
-    if (hasFilters) {
-      heightPx += FILTERS_TOTAL_HEIGHT_PX;
-    }
-    if (hasTitle) {
-      heightPx += TITLE_TOTAL_HEIGHT_PX;
-    }
-    return `h-[calc(100dvh-${heightPx + 1}px)]`;
-  }, [hasFilters, hasTitle]);
+  // const height = useMemo(() => {
+  //   let heightPx =
+  //     HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + PAGE_NAV_HEIGHT_PX;
+  //   if (hasFilters) {
+  //     heightPx += FILTERS_TOTAL_HEIGHT_PX;
+  //   }
+  //   if (hasTitle) {
+  //     heightPx += TITLE_TOTAL_HEIGHT_PX;
+  //   }
+  //   return `h-[calc(100dvh-${heightPx + 1}px)]`;
+  // }, [hasFilters, hasTitle]);
+
+  const height = hasFilters
+    ? 'h-[calc(100dvh-308px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX + PAGE_NAV_HEIGHT_PX + 1
+    : 'h-[calc(100dvh-168px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + TITLE_TOTAL_HEIGHT_PX
 
   return <div className={`${height} overflow-y-auto`}>{children}</div>;
 };

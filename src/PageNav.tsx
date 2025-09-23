@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
-import { PAGE_NAV_HEIGHT } from './page';
+
+export const PAGE_NAV_HEIGHT = 16;
+export const PAGE_NAV_HEIGHT_PX = 4 * PAGE_NAV_HEIGHT;
 
 export type NavType = 'jobs' | 'companies' | 'skills';
 
