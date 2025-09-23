@@ -12,9 +12,9 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "@tailwindcss/vite": "^4.1.13",
-    "@tanstack/react-query": "^5.89.0",
-    "@tanstack/react-router": "^1.131.49",
-    "@tanstack/react-router-devtools": "^1.131.49",
+    "@tanstack/react-query": "^5.90.2",
+    "@tanstack/react-router": "^1.132.0",
+    "@tanstack/react-router-devtools": "^1.132.0",
     "dayjs": "^1.11.18",
     "lodash": "^4.17.21",
     "react": "^19.1.1",
