@@ -49,11 +49,11 @@ const Header = () => {
                     to={company ? '/jobvana/companies/$id' : '.'}
                     params={company ? { id: company.id.toString() } : undefined}
                   >
-                    My Company
+                    Company
                   </Link>
                 </>
               )}
-              {currPage === 'companies' && activeHeaderItem('My Company')}
+              {currPage === 'companies' && activeHeaderItem('Company')}
               {currPage !== 'jobs' && <Link to="/jobvana/jobs">Jobs</Link>}
               {currPage === 'jobs' && activeHeaderItem('Jobs')}
               {currPage !== 'applications' && (

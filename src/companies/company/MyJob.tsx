@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import EditButtons from '../../EditButtons';
+import EditDeleteIcons from '../../EditDeleteIcons';
 import Error from '../../Error';
 import type { ToUpdate } from '../../jobs/utils';
 import TextArea from '../../TextArea';
@@ -50,33 +50,36 @@ const MyJob = ({ job, onUpdate }: MyCompanyJobProps) => {
     }
   }, [editJob, job.id, onUpdate]);
 
-  // const deleteJob = useCallback(async () => {
-  //   setIsSubmitting(true);
-  //   setError(undefined);
-  //   try {
-  //     const { error } = await supabase.from('jobs').delete().eq('id', id);
+  const deleteJob = useCallback(async () => {
+    setIsSubmitting(true);
+    setError(undefined);
+    try {
+      const { error } = await supabase.from('jobs').delete().eq('id', job.id);
 
-  //     if (error) {
-  //       console.log(error);
-  //       setError(error);
-  //     } else {
-  //       onUpdate();
-  //     }
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // }, [id, onUpdate]);
+      if (error) {
+        console.log(error);
+        setError(error);
+      } else {
+        onUpdate();
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [job.id, onUpdate]);
 
   return (
     <>
       {error && <Error error={error} />}
       <div className="grid grid-cols-[20%_65%] gap-y-4 relative">
-        <EditButtons
+        <EditDeleteIcons
+          type="job"
           editMode={editMode}
           setEditMode={setEditMode}
           disabled={editMode && (!isValid || !isDirty || isSubmitting)}
           onEdit={() => setEditJob(job)}
+          onDelete={deleteJob}
           onSave={updateJob}
+          bgColor="--color-white"
         />
         {editMode && editJob && (
           <>

@@ -1,4 +1,8 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryObserverResult
+} from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { Job as DbJob } from '../../types';
 import supabase from '../../utils/supabase';
@@ -6,9 +10,7 @@ import supabase from '../../utils/supabase';
 export type Jobs = {
   jobs: Array<DbJob> | undefined;
   error?: Error;
-  isPlaceholderData: boolean;
-  isPending: boolean;
-  openJobCount: number | undefined;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 const useJobsForCompany = (companyId: number): Jobs => {
@@ -20,10 +22,9 @@ const useJobsForCompany = (companyId: number): Jobs => {
   );
 
   const {
-    isPlaceholderData,
-    isPending,
+    data: jobsData,
     error,
-    data: jobsData
+    refetch
   } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
@@ -32,24 +33,21 @@ const useJobsForCompany = (companyId: number): Jobs => {
       });
       // console.log(data);
       if (error) {
-        console.log(JSON.stringify(error));
+        console.log(error);
       }
       return { error, data, count };
     },
     placeholderData: keepPreviousData
   });
 
-  const openJobCount = useMemo(
-    () => jobsData?.count ?? undefined,
-    [jobsData?.count]
-  );
+  const jobs: Array<DbJob> | undefined = useMemo(() => {
+    return jobsData?.data?.sort((job1, job2) => job1.id - job2.id);
+  }, [jobsData?.data]);
 
   return {
-    jobs: jobsData?.data ?? undefined,
+    jobs,
     error: error ?? undefined,
-    isPlaceholderData,
-    isPending,
-    openJobCount
+    refetch
   };
 };
 

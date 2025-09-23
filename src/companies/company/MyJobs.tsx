@@ -10,7 +10,7 @@ import useJobsForCompany from './useJobsForCompany';
 
 const MyJobs = ({ companyId }: { companyId: number }) => {
   const [selectedJob, setSelectedJob] = useState<Job>();
-  const { jobs } = useJobsForCompany(companyId);
+  const { jobs, refetch } = useJobsForCompany(companyId);
 
   useEffect(() => {
     if (jobs && jobs.length > 0) {
@@ -30,7 +30,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                 selected={selectedJob?.id === job.id}
                 onClick={() => setSelectedJob(job)}
                 title={job.title}
-                text="&nbsp;"
+                text={new Date(job.created_at).toLocaleDateString()}
                 borderBottom={true}
               />
             ))}
@@ -38,7 +38,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer>
           {selectedJob ? (
-            <MyJob job={selectedJob} onUpdate={console.log} />
+            <MyJob job={selectedJob} onUpdate={refetch} />
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>

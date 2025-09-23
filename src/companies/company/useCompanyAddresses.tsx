@@ -6,14 +6,14 @@ import supabase from '../../utils/supabase';
 export type CompanyAddresses = {
   addresses: Array<CompanyAddress> | undefined;
   count?: number;
-  isPending: boolean;
+  error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
 
 const useCompanyAddresses = (companyId: number): CompanyAddresses => {
   const {
-    isPending,
     data: addressesData,
+    error,
     refetch
   } = useQuery({
     queryKey: ['addresses'],
@@ -37,7 +37,7 @@ const useCompanyAddresses = (companyId: number): CompanyAddresses => {
   return {
     addresses: addresses,
     count: addressesData?.count ?? undefined,
-    isPending,
+    error: error ?? undefined,
     refetch
   };
 };

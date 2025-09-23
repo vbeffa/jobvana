@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import EditDelete from '../../EditDelete';
+import EditDeleteIcons from '../../EditDeleteIcons';
 import TextInput from '../../TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
@@ -78,7 +78,8 @@ const MyCompanyAddress = ({
   return (
     <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-33">
       <div className="relative">
-        <EditDelete
+        <EditDeleteIcons
+          type="address"
           editMode={editMode}
           setEditMode={setEditMode}
           disabled={editMode && (!isValid || !isDirty || isSubmitting)}

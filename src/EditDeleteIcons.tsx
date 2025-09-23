@@ -1,26 +1,30 @@
 import { IconContext } from 'react-icons';
 import { FaFloppyDisk, FaPencil, FaTrash, FaX } from 'react-icons/fa6';
 
-const EditDelete = ({
+const EditDeleteIcons = ({
+  type,
   editMode,
   setEditMode,
   disabled,
   onEdit,
   onDelete,
-  onSave
+  onSave,
+  bgColor = '--color-gray-100'
 }: {
+  type: 'address' | 'job';
   editMode: boolean;
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
   disabled: boolean;
   onEdit: () => void;
   onDelete: () => void;
   onSave: () => void;
+  bgColor?: '--color-white' | '--color-gray-100';
 }) => {
   return (
     <IconContext.Provider
       value={{
         style: {
-          backgroundColor: 'var(--color-gray-100)'
+          backgroundColor: `var(${bgColor})`
         }
       }}
     >
@@ -55,7 +59,7 @@ const EditDelete = ({
             className="text-blue-400 cursor-pointer"
             onClick={() => {
               if (
-                window.confirm('Are you sure you want to delete this address?')
+                window.confirm(`Are you sure you want to delete this ${type}?`)
               ) {
                 onDelete();
               }
@@ -69,4 +73,4 @@ const EditDelete = ({
   );
 };
 
-export default EditDelete;
+export default EditDeleteIcons;
