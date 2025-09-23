@@ -1,6 +1,6 @@
+import { MAX_NAME_LENGTH } from '../../companies/job_seeker/useCompanies';
 import TextInput from '../../inputs/TextInput';
-import type { ToInsert, ToUpdate } from '../../jobs/utils';
-import { MAX_NAME_LENGTH } from '../job_seeker/useCompanies';
+import type { ToInsert, ToUpdate } from '../utils';
 
 const MyJobTitle = <T extends Partial<ToInsert> | ToUpdate>({
   title,
