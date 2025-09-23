@@ -7,7 +7,7 @@ import Error from '../../Error';
 import TextArea from '../../inputs/TextArea';
 import type { Job } from '../../types';
 import supabase from '../../utils/supabase';
-import SalarySelect from '../SalarySelect';
+import SalaryRange from '../SalaryRange';
 import type { ToUpdate } from '../utils';
 import MyJobTitle from './MyJobTitle';
 import StatusSelect from './StatusSelect';
@@ -112,44 +112,30 @@ const MyJob = ({ job, onUpdate }: MyCompanyJobProps) => {
                 }));
               }}
             />
-            <label htmlFor="min_salary" className="content-center">
-              Salary:
-            </label>
-            <div className="flex flex-row gap-x-2">
-              <SalarySelect
-                id="min_salary"
-                value={editJob.salary_low}
-                width="w-32"
-                onChange={(minSalary) => {
-                  setEditJob((editJob) => ({
-                    ...editJob,
-                    salary_low: minSalary,
-                    salary_high:
-                      editJob.salary_high && minSalary > editJob.salary_high
-                        ? minSalary
-                        : editJob.salary_high
-                  }));
-                }}
-              />
-              <label htmlFor="max_salary" className="content-center">
-                -
-              </label>
-              <SalarySelect
-                id="max_salary"
-                value={editJob.salary_high}
-                width="w-32"
-                onChange={(maxSalary) => {
-                  setEditJob((editJob) => ({
-                    ...editJob,
-                    salary_high: maxSalary,
-                    salary_low:
-                      editJob.salary_low && maxSalary < editJob.salary_low
-                        ? maxSalary
-                        : editJob.salary_low
-                  }));
-                }}
-              />
-            </div>
+            <SalaryRange
+              low={editJob.salary_low}
+              high={editJob.salary_high}
+              onChangeLow={(minSalary) => {
+                setEditJob((editJob) => ({
+                  ...editJob,
+                  salary_low: minSalary,
+                  salary_high:
+                    editJob.salary_high && minSalary > editJob.salary_high
+                      ? minSalary
+                      : editJob.salary_high
+                }));
+              }}
+              onChangeHigh={(maxSalary) => {
+                setEditJob((editJob) => ({
+                  ...editJob,
+                  salary_high: maxSalary,
+                  salary_low:
+                    editJob.salary_low && maxSalary < editJob.salary_low
+                      ? maxSalary
+                      : editJob.salary_low
+                }));
+              }}
+            />
           </>
         )}
         {!editMode && job && (

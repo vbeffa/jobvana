@@ -1,7 +1,7 @@
 import Filter from '../inputs/Filter';
 import CreatedSelect from './CreatedSelect';
 import RoleSelect from './RoleSelect';
-import SalarySelect from './SalarySelect';
+import SalaryRange from './SalaryRange';
 import SkillSelect from './SkillSelect';
 import type { SearchFilters } from './useJobs';
 
@@ -52,44 +52,32 @@ const JobFilters = ({
           />
         </div>
         <div className="grid grid-cols-[35%_65%] w-[24rem] gap-y-2">
-          <label htmlFor="min_salary" className="content-center">
-            Salary Range:
-          </label>
-          <div className="flex flex-row gap-x-2">
-            <SalarySelect
-              id="min_salary"
-              value={filters.minSalary}
-              onChange={(minSalary) => {
-                const newFilters = {
-                  ...filters,
-                  minSalary,
-                  maxSalary:
-                    filters.maxSalary && minSalary > filters.maxSalary
-                      ? minSalary
-                      : filters.maxSalary
-                };
-                onChange(newFilters);
-              }}
-            />
-            <label htmlFor="max_salary" className="content-center">
-              -
-            </label>
-            <SalarySelect
-              id="max_salary"
-              value={filters.maxSalary}
-              onChange={(maxSalary) => {
-                const newFilters = {
-                  ...filters,
-                  maxSalary,
-                  minSalary:
-                    filters.minSalary && maxSalary < filters.minSalary
-                      ? maxSalary
-                      : filters.minSalary
-                };
-                onChange(newFilters);
-              }}
-            />
-          </div>
+          <SalaryRange
+            low={filters.minSalary}
+            high={filters.maxSalary}
+            onChangeLow={(minSalary) => {
+              const newFilters = {
+                ...filters,
+                minSalary,
+                maxSalary:
+                  filters.maxSalary && minSalary > filters.maxSalary
+                    ? minSalary
+                    : filters.maxSalary
+              };
+              onChange(newFilters);
+            }}
+            onChangeHigh={(maxSalary) => {
+              const newFilters = {
+                ...filters,
+                maxSalary,
+                minSalary:
+                  filters.minSalary && maxSalary < filters.minSalary
+                    ? maxSalary
+                    : filters.minSalary
+              };
+              onChange(newFilters);
+            }}
+          />
           <label htmlFor="skill" className="content-center">
             Skill:
           </label>

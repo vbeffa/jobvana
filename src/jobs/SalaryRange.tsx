@@ -3,11 +3,13 @@ import SalarySelect from './SalarySelect';
 const SalaryRange = ({
   low,
   high,
-  onChange
+  onChangeLow,
+  onChangeHigh
 }: {
   low: number;
   high: number;
-  onChange: (salary: number) => void;
+  onChangeLow: (minSalary: number) => void;
+  onChangeHigh: (maxSalary: number) => void;
 }) => {
   return (
     <>
@@ -19,7 +21,7 @@ const SalaryRange = ({
           id="min_salary"
           value={low}
           width="w-32"
-          onChange={onChange}
+          onChange={onChangeLow}
         />
         <label htmlFor="max_salary" className="content-center">
           -
@@ -28,7 +30,7 @@ const SalaryRange = ({
           id="max_salary"
           value={high}
           width="w-32"
-          onChange={onChange}
+          onChange={onChangeHigh}
         />
       </div>
     </>

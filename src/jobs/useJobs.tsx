@@ -19,8 +19,8 @@ export type SearchFilters = {
   companyId?: number;
   title?: string;
   roleId?: number;
-  minSalary?: number;
-  maxSalary?: number;
+  minSalary: number;
+  maxSalary: number;
   skillId?: number;
   created?: CreatedRange;
 };
@@ -51,8 +51,8 @@ const useJobs = (params: JobsParams): Jobs => {
       page: params.paging?.page,
       // company: '',
       // title: '',
-      // minSalary: MIN_SALARY,
-      // maxSalary: MAX_SALARY,
+      minSalary: MIN_SALARY,
+      maxSalary: MAX_SALARY,
       ...params.filters
     }),
     [params.filters, params.paging?.page]
