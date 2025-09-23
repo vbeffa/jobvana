@@ -10,6 +10,10 @@ const CompanyRoute = () => {
   const userType = getUserType();
   const { company } = useContext(JobvanaContext);
 
+  if (company?.id && company.id !== id) {
+    return null;
+  }
+
   return (
     <div className="mx-4">
       {userType === 'company' && company && <MyCompany company={company} />}
