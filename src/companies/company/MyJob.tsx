@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import EditButtons from '../EditButtons';
-import Error from '../Error';
-import type { ToUpdate } from '../jobs/utils';
-import TextArea from '../TextArea';
-import type { Job } from '../types';
-import supabase from '../utils/supabase';
+import EditButtons from '../../EditButtons';
+import Error from '../../Error';
+import type { ToUpdate } from '../../jobs/utils';
+import TextArea from '../../TextArea';
+import type { Job } from '../../types';
+import supabase from '../../utils/supabase';
+import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
+import { isValid, isValidJob } from '../utils';
 import MyJobTitle from './MyJobTitle';
-import { MAX_DESCRIPTION_LENGTH } from './useCompanies';
-import { isValid, isValidJob } from './utils';
 
 export type MyCompanyJobProps = {
   job: Job;

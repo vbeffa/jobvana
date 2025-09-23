@@ -1,6 +1,6 @@
-import Filter from '../Filter';
-import IndustrySelect from './IndustrySelect';
-import NumberInput from './NumberInput';
+import Filter from '../../Filter';
+import CompanySize from '../company/CompanySize';
+import IndustrySelect from '../IndustrySelect';
 import { type SearchFilters } from './useCompanies';
 
 const CompanyFilters = ({
@@ -27,9 +27,9 @@ const CompanyFilters = ({
           Size:
         </label>
         <div className="flex flex-row gap-x-2">
-          <NumberInput
+          <CompanySize
             id="min_size"
-            size={filters.minSize ?? null}
+            size={filters.minSize}
             onChange={(size) => {
               onChange({ ...filters, minSize: size ?? undefined });
             }}
@@ -37,9 +37,9 @@ const CompanyFilters = ({
           <label htmlFor="max_size" className="content-center">
             -
           </label>
-          <NumberInput
+          <CompanySize
             id="max_size"
-            size={filters.maxSize ?? null}
+            size={filters.maxSize}
             onChange={(size) => {
               onChange({ ...filters, maxSize: size ?? undefined });
             }}

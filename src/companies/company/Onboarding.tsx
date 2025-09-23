@@ -1,16 +1,16 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
-import Button from '../Button';
-import { JobvanaContext } from '../Context';
-import Error from '../Error';
-import TextArea from '../TextArea';
-import supabase from '../utils/supabase';
+import Button from '../../Button';
+import { JobvanaContext } from '../../Context';
+import Error from '../../Error';
+import TextArea from '../../TextArea';
+import supabase from '../../utils/supabase';
+import IndustrySelect from '../IndustrySelect';
+import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
+import { isValid, type ToInsert } from '../utils';
 import CompanyName from './CompanyName';
 import CompanySize from './CompanySize';
-import IndustrySelect from './IndustrySelect';
-import { MAX_DESCRIPTION_LENGTH } from './useCompanies';
-import { isValid, type ToInsert } from './utils';
 
-const AddCompany = ({ userId }: { userId: string }) => {
+const Onboarding = ({ userId }: { userId: string }) => {
   const { setCompany } = useContext(JobvanaContext);
   const [newCompany, setNewCompany] = useState<Partial<ToInsert>>({
     name: '', // prevent "changing uncontrolled input to be controlled" error
@@ -63,6 +63,7 @@ const AddCompany = ({ userId }: { userId: string }) => {
               handleUpdate={setNewCompany}
             />
             <CompanySize
+              label="Num employees"
               size={newCompany.num_employees}
               handleUpdate={setNewCompany}
             />
@@ -95,4 +96,4 @@ const AddCompany = ({ userId }: { userId: string }) => {
   );
 };
 
-export default AddCompany;
+export default Onboarding;

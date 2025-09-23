@@ -18,6 +18,7 @@ const Header = () => {
     if (trimmed.includes('/')) {
       trimmed = trimmed.substring(0, trimmed.indexOf('/'));
     }
+    console.log(trimmed);
     setCurrPage(trimmed || 'home');
   }, [location.pathname, setCurrPage]);
 

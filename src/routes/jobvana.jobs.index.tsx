@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
-import CompanyJobs from '../companies/MyJobs';
+import CompanyJobs from '../companies/company/MyJobs';
 import { JobvanaContext } from '../Context';
 import Jobs from '../jobs/Jobs';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from '../jobs/useJobs';

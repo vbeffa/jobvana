@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { Job as DbJob } from '../types';
-import supabase from '../utils/supabase';
+import type { Job as DbJob } from '../../types';
+import supabase from '../../utils/supabase';
 
 export type Jobs = {
   jobs: Array<DbJob> | undefined;

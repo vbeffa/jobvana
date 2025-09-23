@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { SkillVersion } from '../companies/useCompany';
+import type { SkillVersion } from '../companies/job_seeker/useCompany';
 import type {
   Application,
   Company,

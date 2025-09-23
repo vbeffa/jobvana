@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import EditDelete from '../EditDelete';
-import TextInput from '../TextInput';
-import type { CompanyAddress } from '../types';
-import supabase from '../utils/supabase';
-import StateSelect from './StateSelect';
-import { isValid, isValidAddress } from './utils';
+import EditDelete from '../../EditDelete';
+import TextInput from '../../TextInput';
+import type { CompanyAddress } from '../../types';
+import supabase from '../../utils/supabase';
+import StateSelect from '../StateSelect';
+import { isValid, isValidAddress } from '../utils';
 
 const MyCompanyAddress = ({
   address,

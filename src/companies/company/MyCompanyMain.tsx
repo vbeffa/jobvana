@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { JobvanaContext, type Company } from '../Context';
-import EditButtons from '../EditButtons';
-import Error from '../Error';
-import TextArea from '../TextArea';
-import supabase from '../utils/supabase';
+import { JobvanaContext, type Company } from '../../Context';
+import EditButtons from '../../EditButtons';
+import Error from '../../Error';
+import TextArea from '../../TextArea';
+import supabase from '../../utils/supabase';
+import IndustrySelect from '../IndustrySelect';
+import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
+import useIndustries from '../useIndustries';
+import { isValid, type ToUpdate } from '../utils';
 import CompanyName from './CompanyName';
 import CompanySize from './CompanySize';
-import IndustrySelect from './IndustrySelect';
-import { MAX_DESCRIPTION_LENGTH } from './useCompanies';
-import useIndustries from './useIndustries';
-import { isValid, type ToUpdate } from './utils';
 
 export type MyCompanyMainProps = {
   company: Company;
@@ -77,6 +77,7 @@ const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
               handleUpdate={setEditCompany}
             />
             <CompanySize
+              label="Num employees"
               size={editCompany.num_employees}
               handleUpdate={setEditCompany}
             />

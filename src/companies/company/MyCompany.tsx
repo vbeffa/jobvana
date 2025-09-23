@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { type Company } from '../Context';
-import ResourceDetailsContainer from '../ResourceDetailsContainer';
-import ResourceListContainer from '../ResourceListContainer';
-import ResourcesContainer from '../ResourcesContainer';
-import SummaryCard from '../SummaryCard';
-import SummaryCardsContainer from '../SummaryCardsContainer';
+import { type Company } from '../../Context';
+import ResourceDetailsContainer from '../../ResourceDetailsContainer';
+import ResourceListContainer from '../../ResourceListContainer';
+import ResourcesContainer from '../../ResourcesContainer';
+import SummaryCard from '../../SummaryCard';
+import SummaryCardsContainer from '../../SummaryCardsContainer';
 import MyCompanyAddresses from './MyCompanyAddresses';
 import MyCompanyMain from './MyCompanyMain';
 import useCompanyAddresses from './useCompanyAddresses';

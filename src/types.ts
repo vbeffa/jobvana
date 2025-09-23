@@ -1,4 +1,4 @@
-import type { SearchFilters as CompanySearchFilters } from './companies/useCompanies';
+import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import type { SearchFilters as JobSearchFilters } from './jobs/useJobs';
 import type { SearchFilters as SkillSearchFilters } from './skills/useSkills';
 import type { Database } from './utils/types';

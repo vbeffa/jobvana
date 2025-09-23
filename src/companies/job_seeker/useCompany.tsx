@@ -6,8 +6,8 @@ import type {
   Industry as DbIndustry,
   Job as DbJob,
   SkillVersion as DbSkillVersion
-} from '../types';
-import supabase from '../utils/supabase';
+} from '../../types';
+import supabase from '../../utils/supabase';
 
 export type CompanyJob = Pick<DbJob, 'id' | 'title'>;
 

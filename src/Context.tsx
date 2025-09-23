@@ -1,5 +1,8 @@
 import { createContext } from 'react';
-import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './companies/useCompanies';
+import {
+  MAX_COMPANY_SIZE,
+  MIN_COMPANY_SIZE
+} from './companies/job_seeker/useCompanies';
 import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
 import type { Company as DbCompany } from './types';
 

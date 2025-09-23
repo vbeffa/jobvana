@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
-import Error from '../Error';
+import Error from '../../Error';
 import MyCompanyAddress from './MyCompanyAddress';
 import MyCompanyNewAddress from './MyCompanyNewAddress';
 import useCompanyAddresses from './useCompanyAddresses';

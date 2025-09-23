@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { getSession, getUserType } from './auth/utils';
-import AddCompany from './companies/AddCompany';
+import Onboarding from './companies/company/Onboarding';
 import { JobvanaContext } from './Context';
 
 const Index = () => {
@@ -21,7 +21,7 @@ const Index = () => {
         </div>
       )}
       {session && userType === 'company' && company === null && (
-        <AddCompany userId={session.user.id} />
+        <Onboarding userId={session.user.id} />
       )}
     </div>
   );

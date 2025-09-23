@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import SaveCancel from '../SaveCancel';
-import TextInput from '../TextInput';
-import type { CompanyAddress } from '../types';
-import supabase from '../utils/supabase';
-import StateSelect from './StateSelect';
-import { isValidAddress } from './utils';
+import SaveCancel from '../../SaveCancel';
+import TextInput from '../../TextInput';
+import type { CompanyAddress } from '../../types';
+import supabase from '../../utils/supabase';
+import StateSelect from '../StateSelect';
+import { isValidAddress } from '../utils';
 
 type ToInsert = Omit<CompanyAddress, 'id'>;
 

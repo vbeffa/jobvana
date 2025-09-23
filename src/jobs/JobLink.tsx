@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { CompanyJob } from '../companies/useCompany';
+import type { CompanyJob } from '../companies/job_seeker/useCompany';
 
 export type JobLinkProps = CompanyJob;
 

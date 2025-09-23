@@ -1,20 +1,23 @@
 import { useMemo } from 'react';
-import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './useCompanies';
 
 const NumberInput = ({
   id,
   label,
   size,
+  minSize,
+  maxSize,
   onChange
 }: {
   id: string;
   label?: string;
   size: number | null;
+  minSize: number;
+  maxSize: number;
   onChange: (size: number | null) => void;
 }) => {
   const outOfRange = useMemo(
-    () => size !== null && (size < MIN_COMPANY_SIZE || size > MAX_COMPANY_SIZE),
-    [size]
+    () => size !== null && (size < minSize || size > maxSize),
+    [maxSize, minSize, size]
   );
 
   return (
@@ -29,9 +32,9 @@ const NumberInput = ({
           id={id}
           type="number"
           step={1}
-          min={MIN_COMPANY_SIZE}
-          max={MAX_COMPANY_SIZE}
-          placeholder={`${MIN_COMPANY_SIZE} - ${MAX_COMPANY_SIZE}`}
+          min={minSize}
+          max={maxSize}
+          placeholder={`${minSize} - ${maxSize}`}
           className="p-1 border-[0.5px] border-gray-500 h-8 w-full"
           value={size ?? ''}
           onChange={(e) => {

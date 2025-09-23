@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { JobvanaContext } from '../Context';
-import Error from '../Error';
-import FiltersContainer from '../FiltersContainer';
-import PageNav from '../PageNav';
-import ResourceDetailsContainer from '../ResourceDetailsContainer';
-import ResourceListContainer from '../ResourceListContainer';
-import ResourcesContainer from '../ResourcesContainer';
-import { Route } from '../routes/jobvana.companies.index';
-import SummaryCard from '../SummaryCard';
-import SummaryCardsContainer from '../SummaryCardsContainer';
+import { JobvanaContext } from '../../Context';
+import Error from '../../Error';
+import FiltersContainer from '../../FiltersContainer';
+import PageNav from '../../PageNav';
+import ResourceDetailsContainer from '../../ResourceDetailsContainer';
+import ResourceListContainer from '../../ResourceListContainer';
+import ResourcesContainer from '../../ResourcesContainer';
+import { Route } from '../../routes/jobvana.companies.index';
+import SummaryCard from '../../SummaryCard';
+import SummaryCardsContainer from '../../SummaryCardsContainer';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
 import useCompanies, {
@@ -83,6 +83,7 @@ const Companies = () => {
   }, [companies, context.companyId]);
 
   useEffect(() => {
+    console.log('navigate');
     navigate({
       search: {
         page: debouncedPage,

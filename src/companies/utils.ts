@@ -6,8 +6,8 @@ import {
   MAX_DESCRIPTION_LENGTH,
   MAX_NAME_LENGTH,
   MIN_COMPANY_SIZE
-} from './useCompanies';
-import type { CompanyAddress, FullCompany } from './useCompany';
+} from './job_seeker/useCompanies';
+import type { CompanyAddress, FullCompany } from './job_seeker/useCompany';
 
 export type ToInsert = Omit<DbCompany, 'id' | 'created_at'>;
 export type ToUpdate = Omit<DbCompany, 'created_at'>;

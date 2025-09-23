@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import ResourceDetailsContainer from '../ResourceDetailsContainer';
-import ResourceListContainer from '../ResourceListContainer';
-import ResourcesContainer from '../ResourcesContainer';
-import SummaryCard from '../SummaryCard';
-import SummaryCardsContainer from '../SummaryCardsContainer';
-import type { Job } from '../types';
+import ResourceDetailsContainer from '../../ResourceDetailsContainer';
+import ResourceListContainer from '../../ResourceListContainer';
+import ResourcesContainer from '../../ResourcesContainer';
+import SummaryCard from '../../SummaryCard';
+import SummaryCardsContainer from '../../SummaryCardsContainer';
+import type { Job } from '../../types';
 import MyJob from './MyJob';
 import useJobsForCompany from './useJobsForCompany';
 
