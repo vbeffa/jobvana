@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import Error from '../../Error';
-import MyCompanyAddress from './MyCompanyAddress';
+import UpdatingModal from '../../UpdatingModal';
+import CompanyAddress from './MyCompanyAddress';
 import MyCompanyNewAddress from './MyCompanyNewAddress';
 import useCompanyAddresses from './useCompanyAddresses';
 
@@ -12,6 +13,7 @@ export type MyCompanyAddressesProps = {
 const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   const [error, setError] = useState<Error>();
   const [newAddress, setNewAddress] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const { addresses, refetch } = useCompanyAddresses(companyId);
 
   if (!addresses) {
@@ -21,14 +23,19 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   return (
     <>
       {error && <Error error={error} />}
+      {updating && <UpdatingModal />}
       <div className="grid grid-flow-col grid-rows-4 gap-4 mb-4">
         {addresses.map((address, idx) => (
           <div key={idx}>
-            <MyCompanyAddress
+            <CompanyAddress
               address={address}
               idx={idx}
               setError={setError}
-              onUpdate={refetch}
+              onUpdate={async () => {
+                setUpdating(true);
+                await refetch();
+                setUpdating(false);
+              }}
             />
           </div>
         ))}
@@ -44,9 +51,11 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
           <MyCompanyNewAddress
             companyId={companyId}
             setError={setError}
-            onCreate={() => {
+            onCreate={async () => {
               setNewAddress(false);
-              refetch();
+              setUpdating(true);
+              await refetch();
+              setUpdating(false);
             }}
             onCancel={() => setNewAddress(false)}
           />

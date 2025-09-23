@@ -16,7 +16,7 @@ export type MyCompanyMainProps = {
   company: Company;
 };
 
-const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
+const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   const { setCompany } = useContext(JobvanaContext);
   const { findIndustry } = useIndustries();
   const [editCompany, setEditCompany] = useState<ToUpdate>(company);
@@ -57,7 +57,7 @@ const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
   return (
     <>
       {error && <Error error={error} />}
-      <div className="grid grid-cols-[20%_65%] gap-y-4 relative">
+      <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
         <EditButtons
           editMode={editMode}
           setEditMode={setEditMode}
@@ -97,22 +97,16 @@ const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
         )}
         {!editMode && (
           <>
-            <div className="content-center">Name:</div>
-            <div className="h-[32.5px] pl-[4.5px] pt-[4.5px]">
-              {company.name}
-            </div>
-            <div className="content-center">Industry:</div>
-            <div className="h-[32.5px] pl-[4.5px] pt-[4.5px]">
+            <div className="h-[32.5px] content-center">Name:</div>
+            <div className="pl-[4.5px] pt-[4.5px]">{company.name}</div>
+            <div className="h-[32.5px] content-center">Industry:</div>
+            <div className="pl-[4.5px] pt-[4.5px]">
               {findIndustry(company.industry_id)?.name}
             </div>
-            <div className="pt-[1px] content-center">Num employees:</div>
-            <div className="h-[31px] pl-[4.5px] pt-[4px]">
-              {company.num_employees}
-            </div>
-            <div className="pt-[1px] content-start">Description:</div>
-            <div className="h-[160px] pl-[4.5px] pt-[5.5px]">
-              {company.description}
-            </div>
+            <div className="h-[32px] content-center">Num employees:</div>
+            <div className="pl-[4.5px] pt-[4px]">{company.num_employees}</div>
+            <div className="h-[160px] content-start">Description:</div>
+            <div className="pl-[4.5px] pt-[4.5px]">{company.description}</div>
           </>
         )}
       </div>
@@ -120,4 +114,4 @@ const MyCompanyMain = ({ company }: MyCompanyMainProps) => {
   );
 };
 
-export default MyCompanyMain;
+export default MyCompanyOverview;

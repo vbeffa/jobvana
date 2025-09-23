@@ -6,25 +6,23 @@ const salaries = _.range(MIN_SALARY, MAX_SALARY + 1, 10000);
 const SalarySelect = ({
   id,
   value,
+  width = 'w-full',
   onChange
 }: {
   id: string;
   value?: number;
+  width?: string;
   onChange: (salary: number) => void;
 }) => {
   return (
     <select
       id={id}
-      className="border-[0.5px] border-gray-500 h-8 px-2 w-full py-0.5"
+      className={`border-[0.5px] border-gray-500 h-8 px-0 ${width} py-0.5`}
       value={value}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {salaries.map((salary, idx) => (
-        <option
-          key={idx}
-          value={salary}
-          // selected={type === 'min' ? idx === 0 : idx === salaries.length - 1}
-        >
+        <option key={idx} value={salary}>
           {new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',

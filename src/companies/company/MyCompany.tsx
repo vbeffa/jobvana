@@ -6,7 +6,7 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import MyCompanyAddresses from './MyCompanyAddresses';
-import MyCompanyMain from './MyCompanyMain';
+import MyCompanyOverview from './MyCompanyOverview';
 import useCompanyAddresses from './useCompanyAddresses';
 
 const MyCompany = ({ company }: { company: Company }) => {
@@ -15,7 +15,7 @@ const MyCompany = ({ company }: { company: Company }) => {
 
   const currComponent =
     card === 'main' ? (
-      <MyCompanyMain company={company} />
+      <MyCompanyOverview company={company} />
     ) : (
       <MyCompanyAddresses companyId={company.id} />
     );

@@ -5,11 +5,13 @@ import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import SummaryCard from '../../SummaryCard';
 import type { Job } from '../../types';
+import UpdatingModal from '../../UpdatingModal';
 import MyJob from './MyJob';
 import useJobsForCompany from './useJobsForCompany';
 
 const MyJobs = ({ companyId }: { companyId: number }) => {
   const [selectedJob, setSelectedJob] = useState<Job>();
+  const [updating, setUpdating] = useState(false);
   const { jobs, refetch } = useJobsForCompany(companyId);
 
   useEffect(() => {
@@ -41,9 +43,20 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {selectedJob ? (
-            <MyJob job={selectedJob} onUpdate={refetch} />
-          ) : undefined}
+          <>
+            {updating && <UpdatingModal />}
+            {selectedJob ? (
+              <MyJob
+                job={selectedJob}
+                onUpdate={async () => {
+                  setUpdating(true);
+                  await refetch();
+                  setUpdating(false);
+                  setSelectedJob(undefined);
+                }}
+              />
+            ) : undefined}
+          </>
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </>
