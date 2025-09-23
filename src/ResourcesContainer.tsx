@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import { useMemo, type JSX } from 'react';
 import {
   FILTERS_TOTAL_HEIGHT_PX,
   HEADER_TOTAL_HEIGHT_PX,
@@ -17,14 +17,16 @@ const ResourcesContainer = ({
   hasFilters?: boolean;
   hasTitle?: boolean;
 }) => {
-  let heightPx = HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX;
-  if (hasFilters) {
-    heightPx += FILTERS_TOTAL_HEIGHT_PX;
-  }
-  if (hasTitle) {
-    heightPx += TITLE_TOTAL_HEIGHT_PX;
-  }
-  const height = `h-[calc(100dvh-${heightPx}px)]`;
+  const height = useMemo(() => {
+    let heightPx = HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX;
+    if (hasFilters) {
+      heightPx += FILTERS_TOTAL_HEIGHT_PX;
+    }
+    if (hasTitle) {
+      heightPx += TITLE_TOTAL_HEIGHT_PX;
+    }
+    return `h-[calc(100dvh-${heightPx}px)]`;
+  }, [hasFilters, hasTitle]);
 
   return (
     <div className="flex justify-center">
