@@ -3,21 +3,23 @@ import { useMemo } from 'react';
 const NumberInput = ({
   id,
   label,
-  size,
-  minSize,
-  maxSize,
-  onChange
+  value,
+  min,
+  max,
+  onChange,
+  width = 'w-full'
 }: {
   id: string;
   label?: string;
-  size: number | null;
-  minSize: number;
-  maxSize: number;
-  onChange: (size: number | null) => void;
+  value: number | null;
+  min: number;
+  max: number;
+  onChange: (value: number | null) => void;
+  width?: string;
 }) => {
   const outOfRange = useMemo(
-    () => size !== null && (size < minSize || size > maxSize),
-    [maxSize, minSize, size]
+    () => value !== null && (value < min || value > max),
+    [max, min, value]
   );
 
   return (
@@ -32,11 +34,11 @@ const NumberInput = ({
           id={id}
           type="number"
           step={1}
-          min={minSize}
-          max={maxSize}
-          placeholder={`${minSize} - ${maxSize}`}
-          className="p-1 border-[0.5px] border-gray-500 h-8 w-full"
-          value={size ?? ''}
+          min={min}
+          max={max}
+          placeholder={`${min} - ${max}`}
+          className={`p-1 border-[0.5px] border-gray-500 h-8 ${width}`}
+          value={value ?? ''}
           onChange={(e) => {
             if (e.target.value !== '-') {
               const parsed = parseInt(e.target.value);
@@ -48,7 +50,7 @@ const NumberInput = ({
             if (isNaN(newSize)) {
               newSize = null;
             }
-            if (newSize !== size) {
+            if (newSize !== value) {
               onChange(newSize);
             }
           }}

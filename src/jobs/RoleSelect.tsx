@@ -3,10 +3,12 @@ import useRoles from '../roles/useRoles';
 const RoleSelect = ({
   id,
   roleId,
+  showAny = true,
   onChange
 }: {
   id: string;
   roleId?: number;
+  showAny?: boolean;
   onChange: (roleId: number) => void;
 }) => {
   const { isPending, roles } = useRoles();
@@ -23,7 +25,7 @@ const RoleSelect = ({
           Loading...
         </option>
       )}
-      {!isPending && (
+      {!isPending && showAny && (
         <option key={0} value={0}>
           Any
         </option>

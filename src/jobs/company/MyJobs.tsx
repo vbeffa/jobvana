@@ -4,10 +4,9 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import SummaryCard from '../../SummaryCard';
-import type { Job } from '../../types';
 import UpdatingModal from '../../UpdatingModal';
 import MyJob from './MyJob';
-import useJobsForCompany from './useJobsForCompany';
+import useJobsForCompany, { type Job } from './useJobsForCompany';
 
 const MyJobs = ({ companyId }: { companyId: number }) => {
   const [selectedJob, setSelectedJob] = useState<Job>();
@@ -49,11 +48,12 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
               <MyJob
                 job={selectedJob}
                 onUpdate={async () => {
-                  setUpdating(true);
+                  // setUpdating(true);
                   await refetch();
                   setUpdating(false);
                   setSelectedJob(undefined);
                 }}
+                setUpdating={setUpdating}
               />
             ) : undefined}
           </>

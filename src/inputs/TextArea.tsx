@@ -3,6 +3,7 @@ export type TextInputProps = {
   label: string;
   value?: string;
   maxLength?: number;
+  rows?: number;
   onChange: (value: string) => void;
 };
 
@@ -11,6 +12,7 @@ const TextArea = ({
   label,
   value,
   maxLength,
+  rows = 6,
   onChange
 }: TextInputProps) => {
   return (
@@ -25,7 +27,7 @@ const TextArea = ({
           maxLength={maxLength}
           className="p-1 border-[0.5px] border-gray-500 min-h-24 w-full"
           onChange={(e) => onChange(e.target.value)}
-          rows={6}
+          rows={rows}
           cols={80}
         />
         {maxLength && value !== undefined && (

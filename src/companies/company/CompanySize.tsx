@@ -19,9 +19,9 @@ const CompanySize = <T extends Partial<ToInsert> | ToUpdate>({
     <NumberInput
       id={id}
       label={label}
-      size={size ?? null}
-      minSize={MIN_COMPANY_SIZE}
-      maxSize={MAX_COMPANY_SIZE}
+      value={size ?? null}
+      min={MIN_COMPANY_SIZE}
+      max={MAX_COMPANY_SIZE}
       onChange={(size) => {
         if (onChange) {
           onChange(size);
