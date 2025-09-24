@@ -82,7 +82,7 @@ const MyCompanyAddress = ({
           type="address"
           editMode={editMode}
           setEditMode={setEditMode}
-          disabled={editMode && (!isValidCompany || !isDirty || isSubmitting)}
+          disabled={editMode && (!isDirty || !isValidCompany || isSubmitting)}
           onEdit={() => setEditAddress(address)}
           onDelete={deleteAddress}
           onSave={updateAddress}

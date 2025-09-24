@@ -6,6 +6,7 @@ const NumberInput = ({
   value,
   min,
   max,
+  step = 1,
   showOutOfRange = true,
   showCurrency = false,
   onChange,
@@ -17,6 +18,7 @@ const NumberInput = ({
   value: number | null;
   min: number;
   max: number;
+  step?: number;
   showOutOfRange?: boolean;
   showCurrency?: boolean;
   onChange: (value: number | null) => void;
@@ -39,7 +41,7 @@ const NumberInput = ({
         <input
           id={id}
           type="number"
-          step={1}
+          step={step}
           min={min}
           max={max}
           placeholder={`${min} - ${max}`}

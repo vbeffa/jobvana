@@ -48,12 +48,11 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
               <MyJob
                 job={selectedJob}
                 onUpdate={async () => {
-                  // setUpdating(true);
+                  setUpdating(true);
                   await refetch();
                   setUpdating(false);
                   setSelectedJob(undefined);
                 }}
-                setUpdating={setUpdating}
               />
             ) : undefined}
           </>

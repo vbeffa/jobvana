@@ -1,40 +1,41 @@
 import _, { capitalize } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import { FaTriangleExclamation } from 'react-icons/fa6';
+import { FaPlus, FaTriangleExclamation, FaX } from 'react-icons/fa6';
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
-import NumberInput from '../../inputs/NumberInput';
 import TextArea from '../../inputs/TextArea';
 import useRoles from '../../roles/useRoles';
+import type { JobRole } from '../../types';
 import supabase from '../../utils/supabase';
 import LevelSelect from '../LevelSelect';
 import RoleSelect from '../RoleSelect';
 import SalaryRangeInput from '../SalaryRangeInput';
-import type { JobRole } from '../useJob';
 import { MAX_SALARY, MIN_SALARY } from '../useJobs';
 import { isValidJob, type ToUpdate } from '../utils';
 import MyJobTitle from './MyJobTitle';
+import PercentInput from './PercentInput';
 import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
 
 export type MyCompanyJobProps = {
   job: Job;
   onUpdate: () => void;
-  setUpdating: (updating: boolean) => void;
 };
 
-const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
+const MyJob = ({ job, onUpdate }: MyCompanyJobProps) => {
   const { roles } = useRoles();
   const [editJob, setEditJob] = useState<ToUpdate>(job);
-  const [editRoles, setEditRoles] = useState<Array<JobRole>>(job.jobRoles);
+  const [editRoles, setEditRoles] = useState<Array<JobRole>>(job.job_roles);
   const [editMode, setEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
 
-  const isDirty = useMemo(
-    () => !_.isEqual(job, editJob) || !_.isEqual(job.jobRoles, editRoles),
-    [editJob, editRoles, job]
+  const isJobDirty = useMemo(() => !_.isEqual(job, editJob), [editJob, job]);
+
+  const areJobRolesDirty = useMemo(
+    () => !_.isEqual(job.job_roles, editRoles),
+    [editRoles, job]
   );
 
   const formatter = new Intl.NumberFormat('en-US', {
@@ -43,38 +44,70 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
     maximumFractionDigits: 0
   });
 
+  const percentTotalValid = useMemo(() => {
+    if (!editRoles) {
+      return true;
+    }
+    const totalPercent = editRoles.reduce(
+      (total, role) => total + role.percent,
+      0
+    );
+    return totalPercent === 100;
+  }, [editRoles]);
+
   const updateJob = useCallback(async () => {
-    if (!editJob) {
+    if (!isJobDirty || !isValidJob(editJob)) {
       return;
     }
-    if (!isValidJob(editJob)) {
+    const toUpdate = _.omit(editJob, 'job_roles');
+    const { error } = await supabase
+      .from('jobs')
+      .update({
+        ...toUpdate,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', job.id)
+      .select();
+
+    if (error) {
+      throw error;
+    }
+  }, [editJob, isJobDirty, job.id]);
+
+  const updateJobRoles = useCallback(async () => {
+    if (!areJobRolesDirty || !percentTotalValid) {
       return;
     }
-    const toUpdate = _.omit(editJob, 'jobRoles', 'job_roles');
+    console.log(editRoles);
+    let { error } = await supabase
+      .from('job_roles')
+      .delete()
+      .filter('job_id', 'eq', job.id);
+    if (error) {
+      console.log(error);
+    }
+
+    error = (await supabase.from('job_roles').insert(editRoles)).error;
+
+    if (error) {
+      throw error;
+    }
+  }, [areJobRolesDirty, editRoles, job.id, percentTotalValid]);
+
+  const doUpdate = useCallback(async () => {
     setIsSubmitting(true);
     setError(undefined);
-    setUpdating(true);
     try {
-      const { error } = await supabase
-        .from('jobs')
-        .update({
-          ...toUpdate,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', job.id)
-        .select();
-
-      if (error) {
-        console.log(error);
-        setError(error);
-        setUpdating(false);
-      } else {
-        onUpdate();
-      }
+      await updateJob();
+      await updateJobRoles();
+      onUpdate();
+    } catch (err) {
+      console.log(err);
+      setError(err as Error);
     } finally {
       setIsSubmitting(false);
     }
-  }, [editJob, job.id, onUpdate, setUpdating]);
+  }, [onUpdate, updateJob, updateJobRoles]);
 
   const deleteJob = useCallback(async () => {
     setIsSubmitting(true);
@@ -93,17 +126,6 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
     }
   }, [job.id, onUpdate]);
 
-  const percentTotalValid = useMemo(() => {
-    if (!editRoles) {
-      return true;
-    }
-    const totalPercent = editRoles.reduce(
-      (total, role) => total + role.percent,
-      0
-    );
-    return totalPercent === 100;
-  }, [editRoles]);
-
   return (
     <>
       {error && <Error error={error} />}
@@ -114,17 +136,17 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
           setEditMode={setEditMode}
           disabled={
             editMode &&
-            (!isValidJob(editJob) ||
+            ((!isJobDirty && !areJobRolesDirty) ||
+              !isValidJob(editJob) ||
               !percentTotalValid ||
-              !isDirty ||
               isSubmitting)
           }
           onEdit={() => {
             setEditJob(job);
-            setEditRoles(job.jobRoles);
+            setEditRoles(job.job_roles);
           }}
           onDelete={deleteJob}
-          onSave={updateJob}
+          onSave={doUpdate}
           bgColor="--color-white"
         />
         {editMode && editJob && (
@@ -186,91 +208,113 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
               }}
             />
 
-            {editRoles && editRoles.length > 0 && (
-              <>
-                <label htmlFor="role_0" className="content-center">
-                  Roles:
-                </label>
-                {editRoles.map((jobRole, idx) => (
-                  <div
-                    key={`role_${idx}_div`}
-                    className={`${idx > 0 ? 'col-start-2' : ''} flex flex-row gap-2`}
-                  >
-                    <RoleSelect
-                      id={`role_${idx}`}
-                      roleId={jobRole.role_id}
-                      showAny={false}
-                      onChange={(roleId) => {
+            <>
+              <label htmlFor="role_0" className="content-center">
+                Roles:
+              </label>
+              {editRoles.map((jobRole, idx) => (
+                <div
+                  key={`role_${idx}_div`}
+                  className="col-start-2 flex flex-row gap-2"
+                >
+                  <RoleSelect
+                    id={`role_${idx}`}
+                    roleId={jobRole.role_id}
+                    showAny={false}
+                    onChange={(roleId) => {
+                      setEditRoles((roles) => {
+                        const updatedRoles = _.cloneDeep(roles);
+                        updatedRoles[idx].role_id = roleId;
+                        return updatedRoles;
+                      });
+                    }}
+                  />
+                  <div className="relative flex flex-row gap-0.5">
+                    <PercentInput
+                      idx={idx}
+                      value={jobRole.percent}
+                      onChange={(percent) => {
                         setEditRoles((roles) => {
                           const updatedRoles = _.cloneDeep(roles);
-                          updatedRoles[idx].role_id = roleId;
+                          updatedRoles[idx].percent = percent;
                           return updatedRoles;
                         });
                       }}
                     />
-                    <div className="relative flex flex-row gap-0.5">
-                      <NumberInput
-                        id={`role_percent_${idx}`}
-                        value={jobRole.percent}
-                        min={1}
-                        max={100}
-                        showOutOfRange={false}
-                        onChange={(value) => {
-                          if (!value) {
-                            return;
-                          }
-                          setEditRoles((roles) => {
-                            const updatedRoles = _.cloneDeep(roles);
-                            updatedRoles[idx].percent = value;
-                            return updatedRoles;
-                          });
-                        }}
-                        width="w-18"
-                      />
-                      <div
-                        className={`absolute ${
-                          jobRole.percent >= 100
-                            ? 'right-6'
-                            : jobRole.percent >= 10
-                              ? 'right-8'
-                              : 'right-10'
-                        } top-1 -z-10`}
-                      >
-                        %
-                      </div>
+                    <div
+                      className={`absolute ${
+                        jobRole.percent >= 100
+                          ? 'right-6'
+                          : jobRole.percent >= 10
+                            ? 'right-8'
+                            : 'right-10'
+                      } top-1 -z-10`}
+                    >
+                      %
                     </div>
-                    <LevelSelect
-                      id={`level_${idx}`}
-                      value={jobRole.role_level}
-                      onChange={(level) => {
-                        setEditRoles((roles) => {
-                          const updatedRoles = _.cloneDeep(roles);
-                          updatedRoles[idx].role_level = level;
-                          return updatedRoles;
-                        });
-                      }}
-                    />
-                    {(editRoles[idx].percent < 1 ||
-                      editRoles[idx].percent > 100) && (
-                      <div className="text-sm text-red-500 flex flex-row gap-1">
-                        <div className="content-center">
-                          <FaTriangleExclamation />
-                        </div>
-                        <div className="content-center">% out of range</div>
-                      </div>
-                    )}
                   </div>
-                ))}
+                  <LevelSelect
+                    id={`level_${idx}`}
+                    value={jobRole.role_level}
+                    onChange={(level) => {
+                      setEditRoles((roles) => {
+                        const updatedRoles = _.cloneDeep(roles);
+                        updatedRoles[idx].role_level = level;
+                        return updatedRoles;
+                      });
+                    }}
+                  />
+                  <div
+                    className="content-center text-sm text-gray-400 cursor-pointer"
+                    onClick={() => {
+                      setEditRoles((roles) => {
+                        const updatedRoles = _.cloneDeep(roles);
+                        updatedRoles.splice(idx, 1);
+                        return updatedRoles;
+                      });
+                    }}
+                  >
+                    <FaX />
+                  </div>
+                  {(editRoles[idx].percent < 1 ||
+                    editRoles[idx].percent > 100) && (
+                    <div className="text-sm text-red-500 flex flex-row gap-1">
+                      <div className="content-center">
+                        <FaTriangleExclamation />
+                      </div>
+                      <div className="content-center">% out of range</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+              <div className="relative col-start-2">
                 {!percentTotalValid && (
-                  <div className="col-start-2 text-sm text-red-500 flex flex-row gap-1">
+                  <div className="text-sm text-red-500 flex flex-row gap-1 pl-51">
                     <div className="content-center">
                       <FaTriangleExclamation />
                     </div>
-                    <div>Role percentages do not total 100</div>
+                    <div>% does not total 100</div>
                   </div>
                 )}
-              </>
-            )}
+                <div
+                  className="absolute left-0 top-1 text-gray-400 cursor-pointer"
+                  onClick={() => {
+                    setEditRoles((roles) => {
+                      const updatedRoles = _.cloneDeep(roles);
+                      updatedRoles.push({
+                        job_id: job.id,
+                        role_id: 1,
+                        percent: 1,
+                        role_level: 0
+                      });
+                      return updatedRoles;
+                    });
+                  }}
+                >
+                  <FaPlus />
+                </div>
+              </div>
+            </>
           </>
         )}
         {!editMode && job && (
@@ -289,7 +333,7 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
             </div>
             <div>Roles:</div>
             <div>
-              {job.jobRoles.map((jobRole, idx) => {
+              {job.job_roles.map((jobRole, idx) => {
                 const role = roles?.find((role) => role.id === jobRole.role_id);
                 return role ? (
                   <div key={idx}>
