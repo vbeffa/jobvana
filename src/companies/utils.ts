@@ -1,4 +1,3 @@
-import type { FullJob } from '../jobs/useJob';
 import type { Company as DbCompany } from '../types';
 import supabase from '../utils/supabase';
 import {
@@ -42,18 +41,18 @@ export const companyFields = (
   user_id: company.user_id
 });
 
-export const isValid = (company: Partial<ToInsert>) => {
-  return (
+export const isValidCompany = (company: Partial<ToInsert>) => {
+  return Boolean(
     company.name &&
-    company.name.length <= MAX_NAME_LENGTH &&
-    company.num_employees &&
-    company.num_employees >= MIN_COMPANY_SIZE &&
-    company.num_employees <= MAX_COMPANY_SIZE &&
-    company.industry_id &&
-    company.industry_id > 0 &&
-    company.description &&
-    company.description.length <= MAX_DESCRIPTION_LENGTH &&
-    company.user_id
+      company.name.length <= MAX_NAME_LENGTH &&
+      company.num_employees &&
+      company.num_employees >= MIN_COMPANY_SIZE &&
+      company.num_employees <= MAX_COMPANY_SIZE &&
+      company.industry_id &&
+      company.industry_id > 0 &&
+      company.description &&
+      company.description.length <= MAX_DESCRIPTION_LENGTH &&
+      company.user_id
   );
 };
 
@@ -61,8 +60,4 @@ export const isValidAddress = (address: Partial<CompanyAddress>) => {
   return Boolean(
     address.street && address.city && address.state && address.zip
   );
-};
-
-export const isValidJob = (job: Partial<FullJob>) => {
-  return Boolean(job.description);
 };

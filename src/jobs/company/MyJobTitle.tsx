@@ -1,5 +1,5 @@
-import { MAX_NAME_LENGTH } from '../../companies/job_seeker/useCompanies';
 import TextInput from '../../inputs/TextInput';
+import { MAX_TITLE_LENGTH } from '../useJobs';
 import type { ToInsert, ToUpdate } from '../utils';
 
 const MyJobTitle = <T extends Partial<ToInsert> | ToUpdate>({
@@ -14,7 +14,7 @@ const MyJobTitle = <T extends Partial<ToInsert> | ToUpdate>({
       id="title"
       label="Title"
       value={title}
-      maxLength={MAX_NAME_LENGTH}
+      maxLength={MAX_TITLE_LENGTH}
       onChange={(title) =>
         handleUpdate((job) => ({
           ...job,

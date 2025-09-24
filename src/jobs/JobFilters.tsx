@@ -1,7 +1,7 @@
 import Filter from '../inputs/Filter';
 import CreatedSelect from './CreatedSelect';
 import RoleSelect from './RoleSelect';
-import SalaryRange from './SalaryRange';
+import SalaryRangeSelect from './SalaryRangeSelect';
 import SkillSelect from './SkillSelect';
 import type { SearchFilters } from './useJobs';
 
@@ -52,7 +52,7 @@ const JobFilters = ({
           />
         </div>
         <div className="grid grid-cols-[35%_65%] w-[24rem] gap-y-2">
-          <SalaryRange
+          <SalaryRangeSelect
             low={filters.minSalary}
             high={filters.maxSalary}
             onChangeLow={(minSalary) => {

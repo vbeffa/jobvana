@@ -6,7 +6,7 @@ import TextArea from '../../inputs/TextArea';
 import supabase from '../../utils/supabase';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
-import { isValid, type ToInsert } from '../utils';
+import { isValidCompany, type ToInsert } from '../utils';
 import CompanyName from './CompanyName';
 import CompanySize from './CompanySize';
 
@@ -22,12 +22,12 @@ const Onboarding = ({ userId }: { userId: string }) => {
   const [error, setError] = useState<Error>();
 
   const submitDisabled = useMemo(
-    () => isSubmitting || !isValid(newCompany),
+    () => isSubmitting || !isValidCompany(newCompany),
     [isSubmitting, newCompany]
   );
 
   const addCompany = useCallback(async () => {
-    if (!isValid(newCompany)) {
+    if (!isValidCompany(newCompany)) {
       return;
     }
     setIsSubmitting(true);

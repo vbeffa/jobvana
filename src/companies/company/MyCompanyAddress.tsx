@@ -5,7 +5,7 @@ import TextInput from '../../inputs/TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
 import StateSelect from '../StateSelect';
-import { isValid, isValidAddress } from '../utils';
+import { isValidAddress, isValidCompany } from '../utils';
 
 const MyCompanyAddress = ({
   address,
@@ -82,7 +82,7 @@ const MyCompanyAddress = ({
           type="address"
           editMode={editMode}
           setEditMode={setEditMode}
-          disabled={editMode && (!isValid || !isDirty || isSubmitting)}
+          disabled={editMode && (!isValidCompany || !isDirty || isSubmitting)}
           onEdit={() => setEditAddress(address)}
           onDelete={deleteAddress}
           onSave={updateAddress}

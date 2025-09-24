@@ -2,7 +2,6 @@ import _, { capitalize } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import { FaTriangleExclamation } from 'react-icons/fa6';
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
-import { isValid, isValidJob } from '../../companies/utils';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
 import NumberInput from '../../inputs/NumberInput';
@@ -11,9 +10,10 @@ import useRoles from '../../roles/useRoles';
 import supabase from '../../utils/supabase';
 import LevelSelect from '../LevelSelect';
 import RoleSelect from '../RoleSelect';
-import SalaryRange from '../SalaryRange';
+import SalaryRangeInput from '../SalaryRangeInput';
 import type { JobRole } from '../useJob';
-import type { ToUpdate } from '../utils';
+import { MAX_SALARY, MIN_SALARY } from '../useJobs';
+import { isValidJob, type ToUpdate } from '../utils';
 import MyJobTitle from './MyJobTitle';
 import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
@@ -27,12 +27,16 @@ export type MyCompanyJobProps = {
 const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
   const { roles } = useRoles();
   const [editJob, setEditJob] = useState<ToUpdate>(job);
-  const [editRoles, setEditRoles] = useState<Array<JobRole>>();
+  const [editRoles, setEditRoles] = useState<Array<JobRole>>(job.jobRoles);
   const [editMode, setEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
 
-  const isDirty = useMemo(() => !_.isEqual(job, editJob), [editJob, job]);
+  const isDirty = useMemo(
+    () => !_.isEqual(job, editJob) || !_.isEqual(job.jobRoles, editRoles),
+    [editJob, editRoles, job]
+  );
+
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -108,7 +112,13 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
           type="job"
           editMode={editMode}
           setEditMode={setEditMode}
-          disabled={editMode && (!isValid || !isDirty || isSubmitting)}
+          disabled={
+            editMode &&
+            (!isValidJob(editJob) ||
+              !percentTotalValid ||
+              !isDirty ||
+              isSubmitting)
+          }
           onEdit={() => {
             setEditJob(job);
             setEditRoles(job.jobRoles);
@@ -145,27 +155,33 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
                 }));
               }}
             />
-            <SalaryRange
+            <SalaryRangeInput
               low={editJob.salary_low}
               high={editJob.salary_high}
               onChangeLow={(minSalary) => {
+                if (!minSalary) {
+                  return;
+                }
                 setEditJob((editJob) => ({
                   ...editJob,
                   salary_low: minSalary,
                   salary_high:
                     editJob.salary_high && minSalary > editJob.salary_high
                       ? minSalary
-                      : editJob.salary_high
+                      : Math.min(editJob.salary_high, MAX_SALARY)
                 }));
               }}
               onChangeHigh={(maxSalary) => {
+                if (!maxSalary) {
+                  return;
+                }
                 setEditJob((editJob) => ({
                   ...editJob,
                   salary_high: maxSalary,
                   salary_low:
                     editJob.salary_low && maxSalary < editJob.salary_low
                       ? maxSalary
-                      : editJob.salary_low
+                      : Math.max(editJob.salary_low, MIN_SALARY)
                 }));
               }}
             />
@@ -186,11 +202,9 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
                       showAny={false}
                       onChange={(roleId) => {
                         setEditRoles((roles) => {
-                          if (!roles) {
-                            return undefined;
-                          }
-                          roles[idx].role_id = roleId;
-                          return _.cloneDeep(roles);
+                          const updatedRoles = _.cloneDeep(roles);
+                          updatedRoles[idx].role_id = roleId;
+                          return updatedRoles;
                         });
                       }}
                     />
@@ -200,25 +214,22 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
                         value={jobRole.percent}
                         min={1}
                         max={100}
+                        showOutOfRange={false}
                         onChange={(value) => {
                           if (!value) {
                             return;
                           }
                           setEditRoles((roles) => {
-                            if (!roles) {
-                              return undefined;
-                            }
-                            if (roles) {
-                              roles[idx].percent = value;
-                            }
-                            return _.cloneDeep(roles);
+                            const updatedRoles = _.cloneDeep(roles);
+                            updatedRoles[idx].percent = value;
+                            return updatedRoles;
                           });
                         }}
                         width="w-18"
                       />
                       <div
                         className={`absolute ${
-                          jobRole.percent === 100
+                          jobRole.percent >= 100
                             ? 'right-6'
                             : jobRole.percent >= 10
                               ? 'right-8'
@@ -233,20 +244,25 @@ const MyJob = ({ job, onUpdate, setUpdating }: MyCompanyJobProps) => {
                       value={jobRole.role_level}
                       onChange={(level) => {
                         setEditRoles((roles) => {
-                          if (!roles) {
-                            return undefined;
-                          }
-                          if (roles) {
-                            roles[idx].role_level = level;
-                          }
-                          return _.cloneDeep(roles);
+                          const updatedRoles = _.cloneDeep(roles);
+                          updatedRoles[idx].role_level = level;
+                          return updatedRoles;
                         });
                       }}
                     />
+                    {(editRoles[idx].percent < 1 ||
+                      editRoles[idx].percent > 100) && (
+                      <div className="text-sm text-red-500 flex flex-row gap-1">
+                        <div className="content-center">
+                          <FaTriangleExclamation />
+                        </div>
+                        <div className="content-center">% out of range</div>
+                      </div>
+                    )}
                   </div>
                 ))}
                 {!percentTotalValid && (
-                  <div className="col-start-2 text-sm text-yellow-500 flex flex-row gap-1">
+                  <div className="col-start-2 text-sm text-red-500 flex flex-row gap-1">
                     <div className="content-center">
                       <FaTriangleExclamation />
                     </div>

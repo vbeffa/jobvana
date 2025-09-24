@@ -8,7 +8,7 @@ import supabase from '../../utils/supabase';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
 import useIndustries from '../useIndustries';
-import { isValid, type ToUpdate } from '../utils';
+import { isValidCompany, type ToUpdate } from '../utils';
 import CompanyName from './CompanyName';
 import CompanySize from './CompanySize';
 
@@ -30,7 +30,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   );
 
   const updateCompany = useCallback(async () => {
-    if (!isValid(editCompany)) {
+    if (!isValidCompany(editCompany)) {
       return;
     }
     setIsSubmitting(true);
@@ -61,7 +61,10 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
         <EditButtons
           editMode={editMode}
           setEditMode={setEditMode}
-          disabled={editMode && (!isValid || !isDirty || isSubmitting)}
+          disabled={
+            editMode &&
+            (!isValidCompany(editCompany) || !isDirty || isSubmitting)
+          }
           onEdit={() => setEditCompany(company)}
           onSave={updateCompany}
         />

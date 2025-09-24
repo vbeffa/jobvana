@@ -6,16 +6,22 @@ const NumberInput = ({
   value,
   min,
   max,
+  showOutOfRange = true,
+  showCurrency = false,
   onChange,
-  width = 'w-full'
+  width = 'w-full',
+  pl = ''
 }: {
   id: string;
   label?: string;
   value: number | null;
   min: number;
   max: number;
+  showOutOfRange?: boolean;
+  showCurrency?: boolean;
   onChange: (value: number | null) => void;
   width?: string;
+  pl?: string;
 }) => {
   const outOfRange = useMemo(
     () => value !== null && (value < min || value > max),
@@ -37,7 +43,7 @@ const NumberInput = ({
           min={min}
           max={max}
           placeholder={`${min} - ${max}`}
-          className={`p-1 border-[0.5px] border-gray-500 h-8 ${width}`}
+          className={`${pl} p-1 border-[0.5px] border-gray-500 h-8 ${width}`}
           value={value ?? ''}
           onChange={(e) => {
             if (e.target.value !== '-') {
@@ -55,7 +61,8 @@ const NumberInput = ({
             }
           }}
         />
-        {outOfRange && (
+        {showCurrency && <div className="absolute top-1 left-1">$</div>}
+        {showOutOfRange && outOfRange && (
           <div className="absolute text-red-500 top-2 right-6 text-xs">
             Out of range
           </div>

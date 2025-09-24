@@ -1,6 +1,6 @@
 import SalarySelect from './SalarySelect';
 
-const SalaryRange = ({
+const SalaryRangeSelect = ({
   low,
   high,
   onChangeLow,
@@ -37,4 +37,4 @@ const SalaryRange = ({
   );
 };
 
-export default SalaryRange;
+export default SalaryRangeSelect;
