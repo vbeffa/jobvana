@@ -24,7 +24,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
     <>
       {error && <Error error={error} />}
       {updating && <UpdatingModal />}
-      <div className="grid grid-flow-col grid-rows-4 gap-4 mb-4">
+      <div className="grid grid-flow-col w-fit grid-rows-4 gap-2 mb-4">
         {addresses.map((address, idx) => (
           <div key={idx}>
             <CompanyAddress
@@ -40,11 +40,11 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
           </div>
         ))}
         {!newAddress && (
-          <div
-            className="text-blue-400 cursor-pointer w-72 pt-4 pr-2 flex justify-end"
-            onClick={() => setNewAddress(true)}
-          >
-            <FaPlus />
+          <div className="text-blue-400 w-72 pt-4 pr-2 flex justify-end">
+            <FaPlus
+              className="cursor-pointer"
+              onClick={() => setNewAddress(true)}
+            />
           </div>
         )}
         {newAddress && (
