@@ -4,11 +4,12 @@ import {
   type QueryObserverResult
 } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { Job as DbJob, JobRole } from '../../types';
+import type { Job as DbJob, JobRole, JobSkill } from '../../types';
 import supabase from '../../utils/supabase';
 
 export type Job = DbJob & {
   job_roles: Array<JobRole>; // TODO use similar case in other hook types
+  job_skills: Array<JobSkill>;
 };
 
 export type Jobs = {
@@ -34,7 +35,7 @@ const useJobsForCompany = (companyId: number): Jobs => {
     queryFn: async () => {
       const { error, data, count } = await supabase
         .from('jobs')
-        .select('*, job_roles(*)')
+        .select('*, job_roles(*), job_skills(*)')
         .filter('company_id', 'eq', companyId);
       // console.log(data);
       if (error) {

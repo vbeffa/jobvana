@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaPlus, FaTrash, FaTriangleExclamation } from 'react-icons/fa6';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
@@ -8,15 +8,18 @@ import supabase from '../../utils/supabase';
 import JobRoles from '../JobRoles';
 import LevelSelect from '../LevelSelect';
 import RoleSelect from '../RoleSelect';
+import type { Edit } from './MyJobs';
 import PercentInput from './PercentInput';
 import type { Job } from './useJobsForCompany';
 
-export type MyCompanyJobProps = {
+export type MyJobRolesProps = {
   job: Job;
   onUpdate: () => void;
+  edit: Edit;
+  setEdit: (edit: Edit) => void;
 };
 
-const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
+const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
   const [editJobRoles, setEditJobRoles] = useState<Array<JobRole>>(
     job.job_roles
   );
@@ -47,11 +50,13 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
     [duplicateRole, percentTotalValid]
   );
 
-  const updateJobRoles = useCallback(async () => {
-    if (!isValid) {
-      return;
+  useEffect(() => {
+    if (edit.jobId !== job.id || edit.section !== 'roles') {
+      setIsEditing(false);
     }
+  }, [edit.jobId, edit.section, job.id]);
 
+  const updateJobRoles = useCallback(async () => {
     let result = await supabase
       .from('job_roles')
       .delete()
@@ -77,11 +82,16 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
     if (result.error) {
       throw result.error;
     }
-  }, [isValid, job.id, editJobRoles]);
+  }, [job.id, editJobRoles]);
 
   const doUpdate = useCallback(async () => {
+    if (!isValid || !isDirty) {
+      return;
+    }
+
     setIsSubmitting(true);
     setError(undefined);
+
     try {
       await updateJobRoles();
       onUpdate();
@@ -91,7 +101,7 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [onUpdate, updateJobRoles]);
+  }, [isDirty, isValid, onUpdate, updateJobRoles]);
 
   return (
     <>
@@ -102,14 +112,13 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
           setIsEditing={(isEditing) => {
             if (isEditing) {
               setError(undefined);
+              setEdit({ jobId: job.id, section: 'roles' });
             }
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
           onEdit={() => setEditJobRoles(job.job_roles)}
-          onSave={async () => {
-            await doUpdate();
-          }}
+          onSave={doUpdate}
           bgColor="--color-white"
         />
         {isEditing && (
@@ -192,7 +201,7 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
                 )}
               </div>
             ))}
-            <div className="relative col-start-2">
+            <div className="relative col-start-2 pb-4">
               {!percentTotalValid && (
                 <div className="text-sm text-red-500 flex flex-row gap-1 pl-50">
                   <div className="content-center">

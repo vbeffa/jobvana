@@ -55,11 +55,11 @@ const JobRoles = ({ jobRoles }: JobRolesProps) => {
           }
           return role1?.name.localeCompare(role2?.name);
         })
-        .map((jobRole) => {
+        .map((jobRole, idx) => {
           const role = roles?.find((role) => role.id === jobRole.role_id);
           return (
             role && (
-              <div className="flex flex-row gap-2">
+              <div key={idx} className="flex flex-row gap-2">
                 <div className="w-44">
                   <RoleLink {...role} />
                 </div>

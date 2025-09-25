@@ -1,5 +1,5 @@
 import _, { capitalize } from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
@@ -8,16 +8,19 @@ import supabase from '../../utils/supabase';
 import SalaryRangeInput from '../SalaryRangeInput';
 import { MAX_SALARY, MIN_SALARY } from '../useJobs';
 import { isValidJob, type ToUpdate } from '../utils';
+import type { Edit } from './MyJobs';
 import MyJobTitle from './MyJobTitle';
 import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
 
-export type MyCompanyJobProps = {
+export type MyJobMainProps = {
   job: Job;
   onUpdate: () => void;
+  edit: Edit;
+  setEdit: (edit: Edit) => void;
 };
 
-const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
+const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
   const [editJob, setEditJob] = useState<ToUpdate>(job);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,11 +35,14 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
   const isDirty = useMemo(() => !_.isEqual(job, editJob), [editJob, job]);
   const isValid = useMemo(() => isValidJob(editJob), [editJob]);
 
-  const updateJob = useCallback(async () => {
-    if (!isDirty || !isValidJob(editJob)) {
-      return;
+  useEffect(() => {
+    if (edit.jobId !== job.id || edit.section !== 'main') {
+      setIsEditing(false);
     }
-    const toUpdate = _.omit(editJob, 'job_roles');
+  }, [edit.jobId, edit.section, job.id]);
+
+  const updateJob = useCallback(async () => {
+    const toUpdate = _.omit(editJob, 'job_roles', 'job_skills');
     const { error } = await supabase
       .from('jobs')
       .update({
@@ -48,9 +54,13 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
     if (error) {
       throw error;
     }
-  }, [editJob, isDirty, job.id]);
+  }, [editJob, job.id]);
 
   const doUpdate = useCallback(async () => {
+    if (!isValid || !isDirty) {
+      return;
+    }
+
     setIsSubmitting(true);
     setError(undefined);
     try {
@@ -62,7 +72,7 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [onUpdate, updateJob]);
+  }, [isDirty, isValid, onUpdate, updateJob]);
 
   const deleteJob = useCallback(async () => {
     setIsSubmitting(true);
@@ -91,15 +101,14 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
           setIsEditing={(isEditing) => {
             if (isEditing) {
               setError(undefined);
+              setEdit({ jobId: job.id, section: 'main' });
             }
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
           onEdit={() => setEditJob(job)}
           onDelete={deleteJob}
-          onSave={async () => {
-            await doUpdate();
-          }}
+          onSave={doUpdate}
           bgColor="--color-white"
         />
         {isEditing && (

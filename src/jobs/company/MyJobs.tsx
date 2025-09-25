@@ -8,9 +8,15 @@ import UpdatingModal from '../../UpdatingModal';
 import MyJob from './MyJob';
 import useJobsForCompany, { type Job } from './useJobsForCompany';
 
+export type Edit = {
+  jobId?: number;
+  section?: 'main' | 'roles' | 'skills';
+};
+
 const MyJobs = ({ companyId }: { companyId: number }) => {
   const [selectedJob, setSelectedJob] = useState<Job>();
   const [updating, setUpdating] = useState(false);
+  const [edit, setEdit] = useState<Edit>({});
   const { jobs, refetch } = useJobsForCompany(companyId);
 
   useEffect(() => {
@@ -29,7 +35,9 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
               <SummaryCard
                 key={idx}
                 selected={selectedJob?.id === job.id}
-                onClick={() => setSelectedJob(job)}
+                onClick={() => {
+                  setSelectedJob(job);
+                }}
                 title={job.title}
                 text={
                   job.updated_at
@@ -53,6 +61,8 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                   setUpdating(false);
                   setSelectedJob(undefined);
                 }}
+                edit={edit}
+                setEdit={setEdit}
               />
             ) : undefined}
           </>
