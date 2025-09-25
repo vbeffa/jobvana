@@ -1,7 +1,11 @@
 import { Link } from '@tanstack/react-router';
 import type { Skill } from '../jobs/useJob';
 
-const SkillLink = ({ skill }: { skill: Skill }) => {
+export type SkillLinkProps = {
+  skill: Skill;
+};
+
+const SkillLink = ({ skill }: SkillLinkProps) => {
   return (
     <Link
       to="/jobvana/skill_categories/$id/skills/$skill_id"
