@@ -1,21 +1,32 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FaPlus, FaX } from 'react-icons/fa6';
 import PillContainer from '../../containers/PillContainer';
+import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
 import useSkillsLite from '../../skills/useSkillsLite';
 import supabase from '../../utils/supabase';
 import SkillSelect from '../SkillSelect';
+import type { Edit } from './MyJobs';
 import type { Job } from './useJobsForCompany';
 
 export type MyJobSkillsProps = {
   job: Job;
   onUpdate: () => void;
+  edit: Edit;
+  setEdit: (edit: Edit) => void;
 };
 
-const MyJobSkills = ({ job, onUpdate }: MyJobSkillsProps) => {
+const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
+  const [isEditing, setIsEditing] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState<Error>();
   const { findSkill } = useSkillsLite();
+
+  useEffect(() => {
+    if (edit.jobId !== job.id || edit.section !== 'skills') {
+      setIsEditing(false);
+    }
+  }, [edit.jobId, edit.section, job.id]);
 
   const addSkill = useCallback(
     async (skillId: number) => {
@@ -80,6 +91,16 @@ const MyJobSkills = ({ job, onUpdate }: MyJobSkillsProps) => {
         </div>
       )}
       <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
+        <EditDeleteIcons
+          isEditing={isEditing}
+          setIsEditing={(isEditing) => {
+            if (isEditing) {
+              setError(undefined);
+              setEdit({ jobId: job.id, section: 'skills' });
+            }
+            setIsEditing(isEditing);
+          }}
+        />
         <div>Skills:</div>
         <div className="flex flex-row gap-2">
           {job.job_skills.map((jobSkill, idx) => {
@@ -87,7 +108,7 @@ const MyJobSkills = ({ job, onUpdate }: MyJobSkillsProps) => {
             return skill ? (
               <div key={idx}>
                 <PillContainer
-                  showX={true}
+                  showX={isEditing}
                   onClickX={async () => {
                     await deleteSkill(jobSkill.skill_id);
                     onUpdate();
@@ -98,32 +119,36 @@ const MyJobSkills = ({ job, onUpdate }: MyJobSkillsProps) => {
               </div>
             ) : null;
           })}
-          {!isAdding && (
-            <div
-              className="content-center cursor-pointer"
-              onClick={() => setIsAdding(true)}
-            >
-              <FaPlus />
-            </div>
-          )}
-          {isAdding && (
+          {isEditing && (
             <>
-              <SkillSelect
-                id="new_skill"
-                showAny={false}
-                showEmpty={true}
-                onChange={async (skillId) => {
-                  await addSkill(skillId);
-                  setIsAdding(false);
-                  onUpdate();
-                }}
-              />
-              <div
-                className="content-center text-sm cursor-pointer"
-                onClick={() => setIsAdding(false)}
-              >
-                <FaX />
-              </div>
+              {!isAdding && (
+                <div
+                  className="content-center cursor-pointer"
+                  onClick={() => setIsAdding(true)}
+                >
+                  <FaPlus />
+                </div>
+              )}
+              {isAdding && (
+                <>
+                  <SkillSelect
+                    id="new_skill"
+                    showAny={false}
+                    showEmpty={true}
+                    onChange={async (skillId) => {
+                      await addSkill(skillId);
+                      setIsAdding(false);
+                      onUpdate();
+                    }}
+                  />
+                  <div
+                    className="content-center text-sm cursor-pointer"
+                    onClick={() => setIsAdding(false)}
+                  >
+                    <FaX />
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

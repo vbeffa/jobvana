@@ -6,20 +6,22 @@ const EditDeleteIcons = ({
   isEditing,
   setIsEditing,
   disabled,
-  onEdit,
   onDelete,
   onSave,
-  bgColor = '--color-gray-100'
+  bgColor = '--color-white'
 }: {
   type?: 'address' | 'job';
   isEditing: boolean;
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  disabled: boolean;
-  onEdit: () => void;
+  setIsEditing: (editing: boolean) => void;
+  disabled?: boolean;
   onDelete?: () => void;
-  onSave: () => void;
+  onSave?: () => Promise<void>;
   bgColor?: '--color-white' | '--color-gray-100';
 }) => {
+  const enabledStyle = 'text-blue-400 cursor-pointer';
+  const disabledStyle = 'text-gray-400';
+  console.log(type, isEditing);
+
   return (
     <IconContext.Provider
       value={{
@@ -30,43 +32,53 @@ const EditDeleteIcons = ({
     >
       <div className="absolute right-0 top-2 flex flex-row gap-2">
         {isEditing && (
-          <button
-            className="text-blue-400 cursor-pointer"
-            onClick={() => setIsEditing(false)}
-          >
-            <FaX />
-          </button>
+          <>
+            <button
+              className={enabledStyle}
+              onClick={() => setIsEditing(false)}
+            >
+              <FaX />
+            </button>
+            {onSave && (
+              <button
+                className={`${disabled ? disabledStyle : enabledStyle}`}
+                disabled={disabled}
+                onClick={async () => {
+                  await onSave();
+                  setIsEditing(false);
+                }}
+              >
+                <FaFloppyDisk />
+              </button>
+            )}
+          </>
         )}
-        <button
-          className={`${disabled ? 'text-gray-400' : 'text-blue-400 cursor-pointer'}`}
-          disabled={disabled}
-          onClick={() => {
-            setIsEditing((isEditing) => {
-              if (isEditing) {
-                onSave();
-              } else {
-                onEdit();
-              }
-              return !isEditing;
-            });
-          }}
-        >
-          {!isEditing && <FaPencil />}
-          {isEditing && <FaFloppyDisk />}
-        </button>
-        {!isEditing && onDelete && (
-          <button
-            className="text-blue-400 cursor-pointer"
-            onClick={() => {
-              if (
-                window.confirm(`Are you sure you want to delete this ${type}?`)
-              ) {
-                onDelete();
-              }
-            }}
-          >
-            <FaTrash />
-          </button>
+        {!isEditing && (
+          <>
+            <button
+              className={`${disabled ? disabledStyle : enabledStyle}`}
+              disabled={disabled}
+              onClick={() => setIsEditing(true)}
+            >
+              <FaPencil />
+            </button>
+            {onDelete && (
+              <button
+                className={enabledStyle}
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete this ${type}?`
+                    )
+                  ) {
+                    onDelete();
+                  }
+                }}
+              >
+                <FaTrash />
+              </button>
+            )}
+          </>
         )}
       </div>
     </IconContext.Provider>

@@ -99,18 +99,35 @@ const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
           type="job"
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
+            console.log('2', isEditing);
             if (isEditing) {
               setError(undefined);
               setEdit({ jobId: job.id, section: 'main' });
+              setEditJob(job);
             }
+            console.log('3');
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() => setEditJob(job)}
           onDelete={deleteJob}
           onSave={doUpdate}
-          bgColor="--color-white"
         />
+        {!isEditing && (
+          <>
+            <div>Title:</div>
+            <div>{job.title}</div>
+            <div>Description:</div>
+            <div>{job.description}</div>
+            <div>Status:</div>
+            <div>{capitalize(job.status)}</div>
+            <div>Salary:</div>
+            <div className="flex flex-row gap-1">
+              <div>{formatter.format(job.salary_low)}</div>
+              <div>-</div>
+              <div>{formatter.format(job.salary_high)}</div>
+            </div>
+          </>
+        )}
         {isEditing && (
           <>
             <MyJobTitle title={editJob.title} handleUpdate={setEditJob} />
@@ -169,22 +186,6 @@ const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
                 }));
               }}
             />
-          </>
-        )}
-        {!isEditing && (
-          <>
-            <div>Title:</div>
-            <div>{job.title}</div>
-            <div>Description:</div>
-            <div>{job.description}</div>
-            <div>Status:</div>
-            <div>{capitalize(job.status)}</div>
-            <div>Salary:</div>
-            <div className="flex flex-row gap-1">
-              <div>{formatter.format(job.salary_low)}</div>
-              <div>-</div>
-              <div>{formatter.format(job.salary_high)}</div>
-            </div>
           </>
         )}
       </div>

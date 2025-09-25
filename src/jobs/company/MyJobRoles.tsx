@@ -110,17 +110,25 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
         <EditDeleteIcons
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
+            console.log(isEditing);
             if (isEditing) {
               setError(undefined);
               setEdit({ jobId: job.id, section: 'roles' });
+              setEditJobRoles(job.job_roles);
             }
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() => setEditJobRoles(job.job_roles)}
           onSave={doUpdate}
-          bgColor="--color-white"
         />
+        {!isEditing && (
+          <>
+            <div>Roles:</div>
+            <div>
+              <JobRoles jobRoles={job.job_roles} />
+            </div>
+          </>
+        )}
         {isEditing && (
           <>
             <label htmlFor="role_0" className="content-center">
@@ -227,8 +235,8 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
                       updatedRoles.push({
                         job_id: job.id,
                         role_id: 1,
-                        percent: 1,
-                        role_level: 0
+                        percent: 100,
+                        role_level: 2
                       });
                       return updatedRoles;
                     });
@@ -237,14 +245,6 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
                   <FaPlus />
                 </div>
               )}
-            </div>
-          </>
-        )}
-        {!isEditing && (
-          <>
-            <div>Roles:</div>
-            <div>
-              <JobRoles jobRoles={job.job_roles} />
             </div>
           </>
         )}

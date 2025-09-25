@@ -81,11 +81,14 @@ const MyCompanyAddress = ({
         <EditDeleteIcons
           type="address"
           isEditing={isEditing}
-          setIsEditing={setIsEditing}
+          setIsEditing={(isEditing) => {
+            setIsEditing(isEditing);
+            setEditAddress(address);
+          }}
           disabled={isEditing && (!isDirty || !isValidCompany || isSubmitting)}
-          onEdit={() => setEditAddress(address)}
           onDelete={deleteAddress}
           onSave={updateAddress}
+          bgColor="--color-gray-100"
         />
       </div>
       {isEditing && (

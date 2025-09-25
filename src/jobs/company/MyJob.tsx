@@ -18,7 +18,12 @@ const MyJob = ({ job, onUpdate, edit, setEdit }: MyJobProps) => {
       <hr className="col-span-2 my-4 border-gray-400 shadow" />
       <MyJobRoles job={job} onUpdate={onUpdate} edit={edit} setEdit={setEdit} />
       <hr className="col-span-2 my-4 border-gray-400 shadow" />
-      <MyJobSkills job={job} onUpdate={onUpdate} />
+      <MyJobSkills
+        job={job}
+        onUpdate={onUpdate}
+        edit={edit}
+        setEdit={setEdit}
+      />
     </>
   );
 };
