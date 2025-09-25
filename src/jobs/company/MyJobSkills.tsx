@@ -102,7 +102,7 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
           }}
         />
         <div>Skills:</div>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row flex-wrap gap-2">
           {job.job_skills.map((jobSkill, idx) => {
             const skill = findSkill(jobSkill.skill_id);
             return skill ? (
