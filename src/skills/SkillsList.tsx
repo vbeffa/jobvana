@@ -1,5 +1,5 @@
 import PillContainer from '../containers/PillContainer';
-import { type SkillLinkProps } from './SkillLink';
+import SkillLink, { type SkillLinkProps } from './SkillLink';
 
 export type SkillsListProps = {
   skills: Array<SkillLinkProps['skill']>;
@@ -10,7 +10,9 @@ const SkillsList = ({ skills }: SkillsListProps) => {
     <div className="pt-2 flex flex-wrap gap-2">
       {skills.map((skill) => (
         <div key={skill.id}>
-          <PillContainer>{skill.name}</PillContainer>
+          <PillContainer>
+            <SkillLink skill={skill} />
+          </PillContainer>
         </div>
       ))}
     </div>
