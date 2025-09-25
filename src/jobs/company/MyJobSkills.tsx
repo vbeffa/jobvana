@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FaPlus } from 'react-icons/fa6';
 import PillContainer from '../../containers/PillContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
 import useSkillsLite from '../../skills/useSkillsLite';
 import type { JobSkill } from '../../types';
+import supabase from '../../utils/supabase';
 import SkillSelect from '../SkillSelect';
 import type { Edit } from './MyJobs';
 import type { Job } from './useJobsForCompany';
@@ -21,6 +23,7 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
     job.job_skills
   );
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
   const { findSkill } = useSkillsLite();
@@ -58,9 +61,30 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
     }
   }, [isDirty, isValid, onUpdate, updateJobSkills]);
 
+  const addSkill = useCallback(
+    async (skillId: number) => {
+      if (job.job_skills.some((jobSkill) => jobSkill.skill_id === skillId)) {
+        alert('Skill already exists');
+        return;
+      }
+      const { error } = await supabase
+        .from('job_skills')
+        .insert({ job_id: job.id, skill_id: skillId });
+      if (error) {
+        console.log(error);
+        setError(error);
+      }
+    },
+    [job.id, job.job_skills]
+  );
+
   return (
     <>
-      {error && <Error error={error} />}
+      {error && (
+        <div className="pb-2">
+          <Error error={error} />
+        </div>
+      )}
       <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
         <EditDeleteIcons
           isEditing={isEditing}
@@ -79,21 +103,33 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
 
         {isEditing && (
           <>
-            <label htmlFor="skill_0" className="content-center">
+            <label htmlFor="skills" className="content-start">
               Skills:
             </label>
-            {editJobSkills.map((jobSkill, idx) => (
-              <div
-                key={`role_${idx}_div`}
-                className="col-start-2 flex flex-row gap-2"
-              >
-                <SkillSelect
-                  id={`skill_${idx}`}
-                  skillId={jobSkill.skill_id}
-                  onChange={console.log}
-                />
-              </div>
-            ))}
+            <div
+              id="skills"
+              className="border p-1 flex flex-row gap-1 min-h-32"
+            >
+              {editJobSkills.map((jobSkill, idx) => {
+                const skill = findSkill(jobSkill.skill_id);
+                return skill ? (
+                  <div key={idx}>
+                    <PillContainer
+                      showX={true}
+                      onClickX={() => {
+                        setEditJobSkills((jobSkills) => {
+                          const updatedSkills = _.cloneDeep(jobSkills);
+                          updatedSkills.splice(idx, 1);
+                          return updatedSkills;
+                        });
+                      }}
+                    >
+                      {skill.name}
+                    </PillContainer>
+                  </div>
+                ) : null;
+              })}
+            </div>
           </>
         )}
 
@@ -105,11 +141,44 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
                 const skill = findSkill(jobSkill.skill_id);
                 return skill ? (
                   <div key={idx}>
-                    <PillContainer>{skill.name}</PillContainer>
+                    <PillContainer
+                      showX={true}
+                      onClickX={() => {
+                        setEditJobSkills((jobSkills) => {
+                          const updatedSkills = _.cloneDeep(jobSkills);
+                          updatedSkills.splice(idx, 1);
+                          return updatedSkills;
+                        });
+                      }}
+                    >
+                      {skill.name}
+                    </PillContainer>
                   </div>
                 ) : null;
               })}
+              {!isAdding && (
+                <div
+                  className="content-center cursor-pointer"
+                  onClick={() => setIsAdding(true)}
+                >
+                  <FaPlus />
+                </div>
+              )}
             </div>
+            {isAdding && (
+              <div className="col-start-2">
+                <SkillSelect
+                  id="new_skill"
+                  showAny={false}
+                  showEmpty={true}
+                  onChange={async (skillId) => {
+                    console.log(skillId);
+                    await addSkill(skillId);
+                    setIsAdding(false);
+                  }}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
