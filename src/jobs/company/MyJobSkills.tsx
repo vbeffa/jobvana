@@ -123,6 +123,7 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
             if (isEditing) {
               setError(undefined);
               setEdit({ jobId: job.id, section: 'skills' });
+              setEditJobSkills(job.job_skills);
             }
             setIsEditing(isEditing);
           }}

@@ -48,7 +48,7 @@ const MySkillsSelect = ({
         <div className="text-sm">Current Skills</div>
         <div
           id="my_skills_select"
-          className="overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap gap-1 justify-self-start"
+          className="w-full overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap gap-1 justify-self-start"
         >
           {currentSkills.map((skill, idx) => (
             <div key={idx}>
@@ -76,7 +76,7 @@ const MySkillsSelect = ({
         <div className="text-sm">Available Skills</div>
         <div
           id="my_skills_select"
-          className="overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap justify-start gap-1"
+          className="w-full overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap justify-start gap-1"
         >
           {availableSkills.map((skill, idx) => (
             <div key={idx} className="">
