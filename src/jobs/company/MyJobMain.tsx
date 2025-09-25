@@ -23,13 +23,14 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
 
-  const isDirty = useMemo(() => !_.isEqual(job, editJob), [editJob, job]);
-
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 0
   });
+
+  const isDirty = useMemo(() => !_.isEqual(job, editJob), [editJob, job]);
+  const isValid = useMemo(() => isValidJob(editJob), [editJob]);
 
   const updateJob = useCallback(async () => {
     if (!isDirty || !isValidJob(editJob)) {
@@ -93,12 +94,8 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
             }
             setIsEditing(isEditing);
           }}
-          disabled={
-            isEditing && (!isDirty || !isValidJob(editJob) || isSubmitting)
-          }
-          onEdit={() => {
-            setEditJob(job);
-          }}
+          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+          onEdit={() => setEditJob(job)}
           onDelete={deleteJob}
           onSave={async () => {
             await doUpdate();

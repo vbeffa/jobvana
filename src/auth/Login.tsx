@@ -1,13 +1,15 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
+import {
+  MAX_EMAIL_LENGTH,
+  MIN_EMAIL_LENGTH
+} from '../companies/job_seeker/useCompanies';
 import { type UserType } from '../Context';
 import Button from '../controls/Button';
 import Error from '../Error';
 import TextInput from '../inputs/TextInput';
 import supabase from '../utils/supabase';
 
-const MIN_EMAIL_LENGTH = 6;
-const MAX_EMAIL_LENGTH = 100;
 const MIN_PASSWORD_LENGTH = 6;
 const MAX_PASSWORD_LENGTH = 32;
 const MAX_FIRST_NAME_LENGTH = 100;

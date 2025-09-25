@@ -106,9 +106,7 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() => {
-            setEditJobRoles(job.job_roles);
-          }}
+          onEdit={() => setEditJobRoles(job.job_roles)}
           onSave={async () => {
             await doUpdate();
           }}

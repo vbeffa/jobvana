@@ -9,6 +9,7 @@ import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
 import useIndustries from '../useIndustries';
 import { isValidCompany, type ToUpdate } from '../utils';
+import CompanyEmail from './CompanyEmail';
 import CompanyName from './CompanyName';
 import CompanySize from './CompanySize';
 
@@ -20,7 +21,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   const { setCompany } = useContext(JobvanaContext);
   const { findIndustry } = useIndustries();
   const [editCompany, setEditCompany] = useState<ToUpdate>(company);
-  const [editMode, setEditMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
 
@@ -28,6 +29,8 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
     () => !_.isEqual(company, editCompany),
     [company, editCompany]
   );
+
+  const isValid = useMemo(() => isValidCompany(editCompany), [editCompany]);
 
   const updateCompany = useCallback(async () => {
     if (!isValidCompany(editCompany)) {
@@ -59,16 +62,18 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
       {error && <Error error={error} />}
       <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
         <EditButtons
-          editMode={editMode}
-          setEditMode={setEditMode}
-          disabled={
-            editMode &&
-            (!isValidCompany(editCompany) || !isDirty || isSubmitting)
-          }
+          isEditing={isEditing}
+          setIsEditing={(isEditing) => {
+            if (isEditing) {
+              setError(undefined);
+            }
+            setIsEditing(isEditing);
+          }}
+          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
           onEdit={() => setEditCompany(company)}
           onSave={updateCompany}
         />
-        {editMode && (
+        {isEditing && (
           <>
             <CompanyName
               name={editCompany.name}
@@ -82,6 +87,10 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
             <CompanySize
               label="Num employees"
               size={editCompany.num_employees}
+              handleUpdate={setEditCompany}
+            />
+            <CompanyEmail
+              email={editCompany.contact_email ?? undefined}
               handleUpdate={setEditCompany}
             />
             <TextArea
@@ -98,7 +107,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
             />
           </>
         )}
-        {!editMode && (
+        {!isEditing && (
           <>
             <div>Name:</div>
             <div>{company.name}</div>
@@ -106,6 +115,14 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
             <div>{findIndustry(company.industry_id)?.name}</div>
             <div>Num employees:</div>
             <div>{company.num_employees}</div>
+            <div>Contact email:</div>
+            <div>
+              {company.contact_email && (
+                <a href={`mailto:${company.contact_email}`}>
+                  {company.contact_email}
+                </a>
+              )}
+            </div>
             <div>Description:</div>
             <div>{company.description}</div>
           </>

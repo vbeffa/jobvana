@@ -6,6 +6,8 @@ import supabase from '../../utils/supabase';
 export const MAX_NAME_LENGTH = 100;
 export const MIN_COMPANY_SIZE = 1;
 export const MAX_COMPANY_SIZE = 1000;
+export const MIN_EMAIL_LENGTH = 6;
+export const MAX_EMAIL_LENGTH = 100;
 export const MAX_DESCRIPTION_LENGTH = 1000;
 
 export type SearchFilters = {

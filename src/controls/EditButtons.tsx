@@ -1,32 +1,34 @@
 import Button from './Button';
 
 const EditButtons = ({
-  editMode,
-  setEditMode,
+  isEditing,
+  setIsEditing,
   disabled,
   onEdit,
   onSave
 }: {
-  editMode: boolean;
-  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   disabled: boolean;
   onEdit: () => void;
   onSave: () => void;
 }) => {
   return (
     <div className="absolute ml-4 right-0 top-0 flex flex-row gap-2">
-      {editMode && <Button label="Cancel" onClick={() => setEditMode(false)} />}
+      {isEditing && (
+        <Button label="Cancel" onClick={() => setIsEditing(false)} />
+      )}
       <Button
-        label={`${editMode ? 'Save' : 'Edit'}`}
+        label={`${isEditing ? 'Save' : 'Edit'}`}
         disabled={disabled}
         onClick={() =>
-          setEditMode((editMode) => {
-            if (editMode) {
+          setIsEditing((isEditing) => {
+            if (isEditing) {
               onSave();
             } else {
               onEdit();
             }
-            return !editMode;
+            return !isEditing;
           })
         }
       />
