@@ -52,26 +52,32 @@ const MyJobRoles = ({ job, onUpdate }: MyCompanyJobProps) => {
       return;
     }
 
-    const { error } = await supabase
+    let result = await supabase
       .from('job_roles')
       .delete()
       .filter('job_id', 'eq', job.id);
-    if (error) {
-      throw error;
-    }
-
-    const result = await supabase
-      .from('job_roles')
-      .upsert(editJobRoles, {
-        onConflict: 'job_id, role_id',
-        ignoreDuplicates: true
-      })
-      .select();
-
     if (result.error) {
       throw result.error;
     }
-  }, [editJobRoles, job.id, isValid]);
+
+    result = await supabase.from('job_roles').upsert(editJobRoles, {
+      onConflict: 'job_id, role_id',
+      ignoreDuplicates: true
+    });
+    if (result.error) {
+      throw result.error;
+    }
+
+    result = await supabase
+      .from('jobs')
+      .update({
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', job.id);
+    if (result.error) {
+      throw result.error;
+    }
+  }, [isValid, job.id, editJobRoles]);
 
   const doUpdate = useCallback(async () => {
     setIsSubmitting(true);

@@ -42,8 +42,7 @@ const MyJobMain = ({ job, onUpdate }: MyCompanyJobProps) => {
         ...toUpdate,
         updated_at: new Date().toISOString()
       })
-      .eq('id', job.id)
-      .select();
+      .eq('id', job.id);
 
     if (error) {
       throw error;
