@@ -20,13 +20,25 @@ const MySkillsSelect = ({
 
   useEffect(() => {
     setAvailableSkills(
-      (skills ?? []).filter((skill) => !skillIds.includes(skill.id))
+      (skills ?? [])
+        .filter((skill) => !skillIds.includes(skill.id))
+        .sort((skill1, skill2) =>
+          (skill1.abbreviation ?? skill1.name).localeCompare(
+            skill2.abbreviation ?? skill2.name
+          )
+        )
     );
   }, [skillIds, skills]);
 
   useEffect(() => {
     setCurrentSkills(
-      (skills ?? []).filter((skill) => skillIds.includes(skill.id))
+      (skills ?? [])
+        .filter((skill) => skillIds.includes(skill.id))
+        .sort((skill1, skill2) =>
+          (skill1.abbreviation ?? skill1.name).localeCompare(
+            skill2.abbreviation ?? skill2.name
+          )
+        )
     );
   }, [skillIds, skills]);
 

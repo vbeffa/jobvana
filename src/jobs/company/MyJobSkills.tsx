@@ -132,22 +132,33 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
         <div>Skills:</div>
         <div className="flex flex-row flex-wrap gap-2">
           {!isEditing &&
-            job.job_skills.map((jobSkill, idx) => {
-              const skill = findSkill(jobSkill.skill_id);
-              return skill ? (
-                <div key={idx}>
-                  <PillContainer
-                    showDeleteIcon={isEditing}
-                    onDelete={async () => {
-                      await deleteSkill(jobSkill.skill_id);
-                      onUpdate();
-                    }}
-                  >
-                    <SkillLink skill={skill} />
-                  </PillContainer>
-                </div>
-              ) : null;
-            })}
+            job.job_skills
+              .sort((jobSkill1, jobSkill2) => {
+                const skill1 = findSkill(jobSkill1.skill_id);
+                const skill2 = findSkill(jobSkill2.skill_id);
+                if (!skill1 || !skill2) {
+                  return 0;
+                }
+                return (skill1.abbreviation ?? skill1.name).localeCompare(
+                  skill2.abbreviation ?? skill2.name
+                );
+              })
+              .map((jobSkill, idx) => {
+                const skill = findSkill(jobSkill.skill_id);
+                return skill ? (
+                  <div key={idx}>
+                    <PillContainer
+                      showDeleteIcon={isEditing}
+                      onDelete={async () => {
+                        await deleteSkill(jobSkill.skill_id);
+                        onUpdate();
+                      }}
+                    >
+                      <SkillLink skill={skill} />
+                    </PillContainer>
+                  </div>
+                ) : null;
+              })}
           {isEditing && (
             <>
               <MySkillsSelect
