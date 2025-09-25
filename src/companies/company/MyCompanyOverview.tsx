@@ -5,6 +5,7 @@ import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
 import TextArea from '../../inputs/TextArea';
 import supabase from '../../utils/supabase';
+import CompanyEmailDisplay from '../CompanyEmail';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
 import useIndustries from '../useIndustries';
@@ -117,11 +118,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
             <div>{company.num_employees}</div>
             <div>Contact email:</div>
             <div>
-              {company.contact_email && (
-                <a href={`mailto:${company.contact_email}`}>
-                  {company.contact_email}
-                </a>
-              )}
+              <CompanyEmailDisplay {...company} />
             </div>
             <div>Description:</div>
             <div>{company.description}</div>

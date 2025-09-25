@@ -38,7 +38,8 @@ export const companyFields = (
   description: company.description,
   industry_id: company.industry.id,
   num_employees: company.num_employees,
-  user_id: company.user_id
+  user_id: company.user_id,
+  contact_email: company.contact_email
 });
 
 export const isValidCompany = (company: Partial<ToInsert>) => {

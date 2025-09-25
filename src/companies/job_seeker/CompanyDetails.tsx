@@ -5,6 +5,7 @@ import Error from '../../Error';
 import JobsList from '../../jobs/JobsList';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
+import CompanyEmailDisplay from '../CompanyEmailDisplay';
 import { companyFields, findHeadquarters, isHeadquarters } from '../utils';
 import useCompany from './useCompany';
 
@@ -40,17 +41,18 @@ const CompanyDetails = ({ id }: { id?: number }) => {
           {company && (
             <div className="pt-1 flex flex-row gap-2">
               <PillContainer>{company.industry.name}</PillContainer>
-              <div className="content-center">
-                {company.num_employees} employees
-              </div>
             </div>
           )}
         </div>
+        <div className="content-center">{company.num_employees} employees</div>
         {hq && (
           <div className="pt-1">
             {hq.city}, {hq.state}
           </div>
         )}
+        <div>
+          <CompanyEmailDisplay {...company} />
+        </div>
       </Section>
       <Section title="Description">
         <div>
