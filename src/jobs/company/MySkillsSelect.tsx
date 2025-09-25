@@ -1,22 +1,22 @@
-import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { FaFloppyDisk, FaX } from 'react-icons/fa6';
+import { FaArrowRightArrowLeft } from 'react-icons/fa6';
 import PillContainer from '../../containers/PillContainer';
 import useSkillsLite from '../../skills/useSkillsLite';
 import type { Skill } from '../../types';
 
 const MySkillsSelect = ({
   skillIds,
-  onAddSkills,
-  onCancel
+  onAddSkill,
+  onDeleteSkill
 }: {
   skillIds: Array<number>;
-  onAddSkills: (skillIds: Array<number>) => void;
-  onCancel: () => void;
+  onAddSkill: (skillId: number) => void;
+  onDeleteSkill: (skillId: number) => void;
 }) => {
-  const [newSkillIds, setNewSkillIds] = useState<Array<number>>([]);
+  // const [newSkillIds, setNewSkillIds] = useState<Array<number>>([]);
+  const [currentSkills, setCurrentSkills] = useState<Array<Skill>>([]);
   const [availableSkills, setAvailableSkills] = useState<Array<Skill>>([]);
-  const { isPending, skills } = useSkillsLite();
+  const { skills } = useSkillsLite();
 
   useEffect(() => {
     setAvailableSkills(
@@ -24,53 +24,54 @@ const MySkillsSelect = ({
     );
   }, [skillIds, skills]);
 
+  useEffect(() => {
+    setCurrentSkills(
+      (skills ?? []).filter((skill) => skillIds.includes(skill.id))
+    );
+  }, [skillIds, skills]);
+
   return (
-    <div
-      id="my_skills_select"
-      className="w-fit h-32 overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap gap-1"
-    >
-      {isPending && (
-        <option key={0} value={Number.NEGATIVE_INFINITY}>
-          Loading...
-        </option>
-      )}
-      {availableSkills.map((skill, idx) => (
-        <div
-          key={idx}
-          className="cursor-pointer"
-          onClick={() => {
-            setNewSkillIds((skillIds) => {
-              const updated = _.cloneDeep(skillIds);
-              updated.push(skill.id);
-              return updated;
-            });
-            setAvailableSkills((skills) => {
-              const updated = _.cloneDeep(skills);
-              const index = updated.findIndex((s) => s.id === skill.id);
-              if (index >= 0) {
-                updated.splice(index, 1);
-              }
-              return updated;
-            });
-          }}
-        >
-          <PillContainer>{skill.abbreviation ?? skill.name}</PillContainer>
-        </div>
-      ))}
+    <div className="flex flex-row gap-2">
       <div
-        className="absolute -bottom-5.5 text-blue-500 cursor-pointer"
-        onClick={onCancel}
+        id="my_skills_select"
+        className="w-[50%] h-fit max-h-64 overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap justify-start gap-1"
       >
-        <FaX />
+        {availableSkills.map((skill, idx) => (
+          <div key={idx} className="">
+            <PillContainer
+              showAddIcon={true}
+              onAdd={() => onAddSkill(skill.id)}
+            >
+              {skill.abbreviation ?? skill.name}
+            </PillContainer>
+          </div>
+        ))}
       </div>
-      {newSkillIds.length > 0 && (
-        <div
-          className="absolute -bottom-5.5 left-48.5 text-blue-500 cursor-pointer"
-          onClick={() => onAddSkills(newSkillIds)}
-        >
-          <FaFloppyDisk />
-        </div>
-      )}
+      <div
+        className="content-center text-blue-300 cursor-pointer"
+        onClick={() =>
+          alert(
+            'Click the plus icon to add skills or the trash icon to remove skills.'
+          )
+        }
+      >
+        <FaArrowRightArrowLeft />
+      </div>
+      <div
+        id="my_skills_select"
+        className="w-[50%] h-fit max-h-64 overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap gap-1 justify-self-start"
+      >
+        {currentSkills.map((skill, idx) => (
+          <div key={idx}>
+            <PillContainer
+              showDeleteIcon={true}
+              onDelete={() => onDeleteSkill(skill.id)}
+            >
+              {skill.abbreviation ?? skill.name}
+            </PillContainer>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { FaPlus } from 'react-icons/fa6';
+import _ from 'lodash';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PillContainer from '../../containers/PillContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
 import SkillLink from '../../skills/SkillLink';
 import useSkillsLite from '../../skills/useSkillsLite';
+import type { JobSkill } from '../../types';
 import supabase from '../../utils/supabase';
 import type { Edit } from './MyJobs';
 import MySkillsSelect from './MySkillsSelect';
@@ -18,10 +19,18 @@ export type MyJobSkillsProps = {
 };
 
 const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
+  const [editJobSkills, setEditJobSkills] = useState<Array<JobSkill>>(
+    job.job_skills
+  );
   const [isEditing, setIsEditing] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
   const { findSkill } = useSkillsLite();
+
+  const isDirty = useMemo(
+    () => !_.isEqual(job.job_skills, editJobSkills),
+    [editJobSkills, job.job_skills]
+  );
 
   useEffect(() => {
     if (edit.jobId !== job.id || edit.section !== 'skills') {
@@ -29,37 +38,54 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
     }
   }, [edit.jobId, edit.section, job.id]);
 
-  const addSkills = useCallback(
-    async (skillIds: Array<number>) => {
-      // if (job.job_skills.some((jobSkill) => jobSkill.skill_id === skillId)) {
-      //   alert('Skill already exists');
-      //   return;
-      // }
-      console.log('adding', skillIds);
+  const updateJobSkills = useCallback(async () => {
+    let result = await supabase
+      .from('job_skills')
+      .delete()
+      .filter('job_id', 'eq', job.id);
+    if (result.error) {
+      throw result.error;
+    }
 
-      let result = await supabase
-        .from('job_skills')
-        .insert(
-          skillIds.map((skillId) => ({ job_id: job.id, skill_id: skillId }))
-        );
-      if (result.error) {
-        console.log(result.error);
-        setError(result.error);
-        return;
-      }
+    result = await supabase.from('job_skills').upsert(editJobSkills, {
+      onConflict: 'job_id, skill_id',
+      ignoreDuplicates: true
+    });
+    if (result.error) {
+      console.log(result.error);
+      setError(result.error);
+      return;
+    }
 
-      result = await supabase
-        .from('jobs')
-        .update({
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', job.id);
-      if (result.error) {
-        throw result.error;
-      }
-    },
-    [job.id]
-  );
+    result = await supabase
+      .from('jobs')
+      .update({
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', job.id);
+    if (result.error) {
+      throw result.error;
+    }
+  }, [editJobSkills, job.id]);
+
+  const doUpdate = useCallback(async () => {
+    if (!isDirty) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(undefined);
+
+    try {
+      await updateJobSkills();
+      onUpdate();
+    } catch (err) {
+      console.log(err);
+      setError(err as Error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [isDirty, onUpdate, updateJobSkills]);
 
   const deleteSkill = useCallback(
     async (skillId: number) => {
@@ -89,12 +115,8 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
 
   return (
     <>
-      {error && (
-        <div className="pb-2">
-          <Error error={error} />
-        </div>
-      )}
-      <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
+      {error && <Error error={error} />}
+      <div className="relative grid grid-cols-[15%_75%] gap-y-2 mb-4">
         <EditDeleteIcons
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
@@ -104,50 +126,53 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
             }
             setIsEditing(isEditing);
           }}
+          disabled={isEditing && (!isDirty || isSubmitting)}
+          onSave={doUpdate}
         />
         <div>Skills:</div>
         <div className="flex flex-row flex-wrap gap-2">
-          {job.job_skills.map((jobSkill, idx) => {
-            const skill = findSkill(jobSkill.skill_id);
-            return skill ? (
-              <div key={idx}>
-                <PillContainer
-                  showX={isEditing}
-                  onClickX={async () => {
-                    await deleteSkill(jobSkill.skill_id);
-                    onUpdate();
-                  }}
-                >
-                  <SkillLink skill={skill} />
-                </PillContainer>
-              </div>
-            ) : null;
-          })}
-          {isEditing && (
-            <>
-              {!isAdding && (
-                <div
-                  className="content-center cursor-pointer"
-                  onClick={() => setIsAdding(true)}
-                >
-                  <FaPlus />
-                </div>
-              )}
-              {isAdding && (
-                <>
-                  <MySkillsSelect
-                    skillIds={job.job_skills.map(
-                      (jobSkill) => jobSkill.skill_id
-                    )}
-                    onAddSkills={async (skillIds) => {
-                      await addSkills(skillIds);
-                      setIsAdding(false);
+          {!isEditing &&
+            job.job_skills.map((jobSkill, idx) => {
+              const skill = findSkill(jobSkill.skill_id);
+              return skill ? (
+                <div key={idx}>
+                  <PillContainer
+                    showDeleteIcon={isEditing}
+                    onDelete={async () => {
+                      await deleteSkill(jobSkill.skill_id);
                       onUpdate();
                     }}
-                    onCancel={() => setIsAdding(false)}
-                  />
-                </>
-              )}
+                  >
+                    <SkillLink skill={skill} />
+                  </PillContainer>
+                </div>
+              ) : null;
+            })}
+          {isEditing && (
+            <>
+              <MySkillsSelect
+                skillIds={editJobSkills.map((jobSkill) => jobSkill.skill_id)}
+                onAddSkill={(skillId) => {
+                  setEditJobSkills((jobSkills) => {
+                    const updatedJobSkills = _.cloneDeep(jobSkills);
+                    updatedJobSkills.push({
+                      job_id: job.id,
+                      skill_id: skillId
+                    });
+                    return updatedJobSkills;
+                  });
+                }}
+                onDeleteSkill={(skillId) => {
+                  setEditJobSkills((jobSkills) => {
+                    const updatedJobSkills = _.cloneDeep(jobSkills);
+                    const index = updatedJobSkills.findIndex(
+                      (jobSkill) => jobSkill.skill_id === skillId
+                    );
+                    updatedJobSkills.splice(index, 1);
+                    return updatedJobSkills;
+                  });
+                }}
+              />
             </>
           )}
         </div>

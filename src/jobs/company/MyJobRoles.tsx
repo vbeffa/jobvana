@@ -106,11 +106,10 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
   return (
     <>
       {error && <Error error={error} />}
-      <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
+      <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditDeleteIcons
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
-            console.log(isEditing);
             if (isEditing) {
               setError(undefined);
               setEdit({ jobId: job.id, section: 'roles' });
@@ -144,10 +143,10 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
                   roleId={jobRole.role_id}
                   showAny={false}
                   onChange={(roleId) => {
-                    setEditJobRoles((roles) => {
-                      const updatedRoles = _.cloneDeep(roles);
-                      updatedRoles[idx].role_id = roleId;
-                      return updatedRoles;
+                    setEditJobRoles((jobRoles) => {
+                      const updatedJobRoles = _.cloneDeep(jobRoles);
+                      updatedJobRoles[idx].role_id = roleId;
+                      return updatedJobRoles;
                     });
                   }}
                 />
@@ -204,7 +203,7 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
                     <div className="content-center">
                       <FaTriangleExclamation />
                     </div>
-                    <div className="content-center">% out of range</div>
+                    <div className="content-center">% Out of range</div>
                   </div>
                 )}
               </div>
@@ -215,7 +214,7 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
                   <div className="content-center">
                     <FaTriangleExclamation />
                   </div>
-                  <div>% sum does not total 100</div>
+                  <div>Sum of % does not eqal 100</div>
                 </div>
               )}
               {duplicateRole && (
@@ -223,12 +222,12 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
                   <div className="content-center">
                     <FaTriangleExclamation />
                   </div>
-                  <div>duplicate role</div>
+                  <div>Duplicate role</div>
                 </div>
               )}
               {!duplicateRole && (
                 <div
-                  className="absolute left-0 top-1 text-gray-400 cursor-pointer"
+                  className="absolute left-94 top-1 text-gray-400 cursor-pointer"
                   onClick={() => {
                     setEditJobRoles((roles) => {
                       const updatedRoles = _.cloneDeep(roles);

@@ -94,18 +94,16 @@ const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
   return (
     <>
       {error && <Error error={error} />}
-      <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
+      <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditDeleteIcons
           type="job"
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
-            console.log('2', isEditing);
             if (isEditing) {
               setError(undefined);
               setEdit({ jobId: job.id, section: 'main' });
               setEditJob(job);
             }
-            console.log('3');
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
@@ -138,7 +136,7 @@ const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
               maxLength={MAX_DESCRIPTION_LENGTH}
               rows={Math.max(
                 3,
-                Math.ceil((editJob.description?.length ?? 0) / 70.0)
+                Math.ceil((editJob.description?.length ?? 0) / 82.0)
               )}
               onChange={(description) => {
                 setEditJob((editJob) => ({

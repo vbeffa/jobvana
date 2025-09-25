@@ -1,25 +1,39 @@
 import type { JSX } from 'react';
-import { FaX } from 'react-icons/fa6';
+import { FaPlus, FaTrash } from 'react-icons/fa6';
 
 const PillContainer = ({
   children,
-  showX,
-  onClickX
+  showDeleteIcon,
+  onDelete,
+  showAddIcon,
+  onAdd
 }: {
   children: JSX.Element | string;
-  showX?: boolean;
-  onClickX?: () => void;
+  showDeleteIcon?: boolean;
+  onDelete?: () => void;
+  showAddIcon?: boolean;
+  onAdd?: () => void;
 }) => {
   return (
     <div className="relative border-[1px] border-blue-500 bg-blue-200 w-fit flex gap-1 whitespace-nowrap">
       <div className="p-1">{children}</div>
-      {showX && (
+      {showDeleteIcon && (
         <div
           className="border-l px-1 text-sm text-blue-500 content-center cursor-pointer"
-          onClick={onClickX}
+          onClick={onDelete}
         >
           <div className="hover:text-blue-400">
-            <FaX />
+            <FaTrash />
+          </div>
+        </div>
+      )}
+      {showAddIcon && (
+        <div
+          className="border-l px-1 text-sm text-blue-500 content-center cursor-pointer"
+          onClick={onAdd}
+        >
+          <div className="hover:text-blue-400">
+            <FaPlus />
           </div>
         </div>
       )}

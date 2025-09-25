@@ -1,6 +1,8 @@
 const Error = ({ error }: { error: Error }) => {
   return (
-    <div className="text-red-500 text-center font-bold">{error.message}</div>
+    <div className="pb-2 text-red-500 text-center font-bold">
+      {error.message}
+    </div>
   );
 };
 
