@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { FaPlus, FaX } from 'react-icons/fa6';
+import { FaPlus } from 'react-icons/fa6';
 import PillContainer from '../../containers/PillContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
+import SkillLink from '../../skills/SkillLink';
 import useSkillsLite from '../../skills/useSkillsLite';
 import supabase from '../../utils/supabase';
-import SkillSelect from '../SkillSelect';
 import type { Edit } from './MyJobs';
+import MySkillsSelect from './MySkillsSelect';
 import type { Job } from './useJobsForCompany';
 
 export type MyJobSkillsProps = {
@@ -28,16 +29,19 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
     }
   }, [edit.jobId, edit.section, job.id]);
 
-  const addSkill = useCallback(
-    async (skillId: number) => {
-      if (job.job_skills.some((jobSkill) => jobSkill.skill_id === skillId)) {
-        alert('Skill already exists');
-        return;
-      }
+  const addSkills = useCallback(
+    async (skillIds: Array<number>) => {
+      // if (job.job_skills.some((jobSkill) => jobSkill.skill_id === skillId)) {
+      //   alert('Skill already exists');
+      //   return;
+      // }
+      console.log('adding', skillIds);
 
       let result = await supabase
         .from('job_skills')
-        .insert({ job_id: job.id, skill_id: skillId });
+        .insert(
+          skillIds.map((skillId) => ({ job_id: job.id, skill_id: skillId }))
+        );
       if (result.error) {
         console.log(result.error);
         setError(result.error);
@@ -54,7 +58,7 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
         throw result.error;
       }
     },
-    [job.id, job.job_skills]
+    [job.id]
   );
 
   const deleteSkill = useCallback(
@@ -114,7 +118,7 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
                     onUpdate();
                   }}
                 >
-                  {skill.name}
+                  <SkillLink skill={skill} />
                 </PillContainer>
               </div>
             ) : null;
@@ -131,22 +135,17 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
               )}
               {isAdding && (
                 <>
-                  <SkillSelect
-                    id="new_skill"
-                    showAny={false}
-                    showEmpty={true}
-                    onChange={async (skillId) => {
-                      await addSkill(skillId);
+                  <MySkillsSelect
+                    skillIds={job.job_skills.map(
+                      (jobSkill) => jobSkill.skill_id
+                    )}
+                    onAddSkills={async (skillIds) => {
+                      await addSkills(skillIds);
                       setIsAdding(false);
                       onUpdate();
                     }}
+                    onCancel={() => setIsAdding(false)}
                   />
-                  <div
-                    className="content-center text-sm cursor-pointer"
-                    onClick={() => setIsAdding(false)}
-                  >
-                    <FaX />
-                  </div>
                 </>
               )}
             </>

@@ -20,7 +20,6 @@ const EditDeleteIcons = ({
 }) => {
   const enabledStyle = 'text-blue-400 cursor-pointer';
   const disabledStyle = 'text-gray-400';
-  console.log(type, isEditing);
 
   return (
     <IconContext.Provider

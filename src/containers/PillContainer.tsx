@@ -15,10 +15,12 @@ const PillContainer = ({
       <div className="p-1">{children}</div>
       {showX && (
         <div
-          className="border-l px-1 text-sm content-center cursor-pointer"
+          className="border-l px-1 text-sm text-blue-500 content-center cursor-pointer"
           onClick={onClickX}
         >
-          <FaX />
+          <div className="hover:text-blue-400">
+            <FaX />
+          </div>
         </div>
       )}
     </div>
