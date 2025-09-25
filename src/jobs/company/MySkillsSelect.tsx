@@ -32,20 +32,23 @@ const MySkillsSelect = ({
 
   return (
     <div className="flex flex-row gap-2">
-      <div
-        id="my_skills_select"
-        className="w-[50%] h-fit max-h-64 overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap justify-start gap-1"
-      >
-        {availableSkills.map((skill, idx) => (
-          <div key={idx} className="">
-            <PillContainer
-              showAddIcon={true}
-              onAdd={() => onAddSkill(skill.id)}
-            >
-              {skill.abbreviation ?? skill.name}
-            </PillContainer>
-          </div>
-        ))}
+      <div className="w-[50%] h-fit max-h-64">
+        <div className="text-sm">Current Skills</div>
+        <div
+          id="my_skills_select"
+          className="overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap gap-1 justify-self-start"
+        >
+          {currentSkills.map((skill, idx) => (
+            <div key={idx}>
+              <PillContainer
+                showDeleteIcon={true}
+                onDelete={() => onDeleteSkill(skill.id)}
+              >
+                {skill.abbreviation ?? skill.name}
+              </PillContainer>
+            </div>
+          ))}
+        </div>
       </div>
       <div
         className="content-center text-blue-300 cursor-pointer"
@@ -57,20 +60,23 @@ const MySkillsSelect = ({
       >
         <FaArrowRightArrowLeft />
       </div>
-      <div
-        id="my_skills_select"
-        className="w-[50%] h-fit max-h-64 overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap gap-1 justify-self-start"
-      >
-        {currentSkills.map((skill, idx) => (
-          <div key={idx}>
-            <PillContainer
-              showDeleteIcon={true}
-              onDelete={() => onDeleteSkill(skill.id)}
-            >
-              {skill.abbreviation ?? skill.name}
-            </PillContainer>
-          </div>
-        ))}
+      <div className="w-[50%] h-fit max-h-64">
+        <div className="text-sm">Available Skills</div>
+        <div
+          id="my_skills_select"
+          className="overflow-auto border-[0.5px] border-gray-500 p-1 flex flex-row flex-wrap justify-start gap-1"
+        >
+          {availableSkills.map((skill, idx) => (
+            <div key={idx} className="">
+              <PillContainer
+                showAddIcon={true}
+                onAdd={() => onAddSkill(skill.id)}
+              >
+                {skill.abbreviation ?? skill.name}
+              </PillContainer>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
