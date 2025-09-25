@@ -1,7 +1,7 @@
 import { IconContext } from 'react-icons';
 import { FaFloppyDisk, FaX } from 'react-icons/fa6';
 
-const SaveCancel = ({
+const SaveCancelIcons = ({
   disabled,
   onSave,
   onCancel
@@ -35,4 +35,4 @@ const SaveCancel = ({
   );
 };
 
-export default SaveCancel;
+export default SaveCancelIcons;

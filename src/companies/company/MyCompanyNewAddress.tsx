@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import SaveCancel from '../../controls/SaveCancel';
+import SaveCancelIcons from '../../controls/SaveCancelIcons';
 import TextInput from '../../inputs/TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
@@ -64,7 +64,7 @@ const MyCompanyNewAddress = ({
   return (
     <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-33">
       <div className="relative">
-        <SaveCancel
+        <SaveCancelIcons
           disabled={
             newAddress &&
             (!isValidAddress(newAddress) || !isDirty || isSubmitting)

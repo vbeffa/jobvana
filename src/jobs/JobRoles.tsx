@@ -14,50 +14,62 @@ const JobRoles = ({ jobRoles }: JobRolesProps) => {
       case 0:
         return (
           <div className="border-[0.5px] inline-block w-10 h-2">
-            <div className="w-2 h-2 bg-blue-500"></div>
+            <div className="w-[7px] h-[7px] bg-blue-500"></div>
           </div>
         );
       case 1:
         return (
           <div className="border-[0.5px] inline-block w-10 h-2">
-            <div className="w-4 h-2 bg-blue-500"></div>
+            <div className="w-[15px] h-[7px] bg-blue-500"></div>
           </div>
         );
       case 2:
         return (
           <div className="border-[0.5px] inline-block w-10 h-2">
-            <div className="w-6 h-2 bg-blue-500"></div>
+            <div className="w-[23px] h-[7px] bg-blue-500"></div>
           </div>
         );
       case 3:
         return (
           <div className="border-[0.5px] inline-block w-10 h-2">
-            <div className="w-8 h-2 bg-blue-500"></div>
+            <div className="w-[31px] h-[7px] bg-blue-500"></div>
           </div>
         );
       case 4:
         return (
           <div className="border-[0.5px] inline-block w-10 h-2">
-            <div className="w-10 h-2 bg-blue-500"></div>
+            <div className="w-[39px] h-[7px] bg-blue-500"></div>
           </div>
         );
     }
   };
 
   return (
-    <ul>
-      {jobRoles.map((jobRole) => {
-        const role = roles?.find((role) => role.id === jobRole.role_id);
-        return (
-          role && (
-            <li key={role.id}>
-              <RoleLink {...role} /> ({jobRole.percent}%,{' '}
-              {levelBar(jobRole.role_level)})
-            </li>
-          )
-        );
-      })}
-    </ul>
+    <div className="">
+      {jobRoles
+        .sort((jobRole1, jobRole2) => {
+          const role1 = roles?.find((role) => role.id === jobRole1.role_id);
+          const role2 = roles?.find((role) => role.id === jobRole2.role_id);
+          if (!role1 || !role2) {
+            return 0;
+          }
+          return role1?.name.localeCompare(role2?.name);
+        })
+        .map((jobRole) => {
+          const role = roles?.find((role) => role.id === jobRole.role_id);
+          return (
+            role && (
+              <div className="flex flex-row gap-2">
+                <div className="w-44">
+                  <RoleLink {...role} />
+                </div>
+                <div className="w-10">{jobRole.percent}%</div>
+                <div className="w-fit">{levelBar(jobRole.role_level)}</div>
+              </div>
+            )
+          );
+        })}
+    </div>
   );
 };
 

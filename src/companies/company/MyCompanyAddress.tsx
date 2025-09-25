@@ -19,7 +19,7 @@ const MyCompanyAddress = ({
   onUpdate: () => void;
 }) => {
   const [editAddress, setEditAddress] = useState<CompanyAddress>(address);
-  const [editMode, setEditMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -80,15 +80,15 @@ const MyCompanyAddress = ({
       <div className="relative">
         <EditDeleteIcons
           type="address"
-          editMode={editMode}
-          setEditMode={setEditMode}
-          disabled={editMode && (!isDirty || !isValidCompany || isSubmitting)}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          disabled={isEditing && (!isDirty || !isValidCompany || isSubmitting)}
           onEdit={() => setEditAddress(address)}
           onDelete={deleteAddress}
           onSave={updateAddress}
         />
       </div>
-      {editMode && (
+      {isEditing && (
         <div className="flex flex-col gap-2">
           <div className="w-[204px]">
             <TextInput
@@ -140,7 +140,7 @@ const MyCompanyAddress = ({
           </div>
         </div>
       )}
-      {!editMode && (
+      {!isEditing && (
         <div>
           <div className="h-[38px] pl-[4.5px] pt-[4.5px]">{address.street}</div>
           <div className="h-[40px] pl-[4.5px] pt-[7.5px]">
