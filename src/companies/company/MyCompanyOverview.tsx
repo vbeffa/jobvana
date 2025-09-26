@@ -4,6 +4,7 @@ import { JobvanaContext, type Company } from '../../Context';
 import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
 import TextArea from '../../inputs/TextArea';
+import UpdatingModal from '../../UpdatingModal';
 import supabase from '../../utils/supabase';
 import CompanyEmailDisplay from '../CompanyEmailDisplay';
 import IndustrySelect from '../IndustrySelect';
@@ -61,6 +62,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   return (
     <>
       {error && <Error error={error} />}
+      {isSubmitting && <UpdatingModal />}
       <div className="grid grid-cols-[20%_65%] gap-y-2 relative">
         <EditButtons
           isEditing={isEditing}

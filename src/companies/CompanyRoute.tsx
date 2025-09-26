@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
 import { JobvanaContext } from '../Context';
 import { Route } from '../routes/jobvana.companies.$id';
-import Company from './company/MyCompany';
+import MyCompany from './company/MyCompany';
 import CompanyDetails from './job_seeker/CompanyDetails';
 
 const CompanyRoute = () => {
@@ -16,7 +16,7 @@ const CompanyRoute = () => {
 
   return (
     <div className="mx-4">
-      {userType === 'company' && company && <Company company={company} />}
+      {userType === 'company' && company && <MyCompany company={company} />}
       {userType === 'job_seeker' && <CompanyDetails id={id} />}
     </div>
   );
