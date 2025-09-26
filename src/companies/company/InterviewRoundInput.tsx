@@ -3,7 +3,7 @@ import InterviewRoundLocationSelect from './InterviewRoundLocationSelect';
 import InterviewRoundTypeSelect from './InterviewRoundTypeSelect';
 import type { InterviewRound } from './utils';
 
-const InterviewProcessInput = ({
+const InterviewRoundInput = ({
   round,
   idx,
   onChange
@@ -38,12 +38,13 @@ const InterviewProcessInput = ({
         duration={round.duration}
         unit={round.durationUnit}
         idx={idx}
-        onChangeDuration={(duration) =>
+        onChangeDuration={(duration) => {
+          console.log(duration);
           onChange({
             ...round,
             duration
-          })
-        }
+          });
+        }}
         onChangeUnit={(durationUnit) =>
           onChange({
             ...round,
@@ -55,4 +56,4 @@ const InterviewProcessInput = ({
   );
 };
 
-export default InterviewProcessInput;
+export default InterviewRoundInput;

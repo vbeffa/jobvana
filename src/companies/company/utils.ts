@@ -9,7 +9,7 @@ export const ROUND_TYPES = [
   'management'
 ] as const;
 export const ROUND_LOCATIONS = ['phone', 'video', 'office', 'offline'] as const;
-export const ROUND_UNITS = ['minute', 'hour', 'day'];
+export const ROUND_UNITS = ['minute', 'hour', 'day'] as const;
 
 export type RoundType = (typeof ROUND_TYPES)[number];
 export type RoundLocation = (typeof ROUND_LOCATIONS)[number];

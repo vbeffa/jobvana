@@ -16,14 +16,18 @@ const InterviewRoundDuration = ({
   onChangeUnit: (unit: DurationUnit) => void;
   showEmpty?: boolean;
 }) => {
+  const max = unit === 'minute' ? 60 : unit === 'hour' ? 12 : 30;
+  const step = unit === 'minute' ? 1 : unit === 'hour' ? 0.25 : 1;
+  console.log(max, step, duration, unit);
+
   return (
     <>
       <NumberInput
         id={`interview_round_duration${idx ? `_${idx}` : ''}`}
         value={duration}
         min={0}
-        max={unit === 'minute' ? 60 : unit === 'hour' ? 24 : 30}
-        step={unit === 'minute' ? 1 : unit === 'hour' ? 0.25 : 1}
+        max={max}
+        step={step}
         onChange={(duration) => {
           console.log(duration);
           if (duration) {
@@ -41,7 +45,7 @@ const InterviewRoundDuration = ({
         {ROUND_UNITS?.map((unit, idx) => (
           <option key={idx} value={unit}>
             {unit}
-            {duration !== 1 && 's'}
+            {/* {duration !== 1 && 's'} */}
           </option>
         ))}
       </select>

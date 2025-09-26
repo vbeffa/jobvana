@@ -53,12 +53,14 @@ const NumberInput = ({
                 step === 1
                   ? parseInt(e.target.value)
                   : parseFloat(e.target.value);
-              console.log(parsed);
               onChange(isNaN(parsed) ? null : parsed);
             }
           }}
           onBlur={(e) => {
-            let newSize: number | null = parseInt(e.target.value);
+            let newSize: number | null =
+              step === 1
+                ? parseInt(e.target.value)
+                : parseFloat(e.target.value);
             if (isNaN(newSize)) {
               newSize = null;
             }

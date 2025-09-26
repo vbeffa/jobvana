@@ -21,16 +21,15 @@ const EditButtons = ({
       <Button
         label={`${isEditing ? 'Save' : 'Edit'}`}
         disabled={disabled}
-        onClick={() =>
-          setIsEditing((isEditing) => {
-            if (isEditing) {
-              onSave();
-            } else {
-              onEdit();
-            }
-            return !isEditing;
-          })
-        }
+        onClick={() => {
+          console.log('click', isEditing);
+          if (isEditing) {
+            onSave();
+          } else {
+            onEdit();
+          }
+          setIsEditing(!isEditing);
+        }}
       />
     </div>
   );

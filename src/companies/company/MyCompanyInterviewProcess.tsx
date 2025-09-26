@@ -3,62 +3,28 @@ import { useCallback, useMemo, useState } from 'react';
 import type { Company } from '../../Context';
 import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
+import UpdatingModal from '../../UpdatingModal';
 import supabase from '../../utils/supabase';
 import { isValidInterviewProcess } from '../utils';
-import InterviewProcessInput from './InterviewProcessInput';
+import InterviewRoundInput from './InterviewRoundInput';
 import { formatType, type InterviewProcess } from './utils';
 
 export type MyCompanyInterviewProcessProps = {
   company: Company;
 };
 
-const process: InterviewProcess = {
-  rounds: [
-    {
-      type: 'recruiter',
-      location: 'phone',
-      duration: 0.5,
-      durationUnit: 'hour'
-    },
-    {
-      type: 'hr',
-      location: 'video',
-      duration: 0.5,
-      durationUnit: 'hour'
-    },
-    {
-      type: 'technical',
-      location: 'video',
-      duration: 1,
-      durationUnit: 'hour'
-    },
-    {
-      type: 'take_home',
-      location: 'offline',
-      duration: 7,
-      durationUnit: 'day'
-    },
-    {
-      type: 'management',
-      location: 'video',
-      duration: 0.75,
-      durationUnit: 'hour'
-    }
-  ]
-};
-
 const MyCompanyInterviewProcess = ({
   company
 }: MyCompanyInterviewProcessProps) => {
   const [editInterviewProcess, setEditInterviewProcess] =
-    useState<InterviewProcess>(process);
+    useState<InterviewProcess>(company.interview_process as InterviewProcess);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
 
   const isDirty = useMemo(
-    () => !_.isEqual(process, editInterviewProcess),
-    [editInterviewProcess]
+    () => !_.isEqual(company.interview_process, editInterviewProcess),
+    [company.interview_process, editInterviewProcess]
   );
 
   const isValid = useMemo(
@@ -67,6 +33,7 @@ const MyCompanyInterviewProcess = ({
   );
 
   const updateInterviewProcess = useCallback(async () => {
+    console.log('update');
     if (!isValidInterviewProcess(editInterviewProcess)) {
       return;
     }
@@ -102,21 +69,27 @@ const MyCompanyInterviewProcess = ({
   return (
     <>
       {error && <Error error={error} />}
-      <div className="whitespace-pre-wrap">
-        {/* {JSON.stringify(process, null, 2)} */}
-      </div>
+      {isSubmitting && <UpdatingModal />}
       <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditButtons
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
+            console.log(isEditing);
             if (isEditing) {
               setError(undefined);
             }
             setIsEditing(isEditing);
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() => setEditInterviewProcess(process)}
-          onSave={updateInterviewProcess}
+          onEdit={() =>
+            setEditInterviewProcess(
+              company.interview_process as InterviewProcess
+            )
+          }
+          onSave={() => {
+            console.log('save');
+            updateInterviewProcess();
+          }}
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -143,7 +116,7 @@ const MyCompanyInterviewProcess = ({
                 className="grid grid-cols-[10%_20%_15%_17%_12%] gap-2"
               >
                 <div className="content-center">Round {idx + 1}</div>
-                <InterviewProcessInput
+                <InterviewRoundInput
                   round={round}
                   idx={idx}
                   onChange={(round) => {
