@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import Hr from './Hr';
 
 const Section = ({
   title,
@@ -16,7 +17,7 @@ const Section = ({
       <div className={`min-h-12 overflow-auto ${isLast ? 'mb-2' : ''}`}>
         {children}
       </div>
-      {!isLast && <hr className="my-4 border-gray-400 shadow" />}
+      {!isLast && <Hr />}
     </div>
   );
 };

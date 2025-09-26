@@ -1,4 +1,5 @@
 import Error from '../Error';
+import Hr from '../Hr';
 import useSkill from './useSkill';
 import useSkillVersion from './useSkillVersion';
 
@@ -33,17 +34,17 @@ const SkillVersionDetails = ({
         {skill.abbreviation && ` (${skill.abbreviation})`}{' '}
         {skillVersion.version}
       </h2>
-      <hr className="my-4 border-gray-400 shadow" />
+      <Hr />
       <h2>Notes</h2>
       <div className="whitespace-pre-wrap">{skillVersion.notes}</div>
-      <hr className="my-4 border-gray-400 shadow" />
+      <Hr />
       <h2>Released</h2>
       <div>{skillVersion.release_date}</div>
-      <hr className="my-4 border-gray-400 shadow" />
+      <Hr />
       <h2>Jobs</h2>
       {/* <div>{jobs && <JobsList jobs={jobs} />}</div> */}
       <div>TODO</div>
-      <hr className="my-4 border-gray-400 shadow" />
+      <Hr />
       <h2>Reference</h2>
       <div>
         {skillVersion.reference && (

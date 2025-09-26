@@ -46,7 +46,7 @@ const SkillDetails = ({ id }: { id: number }) => {
       </Section>
       {/* <h2>Jobs</h2>
       <div>{jobs && <JobsList jobs={jobs} />}</div>
-      <hr className="my-4 border-gray-400 shadow" /> */}
+      */}
       <Section title="Versions">
         {skill.versions.length > 0 ? (
           <SkillVersionsList skillVersions={skill.versions} skill={skill} />
@@ -55,7 +55,7 @@ const SkillDetails = ({ id }: { id: number }) => {
       <Section title="Notes">{skill.notes}</Section>
       {/* <h2>Sibling Skills</h2>
       <div>{siblingSkills && <SkillsList skills={siblingSkills} />}</div>
-      <hr className="my-4 border-gray-400 shadow" /> */}
+      */}
       <Section title="Related Skills">
         <SkillsList skills={skill.relatedSkills} />
       </Section>

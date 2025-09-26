@@ -1,3 +1,4 @@
+import Hr from '../../Hr';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
 import type { Edit } from './MyJobs';
@@ -28,7 +29,9 @@ const MyJob = ({
         edit={edit}
         setEdit={setEdit}
       />
-      <hr className="col-span-2 my-4 border-gray-400 shadow" />
+      <div className="col-span-2">
+        <Hr />
+      </div>
       <MyJobRoles
         job={job}
         onStartUpdate={onStartUpdate}
@@ -36,7 +39,7 @@ const MyJob = ({
         edit={edit}
         setEdit={setEdit}
       />
-      <hr className="col-span-2 my-4 border-gray-400 shadow" />
+      <div className="col-span-2 my-4 border-b-[0.5px] border-blue-300" />
       <MyJobSkills
         job={job}
         onStartUpdate={onStartUpdate}
