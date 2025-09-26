@@ -39,11 +39,13 @@ const MyJobRoles = ({
     [editJobRoles, job]
   );
 
-  const percentTotalValid = useMemo(() => {
-    return (
-      editJobRoles.reduce((total, role) => total + role.percent, 0) === 100
-    );
+  const percentTotal = useMemo(() => {
+    return editJobRoles.reduce((total, role) => total + role.percent, 0);
   }, [editJobRoles]);
+
+  const percentTotalValid = useMemo(() => {
+    return percentTotal === 100;
+  }, [percentTotal]);
 
   const duplicateRole = useMemo(() => {
     return (
@@ -211,18 +213,20 @@ const MyJobRoles = ({
                     <div className="content-center">
                       <FaTriangleExclamation />
                     </div>
-                    <div className="content-center">% Out of range</div>
+                    <div className="content-center">% out of range</div>
                   </div>
                 )}
               </div>
             ))}
-            <div className="relative col-start-2 pb-4">
+            <div
+              className={`relative col-start-2 ${percentTotalValid ? 'pb-5' : 'pb-0'}`}
+            >
               {!percentTotalValid && (
                 <div className="text-sm text-red-500 flex flex-row gap-1 pl-50">
                   <div className="content-center">
                     <FaTriangleExclamation />
                   </div>
-                  <div>Sum of % does not eqal 100</div>
+                  <div>{percentTotal}%</div>
                 </div>
               )}
               {duplicateRole && (
@@ -235,7 +239,7 @@ const MyJobRoles = ({
               )}
               {!duplicateRole && (
                 <div
-                  className="absolute left-94 top-1 text-gray-400 cursor-pointer"
+                  className="absolute left-0 top-0 text-gray-400 cursor-pointer"
                   onClick={() => {
                     setEditJobRoles((roles) => {
                       const updatedRoles = _.cloneDeep(roles);
