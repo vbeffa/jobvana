@@ -28,7 +28,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   return (
     <>
       <h1>My Jobs</h1>
-      <ResourcesContainer minWidth="min-w-[1100px]" hasFilters={false}>
+      <ResourcesContainer minWidth="w-[1100px]" hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer>
             {jobs?.map((job, idx) => (

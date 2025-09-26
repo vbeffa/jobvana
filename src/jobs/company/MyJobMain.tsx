@@ -8,6 +8,7 @@ import supabase from '../../utils/supabase';
 import SalaryRangeInput from '../SalaryRangeInput';
 import { MAX_SALARY, MIN_SALARY } from '../useJobs';
 import { isValidJob, type ToUpdate } from '../utils';
+import ExpandCollapse from './ExpandCollapse';
 import type { Edit } from './MyJobs';
 import MyJobTitle from './MyJobTitle';
 import StatusSelect from './StatusSelect';
@@ -28,6 +29,7 @@ const MyJobMain = ({
   edit,
   setEdit
 }: MyJobMainProps) => {
+  const [expanded, setExpanded] = useState(true);
   const [editJob, setEditJob] = useState<ToUpdate>(job);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -103,99 +105,106 @@ const MyJobMain = ({
   return (
     <>
       {error && <Error error={error} />}
-      <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
-        <EditDeleteIcons
-          type="job"
-          isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-              setEdit({ jobId: job.id, section: 'main' });
-              setEditJob(job);
-            }
-            setIsEditing(isEditing);
-          }}
-          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onDelete={deleteJob}
-          onSave={doUpdate}
-        />
-        {!isEditing && (
-          <>
-            <div>Title:</div>
-            <div>{job.title}</div>
-            <div>Description:</div>
-            <div>{job.description}</div>
-            <div>Status:</div>
-            <div>{capitalize(job.status)}</div>
-            <div>Salary:</div>
-            <div className="flex flex-row gap-1">
-              <div>{formatter.format(job.salary_low)}</div>
-              <div>-</div>
-              <div>{formatter.format(job.salary_high)}</div>
-            </div>
-          </>
-        )}
-        {isEditing && (
-          <>
-            <MyJobTitle title={editJob.title} handleUpdate={setEditJob} />
-            <TextArea
-              id="description"
-              label="Description"
-              value={editJob.description ?? undefined}
-              maxLength={MAX_DESCRIPTION_LENGTH}
-              rows={Math.max(
-                3,
-                Math.ceil((editJob.description?.length ?? 0) / 82.0)
-              )}
-              onChange={(description) => {
-                setEditJob((editJob) => ({
-                  ...editJob,
-                  description
-                }));
-              }}
-            />
-            <StatusSelect
-              status={editJob.status}
-              onChange={(status) => {
-                setEditJob((editJob) => ({
-                  ...editJob,
-                  status
-                }));
-              }}
-            />
-            <SalaryRangeInput
-              low={editJob.salary_low}
-              high={editJob.salary_high}
-              onChangeLow={(minSalary) => {
-                if (!minSalary) {
-                  return;
-                }
-                setEditJob((editJob) => ({
-                  ...editJob,
-                  salary_low: minSalary,
-                  salary_high:
-                    editJob.salary_high && minSalary > editJob.salary_high
-                      ? minSalary
-                      : Math.min(editJob.salary_high, MAX_SALARY)
-                }));
-              }}
-              onChangeHigh={(maxSalary) => {
-                if (!maxSalary) {
-                  return;
-                }
-                setEditJob((editJob) => ({
-                  ...editJob,
-                  salary_high: maxSalary,
-                  salary_low:
-                    editJob.salary_low && maxSalary < editJob.salary_low
-                      ? maxSalary
-                      : Math.max(editJob.salary_low, MIN_SALARY)
-                }));
-              }}
-            />
-          </>
-        )}
-      </div>
+      <ExpandCollapse
+        title="Main"
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
+      {expanded && (
+        <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
+          <EditDeleteIcons
+            type="job"
+            isEditing={isEditing}
+            setIsEditing={(isEditing) => {
+              if (isEditing) {
+                setError(undefined);
+                setEdit({ jobId: job.id, section: 'main' });
+                setEditJob(job);
+              }
+              setIsEditing(isEditing);
+            }}
+            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+            onDelete={deleteJob}
+            onSave={doUpdate}
+          />
+          {!isEditing && (
+            <>
+              <div>Title:</div>
+              <div>{job.title}</div>
+              <div>Description:</div>
+              <div>{job.description}</div>
+              <div>Status:</div>
+              <div>{capitalize(job.status)}</div>
+              <div>Salary:</div>
+              <div className="flex flex-row gap-1">
+                <div>{formatter.format(job.salary_low)}</div>
+                <div>-</div>
+                <div>{formatter.format(job.salary_high)}</div>
+              </div>
+            </>
+          )}
+          {isEditing && (
+            <>
+              <MyJobTitle title={editJob.title} handleUpdate={setEditJob} />
+              <TextArea
+                id="description"
+                label="Description"
+                value={editJob.description ?? undefined}
+                maxLength={MAX_DESCRIPTION_LENGTH}
+                rows={Math.max(
+                  3,
+                  Math.ceil((editJob.description?.length ?? 0) / 82.0)
+                )}
+                onChange={(description) => {
+                  setEditJob((editJob) => ({
+                    ...editJob,
+                    description
+                  }));
+                }}
+              />
+              <StatusSelect
+                status={editJob.status}
+                onChange={(status) => {
+                  setEditJob((editJob) => ({
+                    ...editJob,
+                    status
+                  }));
+                }}
+              />
+              <SalaryRangeInput
+                low={editJob.salary_low}
+                high={editJob.salary_high}
+                onChangeLow={(minSalary) => {
+                  if (!minSalary) {
+                    return;
+                  }
+                  setEditJob((editJob) => ({
+                    ...editJob,
+                    salary_low: minSalary,
+                    salary_high:
+                      editJob.salary_high && minSalary > editJob.salary_high
+                        ? minSalary
+                        : Math.min(editJob.salary_high, MAX_SALARY)
+                  }));
+                }}
+                onChangeHigh={(maxSalary) => {
+                  if (!maxSalary) {
+                    return;
+                  }
+                  setEditJob((editJob) => ({
+                    ...editJob,
+                    salary_high: maxSalary,
+                    salary_low:
+                      editJob.salary_low && maxSalary < editJob.salary_low
+                        ? maxSalary
+                        : Math.max(editJob.salary_low, MIN_SALARY)
+                  }));
+                }}
+              />
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 };

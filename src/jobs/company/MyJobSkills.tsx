@@ -7,6 +7,7 @@ import SkillLink from '../../skills/SkillLink';
 import useSkillsLite from '../../skills/useSkillsLite';
 import type { JobSkill } from '../../types';
 import supabase from '../../utils/supabase';
+import ExpandCollapse from './ExpandCollapse';
 import type { Edit } from './MyJobs';
 import MySkillsSelect from './MySkillsSelect';
 import type { Job } from './useJobsForCompany';
@@ -26,6 +27,7 @@ const MyJobSkills = ({
   edit,
   setEdit
 }: MyJobSkillsProps) => {
+  const [expanded, setExpanded] = useState(true);
   const [editJobSkills, setEditJobSkills] = useState<Array<JobSkill>>(
     job.job_skills
   );
@@ -124,80 +126,87 @@ const MyJobSkills = ({
   return (
     <>
       {error && <Error error={error} />}
-      <div className="relative grid grid-cols-[15%_75%] gap-y-2 mb-4">
-        <EditDeleteIcons
-          isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-              setEdit({ jobId: job.id, section: 'skills' });
-              setEditJobSkills(job.job_skills);
-            }
-            setIsEditing(isEditing);
-          }}
-          disabled={isEditing && (!isDirty || isSubmitting)}
-          onSave={doUpdate}
-        />
-        <div>Skills:</div>
-        <div className="flex flex-row flex-wrap gap-2">
-          {!isEditing &&
-            job.job_skills
-              .sort((jobSkill1, jobSkill2) => {
-                const skill1 = findSkill(jobSkill1.skill_id);
-                const skill2 = findSkill(jobSkill2.skill_id);
-                if (!skill1 || !skill2) {
-                  return 0;
-                }
-                return (skill1.abbreviation ?? skill1.name).localeCompare(
-                  skill2.abbreviation ?? skill2.name
-                );
-              })
-              .map((jobSkill, idx) => {
-                const skill = findSkill(jobSkill.skill_id);
-                return skill ? (
-                  <div key={idx}>
-                    <PillContainer
-                      showDeleteIcon={isEditing}
-                      onDelete={async () => {
-                        onStartUpdate();
-                        await deleteSkill(jobSkill.skill_id);
-                        onFinishUpdate();
-                      }}
-                    >
-                      <SkillLink skill={skill} />
-                    </PillContainer>
-                  </div>
-                ) : null;
-              })}
-          {isEditing && (
-            <>
-              <MySkillsSelect
-                skillIds={editJobSkills.map((jobSkill) => jobSkill.skill_id)}
-                onAddSkill={(skillId) => {
-                  setEditJobSkills((jobSkills) => {
-                    const updatedJobSkills = _.cloneDeep(jobSkills);
-                    updatedJobSkills.push({
-                      job_id: job.id,
-                      skill_id: skillId
+      <ExpandCollapse
+        title="Skills"
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
+      {expanded && (
+        <div className="relative grid grid-cols-[15%_75%] gap-y-2 mb-4">
+          <EditDeleteIcons
+            isEditing={isEditing}
+            setIsEditing={(isEditing) => {
+              if (isEditing) {
+                setError(undefined);
+                setEdit({ jobId: job.id, section: 'skills' });
+                setEditJobSkills(job.job_skills);
+              }
+              setIsEditing(isEditing);
+            }}
+            disabled={isEditing && (!isDirty || isSubmitting)}
+            onSave={doUpdate}
+          />
+          <div>Skills:</div>
+          <div className="flex flex-row flex-wrap gap-2">
+            {!isEditing &&
+              job.job_skills
+                .sort((jobSkill1, jobSkill2) => {
+                  const skill1 = findSkill(jobSkill1.skill_id);
+                  const skill2 = findSkill(jobSkill2.skill_id);
+                  if (!skill1 || !skill2) {
+                    return 0;
+                  }
+                  return (skill1.abbreviation ?? skill1.name).localeCompare(
+                    skill2.abbreviation ?? skill2.name
+                  );
+                })
+                .map((jobSkill, idx) => {
+                  const skill = findSkill(jobSkill.skill_id);
+                  return skill ? (
+                    <div key={idx}>
+                      <PillContainer
+                        showDeleteIcon={isEditing}
+                        onDelete={async () => {
+                          onStartUpdate();
+                          await deleteSkill(jobSkill.skill_id);
+                          onFinishUpdate();
+                        }}
+                      >
+                        <SkillLink skill={skill} />
+                      </PillContainer>
+                    </div>
+                  ) : null;
+                })}
+            {isEditing && (
+              <>
+                <MySkillsSelect
+                  skillIds={editJobSkills.map((jobSkill) => jobSkill.skill_id)}
+                  onAddSkill={(skillId) => {
+                    setEditJobSkills((jobSkills) => {
+                      const updatedJobSkills = _.cloneDeep(jobSkills);
+                      updatedJobSkills.push({
+                        job_id: job.id,
+                        skill_id: skillId
+                      });
+                      return updatedJobSkills;
                     });
-                    return updatedJobSkills;
-                  });
-                }}
-                onDeleteSkill={(skillId) => {
-                  setEditJobSkills((jobSkills) => {
-                    const updatedJobSkills = _.cloneDeep(jobSkills);
-                    const index = updatedJobSkills.findIndex(
-                      (jobSkill) => jobSkill.skill_id === skillId
-                    );
-                    updatedJobSkills.splice(index, 1);
-                    return updatedJobSkills;
-                  });
-                }}
-              />
-            </>
-          )}
+                  }}
+                  onDeleteSkill={(skillId) => {
+                    setEditJobSkills((jobSkills) => {
+                      const updatedJobSkills = _.cloneDeep(jobSkills);
+                      const index = updatedJobSkills.findIndex(
+                        (jobSkill) => jobSkill.skill_id === skillId
+                      );
+                      updatedJobSkills.splice(index, 1);
+                      return updatedJobSkills;
+                    });
+                  }}
+                />
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
