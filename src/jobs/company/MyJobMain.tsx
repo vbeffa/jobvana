@@ -103,7 +103,6 @@ const MyJobMain = ({
   return (
     <>
       {error && <Error error={error} />}
-
       <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditDeleteIcons
           type="job"
