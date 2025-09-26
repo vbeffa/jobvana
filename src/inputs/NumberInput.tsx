@@ -49,7 +49,11 @@ const NumberInput = ({
           value={value ?? ''}
           onChange={(e) => {
             if (e.target.value !== '-') {
-              const parsed = parseInt(e.target.value);
+              const parsed =
+                step === 1
+                  ? parseInt(e.target.value)
+                  : parseFloat(e.target.value);
+              console.log(parsed);
               onChange(isNaN(parsed) ? null : parsed);
             }
           }}

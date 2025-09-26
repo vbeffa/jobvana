@@ -56,6 +56,7 @@ export type Database = {
           description: string
           id: number
           industry_id: number
+          interview_process: Json | null
           name: string
           num_employees: number
           user_id: string | null
@@ -66,6 +67,7 @@ export type Database = {
           description: string
           id?: number
           industry_id: number
+          interview_process?: Json | null
           name: string
           num_employees: number
           user_id?: string | null
@@ -76,6 +78,7 @@ export type Database = {
           description?: string
           id?: number
           industry_id?: number
+          interview_process?: Json | null
           name?: string
           num_employees?: number
           user_id?: string | null

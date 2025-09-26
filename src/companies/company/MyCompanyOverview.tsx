@@ -51,7 +51,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
         console.log(error);
         setError(error);
       } else {
-        console.log(data);
+        // console.log(data);
         setCompany(data?.[0]);
       }
     } finally {
@@ -76,6 +76,22 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
           onEdit={() => setEditCompany(company)}
           onSave={updateCompany}
         />
+        {!isEditing && (
+          <>
+            <div>Name:</div>
+            <div>{company.name}</div>
+            <div>Industry:</div>
+            <div>{findIndustry(company.industry_id)?.name}</div>
+            <div>Num employees:</div>
+            <div>{company.num_employees}</div>
+            <div>Contact email:</div>
+            <div>
+              <CompanyEmailDisplay {...company} />
+            </div>
+            <div>Description:</div>
+            <div>{company.description}</div>
+          </>
+        )}
         {isEditing && (
           <>
             <CompanyName
@@ -108,22 +124,6 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
                 }))
               }
             />
-          </>
-        )}
-        {!isEditing && (
-          <>
-            <div>Name:</div>
-            <div>{company.name}</div>
-            <div>Industry:</div>
-            <div>{findIndustry(company.industry_id)?.name}</div>
-            <div>Num employees:</div>
-            <div>{company.num_employees}</div>
-            <div>Contact email:</div>
-            <div>
-              <CompanyEmailDisplay {...company} />
-            </div>
-            <div>Description:</div>
-            <div>{company.description}</div>
           </>
         )}
       </div>

@@ -1,5 +1,6 @@
 import type { Company as DbCompany } from '../types';
 import supabase from '../utils/supabase';
+import type { InterviewProcess } from './company/utils';
 import {
   MAX_COMPANY_SIZE,
   MAX_DESCRIPTION_LENGTH,
@@ -39,7 +40,8 @@ export const companyFields = (
   industry_id: company.industry.id,
   num_employees: company.num_employees,
   user_id: company.user_id,
-  contact_email: company.contact_email
+  contact_email: company.contact_email,
+  interview_process: company.interview_process
 });
 
 export const isValidCompany = (company: Partial<ToInsert>) => {
@@ -61,4 +63,8 @@ export const isValidAddress = (address: Partial<CompanyAddress>) => {
   return Boolean(
     address.street && address.city && address.state && address.zip
   );
+};
+
+export const isValidInterviewProcess = (process: InterviewProcess) => {
+  return process.rounds.length > 0 && process.rounds.length <= 5;
 };

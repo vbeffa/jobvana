@@ -42,7 +42,7 @@ const useCompany = (id?: number): CompanyH => {
       const { data, error } = await supabase
         .from('companies')
         .select(
-          `id, name, description, num_employees, user_id, contact_email,
+          `id, name, description, num_employees, user_id, contact_email, interview_process,
           industries(id, name),
           company_addresses(id, city, street, zip, state, type),
           company_tech_stacks(skill_versions(id, skill_id, version, ordinal)),
@@ -69,6 +69,7 @@ const useCompany = (id?: number): CompanyH => {
       num_employees: company.num_employees,
       user_id: company.user_id,
       contact_email: company.contact_email,
+      interview_process: company.interview_process,
       jobs: company.jobs,
       addresses: company.company_addresses,
       industry: company.industries,
