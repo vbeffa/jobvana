@@ -39,7 +39,9 @@ const MyJob = ({
         edit={edit}
         setEdit={setEdit}
       />
-      <div className="col-span-2 my-4 border-b-[0.5px] border-blue-300" />
+      <div className="col-span-2">
+        <Hr />
+      </div>
       <MyJobSkills
         job={job}
         onStartUpdate={onStartUpdate}
