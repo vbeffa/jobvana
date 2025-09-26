@@ -83,7 +83,6 @@ const Companies = () => {
   }, [companies, context.companyId]);
 
   useEffect(() => {
-    console.log('navigate');
     navigate({
       search: {
         page: debouncedPage,

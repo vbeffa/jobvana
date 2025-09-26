@@ -6,21 +6,41 @@ import type { Job } from './useJobsForCompany';
 
 export type MyJobProps = {
   job: Job;
-  onUpdate: () => void;
+  onStartUpdate: () => void;
+  onFinishUpdate: () => void;
   edit: Edit;
   setEdit: (edit: Edit) => void;
 };
 
-const MyJob = ({ job, onUpdate, edit, setEdit }: MyJobProps) => {
+const MyJob = ({
+  job,
+  onStartUpdate,
+  onFinishUpdate,
+  edit,
+  setEdit
+}: MyJobProps) => {
   return (
     <>
-      <MyJobMain job={job} onUpdate={onUpdate} edit={edit} setEdit={setEdit} />
+      <MyJobMain
+        job={job}
+        onStartUpdate={onStartUpdate}
+        onFinishUpdate={onFinishUpdate}
+        edit={edit}
+        setEdit={setEdit}
+      />
       <hr className="col-span-2 my-4 border-gray-400 shadow" />
-      <MyJobRoles job={job} onUpdate={onUpdate} edit={edit} setEdit={setEdit} />
+      <MyJobRoles
+        job={job}
+        onStartUpdate={onStartUpdate}
+        onFinishUpdate={onFinishUpdate}
+        edit={edit}
+        setEdit={setEdit}
+      />
       <hr className="col-span-2 my-4 border-gray-400 shadow" />
       <MyJobSkills
         job={job}
-        onUpdate={onUpdate}
+        onStartUpdate={onStartUpdate}
+        onFinishUpdate={onFinishUpdate}
         edit={edit}
         setEdit={setEdit}
       />

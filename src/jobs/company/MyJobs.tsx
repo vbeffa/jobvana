@@ -55,8 +55,10 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
             {selectedJob ? (
               <MyJob
                 job={selectedJob}
-                onUpdate={async () => {
+                onStartUpdate={() => {
                   setUpdating(true);
+                }}
+                onFinishUpdate={async () => {
                   await refetch();
                   setUpdating(false);
                   setSelectedJob(undefined);

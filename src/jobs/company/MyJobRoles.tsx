@@ -14,12 +14,19 @@ import type { Job } from './useJobsForCompany';
 
 export type MyJobRolesProps = {
   job: Job;
-  onUpdate: () => void;
+  onStartUpdate: () => void;
+  onFinishUpdate: () => void;
   edit: Edit;
   setEdit: (edit: Edit) => void;
 };
 
-const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
+const MyJobRoles = ({
+  job,
+  onStartUpdate,
+  onFinishUpdate,
+  edit,
+  setEdit
+}: MyJobRolesProps) => {
   const [editJobRoles, setEditJobRoles] = useState<Array<JobRole>>(
     job.job_roles
   );
@@ -93,15 +100,16 @@ const MyJobRoles = ({ job, onUpdate, edit, setEdit }: MyJobRolesProps) => {
     setError(undefined);
 
     try {
+      onStartUpdate();
       await updateJobRoles();
-      onUpdate();
+      onFinishUpdate();
     } catch (err) {
       console.log(err);
       setError(err as Error);
     } finally {
       setIsSubmitting(false);
     }
-  }, [isDirty, isValid, onUpdate, updateJobRoles]);
+  }, [isDirty, isValid, onStartUpdate, onFinishUpdate, updateJobRoles]);
 
   return (
     <>

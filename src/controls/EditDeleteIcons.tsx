@@ -43,8 +43,8 @@ const EditDeleteIcons = ({
                 className={`${disabled ? disabledStyle : enabledStyle}`}
                 disabled={disabled}
                 onClick={async () => {
-                  await onSave();
                   setIsEditing(false);
+                  await onSave();
                 }}
               >
                 <FaFloppyDisk />

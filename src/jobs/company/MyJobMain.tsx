@@ -15,12 +15,19 @@ import type { Job } from './useJobsForCompany';
 
 export type MyJobMainProps = {
   job: Job;
-  onUpdate: () => void;
+  onStartUpdate: () => void;
+  onFinishUpdate: () => void;
   edit: Edit;
   setEdit: (edit: Edit) => void;
 };
 
-const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
+const MyJobMain = ({
+  job,
+  onStartUpdate,
+  onFinishUpdate,
+  edit,
+  setEdit
+}: MyJobMainProps) => {
   const [editJob, setEditJob] = useState<ToUpdate>(job);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,32 +71,34 @@ const MyJobMain = ({ job, onUpdate, edit, setEdit }: MyJobMainProps) => {
     setIsSubmitting(true);
     setError(undefined);
     try {
+      onStartUpdate();
       await updateJob();
-      onUpdate();
+      onFinishUpdate();
     } catch (err) {
       console.log(err);
       setError(err as Error);
     } finally {
       setIsSubmitting(false);
     }
-  }, [isDirty, isValid, onUpdate, updateJob]);
+  }, [isDirty, isValid, onStartUpdate, onFinishUpdate, updateJob]);
 
   const deleteJob = useCallback(async () => {
     setIsSubmitting(true);
     setError(undefined);
     try {
+      onStartUpdate();
       const { error } = await supabase.from('jobs').delete().eq('id', job.id);
 
       if (error) {
         console.log(error);
         setError(error);
       } else {
-        onUpdate();
+        onFinishUpdate();
       }
     } finally {
       setIsSubmitting(false);
     }
-  }, [job.id, onUpdate]);
+  }, [job.id, onStartUpdate, onFinishUpdate]);
 
   return (
     <>

@@ -13,12 +13,19 @@ import type { Job } from './useJobsForCompany';
 
 export type MyJobSkillsProps = {
   job: Job;
-  onUpdate: () => void;
+  onStartUpdate: () => void;
+  onFinishUpdate: () => void;
   edit: Edit;
   setEdit: (edit: Edit) => void;
 };
 
-const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
+const MyJobSkills = ({
+  job,
+  onStartUpdate,
+  onFinishUpdate,
+  edit,
+  setEdit
+}: MyJobSkillsProps) => {
   const [editJobSkills, setEditJobSkills] = useState<Array<JobSkill>>(
     job.job_skills
   );
@@ -77,15 +84,16 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
     setError(undefined);
 
     try {
+      onStartUpdate();
       await updateJobSkills();
-      onUpdate();
+      onFinishUpdate();
     } catch (err) {
       console.log(err);
       setError(err as Error);
     } finally {
       setIsSubmitting(false);
     }
-  }, [isDirty, onUpdate, updateJobSkills]);
+  }, [isDirty, onStartUpdate, onFinishUpdate, updateJobSkills]);
 
   const deleteSkill = useCallback(
     async (skillId: number) => {
@@ -151,8 +159,9 @@ const MyJobSkills = ({ job, onUpdate, edit, setEdit }: MyJobSkillsProps) => {
                     <PillContainer
                       showDeleteIcon={isEditing}
                       onDelete={async () => {
+                        onStartUpdate();
                         await deleteSkill(jobSkill.skill_id);
-                        onUpdate();
+                        onFinishUpdate();
                       }}
                     >
                       <SkillLink skill={skill} />
