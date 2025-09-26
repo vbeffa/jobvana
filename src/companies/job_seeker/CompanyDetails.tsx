@@ -5,7 +5,9 @@ import Error from '../../Error';
 import JobsList from '../../jobs/JobsList';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
+import type { InterviewProcess } from '../company/utils';
 import CompanyEmailDisplay from '../CompanyEmailDisplay';
+import InterviewProcessDisplay from '../InterviewProcessDisplay';
 import { companyFields, findHeadquarters, isHeadquarters } from '../utils';
 import useCompany from './useCompany';
 
@@ -44,7 +46,9 @@ const CompanyDetails = ({ id }: { id?: number }) => {
             </div>
           )}
         </div>
-        <div className="content-center">{company.num_employees} employees</div>
+        <div className="content-center">
+          {company.num_employees} employee{company.num_employees > 1 && 's'}
+        </div>
         {hq && (
           <div className="pt-1">
             {hq.city}, {hq.state}
@@ -54,11 +58,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
           <CompanyEmailDisplay {...company} />
         </div>
       </Section>
-      <Section title="Description">
-        <div>
-          {company && <div className="h-[87px]">{company.description}</div>}
-        </div>
-      </Section>
+      <Section title="Description">{company.description}</Section>
       <Section title="Offices">
         {company && company.addresses.length > 0 ? (
           <ul>
@@ -71,8 +71,15 @@ const CompanyDetails = ({ id }: { id?: number }) => {
           </ul>
         ) : null}
       </Section>
-      <Section title="Current Jobs" isLast={true}>
-        {(company && <JobsList jobs={company.jobs} />) ?? ''}
+      <Section title="Current Jobs">
+        {company ? <JobsList jobs={company.jobs} /> : null}
+      </Section>
+      <Section title="Interview Process" isLast={true}>
+        {company.interview_process ? (
+          <InterviewProcessDisplay
+            interviewProcess={company.interview_process as InterviewProcess}
+          />
+        ) : null}
       </Section>
     </>
   );

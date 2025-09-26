@@ -18,7 +18,6 @@ const InterviewRoundDuration = ({
 }) => {
   const max = unit === 'minute' ? 60 : unit === 'hour' ? 12 : 30;
   const step = unit === 'minute' ? 1 : unit === 'hour' ? 0.25 : 1;
-  console.log(max, step, duration, unit);
 
   return (
     <>

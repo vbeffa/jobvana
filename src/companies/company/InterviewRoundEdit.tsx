@@ -3,7 +3,7 @@ import InterviewRoundLocationSelect from './InterviewRoundLocationSelect';
 import InterviewRoundTypeSelect from './InterviewRoundTypeSelect';
 import type { InterviewRound } from './utils';
 
-const InterviewRoundInput = ({
+const InterviewRoundEdit = ({
   round,
   idx,
   onChange
@@ -17,43 +17,46 @@ const InterviewRoundInput = ({
       <InterviewRoundTypeSelect
         type={round.type}
         idx={idx}
-        onChange={(type) =>
+        onChange={(type) => {
           onChange({
             ...round,
             type
-          })
-        }
+          });
+        }}
       />
       <InterviewRoundLocationSelect
         location={round.location}
         idx={idx}
-        onChange={(location) =>
+        onChange={(location) => {
           onChange({
             ...round,
             location
-          })
-        }
+          });
+        }}
       />
       <InterviewRoundDuration
         duration={round.duration}
         unit={round.durationUnit}
         idx={idx}
         onChangeDuration={(duration) => {
-          console.log(duration);
           onChange({
             ...round,
             duration
           });
         }}
-        onChangeUnit={(durationUnit) =>
+        onChangeUnit={(durationUnit) => {
           onChange({
             ...round,
+            duration:
+              durationUnit === 'hour'
+                ? round.duration
+                : Math.round(round.duration),
             durationUnit
-          })
-        }
+          });
+        }}
       />
     </>
   );
 };
 
-export default InterviewRoundInput;
+export default InterviewRoundEdit;
