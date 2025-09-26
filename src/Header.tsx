@@ -75,13 +75,6 @@ const Header = () => {
       {currPage !== 'home' &&
         linkHeaderItem({ to: '/jobvana', title: 'Home', icon: <FaHouse /> })}
       {currPage === 'home' && activeHeaderItem('Home', <FaHouse />)}
-      {currPage !== 'about' &&
-        linkHeaderItem({
-          to: '/jobvana/about',
-          title: 'About',
-          icon: <FaBook />
-        })}
-      {currPage === 'about' && activeHeaderItem('About', <FaBook />)}
       {loggedIn && (
         <>
           {userType === 'company' && company !== null && (
@@ -90,25 +83,26 @@ const Header = () => {
                 linkHeaderItem({
                   to: company ? '/jobvana/companies/$id' : '.',
                   params: company ? { id: company.id.toString() } : undefined,
-                  title: 'Company',
+                  title: 'My Company',
                   icon: <FaBuilding />
                 })}
               {currPage === 'companies' &&
-                activeHeaderItem('Company', <FaBuilding />)}
+                activeHeaderItem('My Company', <FaBuilding />)}
               {currPage !== 'jobs' &&
                 linkHeaderItem({
                   to: '/jobvana/jobs',
-                  title: 'Jobs',
+                  title: 'My Jobs',
                   icon: <FaWrench />
                 })}
-              {currPage === 'jobs' && activeHeaderItem('Jobs', <FaWrench />)}
+              {currPage === 'jobs' && activeHeaderItem('My Jobs', <FaWrench />)}
               {currPage !== 'applications' &&
                 linkHeaderItem({
                   to: '/jobvana/applications',
-                  title: 'Applications',
+                  title: 'Job Applications',
                   icon: <FaPaperPlane />
                 })}
-              {currPage === 'applications' && activeHeaderItem('Applications')}
+              {currPage === 'applications' &&
+                activeHeaderItem('Job Applications', <FaPaperPlane />)}
             </>
           )}
           {userType === 'job_seeker' && (
@@ -146,6 +140,13 @@ const Header = () => {
             })}
           {currPage === 'account' && activeHeaderItem('Account', <FaUser />)}
 
+          {currPage !== 'about' &&
+            linkHeaderItem({
+              to: '/jobvana/about',
+              title: 'About',
+              icon: <FaBook />
+            })}
+          {currPage === 'about' && activeHeaderItem('About', <FaBook />)}
           {linkHeaderItem({
             to: '/jobvana',
             title: 'Log out',
