@@ -125,11 +125,11 @@ const Header = () => {
               {currPage !== 'applications' &&
                 linkHeaderItem({
                   to: '/jobvana/applications',
-                  title: 'Applications',
+                  title: 'My Applications',
                   icon: <FaPaperPlane />
                 })}
               {currPage === 'applications' &&
-                activeHeaderItem('Applications', <FaPaperPlane />)}
+                activeHeaderItem('My Applications', <FaPaperPlane />)}
             </>
           )}
           {currPage !== 'account' &&
