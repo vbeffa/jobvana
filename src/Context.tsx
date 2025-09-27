@@ -28,6 +28,8 @@ export type JobvanaContextProps = {
     name?: string;
     minSize: number;
     maxSize: number;
+    minRounds: number;
+    maxRounds: number;
     industryId?: number;
   };
   setCompaniesContext: (
@@ -56,6 +58,8 @@ export const defaultContext: JobvanaContextProps = {
     page: 1,
     minSize: MIN_COMPANY_SIZE,
     maxSize: MAX_COMPANY_SIZE,
+    minRounds: 1,
+    maxRounds: 5,
     industryId: 0
   },
   setCompaniesContext: () => {},

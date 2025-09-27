@@ -13,7 +13,7 @@ export type Params<
     page: number;
     pageSize: number;
   };
-  filters?: SearchFilters;
+  filters: SearchFilters;
 };
 
 export type Application = Database['public']['Tables']['applications']['Row'];

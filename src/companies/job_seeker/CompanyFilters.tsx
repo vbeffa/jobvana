@@ -1,5 +1,6 @@
 import Filter from '../../inputs/Filter';
 import IndustrySelect from '../IndustrySelect';
+import CompanyInterviewRoundsFilters from './CompanyInterviewRoundsFilters';
 import CompanySizeFilters from './CompanySizeFilters';
 import { type SearchFilters } from './useCompanies';
 
@@ -55,7 +56,35 @@ const CompanyFilters = ({
             }}
           />
         </div>
-        <div className="grid grid-cols-[25%_65%] w-[24rem] gap-y-2"></div>
+        <div className="grid grid-cols-[25%_65%] w-[24rem] gap-y-2">
+          <CompanyInterviewRoundsFilters
+            low={filters.minRounds}
+            high={filters.maxRounds}
+            onChangeLow={(rounds) => {
+              if (!rounds) {
+                return;
+              }
+              onChange({
+                ...filters,
+                minRounds: rounds,
+                maxRounds:
+                  rounds > filters.maxRounds ? rounds : filters.maxRounds
+              });
+            }}
+            onChangeHigh={(rounds) => {
+              if (!rounds) {
+                return;
+              }
+              onChange({
+                ...filters,
+                maxRounds: rounds ?? undefined,
+                minRounds:
+                  rounds < filters.maxRounds ? rounds : filters.minRounds
+              });
+            }}
+          />
+          <div className="col-span-2 row-span-10" />
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,10 @@ import useSkillCategories from './useSkillCategories';
 import useSkillsForCategory from './useSkillsForCategory';
 
 const SkillCategoryDetails = ({ id }: { id: number }) => {
-  const { skills } = useSkillsForCategory(id); // TODO this is paged and only returns the first 10
+  const { skills } = useSkillsForCategory({
+    skillCategoryId: id,
+    params: { paging: { page: 1, pageSize: 10 }, filters: {} }
+  }); // TODO this is paged and only returns the first 10
   const { findSkillCategory, findChildSkillCategories } = useSkillCategories();
   const skillCategory = findSkillCategory(id);
   if (!skillCategory) {

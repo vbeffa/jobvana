@@ -10,11 +10,7 @@ import type {
 } from '../types';
 import supabase from '../utils/supabase';
 import type { JobRole } from './job_seekers/useJob';
-import {
-  MAX_SALARY,
-  MIN_SALARY,
-  type SearchFilters
-} from './job_seekers/useJobs';
+import { type SearchFilters } from './job_seekers/useJobs';
 
 export type Job = DbJob & {
   company: Company;
@@ -45,13 +41,11 @@ type QueryKey = {
 // TODO this is unused, either use it or remove it
 const useJobsForSkill = (
   // skillId: number,
-  params: JobsParams = { paging: { page: 1, pageSize: 10 } }
+  params: JobsParams
 ): Jobs => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
-      minSalary: MIN_SALARY,
-      maxSalary: MAX_SALARY,
       ...params.filters
     }),
     [params.filters, params.paging?.page]

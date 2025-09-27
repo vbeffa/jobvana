@@ -50,10 +50,6 @@ const useJobs = (params: JobsParams): Jobs => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
-      // company: '',
-      // title: '',
-      minSalary: MIN_SALARY,
-      maxSalary: MAX_SALARY,
       ...params.filters
     }),
     [params.filters, params.paging?.page]

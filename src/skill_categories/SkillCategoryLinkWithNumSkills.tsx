@@ -12,7 +12,11 @@ const SkillCategoryLinkWithNumSkills = ({
   id,
   name
 }: SkillCategoryLinkWithNumSkillsProps) => {
-  const { skillsCount, error } = useSkillsForCategory(id, true);
+  const { skillsCount, error } = useSkillsForCategory({
+    skillCategoryId: id,
+    countOnly: true,
+    params: { paging: { page: 1, pageSize: 10 }, filters: {} }
+  });
 
   const numSkillsString = skillsCount
     ? ` (${skillsCount} skill${skillsCount > 1 ? 's' : ''})`

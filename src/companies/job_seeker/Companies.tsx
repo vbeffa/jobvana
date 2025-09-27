@@ -24,6 +24,8 @@ const INITIAL_FILTERS: SearchFilters = {
   name: '',
   minSize: MIN_COMPANY_SIZE,
   maxSize: MAX_COMPANY_SIZE,
+  minRounds: 1,
+  maxRounds: 5,
   industryId: 0
 };
 
@@ -69,7 +71,13 @@ const Companies = () => {
 
   useEffect(() => {
     setSearchFilters({
-      ..._.pick(context, ['minSize', 'maxSize', 'industryId']),
+      ..._.pick(context, [
+        'minSize',
+        'maxSize',
+        'minRounds',
+        'maxRounds',
+        'industryId'
+      ]),
       name: context.name ?? ''
     });
   }, [context]);

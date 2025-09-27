@@ -31,9 +31,7 @@ type QueryKey = {
   page: number;
 } & SearchFilters;
 
-const useSkills = (
-  params: SkillsParams = { paging: { page: 1, pageSize: 10 } }
-): Skills => {
+const useSkills = (params: SkillsParams): Skills => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,

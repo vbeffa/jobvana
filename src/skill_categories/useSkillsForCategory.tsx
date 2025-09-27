@@ -21,13 +21,15 @@ type QueryKey = {
   page: number;
 } & SearchFilters;
 
-const useSkillsForCategory = (
-  skillCategoryId: number,
-  countOnly?: boolean,
-  params: SkillsParams = {
-    paging: { page: 1, pageSize: 10 }
-  }
-): SkillsForCategory => {
+const useSkillsForCategory = ({
+  skillCategoryId,
+  countOnly,
+  params
+}: {
+  skillCategoryId: number;
+  countOnly?: boolean;
+  params: SkillsParams;
+}): SkillsForCategory => {
   const queryKey: QueryKey = useMemo(
     () => ({
       categoryId: skillCategoryId,

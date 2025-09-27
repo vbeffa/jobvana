@@ -14,6 +14,8 @@ export type SearchFilters = {
   name?: string;
   minSize: number;
   maxSize: number;
+  minRounds: number;
+  maxRounds: number;
   industryId?: number;
 };
 
@@ -42,8 +44,6 @@ const useCompanies = (params: CompaniesParams): Companies => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
-      minSize: MIN_COMPANY_SIZE,
-      maxSize: MAX_COMPANY_SIZE,
       ...params.filters
     }),
     [params.filters, params.paging?.page]
