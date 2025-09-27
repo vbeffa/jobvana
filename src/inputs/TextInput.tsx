@@ -10,6 +10,7 @@ export type TextInputProps = {
   maxLength?: number;
   placeholder?: string;
   disabled?: boolean;
+  height?: string;
   autoComplete?: HTMLInputAutoCompleteAttribute;
   showLength?: boolean;
   showClear?: boolean;
@@ -28,6 +29,7 @@ const TextInput = ({
   maxLength,
   placeholder,
   disabled,
+  height,
   autoComplete,
   showLength = true,
   showClear,
@@ -61,7 +63,7 @@ const TextInput = ({
                 : showEye
                   ? 'pr-7'
                   : ''
-          } border-[0.5px] border-gray-500 w-full`}
+          } border-[0.5px] border-gray-500 w-full ${height || ''}`}
           onChange={(e) => onChange(e.target.value)}
         />
         {showLength && maxLength && value !== undefined && (
