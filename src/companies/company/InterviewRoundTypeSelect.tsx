@@ -3,13 +3,11 @@ import { type RoundType, formatType, ROUND_TYPES } from './utils';
 const InterviewRoundTypeSelect = ({
   type,
   idx,
-  onChange,
-  showEmpty
+  onChange
 }: {
-  type?: RoundType;
-  idx?: number;
+  type: RoundType;
+  idx: number;
   onChange: (type: RoundType) => void;
-  showEmpty?: boolean;
 }) => {
   return (
     <select
@@ -18,7 +16,6 @@ const InterviewRoundTypeSelect = ({
       value={type}
       onChange={(e) => onChange(e.target.value as RoundType)}
     >
-      {showEmpty && <option key={0} value="" />}
       {ROUND_TYPES?.map((type, idx) => (
         <option key={idx} value={type}>
           {formatType(type)}

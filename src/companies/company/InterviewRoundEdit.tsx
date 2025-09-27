@@ -1,7 +1,16 @@
-import InterviewRoundDuration from './InterviewRoundDuration';
-import InterviewRoundLocationSelect from './InterviewRoundLocationSelect';
-import InterviewRoundTypeSelect from './InterviewRoundTypeSelect';
-import type { InterviewRound } from './utils';
+import { capitalize } from 'lodash';
+import { useMemo } from 'react';
+import NumberInput from '../../inputs/NumberInput';
+import Select from '../../inputs/Select';
+import {
+  formatType,
+  ROUND_TYPES,
+  ROUND_UNITS,
+  type DurationUnit,
+  type InterviewRound,
+  type RoundLocation,
+  type RoundType
+} from './utils';
 
 const InterviewRoundEdit = ({
   round,
@@ -9,52 +18,88 @@ const InterviewRoundEdit = ({
   onChange
 }: {
   round: InterviewRound;
-  idx?: number;
+  idx: number;
   onChange: (round: InterviewRound) => void;
 }) => {
+  const { type, location, duration, durationUnit } = round;
+  const max =
+    durationUnit === 'minute' ? 60 : durationUnit === 'hour' ? 12 : 30;
+  const step =
+    durationUnit === 'minute' ? 1 : durationUnit === 'hour' ? 0.25 : 1;
+
+  const availableLocations: Array<RoundLocation> = useMemo(() => {
+    return type === 'take_home' ? ['offline'] : ['phone', 'video', 'office'];
+  }, [type]);
+
   return (
     <>
-      <InterviewRoundTypeSelect
-        type={round.type}
-        idx={idx}
-        onChange={(type) => {
+      <Select
+        id={`interview_round_type${idx ? `_${idx}` : ''}`}
+        value={type}
+        onChange={(e) => {
           onChange({
             ...round,
-            type
+            type: e.target.value as RoundType
           });
+        }}
+      >
+        {ROUND_TYPES?.map((type, idx) => (
+          <option key={idx} value={type}>
+            {formatType(type)}
+          </option>
+        ))}
+      </Select>
+      <Select
+        id={`interview_round_location${idx ? `_${idx}` : ''}`}
+        value={location}
+        disabled={type === 'take_home'}
+        onChange={(e) => {
+          onChange({
+            ...round,
+            location: e.target.value as RoundLocation
+          });
+        }}
+      >
+        {availableLocations?.map((location, idx) => (
+          <option key={idx} value={location}>
+            {capitalize(location)}
+          </option>
+        ))}
+      </Select>
+      <NumberInput
+        id={`interview_round_duration${idx ? `_${idx}` : ''}`}
+        value={duration}
+        min={0}
+        max={max}
+        step={step}
+        onChange={(duration) => {
+          if (duration) {
+            onChange({
+              ...round,
+              duration
+            });
+          }
         }}
       />
-      <InterviewRoundLocationSelect
-        location={round.location}
-        idx={idx}
-        onChange={(location) => {
+      <Select
+        id={`interview_round_duration_unit${idx ? `_${idx}` : ''}`}
+        value={durationUnit}
+        onChange={(e) => {
+          const durationUnit = e.target.value as DurationUnit;
           onChange({
             ...round,
-            location
-          });
-        }}
-      />
-      <InterviewRoundDuration
-        duration={round.duration}
-        unit={round.durationUnit}
-        idx={idx}
-        onChangeDuration={(duration) => {
-          onChange({
-            ...round,
-            duration
-          });
-        }}
-        onChangeUnit={(durationUnit) => {
-          onChange({
-            ...round,
-            duration:
-              durationUnit === 'hour'
-                ? round.duration
-                : Math.round(round.duration),
+            duration: durationUnit === 'hour' ? duration : Math.round(duration),
             durationUnit
           });
         }}
-      />
+      >
+        {ROUND_UNITS?.map((unit, idx) => (
+          <option key={idx} value={unit}>
+            {unit}
+            {duration !== 1 && 's'}
+          </option>
+        ))}
+      </Select>
     </>
   );
 };

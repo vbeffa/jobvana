@@ -4,13 +4,11 @@ import { type RoundLocation, ROUND_LOCATIONS } from './utils';
 const InterviewRoundLocationSelect = ({
   location,
   idx,
-  onChange,
-  showEmpty
+  onChange
 }: {
-  location?: RoundLocation;
-  idx?: number;
+  location: RoundLocation;
+  idx: number;
   onChange: (location: RoundLocation) => void;
-  showEmpty?: boolean;
 }) => {
   return (
     <select
@@ -19,7 +17,6 @@ const InterviewRoundLocationSelect = ({
       value={location}
       onChange={(e) => onChange(e.target.value as RoundLocation)}
     >
-      {showEmpty && <option key={0} value="" />}
       {ROUND_LOCATIONS?.map((location, idx) => (
         <option key={idx} value={location}>
           {capitalize(location)}

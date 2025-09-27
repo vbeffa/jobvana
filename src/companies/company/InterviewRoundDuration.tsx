@@ -6,15 +6,13 @@ const InterviewRoundDuration = ({
   unit,
   idx,
   onChangeDuration,
-  onChangeUnit,
-  showEmpty
+  onChangeUnit
 }: {
   duration: number;
   unit: DurationUnit;
   idx?: number;
   onChangeDuration: (duration: number) => void;
   onChangeUnit: (unit: DurationUnit) => void;
-  showEmpty?: boolean;
 }) => {
   const max = unit === 'minute' ? 60 : unit === 'hour' ? 12 : 30;
   const step = unit === 'minute' ? 1 : unit === 'hour' ? 0.25 : 1;
@@ -40,11 +38,10 @@ const InterviewRoundDuration = ({
         value={unit}
         onChange={(e) => onChangeUnit(e.target.value as DurationUnit)}
       >
-        {showEmpty && <option key={0} value="" />}
         {ROUND_UNITS?.map((unit, idx) => (
           <option key={idx} value={unit}>
             {unit}
-            {/* {duration !== 1 && 's'} */}
+            {duration !== 1 && 's'}
           </option>
         ))}
       </select>

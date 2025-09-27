@@ -18,7 +18,7 @@ export type FullCompany = Company & {
   jobs: Array<CompanyJob>;
 };
 
-export type Company = Omit<DbCompany, 'created_at' | 'industry_id'>;
+export type Company = Omit<DbCompany, 'created_at'>;
 export type CompanyAddress = Omit<DbCompanyAddress, 'company_id'>;
 export type SkillVersion = Pick<
   DbSkillVersion,
@@ -42,7 +42,7 @@ const useCompany = (id?: number): CompanyH => {
       const { data, error } = await supabase
         .from('companies')
         .select(
-          `id, name, description, num_employees, user_id, contact_email, interview_process,
+          `id, name, description, industry_id, num_employees, user_id, contact_email, interview_process,
           industries(id, name),
           company_addresses(id, city, street, zip, state, type),
           company_tech_stacks(skill_versions(id, skill_id, version, ordinal)),
@@ -66,6 +66,7 @@ const useCompany = (id?: number): CompanyH => {
       id: company.id,
       name: company.name,
       description: company.description,
+      industry_id: company.industry_id,
       num_employees: company.num_employees,
       user_id: company.user_id,
       contact_email: company.contact_email,

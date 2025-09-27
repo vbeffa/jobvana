@@ -95,7 +95,6 @@ const MyCompanyInterviewProcess = ({
         {!isEditing && (
           <InterviewProcessDisplay interviewProcess={editInterviewProcess} />
         )}
-
         {isEditing && (
           <InterviewProcessEdit
             interviewProcess={editInterviewProcess}

@@ -10,7 +10,19 @@ import {
 import type { CompanyAddress, FullCompany } from './job_seeker/useCompany';
 
 export type ToInsert = Omit<DbCompany, 'id' | 'created_at'>;
-export type ToUpdate = Omit<DbCompany, 'created_at'>;
+export type ToUpdate = Pick<
+  DbCompany,
+  | 'id'
+  | 'contact_email'
+  | 'description'
+  | 'industry_id'
+  | 'name'
+  | 'num_employees'
+>;
+export type ToDisplay = Pick<
+  DbCompany,
+  'contact_email' | 'description' | 'industry_id' | 'name' | 'num_employees'
+>;
 
 export const isHeadquarters = (address: CompanyAddress) =>
   address.type === 'headquarters';
