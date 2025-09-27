@@ -12,7 +12,7 @@ const InterviewProcessEdit = ({
 }) => {
   return (
     <>
-      <div className="grid grid-cols-[7%_20%_15%_17%_12%] gap-2">
+      <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
         <div className="flex justify-center">
           Round<span className="text-xs align-super">1</span>
         </div>
@@ -24,12 +24,12 @@ const InterviewProcessEdit = ({
           Duration<span className="text-xs align-super">3,4</span>
         </div>
       </div>
-      <div className="w-[700px] border-b-[0.5px] border-blue-300" />
+      <div className="-mx-2 mb-1 border-b-[0.5px] border-blue-300" />
       {interviewProcess.rounds.map((round, idx) => {
         return (
           <div
             key={idx}
-            className="relative grid grid-cols-[7%_20%_15%_17%_12%] gap-2"
+            className="relative grid grid-cols-[8%_20%_20%_20%_19%] gap-2"
           >
             <div className="content-center flex justify-center">{idx + 1}</div>
             <InterviewRoundEdit
@@ -46,7 +46,7 @@ const InterviewProcessEdit = ({
             {interviewProcess.rounds.length > 1 && (
               <>
                 <div
-                  className="absolute text-gray-400 top-2 right-39.5 cursor-pointer"
+                  className="absolute text-gray-400 top-2 right-0 cursor-pointer"
                   onClick={() => {
                     setInterviewProcess((process) => {
                       const updatedProcess = _.cloneDeep(process);
@@ -59,7 +59,7 @@ const InterviewProcessEdit = ({
                 </div>
                 {idx < 4 && (
                   <div
-                    className="absolute text-gray-400 top-2 right-48 cursor-pointer"
+                    className="absolute text-gray-400 top-2 right-4.5 cursor-pointer"
                     onClick={() => {
                       setInterviewProcess((process) => {
                         const updatedProcess = _.cloneDeep(process);
@@ -78,7 +78,7 @@ const InterviewProcessEdit = ({
                 )}
                 {idx > 0 && (
                   <div
-                    className="absolute text-gray-400 top-2 right-44 cursor-pointer"
+                    className="absolute text-gray-400 top-2 right-8.5 cursor-pointer"
                     onClick={() => {
                       setInterviewProcess((process) => {
                         const updatedProcess = _.cloneDeep(process);
@@ -100,7 +100,7 @@ const InterviewProcessEdit = ({
           </div>
         );
       })}
-      <div className="grid grid-cols-[7%_20%_15%_17%_12%] gap-2">
+      <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
         {interviewProcess.rounds.length < 5 && (
           <div
             className="col-start-2 col-span-4 text-gray-400 mb-2 cursor-pointer"

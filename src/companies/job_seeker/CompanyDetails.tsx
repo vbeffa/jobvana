@@ -76,9 +76,11 @@ const CompanyDetails = ({ id }: { id?: number }) => {
       </Section>
       <Section title="Interview Process" isLast={true}>
         {company.interview_process ? (
-          <InterviewProcessDisplay
-            interviewProcess={company.interview_process as InterviewProcess}
-          />
+          <div className="border-[0.5px] border-blue-300 rounded-lg w-[600px] mt-2 p-2 flex flex-col gap-2">
+            <InterviewProcessDisplay
+              interviewProcess={company.interview_process as InterviewProcess}
+            />
+          </div>
         ) : null}
       </Section>
     </>

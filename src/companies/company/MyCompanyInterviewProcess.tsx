@@ -95,17 +95,19 @@ const MyCompanyInterviewProcess = ({
           }}
         />
       </div>
-      <div className="flex flex-col gap-2">
-        {!isEditing && (
+      {!isEditing && (
+        <div className="border-[0.5px] border-blue-300 rounded-lg w-[600px] p-2 flex flex-col gap-2">
           <InterviewProcessDisplay interviewProcess={editInterviewProcess} />
-        )}
-        {isEditing && (
+        </div>
+      )}
+      {isEditing && (
+        <div className="border-[0.5px] border-blue-300 rounded-lg w-[720px] p-2 flex flex-col gap-2">
           <InterviewProcessEdit
             interviewProcess={editInterviewProcess}
             setInterviewProcess={setEditInterviewProcess}
           />
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
