@@ -1,4 +1,3 @@
-import { FaTriangleExclamation } from 'react-icons/fa6';
 import NumberInput from '../../inputs/NumberInput';
 import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
 
@@ -26,8 +25,6 @@ const SalaryRangeInput = ({
           max={MAX_SALARY}
           step={1000}
           width="w-32"
-          pl="pl-4"
-          showOutOfRange={false}
           showCurrency={true}
           onChange={onChangeLow}
         />
@@ -41,19 +38,9 @@ const SalaryRangeInput = ({
           max={MAX_SALARY}
           step={1000}
           width="w-32"
-          pl="pl-4"
-          showOutOfRange={false}
           showCurrency={true}
           onChange={onChangeHigh}
         />
-        {(low < MIN_SALARY || high > MAX_SALARY) && (
-          <div className="text-sm text-red-500 flex flex-row gap-1">
-            <div className="content-center">
-              <FaTriangleExclamation />
-            </div>
-            <div className="content-center">Out of range</div>
-          </div>
-        )}
       </div>
     </>
   );

@@ -18,7 +18,7 @@ const CompanySizeEdit = <T extends Partial<ToInsert> | ToUpdate>({
       value={size ?? null}
       min={MIN_COMPANY_SIZE}
       max={MAX_COMPANY_SIZE}
-      width="w-fit"
+      width="w-24"
       onChange={(size) => {
         handleUpdate((company) => ({
           ...company,

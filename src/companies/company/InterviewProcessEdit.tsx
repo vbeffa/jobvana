@@ -10,6 +10,8 @@ const InterviewProcessEdit = ({
   interviewProcess: InterviewProcess;
   setInterviewProcess: React.Dispatch<React.SetStateAction<InterviewProcess>>;
 }) => {
+  const { rounds } = interviewProcess;
+
   return (
     <>
       <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
@@ -25,7 +27,7 @@ const InterviewProcessEdit = ({
         </div>
       </div>
       <div className="-mx-2 mb-1 border-b-[0.5px] border-blue-300" />
-      {interviewProcess.rounds.map((round, idx) => {
+      {rounds.map((round, idx) => {
         return (
           <div
             key={idx}
@@ -43,7 +45,7 @@ const InterviewProcessEdit = ({
                 });
               }}
             />
-            {interviewProcess.rounds.length > 1 && (
+            {rounds.length > 1 && (
               <>
                 <div
                   className="absolute text-gray-400 top-2 right-0 cursor-pointer"
@@ -57,7 +59,7 @@ const InterviewProcessEdit = ({
                 >
                   <FaTrash />
                 </div>
-                {idx < 4 && (
+                {idx < rounds.length - 1 && (
                   <div
                     className="absolute text-gray-400 top-2 right-4.5 cursor-pointer"
                     onClick={() => {
@@ -101,7 +103,7 @@ const InterviewProcessEdit = ({
         );
       })}
       <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
-        {interviewProcess.rounds.length < 5 && (
+        {rounds.length < 5 && (
           <div
             className="col-start-2 col-span-4 text-gray-400 mb-2 cursor-pointer"
             onClick={() => {

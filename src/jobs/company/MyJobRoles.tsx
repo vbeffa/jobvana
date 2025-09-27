@@ -3,13 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaPlus, FaTrash, FaTriangleExclamation } from 'react-icons/fa6';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
+import NumberInput from '../../inputs/NumberInput';
 import type { JobRole } from '../../types';
 import supabase from '../../utils/supabase';
 import JobRoles from '../JobRoles';
 import RoleSelect from '../RoleSelect';
 import LevelSelect from './LevelSelect';
 import type { Edit } from './MyJobs';
-import PercentInput from './PercentInput';
 import type { Job } from './useJobsForCompany';
 
 export type MyJobRolesProps = {
@@ -165,30 +165,24 @@ const MyJobRoles = ({
                     });
                   }}
                 />
-                <div className="relative flex flex-row gap-0.5">
-                  <PercentInput
-                    idx={idx}
-                    value={jobRole.percent}
-                    onChange={(percent) => {
-                      setEditJobRoles((roles) => {
-                        const updatedRoles = _.cloneDeep(roles);
-                        updatedRoles[idx].percent = percent;
-                        return updatedRoles;
-                      });
-                    }}
-                  />
-                  <div
-                    className={`absolute ${
-                      jobRole.percent >= 100
-                        ? 'right-6'
-                        : jobRole.percent >= 10
-                          ? 'right-8'
-                          : 'right-10'
-                    } top-1 -z-10`}
-                  >
-                    %
-                  </div>
-                </div>
+                <NumberInput
+                  id={`role_percent_${idx}`}
+                  value={jobRole.percent}
+                  min={1}
+                  max={100}
+                  showPercent={true}
+                  onChange={(value) => {
+                    if (!value) {
+                      return;
+                    }
+                    setEditJobRoles((roles) => {
+                      const updatedRoles = _.cloneDeep(roles);
+                      updatedRoles[idx].percent = value;
+                      return updatedRoles;
+                    });
+                  }}
+                  width="w-24"
+                />
                 <LevelSelect
                   id={`level_${idx}`}
                   value={jobRole.role_level}
@@ -212,7 +206,7 @@ const MyJobRoles = ({
                 >
                   <FaTrash />
                 </div>
-                {(editJobRoles[idx].percent < 1 ||
+                {/* {(editJobRoles[idx].percent < 1 ||
                   editJobRoles[idx].percent > 100) && (
                   <div className="text-sm text-red-500 flex flex-row gap-1">
                     <div className="content-center">
@@ -220,7 +214,7 @@ const MyJobRoles = ({
                     </div>
                     <div className="content-center">% out of range</div>
                   </div>
-                )}
+                )} */}
               </div>
             ))}
             <div

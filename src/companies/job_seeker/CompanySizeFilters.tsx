@@ -23,8 +23,7 @@ const CompanySizeFilters = ({
           value={low}
           min={MIN_COMPANY_SIZE}
           max={MAX_COMPANY_SIZE}
-          width="w-fit"
-          showOutOfRange={false}
+          width="w-27"
           onChange={onChangeLow}
         />
         <label htmlFor="max_size" className="content-center">
@@ -35,15 +34,9 @@ const CompanySizeFilters = ({
           value={high}
           min={MIN_COMPANY_SIZE}
           max={MAX_COMPANY_SIZE}
-          width="w-fit"
-          showOutOfRange={false}
+          width="w-27"
           onChange={onChangeHigh}
         />
-        {(low < MIN_COMPANY_SIZE || high > MAX_COMPANY_SIZE) && (
-          <div className="text-sm text-red-500 content-center">
-            ({MIN_COMPANY_SIZE} - {MAX_COMPANY_SIZE})
-          </div>
-        )}
       </div>
     </>
   );
