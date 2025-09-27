@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import PillContainer from '../../containers/PillContainer';
 import { JobvanaContext } from '../../Context';
 import Error from '../../Error';
-import JobsList from '../../jobs/JobsList';
+import JobsList from '../../jobs/job_seekers/JobsList';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
 import type { InterviewProcess } from '../company/utils';

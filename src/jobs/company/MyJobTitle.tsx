@@ -1,5 +1,5 @@
 import TextInput from '../../inputs/TextInput';
-import { MAX_TITLE_LENGTH } from '../useJobs';
+import { MAX_TITLE_LENGTH } from '../job_seekers/useJobs';
 import type { ToInsert, ToUpdate } from '../utils';
 
 const MyJobTitle = <T extends Partial<ToInsert> | ToUpdate>({

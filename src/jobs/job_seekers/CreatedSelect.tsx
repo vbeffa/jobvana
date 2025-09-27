@@ -1,4 +1,4 @@
-import type { CreatedRange } from '../jobs/useJobs';
+import type { CreatedRange } from './useJobs';
 
 const CreatedSelect = ({
   id,

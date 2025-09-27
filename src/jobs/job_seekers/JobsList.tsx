@@ -1,4 +1,4 @@
-import JobLink, { type JobLinkProps } from './JobLink';
+import JobLink, { type JobLinkProps } from '../JobLink';
 
 export type JobsListProps = {
   jobs: Array<JobLinkProps>;

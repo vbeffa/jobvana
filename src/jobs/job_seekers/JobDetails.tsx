@@ -1,9 +1,9 @@
-import CompanyLink from '../companies/CompanyLink';
-import Error from '../Error';
-import LoadingModal from '../LoadingModal';
-import Section from '../Section';
-import SkillsList from '../skills/SkillsList';
-import JobRoles from './JobRoles';
+import CompanyLink from '../../companies/CompanyLink';
+import Error from '../../Error';
+import LoadingModal from '../../LoadingModal';
+import Section from '../../Section';
+import SkillsList from '../../skills/SkillsList';
+import JobRoles from '../JobRoles';
 import Salary from './Salary';
 import useJob from './useJob';
 

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import type { Skill } from '../jobs/useJob';
+import type { Skill } from '../jobs/job_seekers/useJob';
 
 export type SkillLinkProps = {
   skill: Skill;

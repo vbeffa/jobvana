@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import FiltersContainer from '../containers/FiltersContainer';
-import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
-import ResourceListContainer from '../containers/ResourceListContainer';
-import ResourcesContainer from '../containers/ResourcesContainer';
-import SummaryCardsContainer from '../containers/SummaryCardsContainer';
-import { JobvanaContext } from '../Context';
-import Error from '../Error';
-import PageNav from '../PageNav';
-import { Route } from '../routes/jobvana.jobs.index';
-import SummaryCard from '../SummaryCard';
+import FiltersContainer from '../../containers/FiltersContainer';
+import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
+import ResourceListContainer from '../../containers/ResourceListContainer';
+import ResourcesContainer from '../../containers/ResourcesContainer';
+import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
+import { JobvanaContext } from '../../Context';
+import Error from '../../Error';
+import PageNav from '../../PageNav';
+import { Route } from '../../routes/jobvana.jobs.index';
+import SummaryCard from '../../SummaryCard';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
 import useJobs, {

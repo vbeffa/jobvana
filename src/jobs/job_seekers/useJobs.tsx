@@ -1,8 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import type { Params } from '../types';
-import supabase from '../utils/supabase';
+import type { Params } from '../../types';
+import supabase from '../../utils/supabase';
 
 export const MAX_TITLE_LENGTH = 100;
 export const MIN_SALARY = 10000;

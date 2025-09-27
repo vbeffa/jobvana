@@ -1,14 +1,14 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { SkillVersion } from '../companies/job_seeker/useCompany';
+import type { SkillVersion } from '../../companies/job_seeker/useCompany';
 import type {
   Application,
   Company,
   Job as DbJob,
   JobRole as DbJobRole,
   Skill as DbSkill
-} from '../types';
-import supabase from '../utils/supabase';
+} from '../../types';
+import supabase from '../../utils/supabase';
 
 export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'> & { techStack: Array<SkillVersion> };

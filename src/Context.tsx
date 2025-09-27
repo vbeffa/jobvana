@@ -3,7 +3,11 @@ import {
   MAX_COMPANY_SIZE,
   MIN_COMPANY_SIZE
 } from './companies/job_seeker/useCompanies';
-import { MAX_SALARY, MIN_SALARY, type CreatedRange } from './jobs/useJobs';
+import {
+  MAX_SALARY,
+  MIN_SALARY,
+  type CreatedRange
+} from './jobs/job_seekers/useJobs';
 import type { Company as DbCompany } from './types';
 
 export type UserType = 'company' | 'job_seeker';

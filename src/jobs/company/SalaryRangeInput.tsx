@@ -1,6 +1,6 @@
 import { FaTriangleExclamation } from 'react-icons/fa6';
-import NumberInput from '../inputs/NumberInput';
-import { MAX_SALARY, MIN_SALARY } from './useJobs';
+import NumberInput from '../../inputs/NumberInput';
+import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
 
 const SalaryRangeInput = ({
   low,

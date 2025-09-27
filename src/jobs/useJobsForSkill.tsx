@@ -9,8 +9,12 @@ import type {
   Params
 } from '../types';
 import supabase from '../utils/supabase';
-import type { JobRole } from './useJob';
-import { MAX_SALARY, MIN_SALARY, type SearchFilters } from './useJobs';
+import type { JobRole } from './job_seekers/useJob';
+import {
+  MAX_SALARY,
+  MIN_SALARY,
+  type SearchFilters
+} from './job_seekers/useJobs';
 
 export type Job = DbJob & {
   company: Company;

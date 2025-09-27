@@ -1,5 +1,5 @@
 import { Route } from '../routes/jobvana.jobs.$id';
-import JobDetails from './JobDetails';
+import JobDetails from './job_seekers/JobDetails';
 
 const JobRoute = () => {
   const { id } = Route.useLoaderData();

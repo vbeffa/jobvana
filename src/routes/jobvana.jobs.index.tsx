@@ -3,8 +3,12 @@ import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
 import { JobvanaContext } from '../Context';
 import MyJobs from '../jobs/company/MyJobs';
-import Jobs from '../jobs/Jobs';
-import { MAX_SALARY, MIN_SALARY, type CreatedRange } from '../jobs/useJobs';
+import Jobs from '../jobs/job_seekers/Jobs';
+import {
+  MAX_SALARY,
+  MIN_SALARY,
+  type CreatedRange
+} from '../jobs/job_seekers/useJobs';
 
 export type JobSearch = {
   page?: number;

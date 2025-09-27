@@ -1,6 +1,10 @@
 import { MAX_DESCRIPTION_LENGTH } from '../companies/job_seeker/useCompanies';
 import type { Job as DbJob } from '../types';
-import { MAX_SALARY, MAX_TITLE_LENGTH, MIN_SALARY } from './useJobs';
+import {
+  MAX_SALARY,
+  MAX_TITLE_LENGTH,
+  MIN_SALARY
+} from './job_seekers/useJobs';
 
 export type ToInsert = Omit<DbJob, 'id' | 'created_at'>;
 export type ToUpdate = Omit<DbJob, 'created_at'>;

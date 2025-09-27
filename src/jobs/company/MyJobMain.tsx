@@ -5,11 +5,11 @@ import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import Error from '../../Error';
 import TextArea from '../../inputs/TextArea';
 import supabase from '../../utils/supabase';
-import SalaryRangeInput from '../SalaryRangeInput';
-import { MAX_SALARY, MIN_SALARY } from '../useJobs';
+import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
 import { isValidJob, type ToUpdate } from '../utils';
 import type { Edit } from './MyJobs';
 import MyJobTitle from './MyJobTitle';
+import SalaryRangeInput from './SalaryRangeInput';
 import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
 

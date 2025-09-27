@@ -17,7 +17,7 @@ const CompanySizeFilters = ({
       <label htmlFor="min_size" className="content-center">
         Size:
       </label>
-      <div className="flex flex-row gap-x-2">
+      <div className="flex flex-row gap-x-2 h-[33px]">
         <NumberInput
           id="min_size"
           value={low}

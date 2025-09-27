@@ -1,6 +1,6 @@
-import Filter from '../inputs/Filter';
+import Filter from '../../inputs/Filter';
+import RoleSelect from '../RoleSelect';
 import CreatedSelect from './CreatedSelect';
-import RoleSelect from './RoleSelect';
 import SalaryRangeSelect from './SalaryRangeSelect';
 import SkillSelect from './SkillSelect';
 import type { SearchFilters } from './useJobs';
