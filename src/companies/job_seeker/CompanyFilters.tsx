@@ -44,7 +44,7 @@ const CompanyFilters = ({
               }
               onChange({
                 ...filters,
-                maxSize: size ?? undefined,
+                maxSize: size,
                 minSize: size < filters.minSize ? size : filters.minSize
               });
             }}
@@ -77,7 +77,7 @@ const CompanyFilters = ({
               }
               onChange({
                 ...filters,
-                maxRounds: rounds ?? undefined,
+                maxRounds: rounds,
                 minRounds:
                   rounds < filters.maxRounds ? rounds : filters.minRounds
               });

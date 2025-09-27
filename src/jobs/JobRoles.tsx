@@ -53,7 +53,7 @@ const JobRoles = ({ jobRoles }: JobRolesProps) => {
           if (!role1 || !role2) {
             return 0;
           }
-          return role1?.name.localeCompare(role2?.name);
+          return role1.name.localeCompare(role2.name);
         })
         .map((jobRole, idx) => {
           const role = roles?.find((role) => role.id === jobRole.role_id);

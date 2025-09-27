@@ -33,10 +33,10 @@ const useSkillsForCategory = ({
   const queryKey: QueryKey = useMemo(
     () => ({
       categoryId: skillCategoryId,
-      page: params.paging?.page,
+      page: params.paging.page,
       ...params.filters
     }),
-    [skillCategoryId, params.filters, params.paging?.page]
+    [skillCategoryId, params.filters, params.paging.page]
   );
 
   const {

@@ -43,10 +43,10 @@ type QueryKey = {
 const useCompanies = (params: CompaniesParams): Companies => {
   const queryKey: QueryKey = useMemo(
     () => ({
-      page: params.paging?.page,
+      page: params.paging.page,
       ...params.filters
     }),
-    [params.filters, params.paging?.page]
+    [params.filters, params.paging.page]
   );
   // console.log(queryKey);
 
@@ -96,7 +96,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
       return undefined;
     }
 
-    return data?.companies.map((companyData) => ({
+    return data.companies.map((companyData) => ({
       ...companyData,
       headquarters: companyData.company_addresses[0],
       industryName: companyData.industries.name

@@ -65,10 +65,7 @@ const MyCompanyNewAddress = ({
     <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">
       <div className="relative">
         <SaveCancelIcons
-          disabled={
-            newAddress &&
-            (!isValidAddress(newAddress) || !isDirty || isSubmitting)
-          }
+          disabled={!isValidAddress(newAddress) || !isDirty || isSubmitting}
           onCancel={onCancel}
           onSave={createAddress}
         />

@@ -5,7 +5,7 @@ import TextInput from '../../inputs/TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
 import StateSelect from '../StateSelect';
-import { isValidAddress, isValidCompany } from '../utils';
+import { isValidAddress } from '../utils';
 
 const MyCompanyAddress = ({
   address,
@@ -81,7 +81,9 @@ const MyCompanyAddress = ({
         <EditDeleteIcons
           type="address"
           isEditing={isEditing}
-          disabled={isEditing && (!isDirty || !isValidCompany || isSubmitting)}
+          disabled={
+            isEditing && (!isDirty || !isValidAddress(address) || isSubmitting)
+          }
           onEdit={() => {
             setError(undefined);
             setEditAddress(address);

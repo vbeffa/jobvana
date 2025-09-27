@@ -49,10 +49,10 @@ type QueryKey = {
 const useJobs = (params: JobsParams): Jobs => {
   const queryKey: QueryKey = useMemo(
     () => ({
-      page: params.paging?.page,
+      page: params.paging.page,
       ...params.filters
     }),
-    [params.filters, params.paging?.page]
+    [params.filters, params.paging.page]
   );
   // console.log(queryKey);
 

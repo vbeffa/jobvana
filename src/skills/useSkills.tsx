@@ -34,10 +34,10 @@ type QueryKey = {
 const useSkills = (params: SkillsParams): Skills => {
   const queryKey: QueryKey = useMemo(
     () => ({
-      page: params.paging?.page,
+      page: params.paging.page,
       ...params.filters
     }),
-    [params.filters, params.paging?.page]
+    [params.filters, params.paging.page]
   );
 
   const { isPending, isPlaceholderData, data, error } = useQuery({

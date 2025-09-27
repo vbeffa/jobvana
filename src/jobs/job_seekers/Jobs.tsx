@@ -81,8 +81,8 @@ const Jobs = () => {
         'skillId',
         'created'
       ]),
-      company: context.company ?? '',
-      title: context.title ?? ''
+      company: context.company,
+      title: context.title
     });
   }, [context]);
 

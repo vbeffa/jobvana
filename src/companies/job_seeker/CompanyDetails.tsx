@@ -33,18 +33,18 @@ const CompanyDetails = ({ id }: { id?: number }) => {
     return null;
   }
 
-  const hq = company ? findHeadquarters(company) : undefined;
+  const hq = findHeadquarters(company);
 
   return (
     <>
       {isPlaceholderData && <LoadingModal />}
       <Section title={company.name}>
         <div className="flex flex-row gap-1">
-          {company && (
+          {
             <div className="pt-1 flex flex-row gap-2">
               <PillContainer>{company.industry.name}</PillContainer>
             </div>
-          )}
+          }
         </div>
         <div className="content-center">
           {company.num_employees} employee{company.num_employees > 1 && 's'}
@@ -60,7 +60,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
       </Section>
       <Section title="Description">{company.description}</Section>
       <Section title="Offices">
-        {company && company.addresses.length > 0 ? (
+        {company.addresses.length > 0 ? (
           <ul>
             {company.addresses.map((address) => (
               <li key={address.id}>
@@ -71,9 +71,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
           </ul>
         ) : null}
       </Section>
-      <Section title="Current Jobs">
-        {company ? <JobsList jobs={company.jobs} /> : null}
-      </Section>
+      <Section title="Current Jobs">{<JobsList jobs={company.jobs} />}</Section>
       <Section title="Interview Process" isLast={true}>
         {company.interview_process ? (
           <div className="border-[0.5px] border-blue-300 rounded-lg w-[600px] mt-2 p-2 flex flex-col gap-2">

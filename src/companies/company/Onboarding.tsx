@@ -42,7 +42,7 @@ const Onboarding = ({ userId }: { userId: string }) => {
         console.log(error);
         setError(error);
       } else {
-        setCompany(data?.[0]);
+        setCompany(data[0]);
       }
     } finally {
       setIsSubmitting(false);

@@ -62,10 +62,6 @@ const MyCompanyInterviewProcess = ({
     }
   }, [company, editInterviewProcess, setCompany]);
 
-  if (!company) {
-    return;
-  }
-
   return (
     <>
       {error && <Error error={error} />}

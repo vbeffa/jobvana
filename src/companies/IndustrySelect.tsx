@@ -40,9 +40,6 @@ const IndustrySelect = <T extends Partial<ToInsert> | ToUpdate>({
             }
             if (handleUpdate) {
               handleUpdate((val) => {
-                if (val === undefined || val === null) {
-                  return val;
-                }
                 return {
                   ...val,
                   industry_id: industryId

@@ -48,7 +48,7 @@ const InterviewRoundEdit = ({
           });
         }}
       >
-        {ROUND_TYPES?.map((type, idx) => (
+        {ROUND_TYPES.map((type, idx) => (
           <option key={idx} value={type}>
             {formatType(type)}
           </option>
@@ -67,7 +67,7 @@ const InterviewRoundEdit = ({
             });
           }}
         >
-          {availableLocations?.map((location, idx) => (
+          {availableLocations.map((location, idx) => (
             <option key={idx} value={location}>
               {capitalize(location)}
             </option>
@@ -106,7 +106,7 @@ const InterviewRoundEdit = ({
           });
         }}
       >
-        {availableDurationUnits?.map((unit, idx) => (
+        {availableDurationUnits.map((unit, idx) => (
           <option key={idx} value={unit}>
             {capitalize(unit)}
             {duration !== 1 && 's'}

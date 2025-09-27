@@ -24,7 +24,6 @@ const StateSelect = ({
   return (
     <Select
       id={`state${idx ? `_${idx}` : ''}`}
-      // className="border-[0.5px] border-gray-500 h-[2.05rem] px-2 py-0.5"
       value={state}
       height="h-[2.05rem]"
       px="px-2"
@@ -32,7 +31,7 @@ const StateSelect = ({
     >
       <>
         {showEmpty && <option key={0} value="" />}
-        {STATES?.map((state, idx) => (
+        {STATES.map((state, idx) => (
           <option key={idx} value={state}>
             {state}
           </option>
