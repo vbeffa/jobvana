@@ -13,7 +13,7 @@ import useCompanyAddresses from './useCompanyAddresses';
 const MyCompany = ({ company }: { company: Company }) => {
   const [card, setCard] = useState<
     'overview' | 'addresses' | 'interview_process'
-  >('interview_process');
+  >('overview');
   const { count } = useCompanyAddresses(company.id);
 
   const currComponent = (() => {
