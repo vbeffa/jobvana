@@ -31,7 +31,7 @@ const InterviewProcessEdit = ({
         return (
           <div
             key={idx}
-            className="relative grid grid-cols-[8%_20%_20%_20%_19%] gap-2"
+            className="relative grid grid-cols-[8%_25%_20%_20%_19%] gap-2"
           >
             <div className="content-center flex justify-center">{idx + 1}</div>
             <InterviewRoundEdit
@@ -105,7 +105,7 @@ const InterviewProcessEdit = ({
       <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
         {rounds.length < 5 && (
           <div
-            className="col-start-2 col-span-4 text-gray-400 mb-2 cursor-pointer"
+            className="col-start-2 col-span-4 text-gray-400 pt-1 mb-1 cursor-pointer"
             onClick={() => {
               setInterviewProcess((process) => {
                 const updatedProcess = _.cloneDeep(process);

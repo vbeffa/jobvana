@@ -54,42 +54,49 @@ const InterviewRoundEdit = ({
           </option>
         ))}
       </Select>
-      <Select
-        id={`interview_round_location${idx ? `_${idx}` : ''}`}
-        value={location}
-        disabled={type === 'take_home'}
-        onChange={(e) => {
-          onChange({
-            ...round,
-            location: e.target.value as RoundLocation
-          });
-        }}
-      >
-        {availableLocations?.map((location, idx) => (
-          <option key={idx} value={location}>
-            {capitalize(location)}
-          </option>
-        ))}
-      </Select>
-      <NumberInput
-        id={`interview_round_duration${idx ? `_${idx}` : ''}`}
-        value={duration}
-        min={min}
-        max={max}
-        step={step}
-        onChange={(duration) => {
-          if (duration) {
+      <div className="flex justify-center">
+        <Select
+          id={`interview_round_location${idx ? `_${idx}` : ''}`}
+          value={location}
+          disabled={type === 'take_home'}
+          width="w-24"
+          onChange={(e) => {
             onChange({
               ...round,
-              duration
+              location: e.target.value as RoundLocation
             });
-          }
-        }}
-      />
+          }}
+        >
+          {availableLocations?.map((location, idx) => (
+            <option key={idx} value={location}>
+              {capitalize(location)}
+            </option>
+          ))}
+        </Select>
+      </div>
+      <div className="flex justify-end">
+        <NumberInput
+          id={`interview_round_duration${idx ? `_${idx}` : ''}`}
+          value={duration}
+          min={min}
+          max={max}
+          step={step}
+          width="w-24"
+          onChange={(duration) => {
+            if (duration) {
+              onChange({
+                ...round,
+                duration
+              });
+            }
+          }}
+        />
+      </div>
       <Select
         id={`interview_round_duration_unit${idx ? `_${idx}` : ''}`}
         value={durationUnit}
         disabled={type === 'take_home'}
+        width="w-24"
         onChange={(e) => {
           const durationUnit = e.target.value as DurationUnit;
           onChange({
