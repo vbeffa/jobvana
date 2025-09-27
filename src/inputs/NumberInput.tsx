@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { FaTriangleExclamation } from 'react-icons/fa6';
+import Tooltip from './Tooltip';
 
 const NumberInput = ({
   id,
@@ -24,7 +25,6 @@ const NumberInput = ({
   onChange: (value: number | null) => void;
   width?: string;
 }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
   const outOfRange = useMemo(
     () => value !== null && (value < min || value > max),
     [max, min, value]
@@ -80,22 +80,13 @@ const NumberInput = ({
           </div>
         )}
         {outOfRange && (
-          <div
-            className={`absolute text-red-500 top-2 right-6 flex flex-row gap-1`}
-            onMouseOver={() => setShowTooltip(true)}
-            onMouseOut={() => setShowTooltip(false)}
+          <Tooltip
+            message={`Valid range is ${showCurrency && '$'}
+                  ${min} - ${showCurrency && '$'}
+                  ${max}`}
           >
             <FaTriangleExclamation />
-            {showTooltip && (
-              <div className="absolute size-64 top-3 left-5 z-10">
-                <div className="size-fit text-sm border-[0.5px] border-gray-600 rounded-sm text-gray-600 bg-gray-200 p-1">
-                  Valid range is {showCurrency && '$'}
-                  {min} - {showCurrency && '$'}
-                  {max}
-                </div>
-              </div>
-            )}
-          </div>
+          </Tooltip>
         )}
       </div>
     </>

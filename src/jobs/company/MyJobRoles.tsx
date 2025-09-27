@@ -206,15 +206,6 @@ const MyJobRoles = ({
                 >
                   <FaTrash />
                 </div>
-                {/* {(editJobRoles[idx].percent < 1 ||
-                  editJobRoles[idx].percent > 100) && (
-                  <div className="text-sm text-red-500 flex flex-row gap-1">
-                    <div className="content-center">
-                      <FaTriangleExclamation />
-                    </div>
-                    <div className="content-center">% out of range</div>
-                  </div>
-                )} */}
               </div>
             ))}
             <div
@@ -238,7 +229,7 @@ const MyJobRoles = ({
               )}
               {!duplicateRole && (
                 <div
-                  className="absolute left-0 top-0 text-gray-400 cursor-pointer"
+                  className="absolute left-0 top-1 text-gray-400 cursor-pointer"
                   onClick={() => {
                     setEditJobRoles((roles) => {
                       const updatedRoles = _.cloneDeep(roles);
