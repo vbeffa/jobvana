@@ -12,8 +12,8 @@ export const MAX_DESCRIPTION_LENGTH = 1000;
 
 export type SearchFilters = {
   name?: string;
-  minSize?: number;
-  maxSize?: number;
+  minSize: number;
+  maxSize: number;
   industryId?: number;
 };
 
@@ -42,6 +42,8 @@ const useCompanies = (params: CompaniesParams): Companies => {
   const queryKey: QueryKey = useMemo(
     () => ({
       page: params.paging?.page,
+      minSize: MIN_COMPANY_SIZE,
+      maxSize: MAX_COMPANY_SIZE,
       ...params.filters
     }),
     [params.filters, params.paging?.page]

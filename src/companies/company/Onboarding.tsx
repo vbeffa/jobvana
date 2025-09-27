@@ -8,7 +8,7 @@ import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
 import { isValidCompany, type ToInsert } from '../utils';
 import CompanyName from './CompanyName';
-import CompanySize from './CompanySize';
+import CompanySizeEdit from './CompanySizeEdit';
 
 const Onboarding = ({ userId }: { userId: string }) => {
   const { setCompany } = useContext(JobvanaContext);
@@ -62,8 +62,7 @@ const Onboarding = ({ userId }: { userId: string }) => {
               showEmpty={true}
               handleUpdate={setNewCompany}
             />
-            <CompanySize
-              label="Num employees"
+            <CompanySizeEdit
               size={newCompany.num_employees}
               handleUpdate={setNewCompany}
             />

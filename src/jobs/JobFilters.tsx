@@ -51,7 +51,7 @@ const JobFilters = ({
             }}
           />
         </div>
-        <div className="grid grid-cols-[35%_65%] w-[24rem] gap-y-2">
+        <div className="grid grid-cols-[25%_65%] w-[24rem] gap-y-2">
           <SalaryRangeSelect
             low={filters.minSalary}
             high={filters.maxSalary}

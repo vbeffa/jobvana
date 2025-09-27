@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FaTriangleExclamation } from 'react-icons/fa6';
 
 const NumberInput = ({
   id,
@@ -8,6 +9,7 @@ const NumberInput = ({
   max,
   step = 1,
   showOutOfRange = true,
+  outOfRangePos = '-right-40',
   showCurrency = false,
   onChange,
   width = 'w-full',
@@ -20,6 +22,7 @@ const NumberInput = ({
   max: number;
   step?: number;
   showOutOfRange?: boolean;
+  outOfRangePos?: string;
   showCurrency?: boolean;
   onChange: (value: number | null) => void;
   width?: string;
@@ -37,7 +40,7 @@ const NumberInput = ({
           {label}:
         </label>
       )}
-      <div className="relative">
+      <div className={`relative ${width}`}>
         <input
           id={id}
           type="number"
@@ -45,7 +48,7 @@ const NumberInput = ({
           min={min}
           max={max}
           placeholder={`${min} - ${max}`}
-          className={`${pl} p-1 border-[0.5px] border-gray-500 h-8 ${width}`}
+          className={`${pl} p-1 border-[0.5px] border-gray-500 h-8`}
           value={value ?? ''}
           onChange={(e) => {
             if (e.target.value !== '-') {
@@ -71,8 +74,13 @@ const NumberInput = ({
         />
         {showCurrency && <div className="absolute top-1 left-1">$</div>}
         {showOutOfRange && outOfRange && (
-          <div className="absolute text-red-500 top-2 right-6 text-xs">
-            Out of range
+          <div
+            className={`absolute text-red-500 top-2 ${outOfRangePos} flex flex-row gap-1`}
+          >
+            <FaTriangleExclamation />
+            <div className="text-xs">
+              Out of range ({min} - {max})
+            </div>
           </div>
         )}
       </div>
