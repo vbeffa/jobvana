@@ -1,3 +1,5 @@
+import Select from '../inputs/Select';
+
 // prettier-ignore
 const STATES = [
   'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM',
@@ -20,19 +22,23 @@ const StateSelect = ({
   showEmpty?: boolean;
 }) => {
   return (
-    <select
+    <Select
       id={`state${idx ? `_${idx}` : ''}`}
-      className="border-[0.5px] border-gray-500 h-[2.05rem] px-2 py-0.5"
+      // className="border-[0.5px] border-gray-500 h-[2.05rem] px-2 py-0.5"
       value={state}
+      height="h-[2.05rem]"
+      px="px-2"
       onChange={(e) => onChange(e.target.value)}
     >
-      {showEmpty && <option key={0} value="" />}
-      {STATES?.map((state, idx) => (
-        <option key={idx} value={state}>
-          {state}
-        </option>
-      ))}
-    </select>
+      <>
+        {showEmpty && <option key={0} value="" />}
+        {STATES?.map((state, idx) => (
+          <option key={idx} value={state}>
+            {state}
+          </option>
+        ))}
+      </>
+    </Select>
   );
 };
 

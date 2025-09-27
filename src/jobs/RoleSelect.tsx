@@ -1,3 +1,4 @@
+import Select from '../inputs/Select';
 import useRoles from '../roles/useRoles';
 
 const RoleSelect = ({
@@ -14,28 +15,29 @@ const RoleSelect = ({
   const { isPending, roles } = useRoles();
 
   return (
-    <select
+    <Select
       id={id}
-      className="border-[0.5px] border-gray-500 h-8 py-0.5"
       value={roleId}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
-      {isPending && (
-        <option key={0} value={Number.NEGATIVE_INFINITY}>
-          Loading...
-        </option>
-      )}
-      {!isPending && showAny && (
-        <option key={0} value={0}>
-          Any
-        </option>
-      )}
-      {roles?.map((role, idx) => (
-        <option key={idx} value={role.id}>
-          {role.name}
-        </option>
-      ))}
-    </select>
+      <>
+        {isPending && (
+          <option key={0} value={Number.NEGATIVE_INFINITY}>
+            Loading...
+          </option>
+        )}
+        {!isPending && showAny && (
+          <option key={0} value={0}>
+            Any
+          </option>
+        )}
+        {roles?.map((role, idx) => (
+          <option key={idx} value={role.id}>
+            {role.name}
+          </option>
+        ))}
+      </>
+    </Select>
   );
 };
 

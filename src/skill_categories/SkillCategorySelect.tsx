@@ -1,3 +1,4 @@
+import Select from '../inputs/Select';
 import useSkillCategories from './useSkillCategories';
 
 const SkillCategorySelect = ({
@@ -15,28 +16,30 @@ const SkillCategorySelect = ({
         Category:
       </label>
       <div>
-        <select
+        <Select
           id="skill_category"
-          className="border-[0.5px] border-gray-500 h-8 w-full"
           value={skillCategoryId}
+          width="w-full"
           onChange={(e) => onChange(parseInt(e.target.value))}
         >
-          {isPending && (
-            <option key={0} value={Number.NEGATIVE_INFINITY}>
-              Loading...
-            </option>
-          )}
-          {!isPending && (
-            <option key={0} value={0}>
-              Any
-            </option>
-          )}
-          {skillCategories?.map((skillCategory, idx) => (
-            <option key={idx} value={skillCategory.id}>
-              {skillCategory.name}
-            </option>
-          ))}
-        </select>
+          <>
+            {isPending && (
+              <option key={0} value={Number.NEGATIVE_INFINITY}>
+                Loading...
+              </option>
+            )}
+            {!isPending && (
+              <option key={0} value={0}>
+                Any
+              </option>
+            )}
+            {skillCategories?.map((skillCategory, idx) => (
+              <option key={idx} value={skillCategory.id}>
+                {skillCategory.name}
+              </option>
+            ))}
+          </>
+        </Select>
       </div>
     </>
   );

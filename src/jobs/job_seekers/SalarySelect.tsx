@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Select from '../../inputs/Select';
 import { MAX_SALARY, MIN_SALARY } from './useJobs';
 
 const salaries = _.range(MIN_SALARY, MAX_SALARY + 1, 10000);
@@ -6,19 +7,17 @@ const salaries = _.range(MIN_SALARY, MAX_SALARY + 1, 10000);
 const SalarySelect = ({
   id,
   value,
-  width = 'w-full',
   onChange
 }: {
   id: string;
   value?: number;
-  width?: string;
   onChange: (salary: number) => void;
 }) => {
   return (
-    <select
+    <Select
       id={id}
-      className={`border-[0.5px] border-gray-500 h-8 px-0 ${width} py-0.5`}
       value={value}
+      width="w-full"
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {salaries.map((salary, idx) => (
@@ -30,7 +29,7 @@ const SalarySelect = ({
           }).format(salary)}
         </option>
       ))}
-    </select>
+    </Select>
   );
 };
 

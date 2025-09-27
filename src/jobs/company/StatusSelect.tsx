@@ -1,3 +1,4 @@
+import Select from '../../inputs/Select';
 import type { Job } from '../../types';
 
 const StatusSelect = ({
@@ -13,10 +14,10 @@ const StatusSelect = ({
         Status:
       </label>
       <div>
-        <select
+        <Select
           id="status"
-          className="border-[0.5px] border-gray-500 h-8 w-32"
           value={status}
+          width="w-23.5"
           onChange={(e) => {
             const status = e.target.value as Job['status'];
             onChange(status);
@@ -31,7 +32,7 @@ const StatusSelect = ({
           <option key={3} value="filled">
             Filled
           </option>
-        </select>
+        </Select>
       </div>
     </>
   );

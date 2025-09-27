@@ -1,3 +1,4 @@
+import Select from '../../inputs/Select';
 import type { CreatedRange } from './useJobs';
 
 const CreatedSelect = ({
@@ -10,9 +11,8 @@ const CreatedSelect = ({
   onChange: (value: CreatedRange) => void;
 }) => {
   return (
-    <select
+    <Select
       id={id}
-      className="border-[0.5px] border-gray-500 h-8 py-0.5"
       value={value}
       onChange={(e) => onChange(e.target.value as CreatedRange)}
     >
@@ -31,7 +31,7 @@ const CreatedSelect = ({
       <option key={4} value="last_month">
         Last Month
       </option>
-    </select>
+    </Select>
   );
 };
 

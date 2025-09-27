@@ -17,21 +17,11 @@ const SalaryRangeSelect = ({
         Salary:
       </label>
       <div className="flex flex-row gap-x-2">
-        <SalarySelect
-          id="min_salary"
-          value={low}
-          width="w-32"
-          onChange={onChangeLow}
-        />
+        <SalarySelect id="min_salary" value={low} onChange={onChangeLow} />
         <label htmlFor="max_salary" className="content-center">
           -
         </label>
-        <SalarySelect
-          id="max_salary"
-          value={high}
-          width="w-32"
-          onChange={onChangeHigh}
-        />
+        <SalarySelect id="max_salary" value={high} onChange={onChangeHigh} />
       </div>
     </>
   );

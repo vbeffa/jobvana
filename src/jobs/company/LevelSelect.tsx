@@ -1,3 +1,5 @@
+import Select from '../../inputs/Select';
+
 const LEVELS = [0, 1, 2, 3, 4];
 
 const LevelSelect = ({
@@ -7,17 +9,17 @@ const LevelSelect = ({
 }: {
   id: string;
   value: number;
-  onChange: (roleId: number) => void;
+  onChange: (level: number) => void;
 }) => {
   return (
     <div className="flex flex-row gap-2">
       <label htmlFor={id} className="content-center">
         Level:
       </label>
-      <select
+      <Select
         id={id}
-        className="border-[0.5px] border-gray-500 h-8 w-10"
         value={value}
+        width="w-10"
         onChange={(e) => onChange(parseInt(e.target.value))}
       >
         {LEVELS.map((level) => (
@@ -25,7 +27,7 @@ const LevelSelect = ({
             {level}
           </option>
         ))}
-      </select>
+      </Select>
     </div>
   );
 };

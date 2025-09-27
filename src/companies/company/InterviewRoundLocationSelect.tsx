@@ -1,4 +1,5 @@
 import { capitalize } from 'lodash';
+import Select from '../../inputs/Select';
 import { type RoundLocation, ROUND_LOCATIONS } from './utils';
 
 const InterviewRoundLocationSelect = ({
@@ -11,9 +12,8 @@ const InterviewRoundLocationSelect = ({
   onChange: (location: RoundLocation) => void;
 }) => {
   return (
-    <select
+    <Select
       id={`interview_round_location${idx ? `_${idx}` : ''}`}
-      className="border-[0.5px] border-gray-500 h-[2.05rem] px-2 py-0.5"
       value={location}
       onChange={(e) => onChange(e.target.value as RoundLocation)}
     >
@@ -22,7 +22,7 @@ const InterviewRoundLocationSelect = ({
           {capitalize(location)}
         </option>
       ))}
-    </select>
+    </Select>
   );
 };
 
