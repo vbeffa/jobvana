@@ -127,21 +127,26 @@ const MyJobSkills = ({
       <div className="relative grid grid-cols-[15%_75%] gap-y-2 mb-4">
         <EditDeleteIcons
           isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-              setEdit({ jobId: job.id, section: 'skills' });
-              setEditJobSkills(job.job_skills);
-            }
-            setIsEditing(isEditing);
-          }}
           disabled={isEditing && (!isDirty || isSubmitting)}
-          onSave={doUpdate}
+          onEdit={() => {
+            setError(undefined);
+            setEdit({ jobId: job.id, section: 'skills' });
+            setEditJobSkills(job.job_skills);
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditJobSkills(job.job_skills);
+            setIsEditing(false);
+          }}
+          onSave={async () => {
+            setIsEditing(false);
+            await doUpdate();
+          }}
         />
         <div>Skills:</div>
         <div className="flex flex-row flex-wrap gap-2">
           {!isEditing &&
-            job.job_skills
+            editJobSkills
               .sort((jobSkill1, jobSkill2) => {
                 const skill1 = findSkill(jobSkill1.skill_id);
                 const skill2 = findSkill(jobSkill2.skill_id);

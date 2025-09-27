@@ -107,31 +107,36 @@ const MyJobMain = ({
         <EditDeleteIcons
           type="job"
           isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-              setEdit({ jobId: job.id, section: 'main' });
-              setEditJob(job);
-            }
-            setIsEditing(isEditing);
-          }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+          onEdit={() => {
+            setError(undefined);
+            setEdit({ jobId: job.id, section: 'main' });
+            setEditJob(job);
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditJob(job);
+            setIsEditing(false);
+          }}
           onDelete={deleteJob}
-          onSave={doUpdate}
+          onSave={async () => {
+            setIsEditing(false);
+            await doUpdate();
+          }}
         />
         {!isEditing && (
           <>
             <div>Title:</div>
-            <div>{job.title}</div>
+            <div>{editJob.title}</div>
             <div>Description:</div>
-            <div>{job.description}</div>
+            <div>{editJob.description}</div>
             <div>Status:</div>
-            <div>{capitalize(job.status)}</div>
+            <div>{capitalize(editJob.status)}</div>
             <div>Salary:</div>
             <div className="flex flex-row gap-1">
-              <div>{formatter.format(job.salary_low)}</div>
+              <div>{formatter.format(editJob.salary_low)}</div>
               <div>-</div>
-              <div>{formatter.format(job.salary_high)}</div>
+              <div>{formatter.format(editJob.salary_high)}</div>
             </div>
           </>
         )}

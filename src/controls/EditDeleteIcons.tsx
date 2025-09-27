@@ -4,16 +4,20 @@ import { FaFloppyDisk, FaPencil, FaTrash, FaX } from 'react-icons/fa6';
 const EditDeleteIcons = ({
   type,
   isEditing,
-  setIsEditing,
+  // setIsEditing,
   disabled,
+  onEdit,
+  onCancel,
   onDelete,
   onSave,
   bgColor = '--color-white'
 }: {
   type?: 'address' | 'job';
   isEditing: boolean;
-  setIsEditing: (editing: boolean) => void;
+  // setIsEditing: (editing: boolean) => void;
   disabled?: boolean;
+  onEdit: () => void;
+  onCancel?: () => void;
   onDelete?: () => void;
   onSave?: () => Promise<void>;
   bgColor?: '--color-white' | '--color-gray-100';
@@ -34,7 +38,12 @@ const EditDeleteIcons = ({
           <>
             <button
               className={enabledStyle}
-              onClick={() => setIsEditing(false)}
+              onClick={() => {
+                // setIsEditing(false);
+                if (onCancel) {
+                  onCancel();
+                }
+              }}
             >
               <FaX />
             </button>
@@ -43,7 +52,7 @@ const EditDeleteIcons = ({
                 className={`${disabled ? disabledStyle : enabledStyle}`}
                 disabled={disabled}
                 onClick={async () => {
-                  setIsEditing(false);
+                  // setIsEditing(false);
                   await onSave();
                 }}
               >
@@ -57,7 +66,10 @@ const EditDeleteIcons = ({
             <button
               className={`${disabled ? disabledStyle : enabledStyle}`}
               disabled={disabled}
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                // setIsEditing(true);
+                onEdit();
+              }}
             >
               <FaPencil />
             </button>

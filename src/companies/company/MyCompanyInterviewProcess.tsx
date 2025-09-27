@@ -41,21 +41,18 @@ const MyCompanyInterviewProcess = ({
     setIsSubmitting(true);
     setError(undefined);
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('companies')
         .update({
           ...company,
           interview_process: editInterviewProcess
         })
-        .eq('id', company.id)
-        .select();
+        .eq('id', company.id);
+      // .select();
 
       if (error) {
         console.log(error);
         setError(error);
-      } else {
-        // console.log(data);
-        setEditInterviewProcess(data[0].interview_process as InterviewProcess);
       }
     } finally {
       setIsSubmitting(false);
@@ -85,8 +82,12 @@ const MyCompanyInterviewProcess = ({
               company.interview_process as InterviewProcess
             )
           }
+          onCancel={() => {
+            setEditInterviewProcess(
+              company.interview_process as InterviewProcess
+            );
+          }}
           onSave={() => {
-            console.log('save');
             updateInterviewProcess();
           }}
         />

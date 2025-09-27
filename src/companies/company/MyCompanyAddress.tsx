@@ -81,16 +81,36 @@ const MyCompanyAddress = ({
         <EditDeleteIcons
           type="address"
           isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            setIsEditing(isEditing);
-            setEditAddress(address);
-          }}
           disabled={isEditing && (!isDirty || !isValidCompany || isSubmitting)}
+          onEdit={() => {
+            setError(undefined);
+            setEditAddress(address);
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditAddress(address);
+            setIsEditing(false);
+          }}
           onDelete={deleteAddress}
-          onSave={updateAddress}
+          onSave={async () => {
+            setIsEditing(false);
+            await updateAddress();
+          }}
           bgColor="--color-gray-100"
         />
       </div>
+      {!isEditing && (
+        <div>
+          <div>{editAddress.street}</div>
+          <div>
+            <div className="flex flex-row gap-1">
+              <div>{editAddress.city}</div>
+              <div>{editAddress.state}</div>
+            </div>
+          </div>
+          <div>{editAddress.zip}</div>
+        </div>
+      )}
       {isEditing && (
         <div className="flex flex-col gap-1">
           <div className="w-[204px]">
@@ -141,18 +161,6 @@ const MyCompanyAddress = ({
               }
             />
           </div>
-        </div>
-      )}
-      {!isEditing && (
-        <div>
-          <div>{address.street}</div>
-          <div>
-            <div className="flex flex-row gap-1">
-              <div>{address.city}</div>
-              <div>{address.state}</div>
-            </div>
-          </div>
-          <div>{address.zip}</div>
         </div>
       )}
     </div>

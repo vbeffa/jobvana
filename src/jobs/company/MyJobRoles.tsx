@@ -119,22 +119,27 @@ const MyJobRoles = ({
       <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditDeleteIcons
           isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-              setEdit({ jobId: job.id, section: 'roles' });
-              setEditJobRoles(job.job_roles);
-            }
-            setIsEditing(isEditing);
-          }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onSave={doUpdate}
+          onEdit={() => {
+            setError(undefined);
+            setEdit({ jobId: job.id, section: 'roles' });
+            setEditJobRoles(job.job_roles);
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditJobRoles(job.job_roles);
+            setIsEditing(false);
+          }}
+          onSave={async () => {
+            setIsEditing(false);
+            await doUpdate();
+          }}
         />
         {!isEditing && (
           <>
             <div>Roles:</div>
             <div>
-              <JobRoles jobRoles={job.job_roles} />
+              <JobRoles jobRoles={editJobRoles} />
             </div>
           </>
         )}

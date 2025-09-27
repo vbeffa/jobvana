@@ -44,7 +44,6 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
         console.log(error);
         setError(error);
       } else {
-        // console.log(data);
         setCompany(data?.[0]);
       }
     } finally {
@@ -56,7 +55,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
     <>
       {error && <Error error={error} />}
       {isSubmitting && <UpdatingModal />}
-      <div className="grid grid-cols-[20%_65%] gap-y-2 relative border">
+      <div className="relative grid grid-cols-[20%_65%] gap-y-2">
         <EditButtons
           isEditing={isEditing}
           setIsEditing={(isEditing) => {
@@ -67,9 +66,10 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
           }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
           onEdit={() => setEditCompany(company)}
+          onCancel={() => setEditCompany(company)}
           onSave={updateCompany}
         />
-        {!isEditing && <CompanyOverviewDisplay company={company} />}
+        {!isEditing && <CompanyOverviewDisplay company={editCompany} />}
         {isEditing && (
           <MyCompanyOverviewEdit
             company={editCompany}
