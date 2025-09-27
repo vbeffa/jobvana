@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
-import type { Company } from '../../Context';
+import { useCallback, useContext, useMemo, useState } from 'react';
+import { JobvanaContext, type Company } from '../../Context';
 import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
 import UpdatingModal from '../../UpdatingModal';
@@ -17,6 +17,7 @@ export type MyCompanyInterviewProcessProps = {
 const MyCompanyInterviewProcess = ({
   company
 }: MyCompanyInterviewProcessProps) => {
+  const { setCompany } = useContext(JobvanaContext);
   const [editInterviewProcess, setEditInterviewProcess] =
     useState<InterviewProcess>(company.interview_process as InterviewProcess);
   const [isEditing, setIsEditing] = useState(false);
@@ -41,23 +42,25 @@ const MyCompanyInterviewProcess = ({
     setIsSubmitting(true);
     setError(undefined);
     try {
+      const toUpdate = {
+        ...company,
+        interview_process: editInterviewProcess
+      };
       const { error } = await supabase
         .from('companies')
-        .update({
-          ...company,
-          interview_process: editInterviewProcess
-        })
+        .update(toUpdate)
         .eq('id', company.id);
-      // .select();
 
       if (error) {
         console.log(error);
         setError(error);
+      } else {
+        setCompany(toUpdate);
       }
     } finally {
       setIsSubmitting(false);
     }
-  }, [company, editInterviewProcess]);
+  }, [company, editInterviewProcess, setCompany]);
 
   if (!company) {
     return;

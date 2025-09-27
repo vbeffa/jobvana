@@ -21,6 +21,8 @@ const InterviewRoundEdit = ({
   onChange: (round: InterviewRound) => void;
 }) => {
   const { type, location, duration, durationUnit } = round;
+  const min =
+    durationUnit === 'minute' ? 1 : durationUnit === 'hour' ? 0.25 : 1;
   const max =
     durationUnit === 'minute' ? 60 : durationUnit === 'hour' ? 12 : 30;
   const step =
@@ -72,7 +74,7 @@ const InterviewRoundEdit = ({
       <NumberInput
         id={`interview_round_duration${idx ? `_${idx}` : ''}`}
         value={duration}
-        min={0}
+        min={min}
         max={max}
         step={step}
         onChange={(duration) => {

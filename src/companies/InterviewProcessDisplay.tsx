@@ -6,19 +6,30 @@ const InterviewProcessDisplay = ({
 }: {
   interviewProcess: InterviewProcess;
 }) => {
-  return interviewProcess.rounds.map((round, idx) => {
-    return (
-      <div key={idx} className="grid grid-cols-[10%_18%_10%_10%] gap-2">
-        <div>Round {idx + 1}</div>
-        <div>{formatType(round.type)}</div>
-        <div>{capitalize(round.location)}</div>
-        <div>
-          {round.duration} {round.durationUnit}
-          {round.duration !== 1 && 's'}
-        </div>
+  return (
+    <>
+      <div className="grid grid-cols-[7%_20%_10%_10%] gap-2">
+        <div className="flex justify-center">Round</div>
+        <div>Type</div>
+        <div>Location</div>
+        <div>Duration</div>
       </div>
-    );
-  });
+      <div className="w-102 border-b-[0.5px] border-blue-300" />
+      {interviewProcess.rounds.map((round, idx) => {
+        return (
+          <div key={idx} className="grid grid-cols-[7%_20%_10%_10%] gap-2">
+            <div className="flex justify-center">{idx + 1}</div>
+            <div>{formatType(round.type)}</div>
+            <div>{capitalize(round.location)}</div>
+            <div>
+              {round.duration} {round.durationUnit}
+              {round.duration !== 1 && 's'}
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
 };
 
 export default InterviewProcessDisplay;

@@ -72,7 +72,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
               .concat(
                 <div
                   key={jobs.length}
-                  className="flex pt-2 pl-2 cursor-pointer"
+                  className="flex pt-2 pl-2 text-gray-400 cursor-pointer"
                   onClick={() => {
                     jobs.push(newJob);
                     setSelectedJob(newJob);

@@ -1,6 +1,6 @@
 import type { Company as DbCompany } from '../types';
 import supabase from '../utils/supabase';
-import type { InterviewProcess } from './company/utils';
+import type { InterviewProcess, InterviewRound } from './company/utils';
 import {
   MAX_COMPANY_SIZE,
   MAX_DESCRIPTION_LENGTH,
@@ -78,5 +78,27 @@ export const isValidAddress = (address: Partial<CompanyAddress>) => {
 };
 
 export const isValidInterviewProcess = (process: InterviewProcess) => {
-  return process.rounds.length > 0 && process.rounds.length <= 5;
+  return (
+    process.rounds.length > 0 &&
+    process.rounds.length <= 5 &&
+    process.rounds.every(isValidInterviewRound)
+  );
+};
+
+export const isValidInterviewRound = (round: InterviewRound) => {
+  const { type, location, duration, durationUnit } = round;
+  if (type === 'take_home' && location !== 'offline') {
+    return false;
+  }
+  if (durationUnit === 'minute' && (duration < 1 || duration > 60)) {
+    return false;
+  }
+  if (durationUnit === 'hour' && (duration < 0.25 || duration > 12)) {
+    return false;
+  }
+  if (durationUnit === 'day' && (duration < 1 || duration > 30)) {
+    return false;
+  }
+
+  return true;
 };
