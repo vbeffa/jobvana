@@ -49,10 +49,10 @@ const useSkills = (params: SkillsParams): Skills => {
           count: 'exact'
         });
       const { filters } = params;
-      if (filters?.name) {
+      if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
-      if (filters?.skillCategoryId) {
+      if (filters.skillCategoryId) {
         q = q.filter('skill_category_id', 'eq', filters.skillCategoryId);
       }
       const { data, error, count } = await q

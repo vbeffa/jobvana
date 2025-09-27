@@ -71,29 +71,29 @@ const useJobsForSkill = (
         .filter('status', 'eq', 'open');
 
       const { filters } = params;
-      if (filters?.company) {
+      if (filters.company) {
         q = q.ilike('companies.name', `%${filters.company}%`);
       }
-      if (filters?.companyId) {
+      if (filters.companyId) {
         q = q.filter('companies.id', 'eq', filters.companyId);
       }
-      if (filters?.title) {
+      if (filters.title) {
         q = q.ilike('title', `%${filters.title}%`);
       }
-      if (filters?.roleId) {
+      if (filters.roleId) {
         // TODO not working
         q = q.filter('job_roles.role_id', 'eq', filters.roleId);
       }
-      if (filters?.minSalary) {
+      if (filters.minSalary) {
         q = q.filter('salary_low', 'gte', filters.minSalary);
       }
-      if (filters?.maxSalary) {
+      if (filters.maxSalary) {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
-      if (filters?.skillId) {
+      if (filters.skillId) {
         q = q.eq('skills.id', filters.skillId);
       }
-      if (filters?.created && filters.created !== 'all') {
+      if (filters.created && filters.created !== 'all') {
         const createdAfter = (() => {
           switch (filters.created) {
             case 'today':

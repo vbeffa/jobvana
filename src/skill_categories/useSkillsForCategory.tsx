@@ -55,7 +55,7 @@ const useSkillsForCategory = ({
         })
         .filter('skill_category_id', 'eq', skillCategoryId);
       const { filters } = params;
-      if (filters?.name) {
+      if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
       const { data, error, count } = await q

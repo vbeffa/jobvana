@@ -65,16 +65,16 @@ const useCompanies = (params: CompaniesParams): Companies => {
         )
         .filter('company_addresses.type', 'eq', 'headquarters');
       const { filters } = params;
-      if (filters?.name) {
+      if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
-      if (filters?.minSize) {
+      if (filters.minSize) {
         q = q.gte('num_employees', filters.minSize);
       }
-      if (filters?.maxSize) {
+      if (filters.maxSize) {
         q = q.lte('num_employees', filters.maxSize);
       }
-      if (filters?.industryId && filters.industryId > 0) {
+      if (filters.industryId && filters.industryId > 0) {
         q = q.filter('industry_id', 'eq', filters.industryId);
       }
 
