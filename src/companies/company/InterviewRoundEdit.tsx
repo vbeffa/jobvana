@@ -5,7 +5,6 @@ import Select from '../../inputs/Select';
 import {
   formatType,
   ROUND_TYPES,
-  ROUND_UNITS,
   type DurationUnit,
   type InterviewRound,
   type RoundLocation,
@@ -29,6 +28,10 @@ const InterviewRoundEdit = ({
 
   const availableLocations: Array<RoundLocation> = useMemo(() => {
     return type === 'take_home' ? ['offline'] : ['phone', 'video', 'office'];
+  }, [type]);
+
+  const availableDurationUnits: Array<DurationUnit> = useMemo(() => {
+    return type === 'take_home' ? ['day'] : ['minute', 'hour'];
   }, [type]);
 
   return (
@@ -84,6 +87,7 @@ const InterviewRoundEdit = ({
       <Select
         id={`interview_round_duration_unit${idx ? `_${idx}` : ''}`}
         value={durationUnit}
+        disabled={type === 'take_home'}
         onChange={(e) => {
           const durationUnit = e.target.value as DurationUnit;
           onChange({
@@ -93,9 +97,9 @@ const InterviewRoundEdit = ({
           });
         }}
       >
-        {ROUND_UNITS?.map((unit, idx) => (
+        {availableDurationUnits?.map((unit, idx) => (
           <option key={idx} value={unit}>
-            {unit}
+            {capitalize(unit)}
             {duration !== 1 && 's'}
           </option>
         ))}

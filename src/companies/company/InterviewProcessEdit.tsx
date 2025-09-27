@@ -40,9 +40,12 @@ const InterviewProcessEdit = ({
           <br />
           <ul>
             <li>Max 5 rounds</li>
-            <li>Type "Take Home" requires Location "Offline"</li>
-            <li>Duration type "hour(s)" has increment 0.25, max 12</li>
-            <li>Duration type "day(s)" has max 30</li>
+            <li>
+              Type "Take Home" requires Location "Offline" and Duration Unit
+              "Days"
+            </li>
+            <li>Duration Unit "Hours" has increment 0.25, max 12</li>
+            <li>Duration Unit "Days" has max 30</li>
           </ul>
         </div>
       </div>
