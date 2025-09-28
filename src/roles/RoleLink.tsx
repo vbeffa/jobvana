@@ -5,11 +5,7 @@ export type RoleLinkParams = Pick<Role, 'id' | 'name'>;
 
 const RoleLink = ({ id, name }: RoleLinkParams) => {
   return (
-    <Link
-      to="/jobvana/roles/$id"
-      target="_blank"
-      params={{ id: id.toString() }}
-    >
+    <Link to="/jobvana/roles/$id" params={{ id: id.toString() }}>
       {name}
     </Link>
   );
