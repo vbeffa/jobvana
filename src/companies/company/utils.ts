@@ -17,6 +17,7 @@ export type DurationUnit = (typeof ROUND_UNITS)[number];
 
 export type InterviewProcess = {
   rounds: Array<InterviewRound>;
+  pipeline_size: number;
 };
 
 export const EMPTY_PROCESS: InterviewProcess = {
@@ -27,7 +28,8 @@ export const EMPTY_PROCESS: InterviewProcess = {
     //   duration: 30,
     //   durationUnit: 'minute'
     // }
-  ]
+  ],
+  pipeline_size: 5
 };
 
 export type InterviewRound = {
