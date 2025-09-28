@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaAddressBook, FaBuilding, FaChessKnight } from 'react-icons/fa6';
 import { type Company } from '../../Context';
 import SummaryCard from '../../SummaryCard';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
@@ -37,23 +38,44 @@ const MyCompany = ({ company }: { company: Company }) => {
               key={1}
               selected={card === 'overview'}
               onClick={() => setCard('overview')}
-              title="Overview"
-              text="Name, Industry, Size"
+              title={
+                <div className="flex flex-row gap-1">
+                  <div className="content-center">
+                    <FaBuilding />
+                  </div>
+                  Overview
+                </div>
+              }
+              text="Name, Industry, Size, Contact"
               borderBottom={true}
             />
             <SummaryCard
               key={2}
               selected={card === 'addresses'}
               onClick={() => setCard('addresses')}
-              title="Addresses"
-              text={`${count ?? 0} total`}
+              title={
+                <div className="flex flex-row gap-1">
+                  <div className="content-center">
+                    <FaAddressBook />
+                  </div>
+                  Locations
+                </div>
+              }
+              text={`${count !== undefined ? `${count} total` : 'Loading...'}`}
               borderBottom={true}
             />
             <SummaryCard
               key={3}
               selected={card === 'interview_process'}
               onClick={() => setCard('interview_process')}
-              title="Interview Process"
+              title={
+                <div className="flex flex-row gap-1">
+                  <div className="content-center">
+                    <FaChessKnight />
+                  </div>
+                  Interview Process
+                </div>
+              }
               text="Define your process"
               borderBottom={true}
             />

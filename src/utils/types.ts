@@ -98,8 +98,10 @@ export type Database = {
           city: string
           company_id: number
           id: number
+          phone: string | null
           state: string
           street: string
+          street_2: string | null
           type: Database['public']['Enums']['address_type']
           zip: string
         }
@@ -107,8 +109,10 @@ export type Database = {
           city: string
           company_id: number
           id?: number
+          phone?: string | null
           state: string
           street: string
+          street_2?: string | null
           type: Database['public']['Enums']['address_type']
           zip: string
         }
@@ -116,8 +120,10 @@ export type Database = {
           city?: string
           company_id?: number
           id?: number
+          phone?: string | null
           state?: string
           street?: string
+          street_2?: string | null
           type?: Database['public']['Enums']['address_type']
           zip?: string
         }

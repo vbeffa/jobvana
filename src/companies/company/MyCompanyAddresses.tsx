@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import Error from '../../Error';
 import UpdatingModal from '../../UpdatingModal';
-import CompanyAddress from './MyCompanyAddress';
+import MyCompanyAddress from './MyCompanyAddress';
 import MyCompanyNewAddress from './MyCompanyNewAddress';
 import useCompanyAddresses from './useCompanyAddresses';
 
@@ -24,10 +24,10 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
     <>
       {error && <Error error={error} />}
       {updating && <UpdatingModal />}
-      <div className="grid grid-flow-col w-fit grid-rows-4 gap-2 mb-4">
+      <div className="grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
         {addresses.map((address, idx) => (
           <div key={idx}>
-            <CompanyAddress
+            <MyCompanyAddress
               address={address}
               idx={idx}
               setError={setError}
@@ -40,7 +40,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
           </div>
         ))}
         {!newAddress && (
-          <div className="text-blue-400 w-72 pt-4 pr-2 flex justify-end">
+          <div className="text-blue-400 w-72 pt-2 flex justify-start">
             <FaPlus
               className="cursor-pointer"
               onClick={() => setNewAddress(true)}

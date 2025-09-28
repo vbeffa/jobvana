@@ -9,7 +9,7 @@ const SummaryCard = ({
 }: {
   selected: boolean;
   onClick: () => void;
-  title: string;
+  title: string | JSX.Element;
   text?: JSX.Element | string;
   borderBottom: boolean;
 }) => {

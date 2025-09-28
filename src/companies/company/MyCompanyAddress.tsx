@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FaPhone } from 'react-icons/fa6';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
-import TextInput from '../../inputs/TextInput';
 import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
-import StateSelect from '../StateSelect';
 import { isValidAddress } from '../utils';
+import MyCompanyAddressContainer from './MyCompanyAddressContainer';
+import MyCompanyEditAddress from './MyCompanyEditAddress';
 
 const MyCompanyAddress = ({
   address,
@@ -41,8 +42,7 @@ const MyCompanyAddress = ({
       const { error } = await supabase
         .from('company_addresses')
         .update(editAddress)
-        .eq('id', editAddress.id)
-        .select();
+        .eq('id', editAddress.id);
 
       if (error) {
         console.log(error);
@@ -76,7 +76,7 @@ const MyCompanyAddress = ({
   }, [editAddress, onUpdate, setError]);
 
   return (
-    <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">
+    <MyCompanyAddressContainer>
       <div className="relative">
         <EditDeleteIcons
           type="address"
@@ -101,71 +101,35 @@ const MyCompanyAddress = ({
           bgColor="--color-gray-100"
         />
       </div>
-      {!isEditing && (
-        <div>
-          <div>{editAddress.street}</div>
+      <>
+        {!isEditing && (
           <div>
-            <div className="flex flex-row gap-1">
-              <div>{editAddress.city}</div>
-              <div>{editAddress.state}</div>
+            <div>{editAddress.street}</div>
+            <div>{editAddress.street_2}</div>
+            <div>
+              <div className="flex flex-row gap-1">
+                <div>{editAddress.city}</div>
+                <div>{editAddress.state}</div>
+              </div>
+              <div>{editAddress.zip}</div>
+              <div className="flex flex-row gap-1">
+                <div className="content-center">
+                  <FaPhone />
+                </div>
+                {editAddress.phone}
+              </div>
             </div>
           </div>
-          <div>{editAddress.zip}</div>
-        </div>
-      )}
-      {isEditing && (
-        <div className="flex flex-col gap-1">
-          <div className="w-[204px]">
-            <TextInput
-              id={`street_${idx}`}
-              value={editAddress.street}
-              onChange={(street) =>
-                setEditAddress((address) => ({
-                  ...address,
-                  street
-                }))
-              }
-            />
-          </div>
-          <div className="flex flex-row gap-1">
-            <div className="w-[204px]">
-              <TextInput
-                id={`city_${idx}`}
-                value={editAddress.city}
-                onChange={(city) =>
-                  setEditAddress((address) => ({
-                    ...address,
-                    city
-                  }))
-                }
-              />
-            </div>
-            <StateSelect
-              state={editAddress.state}
-              idx={idx}
-              onChange={(state) =>
-                setEditAddress((address) => ({
-                  ...address,
-                  state
-                }))
-              }
-            />
-          </div>
-          <div className="w-[204px]">
-            <TextInput
-              id={`zip_${idx}`}
-              value={editAddress.zip}
-              onChange={(zip) =>
-                setEditAddress((address) => ({
-                  ...address,
-                  zip
-                }))
-              }
-            />
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+        {isEditing && (
+          <MyCompanyEditAddress
+            idx={idx}
+            address={editAddress}
+            setAddress={setEditAddress}
+          />
+        )}
+      </>
+    </MyCompanyAddressContainer>
   );
 };
 

@@ -1,13 +1,10 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import SaveCancelIcons from '../../controls/SaveCancelIcons';
-import TextInput from '../../inputs/TextInput';
-import type { CompanyAddress } from '../../types';
 import supabase from '../../utils/supabase';
-import StateSelect from '../StateSelect';
 import { isValidAddress } from '../utils';
-
-type ToInsert = Omit<CompanyAddress, 'id'>;
+import MyCompanyAddressContainer from './MyCompanyAddressContainer';
+import MyCompanyEditAddress, { type ToInsert } from './MyCompanyEditAddress';
 
 const MyCompanyNewAddress = ({
   companyId,
@@ -24,9 +21,11 @@ const MyCompanyNewAddress = ({
     () => ({
       company_id: companyId,
       street: '',
+      street_2: null,
       city: '',
       state: '',
       zip: '',
+      phone: null,
       type: 'office'
     }),
     [companyId]
@@ -48,7 +47,7 @@ const MyCompanyNewAddress = ({
     try {
       const { error } = await supabase
         .from('company_addresses')
-        .insert(newAddress);
+        .insert(newAddress as ToInsert);
 
       if (error) {
         console.log(error);
@@ -62,7 +61,7 @@ const MyCompanyNewAddress = ({
   }, [newAddress, onCreate, setError]);
 
   return (
-    <div className="bg-gray-100 p-2 border-[0.5px] border-gray-400 rounded-lg w-72 h-31">
+    <MyCompanyAddressContainer>
       <div className="relative">
         <SaveCancelIcons
           disabled={!isValidAddress(newAddress) || !isDirty || isSubmitting}
@@ -70,61 +69,12 @@ const MyCompanyNewAddress = ({
           onSave={createAddress}
         />
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="w-[204px]">
-          <TextInput
-            id={`street_new`}
-            value={newAddress.street}
-            placeholder="Street"
-            onChange={(street) =>
-              setNewAddress((address) => ({
-                ...address,
-                street
-              }))
-            }
-          />
-        </div>
-        <div className="flex flex-row gap-1">
-          <div className="w-[204px]">
-            <TextInput
-              id={`city_new`}
-              value={newAddress.city}
-              placeholder="City"
-              onChange={(city) =>
-                setNewAddress((address) => ({
-                  ...address,
-                  city
-                }))
-              }
-            />
-          </div>
-          <StateSelect
-            state={newAddress.state}
-            idx={Number.MAX_VALUE}
-            showEmpty={true}
-            onChange={(state) =>
-              setNewAddress((address) => ({
-                ...address,
-                state
-              }))
-            }
-          />
-        </div>
-        <div className="w-[204px]">
-          <TextInput
-            id="zip_new"
-            value={newAddress.zip}
-            placeholder="Zip"
-            onChange={(zip) =>
-              setNewAddress((address) => ({
-                ...address,
-                zip
-              }))
-            }
-          />
-        </div>
-      </div>
-    </div>
+      <MyCompanyEditAddress
+        idx="new"
+        address={newAddress}
+        setAddress={setNewAddress}
+      />
+    </MyCompanyAddressContainer>
   );
 };
 
