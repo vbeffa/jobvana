@@ -10,11 +10,13 @@ export type MyCompanyOverviewEditProps<T extends ToUpdate | Partial<ToInsert>> =
   {
     company: T;
     setCompany: React.Dispatch<React.SetStateAction<T>>;
+    isOnboarding?: boolean;
   };
 
 const MyCompanyOverviewEdit = <T extends ToUpdate | Partial<ToInsert>>({
   company,
-  setCompany
+  setCompany,
+  isOnboarding
 }: MyCompanyOverviewEditProps<T>) => {
   return (
     <>
@@ -22,11 +24,12 @@ const MyCompanyOverviewEdit = <T extends ToUpdate | Partial<ToInsert>>({
       <IndustrySelect
         industryId={company.industry_id}
         showAll={false}
+        showEmpty={isOnboarding}
         handleUpdate={setCompany}
       />
       <CompanySizeEdit size={company.num_employees} handleUpdate={setCompany} />
       <CompanyEmail
-        email={company.contact_email ?? undefined}
+        email={company.contact_email ?? ''}
         handleUpdate={setCompany}
       />
       <TextArea

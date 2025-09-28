@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { getSession, getUserType } from './auth/utils';
 import Onboarding from './companies/company/Onboarding';
 import { JobvanaContext } from './Context';
@@ -8,6 +8,11 @@ const Index = () => {
   const session = getSession();
   const userType = getUserType();
 
+  const isOnboarding = useMemo(
+    () => userType === 'company' && company === null,
+    [company, userType]
+  );
+
   return (
     <div className="flex flex-col">
       {loggingOut && (
@@ -16,12 +21,16 @@ const Index = () => {
         </div>
       )}
       {session && !loggingOut && (
-        <div className="flex justify-center">
-          <h3>Welcome to Jobvana, {session.user.user_metadata.first_name}!</h3>
-        </div>
-      )}
-      {session && userType === 'company' && company === null && (
-        <Onboarding userId={session.user.id} />
+        <>
+          {!isOnboarding && (
+            <div className="flex justify-center">
+              <h3>
+                Welcome to Jobvana, {session.user.user_metadata.first_name}!
+              </h3>
+            </div>
+          )}
+          {isOnboarding && <Onboarding userId={session.user.id} />}
+        </>
       )}
     </div>
   );

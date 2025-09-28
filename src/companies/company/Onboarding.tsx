@@ -1,4 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
+import { getSession } from '../../auth/utils';
 import { JobvanaContext } from '../../Context';
 import Button from '../../controls/Button';
 import Error from '../../Error';
@@ -8,12 +9,15 @@ import MyCompanyOverviewEdit from './MyCompanyOverviewEdit';
 
 const Onboarding = ({ userId }: { userId: string }) => {
   const { setCompany } = useContext(JobvanaContext);
-  const [newCompany, setNewCompany] = useState<Partial<ToInsert>>({
-    name: '', // prevent "changing uncontrolled input to be controlled" error
+  const session = getSession();
+  const [newCompany, setNewCompany] = useState<ToInsert>({
+    name: '',
     description: '',
-    contact_email: '',
+    num_employees: 1,
+    contact_email: session?.user.email ?? '',
     user_id: userId,
-    industry_id: -1
+    industry_id: -1,
+    interview_process: { rounds: [] }
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
@@ -50,12 +54,13 @@ const Onboarding = ({ userId }: { userId: string }) => {
     <>
       <h1>Onboarding</h1>
       {error && <Error error={error} />}
-      <div className="mt-4 flex justify-center">
+      <div className="flex justify-center">
         <div className="border-[0.5px] border-blue-300 rounded-lg w-[36rem]">
           <div className="m-4 grid grid-cols-[25%_75%] gap-y-2">
             <MyCompanyOverviewEdit
               company={newCompany}
               setCompany={setNewCompany}
+              isOnboarding={true}
             />
             <div className="text-center col-span-2 text-sm">
               All fields are required

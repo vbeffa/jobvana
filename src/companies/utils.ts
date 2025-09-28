@@ -4,6 +4,7 @@ import type { InterviewProcess, InterviewRound } from './company/utils';
 import {
   MAX_COMPANY_SIZE,
   MAX_DESCRIPTION_LENGTH,
+  MAX_EMAIL_LENGTH,
   MAX_NAME_LENGTH,
   MIN_COMPANY_SIZE
 } from './job_seeker/useCompanies';
@@ -65,6 +66,8 @@ export const isValidCompany = (company: Partial<ToInsert>) => {
       company.num_employees <= MAX_COMPANY_SIZE &&
       company.industry_id &&
       company.industry_id > 0 &&
+      company.contact_email &&
+      company.contact_email.length <= MAX_EMAIL_LENGTH &&
       company.description &&
       company.description.length <= MAX_DESCRIPTION_LENGTH &&
       company.user_id

@@ -6,13 +6,13 @@ const CompanyEmail = <T extends Partial<ToInsert> | ToUpdate>({
   email,
   handleUpdate
 }: {
-  email?: string;
+  email: string;
   handleUpdate: (value: React.SetStateAction<T>) => void;
 }) => {
   return (
     <TextInput
-      id="email"
-      label="Email"
+      id="contact_email"
+      label="Contact Email"
       value={email}
       maxLength={MAX_EMAIL_LENGTH}
       autoComplete="work email"
