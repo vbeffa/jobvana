@@ -1,10 +1,10 @@
 import { IconContext } from 'react-icons';
 import { FaFloppyDisk, FaPencil, FaTrash, FaX } from 'react-icons/fa6';
+import { ICON_STYLE } from './styles';
 
 const EditDeleteIcons = ({
   type,
   isEditing,
-  // setIsEditing,
   disabled,
   onEdit,
   onCancel,
@@ -14,7 +14,6 @@ const EditDeleteIcons = ({
 }: {
   type?: 'address' | 'job';
   isEditing: boolean;
-  // setIsEditing: (editing: boolean) => void;
   disabled?: boolean;
   onEdit: () => void;
   onCancel?: () => void;
@@ -22,9 +21,6 @@ const EditDeleteIcons = ({
   onSave?: () => Promise<void>;
   bgColor?: '--color-white' | '--color-gray-100';
 }) => {
-  const enabledStyle = 'text-blue-400 cursor-pointer';
-  const disabledStyle = 'text-gray-400';
-
   return (
     <IconContext.Provider
       value={{
@@ -37,9 +33,8 @@ const EditDeleteIcons = ({
         {isEditing && (
           <>
             <button
-              className={enabledStyle}
+              className={ICON_STYLE}
               onClick={() => {
-                // setIsEditing(false);
                 if (onCancel) {
                   onCancel();
                 }
@@ -49,10 +44,9 @@ const EditDeleteIcons = ({
             </button>
             {onSave && (
               <button
-                className={`${disabled ? disabledStyle : enabledStyle}`}
+                className={ICON_STYLE}
                 disabled={disabled}
                 onClick={async () => {
-                  // setIsEditing(false);
                   await onSave();
                 }}
               >
@@ -64,10 +58,9 @@ const EditDeleteIcons = ({
         {!isEditing && (
           <>
             <button
-              className={`${disabled ? disabledStyle : enabledStyle}`}
+              className={ICON_STYLE}
               disabled={disabled}
               onClick={() => {
-                // setIsEditing(true);
                 onEdit();
               }}
             >
@@ -75,7 +68,7 @@ const EditDeleteIcons = ({
             </button>
             {onDelete && (
               <button
-                className={enabledStyle}
+                className={ICON_STYLE}
                 onClick={() => {
                   if (
                     window.confirm(

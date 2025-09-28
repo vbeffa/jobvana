@@ -6,6 +6,7 @@ const NumberInput = ({
   id,
   label,
   value,
+  disabled,
   min,
   max,
   step = 1,
@@ -17,6 +18,7 @@ const NumberInput = ({
   id: string;
   label?: string;
   value: number | null;
+  disabled?: boolean;
   min: number;
   max: number;
   step?: number;
@@ -41,11 +43,12 @@ const NumberInput = ({
         <input
           id={id}
           type="number"
+          disabled={disabled}
           step={step}
           min={min}
           max={max}
           placeholder={`${min} - ${max}`}
-          className={`${showCurrency ? 'pl-4' : ''} ${width} p-1 border-[0.5px] border-gray-500 h-8`}
+          className={`${showCurrency ? 'pl-4' : ''} ${width} disabled:bg-gray-100 p-1 border-[0.5px] border-gray-500 h-8`}
           value={value ?? ''}
           onChange={(e) => {
             if (e.target.value !== '-') {

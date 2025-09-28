@@ -1,5 +1,6 @@
 import { IconContext } from 'react-icons';
 import { FaFloppyDisk, FaX } from 'react-icons/fa6';
+import { ICON_STYLE } from './styles';
 
 const SaveCancelIcons = ({
   disabled,
@@ -23,11 +24,7 @@ const SaveCancelIcons = ({
           <FaX />
         </button>
 
-        <button
-          className={`${disabled ? 'text-gray-400' : 'text-blue-400 cursor-pointer'}`}
-          disabled={disabled}
-          onClick={onSave}
-        >
+        <button className={ICON_STYLE} disabled={disabled} onClick={onSave}>
           <FaFloppyDisk />
         </button>
       </div>
