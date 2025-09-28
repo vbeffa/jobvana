@@ -45,6 +45,10 @@ const MyJobSkills = ({
     }
   }, [edit.jobId, edit.section, job.id]);
 
+  useEffect(() => {
+    setEditJobSkills(job.job_skills);
+  }, [job.job_skills]);
+
   const updateJobSkills = useCallback(async () => {
     let result = await supabase
       .from('job_skills')
@@ -59,9 +63,7 @@ const MyJobSkills = ({
       ignoreDuplicates: true
     });
     if (result.error) {
-      console.log(result.error);
-      setError(result.error);
-      return;
+      throw result.error;
     }
 
     result = await supabase

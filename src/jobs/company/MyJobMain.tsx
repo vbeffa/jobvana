@@ -48,6 +48,10 @@ const MyJobMain = ({
     }
   }, [edit.jobId, edit.section, job.id]);
 
+  useEffect(() => {
+    setEditJob(job);
+  }, [job]);
+
   const updateJob = useCallback(async () => {
     const toUpdate = _.omit(editJob, 'job_roles', 'job_skills');
     const { error } = await supabase
@@ -126,6 +130,8 @@ const MyJobMain = ({
         />
         {!isEditing && (
           <>
+            {/* Display editJob so that when changes are saved and isEditing is set to false,
+                changes remain visible until job refetch completes */}
             <div>Title:</div>
             <div>{editJob.title}</div>
             <div>Description:</div>

@@ -65,6 +65,10 @@ const MyJobRoles = ({
     }
   }, [edit.jobId, edit.section, job.id]);
 
+  useEffect(() => {
+    setEditJobRoles(job.job_roles);
+  }, [job.job_roles]);
+
   const updateJobRoles = useCallback(async () => {
     let result = await supabase
       .from('job_roles')
