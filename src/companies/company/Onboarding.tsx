@@ -6,6 +6,7 @@ import Error from '../../Error';
 import supabase from '../../utils/supabase';
 import { isValidCompany, type ToInsert } from '../utils';
 import MyCompanyOverviewEdit from './MyCompanyOverviewEdit';
+import { EMPTY_PROCESS } from './utils';
 
 const Onboarding = ({ userId }: { userId: string }) => {
   const { setCompany } = useContext(JobvanaContext);
@@ -17,7 +18,7 @@ const Onboarding = ({ userId }: { userId: string }) => {
     contact_email: session?.user.email ?? '',
     user_id: userId,
     industry_id: -1,
-    interview_process: { rounds: [] }
+    interview_process: EMPTY_PROCESS
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();

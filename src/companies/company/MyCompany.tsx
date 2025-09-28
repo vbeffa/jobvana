@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FaAddressBook, FaBuilding, FaChessKnight } from 'react-icons/fa6';
 import { type Company } from '../../Context';
 import SummaryCard from '../../SummaryCard';
@@ -10,6 +10,7 @@ import MyCompanyAddresses from './MyCompanyAddresses';
 import MyCompanyInterviewProcess from './MyCompanyInterviewProcess';
 import MyCompanyOverview from './MyCompanyOverview';
 import useCompanyAddresses from './useCompanyAddresses';
+import { EMPTY_PROCESS, type InterviewProcess } from './utils';
 
 const MyCompany = ({ company }: { company: Company }) => {
   const [card, setCard] = useState<
@@ -17,7 +18,7 @@ const MyCompany = ({ company }: { company: Company }) => {
   >('overview');
   const { count } = useCompanyAddresses(company.id);
 
-  const currComponent = (() => {
+  const currComponent = useMemo(() => {
     switch (card) {
       case 'overview':
         return <MyCompanyOverview company={company} />;
@@ -26,7 +27,14 @@ const MyCompany = ({ company }: { company: Company }) => {
       case 'interview_process':
         return <MyCompanyInterviewProcess company={company} />;
     }
-  })();
+  }, [card, company]);
+
+  const numRounds = useMemo(
+    () =>
+      ((company.interview_process ?? EMPTY_PROCESS) as InterviewProcess).rounds
+        .length,
+    [company.interview_process]
+  );
 
   return (
     <>
@@ -61,7 +69,7 @@ const MyCompany = ({ company }: { company: Company }) => {
                   Locations
                 </div>
               }
-              text={`${count !== undefined ? `${count} total` : 'Loading...'}`}
+              text={`${count !== undefined ? `${count} address${count !== 1 ? 'es' : ''}` : 'Loading...'}`}
               borderBottom={true}
             />
             <SummaryCard
@@ -76,7 +84,7 @@ const MyCompany = ({ company }: { company: Company }) => {
                   Interview Process
                 </div>
               }
-              text="Define your process"
+              text={`${numRounds} round${numRounds !== 1 ? 's' : ''}`}
               borderBottom={true}
             />
           </SummaryCardsContainer>

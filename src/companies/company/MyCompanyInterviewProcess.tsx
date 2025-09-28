@@ -8,7 +8,7 @@ import supabase from '../../utils/supabase';
 import InterviewProcessDisplay from '../InterviewProcessDisplay';
 import { isValidInterviewProcess } from '../utils';
 import InterviewProcessEdit from './InterviewProcessEdit';
-import { type InterviewProcess } from './utils';
+import { EMPTY_PROCESS, type InterviewProcess } from './utils';
 
 export type MyCompanyInterviewProcessProps = {
   company: Company;
@@ -19,7 +19,9 @@ const MyCompanyInterviewProcess = ({
 }: MyCompanyInterviewProcessProps) => {
   const { setCompany } = useContext(JobvanaContext);
   const [editInterviewProcess, setEditInterviewProcess] =
-    useState<InterviewProcess>(company.interview_process as InterviewProcess);
+    useState<InterviewProcess>(
+      (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
+    );
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();
@@ -78,12 +80,12 @@ const MyCompanyInterviewProcess = ({
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
           onEdit={() =>
             setEditInterviewProcess(
-              company.interview_process as InterviewProcess
+              (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
             )
           }
           onCancel={() => {
             setEditInterviewProcess(
-              company.interview_process as InterviewProcess
+              (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
             );
           }}
           onSave={() => {

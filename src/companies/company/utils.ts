@@ -19,6 +19,17 @@ export type InterviewProcess = {
   rounds: Array<InterviewRound>;
 };
 
+export const EMPTY_PROCESS: InterviewProcess = {
+  rounds: [
+    // {
+    //   type: 'recruiter',
+    //   location: 'phone',
+    //   duration: 30,
+    //   durationUnit: 'minute'
+    // }
+  ]
+};
+
 export type InterviewRound = {
   type: RoundType;
   location: RoundLocation;

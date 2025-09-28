@@ -80,8 +80,9 @@ export const isValidAddress = (address: Partial<CompanyAddress>) => {
   );
 };
 
-export const isValidInterviewProcess = (process: InterviewProcess) => {
+export const isValidInterviewProcess = (process: InterviewProcess | null) => {
   return (
+    process &&
     process.rounds.length > 0 &&
     process.rounds.length <= 5 &&
     process.rounds.every(isValidInterviewRound)
