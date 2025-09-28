@@ -22,11 +22,11 @@ const InterviewRoundEdit = ({
 }) => {
   const { type, location, duration, durationUnit } = round;
   const min =
-    durationUnit === 'minute' ? 1 : durationUnit === 'hour' ? 0.25 : 1;
+    durationUnit === 'minute' ? 15 : durationUnit === 'hour' ? 0.25 : 1;
   const max =
     durationUnit === 'minute' ? 60 : durationUnit === 'hour' ? 12 : 30;
   const step =
-    durationUnit === 'minute' ? 1 : durationUnit === 'hour' ? 0.25 : 1;
+    durationUnit === 'minute' ? 5 : durationUnit === 'hour' ? 0.25 : 1;
 
   const availableLocations: Array<RoundLocation> = useMemo(() => {
     return type === 'take_home' ? ['offline'] : ['phone', 'video', 'office'];
@@ -101,7 +101,12 @@ const InterviewRoundEdit = ({
           const durationUnit = e.target.value as DurationUnit;
           onChange({
             ...round,
-            duration: durationUnit === 'hour' ? duration : Math.round(duration),
+            duration:
+              durationUnit === 'minute'
+                ? 15
+                : durationUnit === 'hour'
+                  ? duration
+                  : Math.round(duration),
             durationUnit
           });
         }}

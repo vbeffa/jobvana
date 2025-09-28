@@ -14,7 +14,7 @@ const InterviewProcessEdit = ({
 
   return (
     <>
-      <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
+      <div className="grid grid-cols-[8%_25%_20%_15%_19%] gap-2">
         <div className="flex justify-center">
           Round<span className="text-xs align-super">1</span>
         </div>
@@ -23,7 +23,7 @@ const InterviewProcessEdit = ({
         </div>
         <div className="flex justify-center">Location</div>
         <div className="col-span-2 flex justify-center">
-          Duration<span className="text-xs align-super">3,4</span>
+          Duration<span className="text-xs align-super">3,4,5</span>
         </div>
       </div>
       <div className="-mx-2 mb-1 border-b-[0.5px] border-blue-300" />
@@ -31,7 +31,7 @@ const InterviewProcessEdit = ({
         return (
           <div
             key={idx}
-            className="relative grid grid-cols-[8%_25%_20%_20%_19%] gap-2"
+            className="relative grid grid-cols-[8%_25%_20%_15%_19%] gap-2"
           >
             <div className="content-center flex justify-center">{idx + 1}</div>
             <InterviewRoundEdit
@@ -102,7 +102,7 @@ const InterviewProcessEdit = ({
           </div>
         );
       })}
-      <div className="grid grid-cols-[8%_20%_20%_20%_19%] gap-2">
+      <div className="grid grid-cols-[8%_91%] gap-2">
         {rounds.length < 5 && (
           <div
             className="col-start-2 col-span-4 text-gray-400 pt-1 mb-1 cursor-pointer"
@@ -124,13 +124,17 @@ const InterviewProcessEdit = ({
         )}
         <div className="col-start-2 col-span-4 text-sm">
           <div className="flex flex-col">
+            <div className="border-b w-fit mb-1">Notes</div>
             <div>1. Max 5 rounds</div>
             <div>
               2. Type "Take Home" requires Location "Offline" and Duration Unit
               "Days"
             </div>
-            <div>3. Duration Unit "Hours" has increment 0.25, max 12</div>
-            <div>4. Duration Unit "Days" has max 30</div>
+            <div>
+              3. Duration Unit "Minutes" has increment 5, min 15, max 60
+            </div>
+            <div>4. Duration Unit "Hours" has increment 0.25, max 12</div>
+            <div>5. Duration Unit "Days" has increment 1, max 30</div>
           </div>
         </div>
       </div>
