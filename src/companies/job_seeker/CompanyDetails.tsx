@@ -1,6 +1,4 @@
-import { useContext, useEffect } from 'react';
 import PillContainer from '../../containers/PillContainer';
-import { JobvanaContext } from '../../Context';
 import Error from '../../Error';
 import JobsList from '../../jobs/job_seekers/JobsList';
 import LoadingModal from '../../LoadingModal';
@@ -8,18 +6,11 @@ import Section from '../../Section';
 import type { InterviewProcess } from '../company/utils';
 import CompanyEmailDisplay from '../CompanyEmailDisplay';
 import InterviewProcessDisplay from '../InterviewProcessDisplay';
-import { companyFields, findHeadquarters, isHeadquarters } from '../utils';
+import { findHeadquarters, isHeadquarters } from '../utils';
 import useCompany from './useCompany';
 
 const CompanyDetails = ({ id }: { id?: number }) => {
-  const { setCompany } = useContext(JobvanaContext);
   const { company, error, isPlaceholderData, isPending } = useCompany(id);
-
-  useEffect(() => {
-    if (company) {
-      setCompany(companyFields(company));
-    }
-  }, [company, setCompany]);
 
   if (error) {
     return <Error error={error} />;
