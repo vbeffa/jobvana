@@ -9,7 +9,7 @@ import {
   FaUser,
   FaWrench
 } from 'react-icons/fa6';
-import { JobvanaContext } from './Context';
+import { CompanyContext, JobvanaContext } from './Context';
 import { getUserType } from './auth/utils';
 
 export const HEADER_HEIGHT = 16;
@@ -19,8 +19,9 @@ export const HEADER_TOTAL_HEIGHT_PX =
 
 const Header = () => {
   const location = useLocation();
-  const { logout, company, loggedIn, currPage, setCurrPage } =
+  const { logout, loggedIn, currPage, setCurrPage } =
     useContext(JobvanaContext);
+  const { company } = useContext(CompanyContext);
 
   useEffect(() => {
     let trimmed = location.pathname.substring(9);

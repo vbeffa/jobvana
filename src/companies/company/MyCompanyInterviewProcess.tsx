@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { JobvanaContext, type Company } from '../../Context';
+import { CompanyContext, type Company } from '../../Context';
 import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
 import UpdatingModal from '../../UpdatingModal';
@@ -17,7 +17,7 @@ export type MyCompanyInterviewProcessProps = {
 const MyCompanyInterviewProcess = ({
   company
 }: MyCompanyInterviewProcessProps) => {
-  const { setCompany } = useContext(JobvanaContext);
+  const { setCompany } = useContext(CompanyContext);
   const [editInterviewProcess, setEditInterviewProcess] =
     useState<InterviewProcess>(
       (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess

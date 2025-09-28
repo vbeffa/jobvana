@@ -4,10 +4,12 @@ import Login from './auth/Login';
 import { getSession, getUserType, refreshSession } from './auth/utils';
 import { findCompany } from './companies/utils';
 import {
+  CompanyContext,
+  defaultJobSeekerContext,
+  JobSeekerContext,
+  JobvanaContext,
   type Company,
-  type JobvanaContextProps,
-  defaultContext,
-  JobvanaContext
+  type JobSeekerContextProps
 } from './Context';
 import Header from './Header';
 import supabase from './utils/supabase';
@@ -17,11 +19,11 @@ export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
 const Root = () => {
   const [currPage, setCurrPage] = useState('home');
   const [companiesContext, setCompaniesContext] = useState<
-    JobvanaContextProps['companiesContext']
-  >(defaultContext.companiesContext);
+    JobSeekerContextProps['companiesContext']
+  >(defaultJobSeekerContext.companiesContext);
   const [jobsContext, setJobsContext] = useState<
-    JobvanaContextProps['jobsContext']
-  >(defaultContext.jobsContext);
+    JobSeekerContextProps['jobsContext']
+  >(defaultJobSeekerContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
   const [company, setCompany] = useState<Company | null>();
@@ -69,27 +71,57 @@ const Root = () => {
     setLoggedIn(true);
   });
 
+  if (userType === 'company') {
+    return (
+      <JobvanaContext.Provider
+        value={{
+          currPage,
+          setCurrPage,
+          loggedIn,
+          loggingOut,
+          logout
+        }}
+      >
+        <CompanyContext.Provider
+          value={{
+            company,
+            setCompany
+          }}
+        >
+          <Header />
+          {(isLoggedIn || currPage === 'about') && <Outlet />}
+          {!isLoggedIn && currPage !== 'about' && <Login />}
+
+          {/* <TanStackRouterDevtools /> */}
+        </CompanyContext.Provider>
+      </JobvanaContext.Provider>
+    );
+  }
+
   return (
     <JobvanaContext.Provider
       value={{
         currPage,
         setCurrPage,
-        company,
-        setCompany,
         loggedIn,
         loggingOut,
-        logout,
-        companiesContext,
-        setCompaniesContext,
-        jobsContext,
-        setJobsContext
+        logout
       }}
     >
-      <Header />
-      {(isLoggedIn || currPage === 'about') && <Outlet />}
-      {!isLoggedIn && currPage !== 'about' && <Login />}
+      <JobSeekerContext.Provider
+        value={{
+          companiesContext,
+          setCompaniesContext,
+          jobsContext,
+          setJobsContext
+        }}
+      >
+        <Header />
+        {(isLoggedIn || currPage === 'about') && <Outlet />}
+        {!isLoggedIn && currPage !== 'about' && <Login />}
 
-      {/* <TanStackRouterDevtools /> */}
+        {/* <TanStackRouterDevtools /> */}
+      </JobSeekerContext.Provider>
     </JobvanaContext.Provider>
   );
 };

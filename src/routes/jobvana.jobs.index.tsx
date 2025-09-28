@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
-import { JobvanaContext } from '../Context';
+import { CompanyContext } from '../Context';
 import MyJobs from '../jobs/company/MyJobs';
 import Jobs from '../jobs/job_seekers/Jobs';
 import {
@@ -46,7 +46,7 @@ export const Route = createFileRoute('/jobvana/jobs/')({
 
 function Switcher() {
   const userType = getUserType();
-  const { company } = useContext(JobvanaContext);
+  const { company } = useContext(CompanyContext);
 
   return userType === 'company' ? (
     company && <MyJobs companyId={company.id} />

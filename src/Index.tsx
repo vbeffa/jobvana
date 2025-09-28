@@ -1,10 +1,11 @@
 import { useContext, useMemo } from 'react';
 import { getSession, getUserType } from './auth/utils';
 import Onboarding from './companies/company/Onboarding';
-import { JobvanaContext } from './Context';
+import { CompanyContext, JobvanaContext } from './Context';
 
 const Index = () => {
-  const { loggingOut, company } = useContext(JobvanaContext);
+  const { loggingOut } = useContext(JobvanaContext);
+  const { company } = useContext(CompanyContext);
   const session = getSession();
   const userType = getUserType();
 

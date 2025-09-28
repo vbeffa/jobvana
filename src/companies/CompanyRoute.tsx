@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
-import { JobvanaContext } from '../Context';
+import { CompanyContext } from '../Context';
 import { Route } from '../routes/jobvana.companies.$id';
 import MyCompany from './company/MyCompany';
 import CompanyDetails from './job_seeker/CompanyDetails';
@@ -8,9 +8,10 @@ import CompanyDetails from './job_seeker/CompanyDetails';
 const CompanyRoute = () => {
   const { id } = Route.useLoaderData();
   const userType = getUserType();
-  const { company } = useContext(JobvanaContext);
+  const { company } = useContext(CompanyContext);
 
-  if (company?.id && company.id !== id) {
+  // companies can only view their own companies
+  if (userType === 'company' && company?.id !== id) {
     return null;
   }
 

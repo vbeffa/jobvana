@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { JobvanaContext, type Company } from '../../Context';
+import { CompanyContext, type Company } from '../../Context';
 import EditButtons from '../../controls/EditButtons';
 import Error from '../../Error';
 import UpdatingModal from '../../UpdatingModal';
@@ -14,7 +14,7 @@ export type MyCompanyMainProps = {
 };
 
 const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
-  const { setCompany } = useContext(JobvanaContext);
+  const { setCompany } = useContext(CompanyContext);
   const [editCompany, setEditCompany] = useState<ToUpdate>(company);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

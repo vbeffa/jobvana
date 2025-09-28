@@ -6,7 +6,7 @@ import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer'
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
-import { JobvanaContext } from '../../Context';
+import { JobSeekerContext } from '../../Context';
 import Error from '../../Error';
 import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.companies.index';
@@ -32,7 +32,7 @@ const INITIAL_FILTERS: SearchFilters = {
 const Companies = () => {
   const navigate = Route.useNavigate();
   const { companiesContext: context, setCompaniesContext: setContext } =
-    useContext(JobvanaContext);
+    useContext(JobSeekerContext);
 
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);

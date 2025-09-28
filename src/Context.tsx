@@ -14,14 +14,12 @@ export type UserType = 'company' | 'job_seeker';
 
 export type Company = Omit<DbCompany, 'created_at'>;
 
-export type JobvanaContextProps = {
-  currPage: string;
-  setCurrPage: (page: string) => void;
+export type CompanyContextProps = {
   company?: Company | null;
   setCompany: (company: Company) => void;
-  loggedIn?: boolean;
-  loggingOut?: boolean;
-  logout: () => Promise<void>;
+};
+
+export type JobSeekerContextProps = {
   companiesContext: {
     page: number;
     companyId?: number;
@@ -33,7 +31,7 @@ export type JobvanaContextProps = {
     industryId?: number;
   };
   setCompaniesContext: (
-    companiesContext: JobvanaContextProps['companiesContext']
+    companiesContext: JobSeekerContextProps['companiesContext']
   ) => void;
   jobsContext: {
     page: number;
@@ -46,14 +44,28 @@ export type JobvanaContextProps = {
     skillId?: number;
     created?: CreatedRange;
   };
-  setJobsContext: (jobsContext: JobvanaContextProps['jobsContext']) => void;
+  setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
+};
+
+export type JobvanaContextProps = {
+  currPage: string;
+  setCurrPage: (page: string) => void;
+  loggedIn?: boolean;
+  loggingOut?: boolean;
+  logout: () => Promise<void>;
 };
 
 export const defaultContext: JobvanaContextProps = {
   currPage: 'home',
   setCurrPage: () => {},
-  setCompany: () => {},
-  logout: () => Promise.resolve(),
+  logout: () => Promise.resolve()
+};
+
+export const defaultCompanyContext: CompanyContextProps = {
+  setCompany: () => {}
+};
+
+export const defaultJobSeekerContext: JobSeekerContextProps = {
   companiesContext: {
     page: 1,
     minSize: MIN_COMPANY_SIZE,
@@ -77,3 +89,11 @@ export const defaultContext: JobvanaContextProps = {
 
 export const JobvanaContext =
   createContext<JobvanaContextProps>(defaultContext);
+
+export const CompanyContext = createContext<CompanyContextProps>(
+  defaultCompanyContext
+);
+
+export const JobSeekerContext = createContext<JobSeekerContextProps>(
+  defaultJobSeekerContext
+);

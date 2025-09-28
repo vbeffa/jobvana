@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { getSession } from '../../auth/utils';
-import { JobvanaContext } from '../../Context';
+import { CompanyContext } from '../../Context';
 import Button from '../../controls/Button';
 import Error from '../../Error';
 import supabase from '../../utils/supabase';
@@ -9,7 +9,7 @@ import MyCompanyOverviewEdit from './MyCompanyOverviewEdit';
 import { EMPTY_PROCESS } from './utils';
 
 const Onboarding = ({ userId }: { userId: string }) => {
-  const { setCompany } = useContext(JobvanaContext);
+  const { setCompany } = useContext(CompanyContext);
   const session = getSession();
   const [newCompany, setNewCompany] = useState<ToInsert>({
     name: '',
