@@ -1,20 +1,21 @@
 import TextArea from '../../inputs/TextArea';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
-import { type ToUpdate } from '../utils';
+import { type ToInsert, type ToUpdate } from '../utils';
 import CompanyEmail from './CompanyEmail';
 import CompanyName from './CompanyName';
 import CompanySizeEdit from './CompanySizeEdit';
 
-export type MyCompanyOverviewEditProps = {
-  company: ToUpdate;
-  setCompany: React.Dispatch<React.SetStateAction<ToUpdate>>;
-};
+export type MyCompanyOverviewEditProps<T extends ToUpdate | Partial<ToInsert>> =
+  {
+    company: T;
+    setCompany: React.Dispatch<React.SetStateAction<T>>;
+  };
 
-const MyCompanyOverviewEdit = ({
+const MyCompanyOverviewEdit = <T extends ToUpdate | Partial<ToInsert>>({
   company,
   setCompany
-}: MyCompanyOverviewEditProps) => {
+}: MyCompanyOverviewEditProps<T>) => {
   return (
     <>
       <CompanyName name={company.name} handleUpdate={setCompany} />

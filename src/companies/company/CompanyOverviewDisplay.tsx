@@ -16,7 +16,7 @@ const CompanyOverviewDisplay = ({ company }: CompanyOverviewDisplayProps) => {
       <div>{company.name}</div>
       <div>Industry:</div>
       <div>{findIndustry(company.industry_id)?.name}</div>
-      <div>Num employees:</div>
+      <div>No. employees:</div>
       <div>{company.num_employees}</div>
       <div>Contact email:</div>
       <div>

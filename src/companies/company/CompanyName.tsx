@@ -11,8 +11,8 @@ const CompanyName = <T extends Partial<ToInsert> | ToUpdate>({
 }) => {
   return (
     <TextInput
-      id="name"
-      label="Name"
+      id="company_name"
+      label="Company Name"
       value={name}
       maxLength={MAX_NAME_LENGTH}
       autoComplete="organization"

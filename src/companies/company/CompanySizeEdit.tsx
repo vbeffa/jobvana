@@ -14,7 +14,7 @@ const CompanySizeEdit = <T extends Partial<ToInsert> | ToUpdate>({
   return (
     <NumberInput
       id={id}
-      label="Num employees"
+      label="No. employees"
       value={size ?? null}
       min={MIN_COMPANY_SIZE}
       max={MAX_COMPANY_SIZE}
