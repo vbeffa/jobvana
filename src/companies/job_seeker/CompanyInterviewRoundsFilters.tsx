@@ -13,13 +13,14 @@ const CompanyInterviewRoundsFilters = ({
 }) => {
   return (
     <>
-      <label htmlFor="min_size" className="content-center">
-        Size:
+      <label htmlFor="min_rounds" className="content-center">
+        Rounds:
       </label>
       <div className="flex flex-row gap-x-2 h-[33px]">
         <NumberInput
           id="min_rounds"
           value={low}
+          disabled={true}
           min={1}
           max={5}
           width="w-27"
@@ -31,6 +32,7 @@ const CompanyInterviewRoundsFilters = ({
         <NumberInput
           id="max_rounds"
           value={high}
+          disabled={true}
           min={1}
           max={5}
           width="w-27"

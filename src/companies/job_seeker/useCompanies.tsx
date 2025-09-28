@@ -68,12 +68,12 @@ const useCompanies = (params: CompaniesParams): Companies => {
       if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
-      if (filters.minSize) {
-        q = q.gte('num_employees', filters.minSize);
-      }
-      if (filters.maxSize) {
-        q = q.lte('num_employees', filters.maxSize);
-      }
+      q = q.gte('num_employees', filters.minSize);
+      q = q.lte('num_employees', filters.maxSize);
+      // q = q.contains(
+      //   `interview_process -> rounds`,
+      //   `[{ "type": "take_home" }]`
+      // );
       if (filters.industryId && filters.industryId > 0) {
         q = q.filter('industry_id', 'eq', filters.industryId);
       }
