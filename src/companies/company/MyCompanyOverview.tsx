@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { CompanyContext, type Company } from '../../Context';
-import EditButtons from '../../controls/EditButtons';
+import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import Error from '../../Error';
 import UpdatingModal from '../../UpdatingModal';
 import supabase from '../../utils/supabase';
@@ -56,18 +56,22 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
       {error && <Error error={error} />}
       {isSubmitting && <UpdatingModal />}
       <div className="relative grid grid-cols-[20%_65%] gap-y-2">
-        <EditButtons
+        <EditDeleteButtons
           isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-            }
-            setIsEditing(isEditing);
-          }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() => setEditCompany(company)}
-          onCancel={() => setEditCompany(company)}
-          onSave={updateCompany}
+          onEdit={() => {
+            setError(undefined);
+            setEditCompany(company);
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditCompany(company);
+            setIsEditing(false);
+          }}
+          onSave={async () => {
+            setIsEditing(false);
+            await updateCompany();
+          }}
         />
         {!isEditing && <CompanyOverviewDisplay company={editCompany} />}
         {isEditing && (

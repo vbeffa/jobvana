@@ -16,9 +16,9 @@ const EditDeleteIcons = ({
   isEditing: boolean;
   disabled?: boolean;
   onEdit: () => void;
-  onCancel?: () => void;
+  onCancel: () => void;
   onDelete?: () => void;
-  onSave?: () => Promise<void>;
+  onSave: () => Promise<void>;
   bgColor?: '--color-white' | '--color-gray-100';
 }) => {
   return (
@@ -32,38 +32,17 @@ const EditDeleteIcons = ({
       <div className="absolute right-0 top-2 flex flex-row gap-2">
         {isEditing && (
           <>
-            <button
-              className={ICON_STYLE}
-              onClick={() => {
-                if (onCancel) {
-                  onCancel();
-                }
-              }}
-            >
+            <button className={ICON_STYLE} onClick={onCancel}>
               <FaX />
             </button>
-            {onSave && (
-              <button
-                className={ICON_STYLE}
-                disabled={disabled}
-                onClick={async () => {
-                  await onSave();
-                }}
-              >
-                <FaFloppyDisk />
-              </button>
-            )}
+            <button className={ICON_STYLE} disabled={disabled} onClick={onSave}>
+              <FaFloppyDisk />
+            </button>
           </>
         )}
         {!isEditing && (
           <>
-            <button
-              className={ICON_STYLE}
-              disabled={disabled}
-              onClick={() => {
-                onEdit();
-              }}
-            >
+            <button className={ICON_STYLE} disabled={disabled} onClick={onEdit}>
               <FaPencil />
             </button>
             {onDelete && (

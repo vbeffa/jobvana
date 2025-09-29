@@ -1,38 +1,29 @@
 import Button from './Button';
 
-const EditButtons = ({
+const EditDeleteButtons = ({
+  type,
   isEditing,
-  setIsEditing,
   disabled,
   onEdit,
   onCancel,
+  onDelete,
   onSave
 }: {
+  type?: 'job';
   isEditing: boolean;
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   disabled: boolean;
   onEdit: () => void;
-  onCancel?: () => void;
+  onCancel: () => void;
+  onDelete?: () => void;
   onSave: () => void;
 }) => {
   return (
     <div className="absolute ml-4 right-0 top-0 flex flex-row gap-2">
-      {isEditing && (
-        <Button
-          label="Cancel"
-          onClick={() => {
-            setIsEditing(false);
-            if (onCancel) {
-              onCancel();
-            }
-          }}
-        />
-      )}
+      {isEditing && <Button label="Cancel" onClick={onCancel} />}
       <Button
         label={`${isEditing ? 'Save' : 'Edit'}`}
         disabled={disabled}
         onClick={() => {
-          setIsEditing(!isEditing);
           if (isEditing) {
             onSave();
           } else {
@@ -40,8 +31,20 @@ const EditButtons = ({
           }
         }}
       />
+      {!isEditing && onDelete && (
+        <Button
+          label="Delete"
+          onClick={() => {
+            if (
+              window.confirm(`Are you sure you want to delete this ${type}?`)
+            ) {
+              onDelete();
+            }
+          }}
+        />
+      )}
     </div>
   );
 };
 
-export default EditButtons;
+export default EditDeleteButtons;

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { CompanyContext, type Company } from '../../Context';
-import EditButtons from '../../controls/EditButtons';
+import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import Error from '../../Error';
 import UpdatingModal from '../../UpdatingModal';
 import supabase from '../../utils/supabase';
@@ -69,27 +69,25 @@ const MyCompanyInterviewProcess = ({
       {error && <Error error={error} />}
       {isSubmitting && <UpdatingModal />}
       <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
-        <EditButtons
+        <EditDeleteButtons
           isEditing={isEditing}
-          setIsEditing={(isEditing) => {
-            if (isEditing) {
-              setError(undefined);
-            }
-            setIsEditing(isEditing);
-          }}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() =>
+          onEdit={() => {
+            setError(undefined);
             setEditInterviewProcess(
               (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-            )
-          }
+            );
+            setIsEditing(true);
+          }}
           onCancel={() => {
             setEditInterviewProcess(
               (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
             );
+            setIsEditing(false);
           }}
-          onSave={() => {
-            updateInterviewProcess();
+          onSave={async () => {
+            setIsEditing(false);
+            await updateInterviewProcess();
           }}
         />
       </div>
