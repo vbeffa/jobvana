@@ -1,46 +1,62 @@
-import { useEffect, useState } from 'react';
-import { FaPlus } from 'react-icons/fa6';
+import { useEffect, useMemo, useState } from 'react';
+import { getSession } from '../../auth/utils';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
+import Button from '../../controls/Button';
 import SummaryCard from '../../SummaryCard';
 import UpdatingModal from '../../UpdatingModal';
 import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
 import MyJob from './MyJob';
 import useJobsForCompany, { type Job } from './useJobsForCompany';
 
-export type Edit = {
-  jobId?: number;
-  section?: 'main' | 'roles' | 'skills';
-};
+type JobSummary = Pick<Job, 'id'>;
 
 const MyJobs = ({ companyId }: { companyId: number }) => {
-  const [selectedJob, setSelectedJob] = useState<Job>();
+  const [selectedJob, setSelectedJob] = useState<JobSummary>();
   const [updating, setUpdating] = useState(false);
-  const [edit, setEdit] = useState<Edit>({});
+  const [isAddingNew, setIsAddingNew] = useState(false);
   const { jobs, refetch } = useJobsForCompany(companyId);
+  const user = getSession()?.user;
 
   useEffect(() => {
-    if (!selectedJob && jobs && jobs.length > 0) {
+    if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
       setSelectedJob(jobs[0]);
     }
-  }, [jobs, selectedJob]);
+  }, [isAddingNew, jobs, selectedJob]);
 
-  const newJob: Job = {
-    id: 0,
-    created_at: new Date().toISOString(),
-    company_id: companyId,
-    status: 'open',
-    title: 'New Job',
-    description: '',
-    job_roles: [],
-    job_skills: [],
-    salary_low: MIN_SALARY,
-    salary_high: MAX_SALARY,
-    updated_at: null,
-    user_id: ''
-  };
+  const newJob: Job = useMemo(
+    () => ({
+      id: 0,
+      created_at: new Date().toISOString(),
+      type: 'full_time',
+      company_id: companyId,
+      status: 'open',
+      title: 'New Job',
+      description: '',
+      job_roles: [
+        {
+          job_id: 0,
+          role_id: 1,
+          percent: 100,
+          role_level: 2
+        }
+      ],
+      job_skills: [],
+      salary_low: MIN_SALARY,
+      salary_high: MAX_SALARY,
+      updated_at: new Date().toISOString(),
+      user_id: user?.id ?? null
+    }),
+    [companyId, user?.id]
+  );
+
+  const selectedJobDetails = useMemo(
+    () =>
+      isAddingNew ? newJob : jobs?.find((job) => job.id === selectedJob?.id),
+    [isAddingNew, jobs, newJob, selectedJob?.id]
+  );
 
   if (!jobs) {
     return;
@@ -51,12 +67,13 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
       <h1>My Jobs</h1>
       <ResourcesContainer minWidth="w-[1100px]" hasFilters={false}>
         <ResourceListContainer>
-          <SummaryCardsContainer>
+          <SummaryCardsContainer hasFilters={false}>
             {jobs
               .map((job, idx) => (
                 <SummaryCard
                   key={idx}
                   selected={selectedJob?.id === job.id}
+                  disabled={isAddingNew}
                   onClick={() => {
                     setSelectedJob(job);
                   }}
@@ -70,15 +87,16 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                 />
               ))
               .concat(
-                <div
-                  key={jobs.length}
-                  className="flex pt-2 pl-2 text-gray-400 cursor-pointer"
-                  onClick={() => {
-                    jobs.push(newJob);
-                    setSelectedJob(newJob);
-                  }}
-                >
-                  <FaPlus />
+                <div key={jobs.length} className="pt-2 pl-2">
+                  {!isAddingNew && (
+                    <Button
+                      label="New"
+                      onClick={() => {
+                        setIsAddingNew(true);
+                        setSelectedJob(undefined);
+                      }}
+                    />
+                  )}
                 </div>
               )}
           </SummaryCardsContainer>
@@ -86,19 +104,27 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
         <ResourceDetailsContainer>
           <>
             {updating && <UpdatingModal />}
-            {selectedJob ? (
+            {selectedJobDetails ? (
               <MyJob
-                job={selectedJob}
+                job={selectedJobDetails}
+                isNew={isAddingNew}
                 onStartUpdate={() => {
                   setUpdating(true);
                 }}
-                onFinishUpdate={async () => {
-                  await refetch();
-                  setUpdating(false);
+                onFinishUpdate={async (error?: Error) => {
+                  if (!error) {
+                    await refetch();
+                  }
                   setSelectedJob(undefined);
+                  setUpdating(false);
+                  setIsAddingNew(false);
                 }}
-                edit={edit}
-                setEdit={setEdit}
+                onCancelNewJob={() => {
+                  // console.log('pop');
+                  // jobs.pop();
+                  setSelectedJob(undefined);
+                  setIsAddingNew(false);
+                }}
               />
             ) : undefined}
           </>

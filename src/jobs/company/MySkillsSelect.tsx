@@ -55,37 +55,7 @@ const MySkillsSelect = ({
 
   return (
     <div className="flex flex-row gap-2">
-      <div className="w-[50%]">
-        <div className="pt-0.5 text-sm h-6">Current Skills</div>
-        <div className="h-64 border-[0.5px] border-gray-500">
-          <div
-            id="my_skills_select"
-            className="w-full h-fit max-h-63 overflow-auto p-1 flex flex-row flex-wrap gap-1"
-          >
-            {currentSkills.map((skill, idx) => (
-              <div key={idx}>
-                <PillContainer
-                  showDeleteIcon={true}
-                  onDelete={() => onDeleteSkill(skill.id)}
-                >
-                  {skill.abbreviation ?? skill.name}
-                </PillContainer>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div
-        className="content-center text-blue-300 cursor-pointer"
-        onClick={() =>
-          alert(
-            'Click the plus icon to add skills or the trash icon to remove skills.'
-          )
-        }
-      >
-        <FaArrowRightArrowLeft />
-      </div>
-      <div className="w-[50%]">
+      <div className="w-70">
         <div className="flex flex-row h-6">
           <div className="w-[40%] pt-0.5 text-sm">Available Skills</div>
           <div className="w-[60%]">
@@ -107,6 +77,36 @@ const MySkillsSelect = ({
                 <PillContainer
                   showAddIcon={true}
                   onAdd={() => onAddSkill(skill.id)}
+                >
+                  {skill.abbreviation ?? skill.name}
+                </PillContainer>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div
+        className="content-center text-blue-300 cursor-pointer"
+        onClick={() =>
+          alert(
+            'Click the plus icon to add skills or the trash icon to remove skills.'
+          )
+        }
+      >
+        <FaArrowRightArrowLeft />
+      </div>
+      <div className="w-70">
+        <div className="pt-0.5 text-sm h-6">Current Skills</div>
+        <div className="h-64 border-[0.5px] border-gray-500">
+          <div
+            id="my_skills_select"
+            className="w-full h-fit max-h-63 overflow-auto p-1 flex flex-row flex-wrap gap-1"
+          >
+            {currentSkills.map((skill, idx) => (
+              <div key={idx}>
+                <PillContainer
+                  showDeleteIcon={true}
+                  onDelete={() => onDeleteSkill(skill.id)}
                 >
                   {skill.abbreviation ?? skill.name}
                 </PillContainer>

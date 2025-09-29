@@ -5,13 +5,18 @@ const RoleSelect = ({
   id,
   roleId,
   showAny = true,
+  showEmpty,
   onChange
 }: {
   id: string;
   roleId?: number;
   showAny?: boolean;
+  showEmpty?: boolean;
   onChange: (roleId: number) => void;
 }) => {
+  if (showAny && showEmpty) {
+    throw new Error('cannot set both showAny and showEmpty');
+  }
   const { isPending, roles } = useRoles();
 
   return (
@@ -31,6 +36,7 @@ const RoleSelect = ({
             Any
           </option>
         )}
+        {showEmpty && <option key={0} value="" />}
         {roles?.map((role, idx) => (
           <option key={idx} value={role.id}>
             {role.name}

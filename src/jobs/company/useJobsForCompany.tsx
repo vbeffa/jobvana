@@ -49,8 +49,8 @@ const useJobsForCompany = (companyId: number): Jobs => {
   const jobs: Array<Job> | undefined = useMemo(() => {
     return jobsData?.data?.sort(
       (job1, job2) =>
-        new Date(job2.updated_at ?? job2.created_at).getTime() -
-        new Date(job1.updated_at ?? job1.created_at).getTime()
+        new Date(job2.updated_at).getTime() -
+        new Date(job1.updated_at).getTime()
     );
   }, [jobsData?.data]);
 

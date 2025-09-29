@@ -349,7 +349,8 @@ export type Database = {
           salary_low: number
           status: Database['public']['Enums']['job_status']
           title: string
-          updated_at: string | null
+          type: Database['public']['Enums']['job_type'] | null
+          updated_at: string
           user_id: string | null
         }
         Insert: {
@@ -361,7 +362,8 @@ export type Database = {
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
           title: string
-          updated_at?: string | null
+          type?: Database['public']['Enums']['job_type'] | null
+          updated_at?: string
           user_id?: string | null
         }
         Update: {
@@ -373,7 +375,8 @@ export type Database = {
           salary_low?: number
           status?: Database['public']['Enums']['job_status']
           title?: string
-          updated_at?: string | null
+          type?: Database['public']['Enums']['job_type'] | null
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: [
@@ -564,7 +567,9 @@ export type Database = {
     Enums: {
       address_type: 'headquarters' | 'office'
       application_status: 'accepted' | 'rejected'
+      job_salary_type: 'annual' | 'hourly'
       job_status: 'open' | 'filled' | 'closed'
+      job_type: 'full_time' | 'part_time' | 'contract' | 'internship'
       user_type: 'company' | 'job_seeker'
     }
     CompositeTypes: {
@@ -695,7 +700,9 @@ export const Constants = {
     Enums: {
       address_type: ['headquarters', 'office'],
       application_status: ['accepted', 'rejected'],
+      job_salary_type: ['annual', 'hourly'],
       job_status: ['open', 'filled', 'closed'],
+      job_type: ['full_time', 'part_time', 'contract', 'internship'],
       user_type: ['company', 'job_seeker'],
     },
   },
