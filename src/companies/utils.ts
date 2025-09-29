@@ -20,10 +20,6 @@ export type ToUpdate = Pick<
   | 'name'
   | 'num_employees'
 >;
-export type ToDisplay = Pick<
-  DbCompany,
-  'contact_email' | 'description' | 'industry_id' | 'name' | 'num_employees'
->;
 
 export const isHeadquarters = (address: CompanyAddress) =>
   address.type === 'headquarters';

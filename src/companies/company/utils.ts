@@ -1,4 +1,10 @@
 import { capitalize } from 'lodash';
+import type { Company as DbCompany } from '../../types';
+
+export type ToDisplay = Pick<
+  DbCompany,
+  'contact_email' | 'description' | 'industry_id' | 'name' | 'num_employees'
+>;
 
 export const ROUND_TYPES = [
   'recruiter',

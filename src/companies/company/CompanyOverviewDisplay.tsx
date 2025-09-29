@@ -1,6 +1,6 @@
 import CompanyEmailDisplay from '../CompanyEmailDisplay';
 import useIndustries from '../useIndustries';
-import type { ToDisplay } from '../utils';
+import type { ToDisplay } from './utils';
 
 export type CompanyOverviewDisplayProps = {
   company: ToDisplay;
