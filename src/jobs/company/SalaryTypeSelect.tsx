@@ -9,7 +9,7 @@ const SalaryTypeSelect = ({
   width = 'w-32',
   onChange
 }: {
-  value: Job['salary_type'];
+  value?: Job['salary_type'];
   width?: string;
   onChange: (salaryType: Job['salary_type']) => void;
 }) => {

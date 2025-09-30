@@ -3,13 +3,13 @@ import useSkillsLite from '../../skills/useSkillsLite';
 
 const SkillSelect = ({
   id,
-  skillId,
+  skillIds,
   showAny = true,
   showEmpty = false,
   onChange
 }: {
   id: string;
-  skillId?: number;
+  skillIds?: Array<number>;
   showAny?: boolean;
   showEmpty?: boolean;
   onChange: (skillId: number) => void;
@@ -22,7 +22,7 @@ const SkillSelect = ({
   return (
     <Select
       id={id}
-      value={skillId}
+      value={skillIds?.[0]}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       <>

@@ -90,8 +90,8 @@ const useJobsForSkill = (
       if (filters.maxSalary) {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
-      if (filters.skillId) {
-        q = q.eq('skills.id', filters.skillId);
+      if (filters.skillIds && filters.skillIds.length > 0) {
+        q = q.in('job_skills.skill_id', filters.skillIds);
       }
       if (filters.created && filters.created !== 'all') {
         const createdAfter = (() => {

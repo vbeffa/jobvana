@@ -11,9 +11,11 @@ const TYPES: Array<Job['type']> = [
 
 const JobTypeSelect = ({
   value,
+  showAny,
   onChange
 }: {
-  value: Job['type'];
+  value?: Job['type'];
+  showAny?: boolean;
   onChange: (jobType: Job['type']) => void;
 }) => {
   return (
@@ -23,11 +25,18 @@ const JobTypeSelect = ({
       width="w-32"
       onChange={(e) => onChange(e.target.value as Job['type'])}
     >
-      {TYPES.map((type) => (
-        <option key={type} value={type}>
-          {jobTypeToString(type)}
-        </option>
-      ))}
+      <>
+        {showAny && (
+          <option key={0} value={0}>
+            Any
+          </option>
+        )}
+        {TYPES.map((type) => (
+          <option key={type} value={type}>
+            {jobTypeToString(type)}
+          </option>
+        ))}
+      </>
     </Select>
   );
 };

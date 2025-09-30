@@ -20,12 +20,13 @@ export type CreatedRange =
 export type SearchFilters = {
   company?: string;
   companyId?: number;
+  jobType?: Job['type'];
   title?: string;
   roleId?: number;
   salaryType: Job['salary_type'];
   minSalary: number;
   maxSalary: number;
-  skillId?: number;
+  skillIds?: Array<number>;
   created?: CreatedRange;
 };
 
@@ -62,6 +63,7 @@ const useJobs = (params: JobsParams): Jobs => {
   const { data, isPlaceholderData, isPending, error } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
+      const { filters } = params;
       let q = supabase
         .from('jobs')
         .select(
@@ -71,11 +73,14 @@ const useJobs = (params: JobsParams): Jobs => {
             count: 'exact'
           }
         )
-        .filter('status', 'eq', 'open');
+        .filter('status', 'eq', 'open')
+        .filter('salary_type', 'eq', filters.salaryType);
 
-      const { filters } = params;
       if (filters.company) {
         q = q.ilike('companies.name', `%${filters.company}%`);
+      }
+      if (filters.jobType) {
+        q = q.filter('type', 'eq', filters.jobType);
       }
       if (filters.companyId) {
         q = q.filter('companies.id', 'eq', filters.companyId);
@@ -92,8 +97,8 @@ const useJobs = (params: JobsParams): Jobs => {
       if (filters.maxSalary) {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
-      if (filters.skillId) {
-        q = q.eq('job_skills.skill_id', filters.skillId);
+      if (filters.skillIds && filters.skillIds.length > 0) {
+        q = q.in('job_skills.skill_id', filters.skillIds);
       }
       if (filters.created && filters.created !== 'all') {
         const createdAfter = (() => {

@@ -9,16 +9,19 @@ import {
   MIN_SALARY,
   type CreatedRange
 } from '../jobs/job_seekers/useJobs';
+import type { Job } from '../types';
 
 export type JobSearch = {
   page?: number;
   job_id?: number;
   company?: string;
+  job_type?: Job['type'];
   title?: string;
   role_id?: number;
+  salary_type?: Job['salary_type'];
   min_salary?: number;
   max_salary?: number;
-  skill_id?: number;
+  skill_ids?: string;
   created?: CreatedRange;
 };
 
@@ -31,11 +34,13 @@ export const Route = createFileRoute('/jobvana/jobs/')({
           page: Number(search.page) || 1,
           job_id: Number(search.job_id) || undefined,
           company: search.company as string,
+          job_type: search.job_type as Job['type'],
           title: search.title as string,
           role_id: Number(search.role_id) || undefined,
+          salary_type: search.salary_type as Job['salary_type'],
           min_salary: Number(search.min_salary) || MIN_SALARY,
           max_salary: Number(search.max_salary) || MAX_SALARY,
-          skill_id: Number(search.skill_id) || undefined,
+          skill_ids: search.skill_ids as string,
           created: search.created_range as CreatedRange
         }
       : undefined;

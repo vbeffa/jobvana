@@ -37,12 +37,13 @@ export type JobSeekerContextProps = {
     page: number;
     jobId?: number;
     company: string;
+    jobType?: Job['type'];
     title: string;
     roleId?: number;
     salaryType: Job['salary_type'];
     minSalary: number;
     maxSalary: number;
-    skillId?: number;
+    skillIds?: Array<number>;
     created?: CreatedRange;
   };
   setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
@@ -79,12 +80,13 @@ export const defaultJobSeekerContext: JobSeekerContextProps = {
   jobsContext: {
     page: 1,
     company: '',
+    jobType: undefined,
     title: '',
     roleId: 0,
     salaryType: 'annual',
     minSalary: MIN_SALARY,
     maxSalary: MAX_SALARY,
-    skillId: 0
+    skillIds: []
   },
   setJobsContext: () => {}
 };

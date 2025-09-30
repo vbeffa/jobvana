@@ -1,4 +1,5 @@
 import Filter from '../../inputs/Filter';
+import JobTypeSelect from '../company/JobTypeSelect';
 import SalaryTypeSelect from '../company/SalaryTypeSelect';
 import RoleSelect from '../RoleSelect';
 import { maxJobSalary, minJobSalary } from '../utils';
@@ -16,7 +17,7 @@ const JobFilters = ({
 }) => {
   return (
     <div className="p-2">
-      <div className="grid grid-cols-3 gap-x-2">
+      <div className="grid grid-cols-[30%_35%_35%] gap-x-2">
         <div className="grid grid-cols-[25%_75%] w-full gap-y-2">
           <Filter
             id="company_filter"
@@ -97,20 +98,6 @@ const JobFilters = ({
               onChange(newFilters);
             }}
           />
-          {/* <label htmlFor="skill" className="content-center">
-            Skills:
-          </label>
-          <SkillSelect
-            id="skill"
-            skillId={filters.skillId}
-            onChange={(skillId) => {
-              if (skillId === 0) {
-                onChange({ ...filters, skillId: undefined });
-              } else {
-                onChange({ ...filters, skillId });
-              }
-            }}
-          /> */}
           <label htmlFor="created" className="content-center">
             Posted:
           </label>
@@ -126,21 +113,32 @@ const JobFilters = ({
             }}
           />
         </div>
-        <div className="grid grid-cols-[25%_75%] w-[80%] gap-y-2">
-          <label htmlFor="skill" className="flex justify-start content-center">
+        <div className="grid grid-cols-[25%_75%] gap-y-2">
+          <label htmlFor="job_type" className="content-center">
+            Job Type:
+          </label>
+          <JobTypeSelect
+            value={filters.jobType}
+            showAny={true}
+            onChange={(jobType) => {
+              onChange({ ...filters, jobType });
+            }}
+          />
+          <label htmlFor="skills" className="content-center">
             Skills:
           </label>
           <SkillSelect
-            id="skill"
-            skillId={filters.skillId}
+            id="skills"
+            skillIds={filters.skillIds}
             onChange={(skillId) => {
               if (skillId === 0) {
-                onChange({ ...filters, skillId: undefined });
+                onChange({ ...filters, skillIds: undefined });
               } else {
-                onChange({ ...filters, skillId });
+                onChange({ ...filters, skillIds: [skillId] });
               }
             }}
           />
+          <div className="row-span-4 col-span-2"></div>
         </div>
       </div>
     </div>

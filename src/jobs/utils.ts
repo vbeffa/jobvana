@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import type { Job } from '../types';
 import {
   MAX_HOURLY_RATE,
@@ -6,17 +7,20 @@ import {
   MIN_SALARY
 } from './job_seekers/useJobs';
 
-export const jobTypeToString = (type: Job['type']) => {
-  switch (type) {
-    case 'full_time':
-      return 'Full time';
-    case 'part_time':
-      return 'Part time';
-    case 'contract':
-      return 'Contract';
-    case 'internship':
-      return 'Internship';
-  }
+export const jobTypeToString = (type: Job['type'], capitalize = true) => {
+  const jobType = (() => {
+    switch (type) {
+      case 'full_time':
+        return 'full time';
+      case 'part_time':
+        return 'part time';
+      case 'contract':
+        return 'contract';
+      case 'internship':
+        return 'internship';
+    }
+  })();
+  return capitalize ? _.capitalize(jobType) : jobType;
 };
 
 export const minJobSalary = (salaryType: Job['salary_type']) =>

@@ -22,12 +22,13 @@ import useJobs, {
 
 const INITIAL_FILTERS: SearchFilters = {
   company: '',
+  jobType: undefined,
   title: '',
   roleId: 0,
   salaryType: 'annual',
   minSalary: MIN_SALARY,
   maxSalary: MAX_SALARY,
-  skillId: 0
+  skillIds: []
 };
 
 const Jobs = () => {
@@ -76,11 +77,12 @@ const Jobs = () => {
   useEffect(() => {
     setSearchFilters({
       ..._.pick(context, [
+        'jobType',
         'roleId',
         'salaryType',
         'minSalary',
         'maxSalary',
-        'skillId',
+        'skillIds',
         'created'
       ]),
       company: context.company,
@@ -102,11 +104,12 @@ const Jobs = () => {
         page: debouncedPage,
         job_id: jobId ?? undefined,
         company: debouncedCompany || undefined,
+        job_type: filters.jobType,
         title: debouncedTitle || undefined,
         role_id: filters.roleId,
         min_salary: filters.minSalary,
         max_salary: filters.maxSalary,
-        skill_id: filters.skillId,
+        skill_ids: `[${filters.skillIds?.toString()}]`,
         created: filters.created
       }
     });
@@ -115,10 +118,11 @@ const Jobs = () => {
     debouncedPage,
     debouncedTitle,
     filters.created,
+    filters.jobType,
     filters.maxSalary,
     filters.minSalary,
     filters.roleId,
-    filters.skillId,
+    filters.skillIds,
     jobId,
     navigate
   ]);
