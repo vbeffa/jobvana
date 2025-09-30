@@ -347,9 +347,10 @@ export type Database = {
           id: number
           salary_high: number
           salary_low: number
+          salary_type: Database['public']['Enums']['job_salary_type']
           status: Database['public']['Enums']['job_status']
           title: string
-          type: Database['public']['Enums']['job_type'] | null
+          type: Database['public']['Enums']['job_type']
           updated_at: string
           user_id: string | null
         }
@@ -360,9 +361,10 @@ export type Database = {
           id?: number
           salary_high?: number
           salary_low?: number
+          salary_type?: Database['public']['Enums']['job_salary_type']
           status?: Database['public']['Enums']['job_status']
           title: string
-          type?: Database['public']['Enums']['job_type'] | null
+          type?: Database['public']['Enums']['job_type']
           updated_at?: string
           user_id?: string | null
         }
@@ -373,9 +375,10 @@ export type Database = {
           id?: number
           salary_high?: number
           salary_low?: number
+          salary_type?: Database['public']['Enums']['job_salary_type']
           status?: Database['public']['Enums']['job_status']
           title?: string
-          type?: Database['public']['Enums']['job_type'] | null
+          type?: Database['public']['Enums']['job_type']
           updated_at?: string
           user_id?: string | null
         }

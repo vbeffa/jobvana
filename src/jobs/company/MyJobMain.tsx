@@ -1,12 +1,15 @@
 import { capitalize } from 'lodash';
+import { useMemo } from 'react';
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
 import TextArea from '../../inputs/TextArea';
-import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
-import { type ToUpdate } from '../utils';
+import { jobTypeToString } from '../utils';
+import JobTypeSelect from './JobTypeSelect';
 import MyJobTitle from './MyJobTitle';
 import SalaryRangeInput from './SalaryRangeInput';
+import SalaryTypeSelect from './SalaryTypeSelect';
 import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
+import { maxJobSalary, minJobSalary, type ToUpdate } from './utils';
 
 export type MyJobMainProps = {
   job: ToUpdate;
@@ -21,6 +24,16 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
     maximumFractionDigits: 0
   });
 
+  const minSalary = useMemo(
+    () => minJobSalary(job.salary_type),
+    [job.salary_type]
+  );
+
+  const maxSalary = useMemo(
+    () => maxJobSalary(job.salary_type),
+    [job.salary_type]
+  );
+
   return (
     <div className="grid grid-cols-[15%_70%] gap-y-2">
       {!isEditing && (
@@ -28,11 +41,13 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
           <div>Title:</div>
           <div>{job.title}</div>
           <div>Type</div>
-          <div>{job.type}</div>
+          <div>{jobTypeToString(job.type)}</div>
           <div>Description:</div>
           <div>{job.description}</div>
           <div>Status:</div>
           <div>{capitalize(job.status)}</div>
+          <div>Salary Type:</div>
+          <div>{capitalize(job.salary_type)}</div>
           <div>Salary:</div>
           <div className="flex flex-row gap-1">
             <div>{formatter.format(job.salary_low)}</div>
@@ -44,6 +59,15 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
       {isEditing && (
         <>
           <MyJobTitle title={job.title} handleUpdate={setJob} />
+          <JobTypeSelect
+            value={job.type}
+            onChange={(type) => {
+              setJob((job) => ({
+                ...job,
+                type
+              }));
+            }}
+          />
           <TextArea
             id="description"
             label="Description"
@@ -66,7 +90,19 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
               }));
             }}
           />
+          <SalaryTypeSelect
+            value={job.salary_type}
+            onChange={(salaryType) => {
+              setJob((job) => ({
+                ...job,
+                salary_type: salaryType,
+                salary_low: minJobSalary(salaryType),
+                salary_high: maxJobSalary(salaryType)
+              }));
+            }}
+          />
           <SalaryRangeInput
+            type={job.salary_type}
             low={job.salary_low}
             high={job.salary_high}
             onChangeLow={(minSalary) => {
@@ -79,7 +115,7 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
                 salary_high:
                   job.salary_high && minSalary > job.salary_high
                     ? minSalary
-                    : Math.min(job.salary_high, MAX_SALARY)
+                    : Math.min(job.salary_high, maxSalary)
               }));
             }}
             onChangeHigh={(maxSalary) => {
@@ -92,7 +128,7 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
                 salary_low:
                   job.salary_low && maxSalary < job.salary_low
                     ? maxSalary
-                    : Math.max(job.salary_low, MIN_SALARY)
+                    : Math.max(job.salary_low, minSalary)
               }));
             }}
           />

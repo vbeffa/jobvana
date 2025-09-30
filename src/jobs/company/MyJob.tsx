@@ -5,11 +5,11 @@ import Error from '../../Error';
 import Hr from '../../Hr';
 import type { JobRole, JobSkill } from '../../types';
 import supabase from '../../utils/supabase';
-import { areValidJobRoles, duplicateJobRoles, isValidJob } from '../utils';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
 import MyJobSkills from './MyJobSkills';
 import type { Job } from './useJobsForCompany';
+import { areValidJobRoles, duplicateJobRoles, isValidJob } from './utils';
 
 export type MyJobProps = {
   job: Job;

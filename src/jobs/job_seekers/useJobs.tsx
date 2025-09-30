@@ -7,6 +7,8 @@ import supabase from '../../utils/supabase';
 export const MAX_TITLE_LENGTH = 100;
 export const MIN_SALARY = 10000;
 export const MAX_SALARY = 200000;
+export const MIN_HOURLY_RATE = 20;
+export const MAX_HOURLY_RATE = 200;
 
 export type CreatedRange =
   | 'all'

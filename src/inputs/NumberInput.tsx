@@ -84,9 +84,7 @@ const NumberInput = ({
         )}
         {outOfRange && (
           <Tooltip
-            message={`Valid range is ${showCurrency ? '$' : ''}
-                  ${min} - ${showCurrency ? '$' : ''}
-                  ${max}`}
+            message={`Valid range is ${showCurrency ? '$' : ''}${min} - ${showCurrency ? '$' : ''}${max}`}
           >
             <FaTriangleExclamation />
           </Tooltip>

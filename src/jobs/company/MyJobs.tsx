@@ -44,6 +44,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
         }
       ],
       job_skills: [],
+      salary_type: 'annual',
       salary_low: MIN_SALARY,
       salary_high: MAX_SALARY,
       updated_at: new Date().toISOString(),
@@ -87,7 +88,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                 />
               ))
               .concat(
-                <div key={jobs.length} className="pt-2 pl-2">
+                <div key={jobs.length} className="pt-4 flex justify-center">
                   {!isAddingNew && (
                     <Button
                       label="New"

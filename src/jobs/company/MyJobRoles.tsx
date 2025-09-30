@@ -5,8 +5,8 @@ import NumberInput from '../../inputs/NumberInput';
 import type { JobRole } from '../../types';
 import JobRoles from '../JobRoles';
 import RoleSelect from '../RoleSelect';
-import { jobRolesPercentTotal } from '../utils';
 import LevelSelect from './LevelSelect';
+import { jobRolesPercentTotal } from './utils';
 
 export type MyJobRolesProps = {
   jobId: number;
@@ -128,7 +128,7 @@ const MyJobRoles = ({
                 <div>Duplicate role</div>
               </div>
             )}
-            {!duplicateRole && (
+            {!duplicateRole && jobRoles.length < 3 && (
               <div
                 className="absolute left-0 top-1 text-gray-400 cursor-pointer"
                 onClick={() => {
