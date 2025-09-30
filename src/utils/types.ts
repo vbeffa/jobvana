@@ -359,8 +359,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          salary_high?: number
-          salary_low?: number
+          salary_high: number
+          salary_low: number
           salary_type?: Database['public']['Enums']['job_salary_type']
           status?: Database['public']['Enums']['job_status']
           title: string
