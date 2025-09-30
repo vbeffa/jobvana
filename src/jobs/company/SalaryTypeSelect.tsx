@@ -6,16 +6,18 @@ const TYPES: Array<Job['salary_type']> = ['annual', 'hourly'];
 
 const SalaryTypeSelect = ({
   value,
+  width = 'w-32',
   onChange
 }: {
   value: Job['salary_type'];
+  width?: string;
   onChange: (salaryType: Job['salary_type']) => void;
 }) => {
   return (
     <Select
       id="salary_type"
       value={value}
-      width="w-32"
+      width={width}
       onChange={(e) => onChange(e.target.value as Job['salary_type'])}
     >
       {TYPES.map((type) => (

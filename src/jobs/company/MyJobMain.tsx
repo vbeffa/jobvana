@@ -2,14 +2,14 @@ import { capitalize } from 'lodash';
 import { useMemo } from 'react';
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
 import TextArea from '../../inputs/TextArea';
-import { jobTypeToString } from '../utils';
+import { jobTypeToString, maxJobSalary, minJobSalary } from '../utils';
 import JobTypeSelect from './JobTypeSelect';
 import MyJobTitle from './MyJobTitle';
 import SalaryRangeInput from './SalaryRangeInput';
 import SalaryTypeSelect from './SalaryTypeSelect';
 import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
-import { maxJobSalary, minJobSalary, type ToUpdate } from './utils';
+import { type ToUpdate } from './utils';
 
 export type MyJobMainProps = {
   job: ToUpdate;

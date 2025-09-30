@@ -1,11 +1,14 @@
+import type { Job } from '../../types';
 import SalarySelect from './SalarySelect';
 
 const SalaryRangeSelect = ({
+  type,
   low,
   high,
   onChangeLow,
   onChangeHigh
 }: {
+  type: Job['salary_type'];
   low: number;
   high: number;
   onChangeLow: (minSalary: number) => void;
@@ -17,11 +20,21 @@ const SalaryRangeSelect = ({
         Salary:
       </label>
       <div className="flex flex-row gap-x-2">
-        <SalarySelect id="min_salary" value={low} onChange={onChangeLow} />
+        <SalarySelect
+          type={type}
+          id="min_salary"
+          value={low}
+          onChange={onChangeLow}
+        />
         <label htmlFor="max_salary" className="content-center">
           -
         </label>
-        <SalarySelect id="max_salary" value={high} onChange={onChangeHigh} />
+        <SalarySelect
+          type={type}
+          id="max_salary"
+          value={high}
+          onChange={onChangeHigh}
+        />
       </div>
     </>
   );

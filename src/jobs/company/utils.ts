@@ -1,21 +1,10 @@
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
-import type { Job as DbJob, Job, JobRole } from '../../types';
-import {
-  MAX_HOURLY_RATE,
-  MAX_SALARY,
-  MAX_TITLE_LENGTH,
-  MIN_HOURLY_RATE,
-  MIN_SALARY
-} from '../job_seekers/useJobs';
+import type { Job as DbJob, JobRole } from '../../types';
+import { MAX_TITLE_LENGTH } from '../job_seekers/useJobs';
+import { maxJobSalary, minJobSalary } from '../utils';
 
 export type ToInsert = Omit<DbJob, 'id' | 'created_at'>;
 export type ToUpdate = Omit<DbJob, 'created_at'>;
-
-export const minJobSalary = (salaryType: Job['salary_type']) =>
-  salaryType === 'annual' ? MIN_SALARY : MIN_HOURLY_RATE;
-
-export const maxJobSalary = (salaryType: Job['salary_type']) =>
-  salaryType === 'annual' ? MAX_SALARY : MAX_HOURLY_RATE;
 
 export const isValidJob = (job: ToInsert | ToUpdate) => {
   return Boolean(

@@ -1,18 +1,25 @@
 import _ from 'lodash';
+import { useMemo } from 'react';
 import Select from '../../inputs/Select';
-import { MAX_SALARY, MIN_SALARY } from './useJobs';
-
-const salaries = _.range(MIN_SALARY, MAX_SALARY + 1, 10000);
+import type { Job } from '../../types';
+import { maxJobSalary, minJobSalary } from '../utils';
 
 const SalarySelect = ({
+  type,
   id,
   value,
   onChange
 }: {
+  type: Job['salary_type'];
   id: string;
   value?: number;
   onChange: (salary: number) => void;
 }) => {
+  const min = useMemo(() => minJobSalary(type), [type]);
+  const max = useMemo(() => maxJobSalary(type), [type]);
+  const step = useMemo(() => (type === 'annual' ? 10000 : 5), [type]);
+  const salaries = useMemo(() => _.range(min, max + 1, step), [max, min, step]);
+
   return (
     <Select
       id={id}

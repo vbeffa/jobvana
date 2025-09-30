@@ -8,7 +8,7 @@ import {
   MIN_SALARY,
   type CreatedRange
 } from './jobs/job_seekers/useJobs';
-import type { Company as DbCompany } from './types';
+import type { Company as DbCompany, Job } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
@@ -39,6 +39,7 @@ export type JobSeekerContextProps = {
     company: string;
     title: string;
     roleId?: number;
+    salaryType: Job['salary_type'];
     minSalary: number;
     maxSalary: number;
     skillId?: number;
@@ -80,6 +81,7 @@ export const defaultJobSeekerContext: JobSeekerContextProps = {
     company: '',
     title: '',
     roleId: 0,
+    salaryType: 'annual',
     minSalary: MIN_SALARY,
     maxSalary: MAX_SALARY,
     skillId: 0

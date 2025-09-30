@@ -1,5 +1,7 @@
 import Filter from '../../inputs/Filter';
+import SalaryTypeSelect from '../company/SalaryTypeSelect';
 import RoleSelect from '../RoleSelect';
+import { maxJobSalary, minJobSalary } from '../utils';
 import CreatedSelect from './CreatedSelect';
 import SalaryRangeSelect from './SalaryRangeSelect';
 import SkillSelect from './SkillSelect';
@@ -14,8 +16,8 @@ const JobFilters = ({
 }) => {
   return (
     <div className="p-2">
-      <div className="grid grid-cols-2">
-        <div className="grid grid-cols-[25%_75%] w-[20rem] gap-y-2">
+      <div className="grid grid-cols-3 gap-x-2">
+        <div className="grid grid-cols-[25%_75%] w-full gap-y-2">
           <Filter
             id="company_filter"
             label="Name"
@@ -51,8 +53,25 @@ const JobFilters = ({
             }}
           />
         </div>
-        <div className="grid grid-cols-[25%_65%] w-[24rem] gap-y-2">
+        <div className="grid grid-cols-[30%_70%] w-full gap-y-2">
+          <label htmlFor="salary_type" className="content-center">
+            Salary Type:
+          </label>
+          <SalaryTypeSelect
+            value={filters.salaryType}
+            width="w-28"
+            onChange={(salaryType) => {
+              const newFilters = {
+                ...filters,
+                salaryType,
+                minSalary: minJobSalary(salaryType),
+                maxSalary: maxJobSalary(salaryType)
+              };
+              onChange(newFilters);
+            }}
+          />
           <SalaryRangeSelect
+            type={filters.salaryType}
             low={filters.minSalary}
             high={filters.maxSalary}
             onChangeLow={(minSalary) => {
@@ -78,8 +97,8 @@ const JobFilters = ({
               onChange(newFilters);
             }}
           />
-          <label htmlFor="skill" className="content-center">
-            Skill:
+          {/* <label htmlFor="skill" className="content-center">
+            Skills:
           </label>
           <SkillSelect
             id="skill"
@@ -91,7 +110,7 @@ const JobFilters = ({
                 onChange({ ...filters, skillId });
               }
             }}
-          />
+          /> */}
           <label htmlFor="created" className="content-center">
             Posted:
           </label>
@@ -103,6 +122,22 @@ const JobFilters = ({
                 onChange({ ...filters, created: undefined });
               } else {
                 onChange({ ...filters, created });
+              }
+            }}
+          />
+        </div>
+        <div className="grid grid-cols-[25%_75%] w-[80%] gap-y-2">
+          <label htmlFor="skill" className="flex justify-start content-center">
+            Skills:
+          </label>
+          <SkillSelect
+            id="skill"
+            skillId={filters.skillId}
+            onChange={(skillId) => {
+              if (skillId === 0) {
+                onChange({ ...filters, skillId: undefined });
+              } else {
+                onChange({ ...filters, skillId });
               }
             }}
           />

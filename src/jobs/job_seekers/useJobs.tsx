@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import type { Params } from '../../types';
+import type { Job, Params } from '../../types';
 import supabase from '../../utils/supabase';
 
 export const MAX_TITLE_LENGTH = 100;
@@ -22,6 +22,7 @@ export type SearchFilters = {
   companyId?: number;
   title?: string;
   roleId?: number;
+  salaryType: Job['salary_type'];
   minSalary: number;
   maxSalary: number;
   skillId?: number;
@@ -117,9 +118,9 @@ const useJobs = (params: JobsParams): Jobs => {
         )
         .order('created_at', { ascending: false });
       // .overrideTypes<Array<{ companies: Company }>>();
-      console.log(data);
+      // console.log(data);
       if (error) {
-        console.log(JSON.stringify(error));
+        console.log(error);
       }
       return { jobs: data, error, count };
     },

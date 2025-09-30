@@ -24,6 +24,7 @@ const INITIAL_FILTERS: SearchFilters = {
   company: '',
   title: '',
   roleId: 0,
+  salaryType: 'annual',
   minSalary: MIN_SALARY,
   maxSalary: MAX_SALARY,
   skillId: 0
@@ -76,6 +77,7 @@ const Jobs = () => {
     setSearchFilters({
       ..._.pick(context, [
         'roleId',
+        'salaryType',
         'minSalary',
         'maxSalary',
         'skillId',

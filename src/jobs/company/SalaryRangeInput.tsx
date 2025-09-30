@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import NumberInput from '../../inputs/NumberInput';
 import type { Job } from '../../types';
-import { maxJobSalary, minJobSalary } from './utils';
+import { maxJobSalary, minJobSalary } from '../utils';
 
 const SalaryRangeInput = ({
   type,
