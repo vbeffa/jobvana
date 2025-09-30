@@ -21,36 +21,31 @@ const SalaryRangeInput = ({
   const step = useMemo(() => (type === 'annual' ? 1000 : 1), [type]);
 
   return (
-    <>
-      <label htmlFor="min_salary" className="content-center">
-        Salary:
+    <div className="w-[50%] flex flex-row gap-x-2">
+      <NumberInput
+        id="min_salary"
+        value={low}
+        min={min}
+        max={max}
+        step={step}
+        width="w-34"
+        showCurrency={true}
+        onChange={onChangeLow}
+      />
+      <label htmlFor="max_salary" className="content-center">
+        -
       </label>
-      <div className="flex flex-row gap-x-2">
-        <NumberInput
-          id="min_salary"
-          value={low}
-          min={min}
-          max={max}
-          step={step}
-          width="w-32"
-          showCurrency={true}
-          onChange={onChangeLow}
-        />
-        <label htmlFor="max_salary" className="content-center">
-          -
-        </label>
-        <NumberInput
-          id="max_salary"
-          value={high}
-          min={min}
-          max={max}
-          step={step}
-          width="w-32"
-          showCurrency={true}
-          onChange={onChangeHigh}
-        />
-      </div>
-    </>
+      <NumberInput
+        id="max_salary"
+        value={high}
+        min={min}
+        max={max}
+        step={step}
+        width="w-34"
+        showCurrency={true}
+        onChange={onChangeHigh}
+      />
+    </div>
   );
 };
 

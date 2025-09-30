@@ -40,34 +40,29 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
         <>
           <div>Title:</div>
           <div>{job.title}</div>
-          <div>Type</div>
-          <div>{jobTypeToString(job.type)}</div>
           <div>Description:</div>
           <div>{job.description}</div>
-          <div>Status:</div>
-          <div>{capitalize(job.status)}</div>
+          <div>Type</div>
+          <div className="flex flex-row">
+            <div className="w-[40%]">{jobTypeToString(job.type)}</div>
+            <div className="w-[20%]">Status:</div>
+            <div>{capitalize(job.status)}</div>
+          </div>
           <div>Salary Type:</div>
-          <div>{capitalize(job.salary_type)}</div>
-          <div>Salary:</div>
-          <div className="flex flex-row gap-1">
-            <div>{formatter.format(job.salary_low)}</div>
-            <div>-</div>
-            <div>{formatter.format(job.salary_high)}</div>
+          <div className="flex flex-row">
+            <div className="w-[40%]">{capitalize(job.salary_type)}</div>
+            <div className="w-[20%]">Salary:</div>
+            <div className="flex flex-row gap-1">
+              <div>{formatter.format(job.salary_low)}</div>
+              <div>-</div>
+              <div>{formatter.format(job.salary_high)}</div>
+            </div>
           </div>
         </>
       )}
       {isEditing && (
         <>
           <MyJobTitle title={job.title} handleUpdate={setJob} />
-          <JobTypeSelect
-            value={job.type}
-            onChange={(type) => {
-              setJob((job) => ({
-                ...job,
-                type
-              }));
-            }}
-          />
           <TextArea
             id="description"
             label="Description"
@@ -81,57 +76,86 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
               }));
             }}
           />
-          <StatusSelect
-            status={job.status}
-            onChange={(status) => {
-              setJob((job) => ({
-                ...job,
-                status
-              }));
-            }}
-          />
-          <SalaryTypeSelect
-            value={job.salary_type}
-            onChange={(salaryType) => {
-              setJob((job) => ({
-                ...job,
-                salary_type: salaryType,
-                salary_low: minJobSalary(salaryType),
-                salary_high: maxJobSalary(salaryType)
-              }));
-            }}
-          />
-          <SalaryRangeInput
-            type={job.salary_type}
-            low={job.salary_low}
-            high={job.salary_high}
-            onChangeLow={(minSalary) => {
-              if (!minSalary) {
-                return;
-              }
-              setJob((job) => ({
-                ...job,
-                salary_low: minSalary,
-                salary_high:
-                  job.salary_high && minSalary > job.salary_high
-                    ? minSalary
-                    : Math.min(job.salary_high, maxSalary)
-              }));
-            }}
-            onChangeHigh={(maxSalary) => {
-              if (!maxSalary) {
-                return;
-              }
-              setJob((job) => ({
-                ...job,
-                salary_high: maxSalary,
-                salary_low:
-                  job.salary_low && maxSalary < job.salary_low
-                    ? maxSalary
-                    : Math.max(job.salary_low, minSalary)
-              }));
-            }}
-          />
+          <label htmlFor="job_type" className="content-center">
+            Job Type:
+          </label>
+          <div className="flex flex-row">
+            <div className="w-[30%]">
+              <JobTypeSelect
+                value={job.type}
+                onChange={(type) => {
+                  setJob((job) => ({
+                    ...job,
+                    type
+                  }));
+                }}
+              />
+            </div>
+            <label htmlFor="status" className="w-[20%] content-center">
+              Status:
+            </label>
+            <StatusSelect
+              status={job.status}
+              onChange={(status) => {
+                setJob((job) => ({
+                  ...job,
+                  status
+                }));
+              }}
+            />
+          </div>
+          <label htmlFor="salary_type" className="content-center">
+            Salary Type:
+          </label>
+          <div className="flex flex-row">
+            <div className="w-[30%]">
+              <SalaryTypeSelect
+                value={job.salary_type}
+                onChange={(salaryType) => {
+                  setJob((job) => ({
+                    ...job,
+                    salary_type: salaryType,
+                    salary_low: minJobSalary(salaryType),
+                    salary_high: maxJobSalary(salaryType)
+                  }));
+                }}
+              />
+            </div>
+            <label htmlFor="min_salary" className="w-[20%] content-center">
+              Salary:
+            </label>
+            <SalaryRangeInput
+              type={job.salary_type}
+              low={job.salary_low}
+              high={job.salary_high}
+              onChangeLow={(minSalary) => {
+                if (!minSalary) {
+                  return;
+                }
+                setJob((job) => ({
+                  ...job,
+                  salary_low: minSalary,
+                  salary_high:
+                    job.salary_high && minSalary > job.salary_high
+                      ? minSalary
+                      : Math.min(job.salary_high, maxSalary)
+                }));
+              }}
+              onChangeHigh={(maxSalary) => {
+                if (!maxSalary) {
+                  return;
+                }
+                setJob((job) => ({
+                  ...job,
+                  salary_high: maxSalary,
+                  salary_low:
+                    job.salary_low && maxSalary < job.salary_low
+                      ? maxSalary
+                      : Math.max(job.salary_low, minSalary)
+                }));
+              }}
+            />
+          </div>
         </>
       )}
     </div>

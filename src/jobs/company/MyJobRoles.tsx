@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import { useMemo } from 'react';
-import { FaPlus, FaTrash, FaTriangleExclamation } from 'react-icons/fa6';
+import {
+  FaCircleCheck,
+  FaPlus,
+  FaTrash,
+  FaTriangleExclamation
+} from 'react-icons/fa6';
 import NumberInput from '../../inputs/NumberInput';
 import type { JobRole } from '../../types';
 import JobRoles from '../JobRoles';
@@ -110,12 +115,20 @@ const MyJobRoles = ({
             </div>
           ))}
           <div
-            className={`relative col-start-2 ${percentTotalValid ? 'pb-5' : 'pb-0'}`}
+            className={`relative col-start-2 ${percentTotalValid ? 'pb-0' : 'pb-0'}`}
           >
             {!percentTotalValid && (
               <div className="text-sm text-red-500 flex flex-row gap-1 pl-50">
                 <div className="content-center">
                   <FaTriangleExclamation />
+                </div>
+                <div>{percentTotal}%</div>
+              </div>
+            )}
+            {percentTotalValid && (
+              <div className="text-sm text-gray-500 flex flex-row gap-1 pl-50">
+                <div className="content-center">
+                  <FaCircleCheck />
                 </div>
                 <div>{percentTotal}%</div>
               </div>
