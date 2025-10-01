@@ -49,7 +49,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -69,7 +69,7 @@ const Login = () => {
         setError(error);
         return;
       }
-      console.log(data);
+      // console.log(data);
       setRegistrationSuccess(true);
       resetForm();
       setMode('login');
@@ -84,7 +84,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
@@ -94,7 +94,7 @@ const Login = () => {
         setError(error);
         return;
       }
-      console.log(data);
+      // console.log(data);
     } finally {
       setIsLoggingIn(false);
     }
