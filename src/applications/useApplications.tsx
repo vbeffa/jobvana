@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import supabase from '../db/supabase';
 import type {
   Application as DbApplication,
   Company as DbCompany,
   Job
 } from '../types';
-import supabase from '../utils/supabase';
 
 export type Application = DbApplication & {
   job: Job;

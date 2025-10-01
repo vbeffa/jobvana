@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import SaveCancelIcons from '../../controls/SaveCancelIcons';
-import supabase from '../../utils/supabase';
+import supabase from '../../db/supabase';
 import { isValidAddress } from '../utils';
 import MyCompanyAddressContainer from './MyCompanyAddressContainer';
 import MyCompanyEditAddress, { type ToInsert } from './MyCompanyEditAddress';

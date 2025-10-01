@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
+import supabase from '../../db/supabase';
 import Error from '../../Error';
 import Hr from '../../Hr';
 import type { CompanyAddress, JobRole, JobSkill } from '../../types';
-import supabase from '../../utils/supabase';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
 import MyJobSkills from './MyJobSkills';

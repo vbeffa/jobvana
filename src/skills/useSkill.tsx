@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import supabase from '../db/supabase';
 import type {
   Skill as DbSkill,
   SkillCategory as DbSkillCategory,
   SkillVersion as DbSkillVersion
 } from '../types';
-import supabase from '../utils/supabase';
 
 export type SearchFilters = {
   name?: string;

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import supabase from '../utils/supabase';
+import supabase from '../db/supabase';
 
 const useSkillVersion = ({ id }: { id: number }) => {
   const {

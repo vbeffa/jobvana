@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import supabase from '../db/supabase';
 import type { Industry } from '../types';
-import supabase from '../utils/supabase';
 
 export type Industries = {
   industries: Array<Industry> | undefined;

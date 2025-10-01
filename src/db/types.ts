@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '13.0.4'
+    PostgrestVersion: '13.0.5'
   }
   public: {
     Tables: {
@@ -254,7 +254,7 @@ export type Database = {
           job_id: number
           percent: number
           role_id: number
-          role_level?: number
+          role_level: number
         }
         Update: {
           job_id?: number
@@ -569,10 +569,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      foo: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       address_type: 'headquarters' | 'office'

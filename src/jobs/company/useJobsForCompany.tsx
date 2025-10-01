@@ -4,8 +4,8 @@ import {
   type QueryObserverResult
 } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import supabase from '../../db/supabase';
 import type { Job as DbJob, JobRole, JobSkill } from '../../types';
-import supabase from '../../utils/supabase';
 
 export type Job = DbJob & {
   job_roles: Array<JobRole>; // TODO use similar case in other hook types

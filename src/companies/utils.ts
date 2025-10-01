@@ -1,5 +1,5 @@
+import supabase from '../db/supabase';
 import type { Company as DbCompany } from '../types';
-import supabase from '../utils/supabase';
 import type { InterviewProcess, InterviewRound } from './company/utils';
 import {
   MAX_COMPANY_SIZE,

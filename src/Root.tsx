@@ -11,8 +11,8 @@ import {
   type Company,
   type JobSeekerContextProps
 } from './Context';
+import supabase from './db/supabase';
 import Header from './Header';
-import supabase from './utils/supabase';
 
 export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
 

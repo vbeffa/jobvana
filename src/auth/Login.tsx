@@ -6,9 +6,9 @@ import {
 } from '../companies/job_seeker/useCompanies';
 import { type UserType } from '../Context';
 import Button from '../controls/Button';
+import supabase from '../db/supabase';
 import Error from '../Error';
 import TextInput from '../inputs/TextInput';
-import supabase from '../utils/supabase';
 
 const MIN_PASSWORD_LENGTH = 6;
 const MAX_PASSWORD_LENGTH = 32;

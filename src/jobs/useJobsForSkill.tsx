@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
+import supabase from '../db/supabase';
 import type {
   Application,
   Company,
@@ -8,7 +9,6 @@ import type {
   Skill as DbSkill,
   Params
 } from '../types';
-import supabase from '../utils/supabase';
 import type { JobRole } from './job_seekers/useJob';
 import { type SearchFilters } from './job_seekers/useJobs';
 

@@ -1,7 +1,7 @@
 import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
+import type { Database } from './db/types';
 import type { SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
 import type { SearchFilters as SkillSearchFilters } from './skills/useSkills';
-import type { Database } from './utils/types';
 
 export type Params<
   SearchFilters extends
