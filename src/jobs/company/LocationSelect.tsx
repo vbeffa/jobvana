@@ -15,7 +15,7 @@ const LocationSelect = ({
       <Select
         id="location"
         value={addressId}
-        width="w-fit"
+        width="w-fit min-w-32"
         onChange={(e) => {
           onChange(parseInt(e.target.value));
         }}
