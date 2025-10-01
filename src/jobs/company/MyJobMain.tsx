@@ -1,9 +1,12 @@
 import { capitalize } from 'lodash';
 import { useMemo } from 'react';
 import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies';
+import Label from '../../inputs/Label';
 import TextArea from '../../inputs/TextArea';
+import type { CompanyAddress } from '../../types';
 import { jobTypeToString, maxJobSalary, minJobSalary } from '../utils';
 import JobTypeSelect from './JobTypeSelect';
+import LocationSelect from './LocationSelect';
 import MyJobTitle from './MyJobTitle';
 import SalaryRangeInput from './SalaryRangeInput';
 import SalaryTypeSelect from './SalaryTypeSelect';
@@ -14,10 +17,11 @@ import { type ToUpdate } from './utils';
 export type MyJobMainProps = {
   job: ToUpdate;
   setJob: React.Dispatch<React.SetStateAction<Job>>;
+  addresses: Array<CompanyAddress>;
   isEditing: boolean;
 };
 
-const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
+const MyJobMain = ({ job, setJob, addresses, isEditing }: MyJobMainProps) => {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -33,6 +37,16 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
     () => maxJobSalary(job.salary_type),
     [job.salary_type]
   );
+
+  const jobAddress = useMemo(() => {
+    const address = addresses.find(
+      (address) => address.id === job.company_address_id
+    );
+    if (!address) {
+      return 'Remote';
+    }
+    return `${address.street}, ${address.city} ${address.state} ${address.zip}`;
+  }, [addresses, job.company_address_id]);
 
   return (
     <div className="grid grid-cols-[15%_70%] gap-y-2">
@@ -58,6 +72,8 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
               <div>{formatter.format(job.salary_high)}</div>
             </div>
           </div>
+          <div>Location:</div>
+          <div>{jobAddress}</div>
         </>
       )}
       {isEditing && (
@@ -76,24 +92,19 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
               }));
             }}
           />
-          <label htmlFor="job_type" className="content-center">
-            Job Type:
-          </label>
-          <div className="flex flex-row">
-            <div className="w-[30%]">
-              <JobTypeSelect
-                value={job.type}
-                onChange={(type) => {
-                  setJob((job) => ({
-                    ...job,
-                    type
-                  }));
-                }}
-              />
-            </div>
-            <label htmlFor="status" className="w-[20%] content-center">
-              Status:
-            </label>
+          <Label htmlFor="job_type" label="Job Type" />
+          <div className="grid grid-cols-[30%_20%_30%]">
+            <JobTypeSelect
+              value={job.type}
+              width="w-32"
+              onChange={(type) => {
+                setJob((job) => ({
+                  ...job,
+                  type
+                }));
+              }}
+            />
+            <Label htmlFor="status" label="Status" />
             <StatusSelect
               status={job.status}
               onChange={(status) => {
@@ -104,26 +115,20 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
               }}
             />
           </div>
-          <label htmlFor="salary_type" className="content-center">
-            Salary Type:
-          </label>
-          <div className="flex flex-row">
-            <div className="w-[30%]">
-              <SalaryTypeSelect
-                value={job.salary_type}
-                onChange={(salaryType) => {
-                  setJob((job) => ({
-                    ...job,
-                    salary_type: salaryType,
-                    salary_low: minJobSalary(salaryType),
-                    salary_high: maxJobSalary(salaryType)
-                  }));
-                }}
-              />
-            </div>
-            <label htmlFor="min_salary" className="w-[20%] content-center">
-              Salary:
-            </label>
+          <Label htmlFor="salary_type" label="Salary Type" />
+          <div className="grid grid-cols-[30%_20%_30%]">
+            <SalaryTypeSelect
+              value={job.salary_type}
+              onChange={(salaryType) => {
+                setJob((job) => ({
+                  ...job,
+                  salary_type: salaryType,
+                  salary_low: minJobSalary(salaryType),
+                  salary_high: maxJobSalary(salaryType)
+                }));
+              }}
+            />
+            <Label htmlFor="min_salary" label="Salary" />
             <SalaryRangeInput
               type={job.salary_type}
               low={job.salary_low}
@@ -156,6 +161,17 @@ const MyJobMain = ({ job, setJob, isEditing }: MyJobMainProps) => {
               }}
             />
           </div>
+          <Label htmlFor="location" label="Location" />
+          <LocationSelect
+            addressId={job.company_address_id ?? undefined}
+            addresses={addresses}
+            onChange={(addressId) => {
+              setJob((job) => ({
+                ...job,
+                company_address_id: addressId
+              }));
+            }}
+          />
         </>
       )}
     </div>

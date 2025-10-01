@@ -33,9 +33,12 @@ const JobDetails = ({ id }: { id: number }) => {
           </div>
         }
       >
-        <div className="flex flex-row gap-x-2 h-12">
+        <div className="flex flex-row gap-x-2">
           <CompanyLink {...job.company} />
           <Salary {...job} />
+        </div>
+        <div className="text-sm">
+          {job.address ? `${job.address.city}, ${job.address.state}` : 'Remote'}
         </div>
       </Section>
       <Section title="Description">{job.description}</Section>

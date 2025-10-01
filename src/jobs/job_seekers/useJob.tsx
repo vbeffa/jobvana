@@ -4,6 +4,7 @@ import type { SkillVersion } from '../../companies/job_seeker/useCompany';
 import type {
   Application,
   Company,
+  CompanyAddress,
   Job as DbJob,
   JobRole as DbJobRole,
   Skill as DbSkill
@@ -12,12 +13,16 @@ import supabase from '../../utils/supabase';
 
 export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'> & { techStack: Array<SkillVersion> };
+  address: CompanyAddress | null;
   jobRoles: Array<JobRole>;
   skills: Array<Skill>;
   applications: Array<Pick<Application, 'status'>> | undefined;
 };
 
-export type Job = Omit<DbJob, 'id' | 'company_id' | 'status'>;
+export type Job = Omit<
+  DbJob,
+  'id' | 'company_id' | 'status' | 'company_address_id'
+>;
 export type Skill = Pick<
   DbSkill,
   'id' | 'skill_category_id' | 'name' | 'abbreviation'
@@ -39,6 +44,7 @@ const useJob = (id: number): JobH => {
         .from('jobs')
         .select(
           `created_at, updated_at, type, description, salary_type, salary_low, salary_high, title,
+          company_addresses(*),
           companies!inner(id, name, company_tech_stacks(skill_versions(id, skill_id, version, ordinal))),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
@@ -66,6 +72,7 @@ const useJob = (id: number): JobH => {
           (techStack) => techStack.skill_versions
         )
       },
+      address: job.company_addresses,
       jobRoles: job.job_roles
     };
   }, [data?.job]);

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import Error from '../../Error';
 import Hr from '../../Hr';
-import type { JobRole, JobSkill } from '../../types';
+import type { CompanyAddress, JobRole, JobSkill } from '../../types';
 import supabase from '../../utils/supabase';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
@@ -14,6 +14,7 @@ import { areValidJobRoles, duplicateJobRoles, isValidJob } from './utils';
 export type MyJobProps = {
   job: Job;
   isNew: boolean;
+  addresses: Array<CompanyAddress>;
   onStartUpdate: () => void;
   onFinishUpdate: (error?: Error) => void;
   onCancelNewJob: () => void;
@@ -22,6 +23,7 @@ export type MyJobProps = {
 const MyJob = ({
   job,
   isNew,
+  addresses,
   onStartUpdate,
   onFinishUpdate,
   onCancelNewJob
@@ -69,6 +71,9 @@ const MyJob = ({
 
   const updateJob = useCallback(async () => {
     const toUpdate = _.omit(editJob, 'job_roles', 'job_skills');
+    if (toUpdate.company_address_id === -1) {
+      toUpdate.company_address_id = null;
+    }
     const { error } = await supabase
       .from('jobs')
       .update({
@@ -84,6 +89,9 @@ const MyJob = ({
 
   const createJob = useCallback(async () => {
     const toInsert = _.omit(editJob, 'id', 'job_roles', 'job_skills');
+    if (toInsert.company_address_id === -1) {
+      toInsert.company_address_id = null;
+    }
     const { data, error } = await supabase
       .from('jobs')
       .insert({
@@ -289,7 +297,12 @@ const MyJob = ({
         onDelete={!isNew ? onDelete : undefined}
         onSave={onSave}
       />
-      <MyJobMain job={editJob} setJob={setEditJob} isEditing={isEditing} />
+      <MyJobMain
+        job={editJob}
+        setJob={setEditJob}
+        addresses={addresses}
+        isEditing={isEditing}
+      />
       <div className="col-span-2">
         <Hr />
       </div>

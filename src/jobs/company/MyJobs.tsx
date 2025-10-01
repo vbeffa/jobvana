@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import useCompanyAddresses from '../../companies/company/useCompanyAddresses';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
@@ -17,6 +18,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   const [updating, setUpdating] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const { jobs, refetch } = useJobsForCompany(companyId);
+  const { addresses } = useCompanyAddresses(companyId);
 
   useEffect(() => {
     if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
@@ -45,7 +47,8 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
       salary_type: 'annual',
       salary_low: MIN_SALARY,
       salary_high: MAX_SALARY,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      company_address_id: null
     }),
     [companyId]
   );
@@ -105,6 +108,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
               <MyJob
                 job={selectedJobDetails}
                 isNew={isAddingNew}
+                addresses={addresses ?? []}
                 onStartUpdate={() => {
                   setUpdating(true);
                 }}

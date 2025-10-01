@@ -341,6 +341,7 @@ export type Database = {
       }
       jobs: {
         Row: {
+          company_address_id: number | null
           company_id: number
           created_at: string
           description: string | null
@@ -354,6 +355,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          company_address_id?: number | null
           company_id: number
           created_at?: string
           description?: string | null
@@ -367,6 +369,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          company_address_id?: number | null
           company_id?: number
           created_at?: string
           description?: string | null
@@ -385,6 +388,13 @@ export type Database = {
             columns: ['company_id']
             isOneToOne: false
             referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'jobs_location_fkey'
+            columns: ['company_address_id']
+            isOneToOne: false
+            referencedRelation: 'company_addresses'
             referencedColumns: ['id']
           },
         ]

@@ -1,3 +1,4 @@
+import Label from '../../inputs/Label';
 import TextArea from '../../inputs/TextArea';
 import IndustrySelect from '../IndustrySelect';
 import { MAX_DESCRIPTION_LENGTH } from '../job_seeker/useCompanies';
@@ -21,6 +22,7 @@ const MyCompanyOverviewEdit = <T extends ToUpdate | Partial<ToInsert>>({
   return (
     <>
       <CompanyName name={company.name} handleUpdate={setCompany} />
+      <Label htmlFor="industry" label="Industry" />
       <IndustrySelect
         industryId={company.industry_id}
         showEmpty={isOnboarding}
