@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getSession } from '../../auth/utils';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
@@ -18,7 +17,6 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   const [updating, setUpdating] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const { jobs, refetch } = useJobsForCompany(companyId);
-  const user = getSession()?.user;
 
   useEffect(() => {
     if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
@@ -47,10 +45,9 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
       salary_type: 'annual',
       salary_low: MIN_SALARY,
       salary_high: MAX_SALARY,
-      updated_at: new Date().toISOString(),
-      user_id: user?.id ?? null
+      updated_at: new Date().toISOString()
     }),
-    [companyId, user?.id]
+    [companyId]
   );
 
   const selectedJobDetails = useMemo(

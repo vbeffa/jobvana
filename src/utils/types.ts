@@ -352,7 +352,6 @@ export type Database = {
           title: string
           type: Database['public']['Enums']['job_type']
           updated_at: string
-          user_id: string | null
         }
         Insert: {
           company_id: number
@@ -366,7 +365,6 @@ export type Database = {
           title: string
           type?: Database['public']['Enums']['job_type']
           updated_at?: string
-          user_id?: string | null
         }
         Update: {
           company_id?: number
@@ -380,7 +378,6 @@ export type Database = {
           title?: string
           type?: Database['public']['Enums']['job_type']
           updated_at?: string
-          user_id?: string | null
         }
         Relationships: [
           {
