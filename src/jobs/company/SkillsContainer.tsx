@@ -5,15 +5,21 @@ import type { Skill } from '../../types';
 const SkillsContainer = ({
   skills,
   selectedSkillIds,
+  outerHeight,
+  innerHeight,
   onChange
 }: {
   skills: Array<Skill>;
   selectedSkillIds: Array<number>;
+  outerHeight?: string;
+  innerHeight?: string;
   onChange: (skillIds: Array<number>) => void;
 }) => {
   return (
-    <div className="h-22.5 border-[0.5px] border-gray-500">
-      <div className="w-full h-fit max-h-21.5 overflow-auto p-1 flex flex-row flex-wrap gap-1">
+    <div className={`${outerHeight} border-[0.5px] border-gray-500`}>
+      <div
+        className={`w-full h-fit ${innerHeight} overflow-auto p-1 flex flex-row flex-wrap gap-1`}
+      >
         {skills.map((skill, idx) => (
           <div key={idx}>
             <PillContainer

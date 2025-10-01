@@ -5,10 +5,10 @@ import Label from '../../inputs/Label';
 import JobTypeSelect from '../company/JobTypeSelect';
 import SalaryTypeSelect from '../company/SalaryTypeSelect';
 import RoleSelect from '../RoleSelect';
+import SkillsSelect from '../SkillsSelect';
 import { maxJobSalary, minJobSalary } from '../utils';
 import CreatedSelect from './CreatedSelect';
 import SalaryRangeSelect from './SalaryRangeSelect';
-import SkillSelect from './SkillSelect';
 import type { SearchFilters } from './useJobs';
 
 const JobFilters = ({
@@ -163,9 +163,11 @@ const JobFilters = ({
           />
         </div>
         <div className="grid grid-cols-1 w-84 gap-y-2">
-          <SkillSelect
-            skillIds={filters.skillIds ?? []}
+          <SkillsSelect
+            selectedSkillIds={filters.skillIds ?? []}
             width="w-full"
+            outerHeight="h-22.5"
+            innerHeight="max-h-21.5"
             onChange={(skillIds) => {
               onChange({ ...filters, skillIds: skillIds });
             }}

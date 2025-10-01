@@ -1,9 +1,9 @@
-import _ from 'lodash';
 import PillContainer from '../../containers/PillContainer';
+import Label from '../../inputs/Label';
 import SkillLink from '../../skills/SkillLink';
 import useSkillsLite from '../../skills/useSkillsLite';
 import type { JobSkill } from '../../types';
-import MySkillsSelect from './MySkillsSelect';
+import SkillsSelect from '../SkillsSelect';
 import type { Job } from './useJobsForCompany';
 
 export type MyJobSkillsProps = {
@@ -23,7 +23,14 @@ const MyJobSkills = ({
 
   return (
     <div className="relative grid grid-cols-[15%_75%] gap-y-2 mb-4">
-      <div>Skills:</div>
+      {!isEditing && <div>Skills:</div>}
+      {isEditing && (
+        <Label
+          htmlFor="skills_filter"
+          label="Skills"
+          contentAlign="content-start"
+        />
+      )}
       <div className="flex flex-row flex-wrap gap-2">
         {!isEditing &&
           jobSkills
@@ -48,31 +55,20 @@ const MyJobSkills = ({
               ) : null;
             })}
         {isEditing && (
-          <>
-            <MySkillsSelect
-              skillIds={jobSkills.map((jobSkill) => jobSkill.skill_id)}
-              onAddSkill={(skillId) => {
-                setJobSkills((jobSkills) => {
-                  const updatedJobSkills = _.cloneDeep(jobSkills);
-                  updatedJobSkills.push({
-                    job_id: job.id,
-                    skill_id: skillId
-                  });
-                  return updatedJobSkills;
-                });
-              }}
-              onDeleteSkill={(skillId) => {
-                setJobSkills((jobSkills) => {
-                  const updatedJobSkills = _.cloneDeep(jobSkills);
-                  const index = updatedJobSkills.findIndex(
-                    (jobSkill) => jobSkill.skill_id === skillId
-                  );
-                  updatedJobSkills.splice(index, 1);
-                  return updatedJobSkills;
-                });
-              }}
-            />
-          </>
+          <SkillsSelect
+            selectedSkillIds={jobSkills.map((jobSkill) => jobSkill.skill_id)}
+            width="w-[75%]"
+            outerHeight="h-64"
+            innerHeight="max-h-63"
+            onChange={(skillIds) => {
+              setJobSkills(
+                skillIds.map((skillId) => ({
+                  job_id: job.id,
+                  skill_id: skillId
+                }))
+              );
+            }}
+          />
         )}
       </div>
     </div>
