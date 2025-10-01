@@ -18,12 +18,6 @@ export type JobSeekerContextProps = {
   companiesContext: CompanySearchFilters & {
     page: number;
     companyId?: number;
-    // name?: string;
-    // minSize: number;
-    // maxSize: number;
-    // minRounds: number;
-    // maxRounds: number;
-    // industryId?: number;
   };
   setCompaniesContext: (
     companiesContext: JobSeekerContextProps['companiesContext']
@@ -31,17 +25,6 @@ export type JobSeekerContextProps = {
   jobsContext: JobSearchFilters & {
     page: number;
     jobId?: number;
-    // company?: string;
-    // jobType?: Job['type'];
-    // title?: string;
-    // minSize: number;
-    // maxSize: number;
-    // roleId?: number;
-    // salaryType: Job['salary_type'];
-    // minSalary: number;
-    // maxSalary: number;
-    // skillIds?: Array<number>;
-    // created?: CreatedRange;
   };
   setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
 };
@@ -67,24 +50,11 @@ export const defaultCompanyContext: CompanyContextProps = {
 export const defaultJobSeekerContext: JobSeekerContextProps = {
   companiesContext: {
     page: 1,
-    // minSize: MIN_COMPANY_SIZE,
-    // maxSize: MAX_COMPANY_SIZE,
-    // minRounds: 1,
-    // maxRounds: 5,
-    // industryId: 0
     ...INITIAL_COMPANY_SEARCH_FILTERS
   },
   setCompaniesContext: () => {},
   jobsContext: {
     page: 1,
-    // company: '',
-    // jobType: 0,
-    // title: '',
-    // roleId: 0,
-    // salaryType: 'annual',
-    // minSalary: MIN_SALARY,
-    // maxSalary: MAX_SALARY,
-    // skillIds: [],
     ...INITIAL_JOB_SEARCH_FILTERS
   },
   setJobsContext: () => {}
