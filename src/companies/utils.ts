@@ -6,9 +6,19 @@ import {
   MAX_DESCRIPTION_LENGTH,
   MAX_EMAIL_LENGTH,
   MAX_NAME_LENGTH,
-  MIN_COMPANY_SIZE
+  MIN_COMPANY_SIZE,
+  type SearchFilters
 } from './job_seeker/useCompanies';
 import type { CompanyAddress, FullCompany } from './job_seeker/useCompany';
+
+export const INITIAL_SEARCH_FILTERS: SearchFilters = {
+  name: '',
+  minSize: MIN_COMPANY_SIZE,
+  maxSize: MAX_COMPANY_SIZE,
+  minRounds: 1,
+  maxRounds: 5,
+  industryId: 0
+};
 
 export type ToInsert = Omit<DbCompany, 'id' | 'created_at'>;
 export type ToUpdate = Pick<

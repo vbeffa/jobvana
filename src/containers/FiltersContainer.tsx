@@ -20,7 +20,7 @@ const FiltersContainer = ({
       className={`flex justify-center h-[${FILTERS_HEIGHT_PX}px] mb-${FILTERS_MARGIN_BOTTOM}`}
     >
       <div
-        className={`border-[0.5px] border-blue-300 rounded-lg w-[75%] min-w-[1100px] flex justify-start relative`}
+        className={`border-[0.5px] border-blue-300 rounded-lg w-full min-w-[1435px] flex justify-start relative`}
       >
         <>
           {children}

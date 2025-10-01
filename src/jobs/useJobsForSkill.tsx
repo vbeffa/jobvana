@@ -74,9 +74,9 @@ const useJobsForSkill = (
       if (filters.company) {
         q = q.ilike('companies.name', `%${filters.company}%`);
       }
-      if (filters.companyId) {
-        q = q.filter('companies.id', 'eq', filters.companyId);
-      }
+      // if (filters.companyId) {
+      //   q = q.filter('companies.id', 'eq', filters.companyId);
+      // }
       if (filters.title) {
         q = q.ilike('title', `%${filters.title}%`);
       }

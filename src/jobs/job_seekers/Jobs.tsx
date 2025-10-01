@@ -11,25 +11,10 @@ import Error from '../../Error';
 import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.jobs.index';
 import SummaryCard from '../../SummaryCard';
+import { INITIAL_SEARCH_FILTERS } from '../utils';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
-import useJobs, {
-  MAX_SALARY,
-  MIN_SALARY,
-  type JobsParams,
-  type SearchFilters
-} from './useJobs';
-
-const INITIAL_FILTERS: SearchFilters = {
-  company: '',
-  jobType: undefined,
-  title: '',
-  roleId: 0,
-  salaryType: 'annual',
-  minSalary: MIN_SALARY,
-  maxSalary: MAX_SALARY,
-  skillIds: []
-};
+import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
 
 const Jobs = () => {
   const navigate = Route.useNavigate();
@@ -39,8 +24,9 @@ const Jobs = () => {
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
-  const [searchFilters, setSearchFilters] =
-    useState<SearchFilters>(INITIAL_FILTERS);
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>(
+    INITIAL_SEARCH_FILTERS
+  );
   const [debouncedCompany] = useDebounce(
     searchFilters.company,
     searchFilters.company ? 500 : 0
@@ -76,17 +62,9 @@ const Jobs = () => {
 
   useEffect(() => {
     setSearchFilters({
-      ..._.pick(context, [
-        'jobType',
-        'roleId',
-        'salaryType',
-        'minSalary',
-        'maxSalary',
-        'skillIds',
-        'created'
-      ]),
-      company: context.company,
-      title: context.title
+      ..._.omit(context, ['page', 'jobId'])
+      // company: context.company,
+      // title: context.title
     });
   }, [context]);
 
@@ -104,7 +82,7 @@ const Jobs = () => {
         page: debouncedPage,
         job_id: jobId ?? undefined,
         company: debouncedCompany || undefined,
-        job_type: filters.jobType,
+        job_type: filters.jobType || undefined,
         title: debouncedTitle || undefined,
         role_id: filters.roleId,
         min_salary: filters.minSalary,
@@ -134,15 +112,15 @@ const Jobs = () => {
         reset={() => {
           setPage(1);
           setJobId(null);
-          setSearchFilters(INITIAL_FILTERS);
+          setSearchFilters(INITIAL_SEARCH_FILTERS);
           setContext({
             ...context,
-            ...INITIAL_FILTERS,
+            ...INITIAL_SEARCH_FILTERS,
             page: 1,
             jobId: undefined
           });
         }}
-        resetDisabled={_.isEqual(filters, INITIAL_FILTERS)}
+        resetDisabled={_.isEqual(filters, INITIAL_SEARCH_FILTERS)}
       >
         <JobFilters
           filters={searchFilters}

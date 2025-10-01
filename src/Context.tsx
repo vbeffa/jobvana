@@ -1,14 +1,9 @@
 import { createContext } from 'react';
-import {
-  MAX_COMPANY_SIZE,
-  MIN_COMPANY_SIZE
-} from './companies/job_seeker/useCompanies';
-import {
-  MAX_SALARY,
-  MIN_SALARY,
-  type CreatedRange
-} from './jobs/job_seekers/useJobs';
-import type { Company as DbCompany, Job } from './types';
+import { type SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
+import { INITIAL_SEARCH_FILTERS as INITIAL_COMPANY_SEARCH_FILTERS } from './companies/utils';
+import { type SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
+import { INITIAL_SEARCH_FILTERS as INITIAL_JOB_SEARCH_FILTERS } from './jobs/utils';
+import type { Company as DbCompany } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
@@ -20,31 +15,33 @@ export type CompanyContextProps = {
 };
 
 export type JobSeekerContextProps = {
-  companiesContext: {
+  companiesContext: CompanySearchFilters & {
     page: number;
     companyId?: number;
-    name?: string;
-    minSize: number;
-    maxSize: number;
-    minRounds: number;
-    maxRounds: number;
-    industryId?: number;
+    // name?: string;
+    // minSize: number;
+    // maxSize: number;
+    // minRounds: number;
+    // maxRounds: number;
+    // industryId?: number;
   };
   setCompaniesContext: (
     companiesContext: JobSeekerContextProps['companiesContext']
   ) => void;
-  jobsContext: {
+  jobsContext: JobSearchFilters & {
     page: number;
     jobId?: number;
-    company: string;
-    jobType?: Job['type'];
-    title: string;
-    roleId?: number;
-    salaryType: Job['salary_type'];
-    minSalary: number;
-    maxSalary: number;
-    skillIds?: Array<number>;
-    created?: CreatedRange;
+    // company?: string;
+    // jobType?: Job['type'];
+    // title?: string;
+    // minSize: number;
+    // maxSize: number;
+    // roleId?: number;
+    // salaryType: Job['salary_type'];
+    // minSalary: number;
+    // maxSalary: number;
+    // skillIds?: Array<number>;
+    // created?: CreatedRange;
   };
   setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
 };
@@ -70,23 +67,25 @@ export const defaultCompanyContext: CompanyContextProps = {
 export const defaultJobSeekerContext: JobSeekerContextProps = {
   companiesContext: {
     page: 1,
-    minSize: MIN_COMPANY_SIZE,
-    maxSize: MAX_COMPANY_SIZE,
-    minRounds: 1,
-    maxRounds: 5,
-    industryId: 0
+    // minSize: MIN_COMPANY_SIZE,
+    // maxSize: MAX_COMPANY_SIZE,
+    // minRounds: 1,
+    // maxRounds: 5,
+    // industryId: 0
+    ...INITIAL_COMPANY_SEARCH_FILTERS
   },
   setCompaniesContext: () => {},
   jobsContext: {
     page: 1,
-    company: '',
-    jobType: undefined,
-    title: '',
-    roleId: 0,
-    salaryType: 'annual',
-    minSalary: MIN_SALARY,
-    maxSalary: MAX_SALARY,
-    skillIds: []
+    // company: '',
+    // jobType: 0,
+    // title: '',
+    // roleId: 0,
+    // salaryType: 'annual',
+    // minSalary: MIN_SALARY,
+    // maxSalary: MAX_SALARY,
+    // skillIds: [],
+    ...INITIAL_JOB_SEARCH_FILTERS
   },
   setJobsContext: () => {}
 };

@@ -23,7 +23,6 @@ const MyCompanyOverviewEdit = <T extends ToUpdate | Partial<ToInsert>>({
       <CompanyName name={company.name} handleUpdate={setCompany} />
       <IndustrySelect
         industryId={company.industry_id}
-        showAll={false}
         showEmpty={isOnboarding}
         handleUpdate={setCompany}
       />

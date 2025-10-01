@@ -24,7 +24,7 @@ const SkillCategories = () => {
     <div className="mx-4 relative">
       {error && <Error error={error} />}
       <h1>Skill Categories</h1>
-      <div className="absolute top-5 right-[12.5%] text-right w-[75%] min-w-[1100px]">
+      <div className="absolute top-8 right-0.5 text-right w-full min-w-[1100px]">
         <Button
           label={`${view === 'list' ? 'Switch to Tree View' : 'Switch to List View'}`}
           onClick={() => setView((view) => (view === 'list' ? 'tree' : 'list'))}
@@ -61,7 +61,7 @@ const SkillCategories = () => {
       )}
       {view === 'tree' && (
         <div className="w-[50%]">
-          <div className="pl-12">
+          <div className="pl-13">
             <Button
               label={`${open ? 'Collapse Tree' : 'Expand Tree'}`}
               onClick={() => setOpen((open) => !open)}

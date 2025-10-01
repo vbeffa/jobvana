@@ -11,10 +11,12 @@ const TYPES: Array<Job['type']> = [
 
 const JobTypeSelect = ({
   value,
+  width,
   showAny,
   onChange
 }: {
-  value?: Job['type'];
+  value?: Job['type'] | 0;
+  width?: string;
   showAny?: boolean;
   onChange: (jobType: Job['type']) => void;
 }) => {
@@ -22,7 +24,7 @@ const JobTypeSelect = ({
     <Select
       id="job_type"
       value={value}
-      width="w-32"
+      width={width}
       onChange={(e) => onChange(e.target.value as Job['type'])}
     >
       <>

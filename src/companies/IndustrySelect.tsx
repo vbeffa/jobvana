@@ -2,35 +2,36 @@ import Select from '../inputs/Select';
 import useIndustries from './useIndustries';
 import type { ToInsert, ToUpdate } from './utils';
 
-const IndustrySelect = <T extends Partial<ToInsert> | ToUpdate>({
-  industryId,
-  showAll = true,
-  showEmpty = false,
-  onChange,
-  handleUpdate
-}: {
+export type IndustrySelectProps<T extends Partial<ToInsert> | ToUpdate> = {
   industryId?: number;
-  showAll?: boolean;
+  width?: string;
+  showAny?: boolean;
   showEmpty?: boolean;
   onChange?: (industryId: number | undefined) => void;
   handleUpdate?: (value: React.SetStateAction<T>) => void;
-}) => {
-  if (showAll && showEmpty) {
-    throw new Error('cannot set both showAll and showEmpty');
+};
+
+const IndustrySelect = <T extends Partial<ToInsert> | ToUpdate>({
+  industryId,
+  width,
+  showAny = false,
+  showEmpty = false,
+  onChange,
+  handleUpdate
+}: IndustrySelectProps<T>) => {
+  if (showAny && showEmpty) {
+    throw new Error('cannot set both showAny and showEmpty');
   }
 
   const { isPending, industries } = useIndustries();
 
   return (
     <>
-      <label htmlFor="industry" className="content-center">
-        Industry:
-      </label>
       <div>
         <Select
           id="industry"
           value={industryId}
-          width="w-full"
+          width={width}
           onChange={(e) => {
             const industryId = e.target.value
               ? parseInt(e.target.value)
@@ -55,9 +56,9 @@ const IndustrySelect = <T extends Partial<ToInsert> | ToUpdate>({
               </option>
             )}
             {!isPending && showEmpty && <option key={0} value={-1} />}
-            {!isPending && showAll && (
+            {!isPending && showAny && (
               <option key={0} value={0}>
-                All
+                Any
               </option>
             )}
             {industries?.map((industry, idx) => (

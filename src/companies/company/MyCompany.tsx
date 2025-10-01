@@ -37,9 +37,8 @@ const MyCompany = ({ company }: { company: Company }) => {
   );
 
   return (
-    <>
-      <h1>My Company</h1>
-      <ResourcesContainer minWidth="w-[1100px]" hasFilters={false}>
+    <div className="mx-4">
+      <ResourcesContainer hasTitle={false} hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer>
             <SummaryCard
@@ -91,7 +90,7 @@ const MyCompany = ({ company }: { company: Company }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer>{currComponent}</ResourceDetailsContainer>
       </ResourcesContainer>
-    </>
+    </div>
   );
 };
 

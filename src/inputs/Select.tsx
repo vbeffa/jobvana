@@ -3,9 +3,9 @@ import type { ChangeEventHandler, JSX, SelectHTMLAttributes } from 'react';
 const Select = ({
   id,
   value,
-  width = '',
-  height = '',
-  px = '',
+  width,
+  height,
+  px,
   disabled,
   children,
   onChange

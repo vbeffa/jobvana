@@ -4,16 +4,19 @@ import type { CreatedRange } from './useJobs';
 const CreatedSelect = ({
   id,
   value,
+  width,
   onChange
 }: {
   id: string;
   value?: CreatedRange;
+  width?: string;
   onChange: (value: CreatedRange) => void;
 }) => {
   return (
     <Select
       id={id}
       value={value}
+      width={width}
       onChange={(e) => onChange(e.target.value as CreatedRange)}
     >
       <option key={0} value="all">

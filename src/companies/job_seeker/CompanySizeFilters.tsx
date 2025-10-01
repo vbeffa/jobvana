@@ -4,26 +4,25 @@ import { MAX_COMPANY_SIZE, MIN_COMPANY_SIZE } from './useCompanies';
 const CompanySizeFilters = ({
   low,
   high,
+  width,
   onChangeLow,
   onChangeHigh
 }: {
   low: number;
   high: number;
+  width?: string;
   onChangeLow: (size: number | null) => void;
   onChangeHigh: (size: number | null) => void;
 }) => {
   return (
     <>
-      <label htmlFor="min_size" className="content-center">
-        Size:
-      </label>
       <div className="flex flex-row gap-x-2 h-[33px]">
         <NumberInput
           id="min_size"
           value={low}
           min={MIN_COMPANY_SIZE}
           max={MAX_COMPANY_SIZE}
-          width="w-27"
+          width={width}
           onChange={onChangeLow}
         />
         <label htmlFor="max_size" className="content-center">
@@ -34,7 +33,7 @@ const CompanySizeFilters = ({
           value={high}
           min={MIN_COMPANY_SIZE}
           max={MAX_COMPANY_SIZE}
-          width="w-27"
+          width={width}
           onChange={onChangeHigh}
         />
       </div>

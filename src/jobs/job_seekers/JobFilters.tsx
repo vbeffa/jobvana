@@ -1,4 +1,7 @@
+import IndustrySelect from '../../companies/IndustrySelect';
+import CompanySizeFilters from '../../companies/job_seeker/CompanySizeFilters';
 import Filter from '../../inputs/Filter';
+import Label from '../../inputs/Label';
 import JobTypeSelect from '../company/JobTypeSelect';
 import SalaryTypeSelect from '../company/SalaryTypeSelect';
 import RoleSelect from '../RoleSelect';
@@ -16,12 +19,13 @@ const JobFilters = ({
   onChange: (filters: SearchFilters) => void;
 }) => {
   return (
-    <div className="p-2">
-      <div className="grid grid-cols-[30%_35%_35%] gap-x-2">
-        <div className="grid grid-cols-[25%_75%] w-full gap-y-2">
+    <div className="p-2 w-full">
+      <div className="flex flex-row gap-x-4">
+        <div className="grid grid-cols-[37%_63%] w-86 gap-y-2">
+          <Label htmlFor="company_filter" label="Company Name" />
           <Filter
             id="company_filter"
-            label="Name"
+            width="w-54"
             placeholder="Filter by company"
             value={filters.company}
             onChange={(company) => {
@@ -29,9 +33,47 @@ const JobFilters = ({
             }}
             onClear={() => onChange({ ...filters, company: '' })}
           />
+          <Label htmlFor="min_size" label="Company Size" />
+          <CompanySizeFilters
+            low={filters.minSize}
+            high={filters.maxSize}
+            width="w-24"
+            onChangeLow={(size) => {
+              if (!size) {
+                return;
+              }
+              onChange({
+                ...filters,
+                minSize: size,
+                maxSize: size > filters.maxSize ? size : filters.maxSize
+              });
+            }}
+            onChangeHigh={(size) => {
+              if (!size) {
+                return;
+              }
+              onChange({
+                ...filters,
+                maxSize: size,
+                minSize: size < filters.minSize ? size : filters.minSize
+              });
+            }}
+          />
+          <Label htmlFor="industry" label="Industry" />
+          <IndustrySelect
+            industryId={filters.industryId}
+            width="w-54"
+            showAny={true}
+            onChange={(industryId) => {
+              onChange({ ...filters, industryId });
+            }}
+          />
+        </div>
+        <div className="grid grid-cols-[29%_71%] w-68 gap-y-2">
+          <Label htmlFor="job_title_filter" label="Job Title" />
           <Filter
             id="job_title_filter"
-            label="Title"
+            width="w-48"
             placeholder="Filter by job title"
             value={filters.title}
             onChange={(title) => {
@@ -39,12 +81,11 @@ const JobFilters = ({
             }}
             onClear={() => onChange({ ...filters, title: '' })}
           />
-          <label htmlFor="role" className="content-center">
-            Role:
-          </label>
+          <Label htmlFor="role" label="Role" />
           <RoleSelect
             id="role"
             roleId={filters.roleId}
+            width="w-48"
             onChange={(roleId) => {
               if (!roleId) {
                 onChange({ ...filters, roleId: undefined });
@@ -53,11 +94,18 @@ const JobFilters = ({
               }
             }}
           />
+          <Label htmlFor="job_type" label="Job Type" />
+          <JobTypeSelect
+            value={filters.jobType}
+            width="w-48"
+            showAny={true}
+            onChange={(jobType) => {
+              onChange({ ...filters, jobType });
+            }}
+          />
         </div>
-        <div className="grid grid-cols-[30%_70%] w-full gap-y-2">
-          <label htmlFor="salary_type" className="content-center">
-            Salary Type:
-          </label>
+        <div className="grid grid-cols-[30%_70%] w-fit gap-y-2">
+          <Label htmlFor="salary_type" label="Salary Type" />
           <SalaryTypeSelect
             value={filters.salaryType}
             width="w-28"
@@ -71,10 +119,12 @@ const JobFilters = ({
               onChange(newFilters);
             }}
           />
+          <Label htmlFor="min_salary" label="Salary Range" />
           <SalaryRangeSelect
             type={filters.salaryType}
             low={filters.minSalary}
             high={filters.maxSalary}
+            width="w-29"
             onChangeLow={(minSalary) => {
               const newFilters = {
                 ...filters,
@@ -98,12 +148,11 @@ const JobFilters = ({
               onChange(newFilters);
             }}
           />
-          <label htmlFor="created" className="content-center">
-            Posted:
-          </label>
+          <Label htmlFor="created" label="Posted" />
           <CreatedSelect
             id="created"
             value={filters.created}
+            width="w-28"
             onChange={(created) => {
               if (created === 'all') {
                 onChange({ ...filters, created: undefined });
@@ -113,32 +162,14 @@ const JobFilters = ({
             }}
           />
         </div>
-        <div className="grid grid-cols-[25%_75%] gap-y-2">
-          <label htmlFor="job_type" className="content-center">
-            Job Type:
-          </label>
-          <JobTypeSelect
-            value={filters.jobType}
-            showAny={true}
-            onChange={(jobType) => {
-              onChange({ ...filters, jobType });
-            }}
-          />
-          <label htmlFor="skills" className="content-center">
-            Skills:
-          </label>
+        <div className="grid grid-cols-1 w-84 gap-y-2">
           <SkillSelect
-            id="skills"
-            skillIds={filters.skillIds}
-            onChange={(skillId) => {
-              if (skillId === 0) {
-                onChange({ ...filters, skillIds: undefined });
-              } else {
-                onChange({ ...filters, skillIds: [skillId] });
-              }
+            skillIds={filters.skillIds ?? []}
+            width="w-full"
+            onChange={(skillIds) => {
+              onChange({ ...filters, skillIds: skillIds });
             }}
           />
-          <div className="row-span-4 col-span-2"></div>
         </div>
       </div>
     </div>

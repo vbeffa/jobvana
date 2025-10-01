@@ -64,9 +64,8 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   }
 
   return (
-    <>
-      <h1>My Jobs</h1>
-      <ResourcesContainer minWidth="w-[1100px]" hasFilters={false}>
+    <div className="mx-4">
+      <ResourcesContainer hasTitle={false} hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer hasFilters={false}>
             {jobs
@@ -131,7 +130,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </>
+    </div>
   );
 };
 

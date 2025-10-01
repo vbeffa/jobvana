@@ -3,6 +3,7 @@ import TextInput from './TextInput';
 const Filter = ({
   id,
   label,
+  width,
   placeholder,
   value,
   onChange,
@@ -10,6 +11,7 @@ const Filter = ({
 }: {
   id: string;
   label?: string;
+  width?: string;
   placeholder: string;
   value?: string;
   onChange: (value: string) => void;
@@ -20,6 +22,7 @@ const Filter = ({
       id={id}
       type="text"
       label={label}
+      width={width}
       placeholder={placeholder}
       value={value}
       onChange={onChange}

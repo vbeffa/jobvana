@@ -11,23 +11,13 @@ import Error from '../../Error';
 import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.companies.index';
 import SummaryCard from '../../SummaryCard';
+import { INITIAL_SEARCH_FILTERS } from '../utils';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
 import useCompanies, {
-  MAX_COMPANY_SIZE,
-  MIN_COMPANY_SIZE,
   type CompaniesParams,
   type SearchFilters
 } from './useCompanies';
-
-const INITIAL_FILTERS: SearchFilters = {
-  name: '',
-  minSize: MIN_COMPANY_SIZE,
-  maxSize: MAX_COMPANY_SIZE,
-  minRounds: 1,
-  maxRounds: 5,
-  industryId: 0
-};
 
 const Companies = () => {
   const navigate = Route.useNavigate();
@@ -37,8 +27,9 @@ const Companies = () => {
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
-  const [searchFilters, setSearchFilters] =
-    useState<SearchFilters>(INITIAL_FILTERS);
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>(
+    INITIAL_SEARCH_FILTERS
+  );
   const [debouncedName] = useDebounce(
     searchFilters.name,
     searchFilters.name ? 500 : 0
@@ -120,15 +111,15 @@ const Companies = () => {
         reset={() => {
           setPage(1);
           setCompanyId(null);
-          setSearchFilters(INITIAL_FILTERS);
+          setSearchFilters(INITIAL_SEARCH_FILTERS);
           setContext({
             ...context,
-            ...INITIAL_FILTERS,
+            ...INITIAL_SEARCH_FILTERS,
             page: 1,
             companyId: undefined
           });
         }}
-        resetDisabled={_.isEqual(filters, INITIAL_FILTERS)}
+        resetDisabled={_.isEqual(filters, INITIAL_SEARCH_FILTERS)}
       >
         <CompanyFilters
           filters={searchFilters}

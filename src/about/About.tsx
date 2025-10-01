@@ -10,9 +10,9 @@ const About = () => {
   const [card, setCard] = useState('about');
 
   return (
-    <>
+    <div className="mx-4">
       <h1>Jobvana</h1>
-      <ResourcesContainer minWidth="w-[1100px]" hasFilters={false}>
+      <ResourcesContainer hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer>
             <SummaryCard
@@ -49,7 +49,7 @@ const About = () => {
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </>
+    </div>
   );
 };
 

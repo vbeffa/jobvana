@@ -5,25 +5,25 @@ const SalaryRangeSelect = ({
   type,
   low,
   high,
+  width,
   onChangeLow,
   onChangeHigh
 }: {
   type: Job['salary_type'];
   low: number;
   high: number;
+  width?: string;
   onChangeLow: (minSalary: number) => void;
   onChangeHigh: (maxSalary: number) => void;
 }) => {
   return (
     <>
-      <label htmlFor="min_salary" className="content-center">
-        Salary:
-      </label>
       <div className="flex flex-row gap-x-2">
         <SalarySelect
           type={type}
           id="min_salary"
           value={low}
+          width={width}
           onChange={onChangeLow}
         />
         <label htmlFor="max_salary" className="content-center">
@@ -33,6 +33,7 @@ const SalaryRangeSelect = ({
           type={type}
           id="max_salary"
           value={high}
+          width={width}
           onChange={onChangeHigh}
         />
       </div>

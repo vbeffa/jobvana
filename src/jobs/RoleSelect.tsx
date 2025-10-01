@@ -4,12 +4,14 @@ import useRoles from '../roles/useRoles';
 const RoleSelect = ({
   id,
   roleId,
+  width,
   showAny = true,
   showEmpty,
   onChange
 }: {
   id: string;
   roleId?: number;
+  width?: string;
   showAny?: boolean;
   showEmpty?: boolean;
   onChange: (roleId: number) => void;
@@ -23,6 +25,7 @@ const RoleSelect = ({
     <Select
       id={id}
       value={roleId}
+      width={width}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       <>

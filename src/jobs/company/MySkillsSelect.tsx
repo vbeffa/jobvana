@@ -68,16 +68,10 @@ const MySkillsSelect = ({
           </div>
         </div>
         <div className="h-64 border-[0.5px] border-gray-500">
-          <div
-            id="my_skills_select"
-            className="w-full h-fit max-h-63 overflow-auto p-1 flex flex-row flex-wrap gap-1"
-          >
+          <div className="w-full h-fit max-h-63 overflow-auto p-1 flex flex-row flex-wrap gap-1">
             {availableSkills.map((skill, idx) => (
               <div key={idx} className="">
-                <PillContainer
-                  showAddIcon={true}
-                  onAdd={() => onAddSkill(skill.id)}
-                >
+                <PillContainer type="add" onAdd={() => onAddSkill(skill.id)}>
                   {skill.abbreviation ?? skill.name}
                 </PillContainer>
               </div>
@@ -98,14 +92,11 @@ const MySkillsSelect = ({
       <div className="w-70">
         <div className="pt-0.5 text-sm h-6">Current Skills</div>
         <div className="h-64 border-[0.5px] border-gray-500">
-          <div
-            id="my_skills_select"
-            className="w-full h-fit max-h-63 overflow-auto p-1 flex flex-row flex-wrap gap-1"
-          >
+          <div className="w-full h-fit max-h-63 overflow-auto p-1 flex flex-row flex-wrap gap-1">
             {currentSkills.map((skill, idx) => (
               <div key={idx}>
                 <PillContainer
-                  showDeleteIcon={true}
+                  type="delete"
                   onDelete={() => onDeleteSkill(skill.id)}
                 >
                   {skill.abbreviation ?? skill.name}

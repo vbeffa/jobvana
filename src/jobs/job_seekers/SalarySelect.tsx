@@ -8,11 +8,13 @@ const SalarySelect = ({
   type,
   id,
   value,
+  width,
   onChange
 }: {
   type: Job['salary_type'];
   id: string;
   value?: number;
+  width?: string;
   onChange: (salary: number) => void;
 }) => {
   const min = useMemo(() => minJobSalary(type), [type]);
@@ -24,7 +26,7 @@ const SalarySelect = ({
     <Select
       id={id}
       value={value}
-      width="w-full"
+      width={width}
       onChange={(e) => onChange(parseInt(e.target.value))}
     >
       {salaries.map((salary, idx) => (

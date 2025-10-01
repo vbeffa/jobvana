@@ -16,10 +16,10 @@ const CompanyRoute = () => {
   }
 
   return (
-    <div className="mx-4">
+    <>
       {userType === 'company' && company && <MyCompany company={company} />}
       {userType === 'job_seeker' && <CompanyDetails id={id} />}
-    </div>
+    </>
   );
 };
 

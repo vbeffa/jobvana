@@ -27,7 +27,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
   const hq = findHeadquarters(company);
 
   return (
-    <>
+    <div className="mx-4">
       {isPlaceholderData && <LoadingModal />}
       <Section title={company.name}>
         <div className="flex flex-row gap-1">
@@ -65,14 +65,14 @@ const CompanyDetails = ({ id }: { id?: number }) => {
       <Section title="Current Jobs">{<JobsList jobs={company.jobs} />}</Section>
       <Section title="Interview Process" isLast={true}>
         {company.interview_process ? (
-          <div className="border-[0.5px] border-blue-300 rounded-lg w-[600px] mt-2 p-2 flex flex-col gap-2">
+          <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
             <InterviewProcessDisplay
               interviewProcess={company.interview_process as InterviewProcess}
             />
           </div>
         ) : null}
       </Section>
-    </>
+    </div>
   );
 };
 

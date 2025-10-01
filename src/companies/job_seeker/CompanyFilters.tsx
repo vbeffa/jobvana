@@ -1,4 +1,5 @@
 import Filter from '../../inputs/Filter';
+import Label from '../../inputs/Label';
 import IndustrySelect from '../IndustrySelect';
 import CompanyInterviewRoundsFilters from './CompanyInterviewRoundsFilters';
 import CompanySizeFilters from './CompanySizeFilters';
@@ -13,11 +14,12 @@ const CompanyFilters = ({
 }) => {
   return (
     <div className="p-2">
-      <div className="grid grid-cols-2">
-        <div className="grid grid-cols-[25%_75%] w-[20rem] gap-y-2">
+      <div className="flex flex-row gap-x-4">
+        <div className="grid grid-cols-[37%63%] w-86 gap-y-2">
+          <Label htmlFor="company_filter" label="Company Name" />
           <Filter
             id="company_filter"
-            label="Name"
+            width="w-54"
             placeholder="Filter by company"
             value={filters.name}
             onChange={(name) => {
@@ -25,9 +27,11 @@ const CompanyFilters = ({
             }}
             onClear={() => onChange({ ...filters, name: '' })}
           />
+          <Label htmlFor="min_size" label="Company Size" />
           <CompanySizeFilters
             low={filters.minSize}
             high={filters.maxSize}
+            width="w-24"
             onChangeLow={(size) => {
               if (!size) {
                 return;
@@ -49,14 +53,17 @@ const CompanyFilters = ({
               });
             }}
           />
+          <Label htmlFor="industry" label="Industry" />
           <IndustrySelect
             industryId={filters.industryId}
+            width="w-54"
+            showAny={true}
             onChange={(industryId) => {
               onChange({ ...filters, industryId });
             }}
           />
         </div>
-        <div className="grid grid-cols-[25%_65%] w-[24rem] gap-y-2">
+        <div className="grid grid-cols-[25%_65%] w-86 gap-y-2">
           <CompanyInterviewRoundsFilters
             low={filters.minRounds}
             high={filters.maxRounds}
