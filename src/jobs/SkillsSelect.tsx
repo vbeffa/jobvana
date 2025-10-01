@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import TextInput from '../inputs/TextInput';
 import useSkillsLite from '../skills/useSkillsLite';
+import { skillSorter } from '../skills/utils';
 import SkillsContainer from './company/SkillsContainer';
 
 const SkillsSelect = ({
@@ -17,31 +18,33 @@ const SkillsSelect = ({
   onChange: (skillIds: Array<number>) => void;
 }) => {
   const [filter, setFilter] = useState('');
-  const { skills } = useSkillsLite();
+  const { skills, findSkill } = useSkillsLite();
 
   const filteredSkills = useMemo(
     () =>
-      skills
-        ?.filter(
-          (skill) =>
-            skill.name
-              .toLocaleLowerCase()
-              .includes(filter.toLocaleLowerCase()) ||
-            skill.abbreviation
-              ?.toLocaleLowerCase()
-              .includes(filter.toLocaleLowerCase())
-        )
-        .sort((skill1, skill2) =>
-          (skill1.abbreviation ?? skill1.name).localeCompare(
-            skill2.abbreviation ?? skill2.name
-          )
+      selectedSkillIds
+        .map((skillId) => {
+          const skill = findSkill(skillId);
+          return skill;
+        })
+        .filter((skill) => skill !== undefined)
+        .sort(skillSorter)
+        .concat(
+          (skills ?? [])
+            .filter(
+              (skill) =>
+                !selectedSkillIds.includes(skill.id) &&
+                (skill.name
+                  .toLocaleLowerCase()
+                  .includes(filter.toLocaleLowerCase()) ||
+                  skill.abbreviation
+                    ?.toLocaleLowerCase()
+                    .includes(filter.toLocaleLowerCase()))
+            )
+            .sort(skillSorter)
         ),
-    [filter, skills]
+    [filter, findSkill, selectedSkillIds, skills]
   );
-
-  if (!filteredSkills) {
-    return null;
-  }
 
   return (
     <>
