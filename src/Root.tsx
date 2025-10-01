@@ -14,8 +14,6 @@ import {
 import supabase from './db/supabase';
 import Header from './Header';
 
-export const PROJECT_ID = 'mpwtyvmjfazgumpeawvb';
-
 const Root = () => {
   const [currPage, setCurrPage] = useState('home');
   const [companiesContext, setCompaniesContext] = useState<

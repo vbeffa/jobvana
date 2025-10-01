@@ -1,10 +1,11 @@
 import type { Session } from '@supabase/supabase-js';
 import type { UserType } from '../Context';
-import { PROJECT_ID } from '../Root';
 import supabase from '../db/supabase';
 
 const getSession = () => {
-  const authToken = window.localStorage.getItem(`sb-${PROJECT_ID}-auth-token`);
+  const authToken = window.localStorage.getItem(
+    `sb-${import.meta.env.VITE_SUPABASE_PROJECT_ID}-auth-token`
+  );
   return authToken ? (JSON.parse(authToken) as Session) : null;
 };
 
