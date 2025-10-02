@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { JobSeekerContext } from '../Context';
 import Button from '../controls/Button';
@@ -15,9 +16,14 @@ const Profile = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [error, setError] = useState<Error>();
 
+  const isDirty = useMemo(
+    () => !_.isEqual(jobSeeker, editJobSeeker),
+    [editJobSeeker, jobSeeker]
+  );
+
   const submitDisabled = useMemo(
-    () => isSubmitting || !isValidJobSeeker(editJobSeeker),
-    [editJobSeeker, isSubmitting]
+    () => isSubmitting || !isDirty || !isValidJobSeeker(editJobSeeker),
+    [editJobSeeker, isDirty, isSubmitting]
   );
 
   const updateJobSeeker = useCallback(async () => {

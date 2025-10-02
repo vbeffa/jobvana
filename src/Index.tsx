@@ -22,6 +22,14 @@ const Index = () => {
     [jobSeeker, userType]
   );
 
+  const greeting = useMemo(() => {
+    const name =
+      userType === 'job_seeker'
+        ? jobSeeker?.first_name
+        : session?.user.user_metadata.first_name;
+    return `Welcome to Jobvana, ${name}!`;
+  }, [jobSeeker?.first_name, session?.user.user_metadata.first_name, userType]);
+
   return (
     <div className="flex flex-col">
       {loggingOut && (
@@ -34,9 +42,7 @@ const Index = () => {
           {!isCompanyOnboarding && !isJobSeekerOnboarding && (
             <div className="flex flex-col gap-2">
               <div className="flex justify-center">
-                <h3>
-                  Welcome to Jobvana, {session.user.user_metadata.first_name}!
-                </h3>
+                <h3>{greeting}</h3>
               </div>
               <div className="flex justify-center">
                 {resetPassword && (

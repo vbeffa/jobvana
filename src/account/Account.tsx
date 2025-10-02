@@ -13,7 +13,6 @@ const Account = () => {
   const [card, setCard] = useState('account');
   const { jobSeeker } = useContext(JobSeekerContext);
   const userType = getUserType();
-  console.log(jobSeeker);
 
   return (
     <div className="mx-4">
