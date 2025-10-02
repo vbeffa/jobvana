@@ -13,6 +13,7 @@ import {
 } from './Context';
 import supabase from './db/supabase';
 import Header from './Header';
+import { type JobSeeker } from './types';
 
 const Root = () => {
   const [currPage, setCurrPage] = useState('home');
@@ -25,7 +26,8 @@ const Root = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
   const [resetPassword, setResetPassword] = useState(false);
-  const [company, setCompany] = useState<Company | null>();
+  const [company, setCompany] = useState<Company>();
+  const [jobSeeker, setJobSeeker] = useState<JobSeeker>();
 
   const session = getSession();
 
@@ -73,6 +75,7 @@ const Root = () => {
     setLoggingOut(true);
     await supabase.auth.signOut({ scope: 'local' });
     setCompany(undefined);
+    setJobSeeker(undefined);
     setLoggedIn(false);
     setLoggingOut(false);
   }, []);
@@ -124,6 +127,8 @@ const Root = () => {
     >
       <JobSeekerContext.Provider
         value={{
+          jobSeeker,
+          setJobSeeker,
           companiesContext,
           setCompaniesContext,
           jobsContext,

@@ -30,6 +30,7 @@ export type Interview = Database['public']['Tables']['interviews']['Row'] & {
 };
 export type Job = Database['public']['Tables']['jobs']['Row'];
 export type JobRole = Database['public']['Tables']['job_roles']['Row'];
+export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'];
 export type JobSkill = Database['public']['Tables']['job_skills']['Row'];
 export type JobSkillVersion =
   Database['public']['Tables']['job_skill_versions']['Row'];

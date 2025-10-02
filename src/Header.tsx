@@ -78,12 +78,12 @@ const Header = () => {
       {currPage === 'home' && activeHeaderItem('Home', <FaHouse />)}
       {loggedIn && (
         <>
-          {userType === 'company' && company !== null && (
+          {userType === 'company' && company !== undefined && (
             <>
               {currPage !== 'companies' &&
                 linkHeaderItem({
-                  to: company ? '/jobvana/companies/$id' : '.',
-                  params: company ? { id: company.id.toString() } : undefined,
+                  to: '/jobvana/companies/$id',
+                  params: { id: company.id.toString() },
                   title: 'My Company',
                   icon: <FaBuilding />
                 })}

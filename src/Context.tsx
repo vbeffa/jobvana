@@ -3,18 +3,20 @@ import { type SearchFilters as CompanySearchFilters } from './companies/job_seek
 import { INITIAL_SEARCH_FILTERS as INITIAL_COMPANY_SEARCH_FILTERS } from './companies/utils';
 import { type SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
 import { INITIAL_SEARCH_FILTERS as INITIAL_JOB_SEARCH_FILTERS } from './jobs/utils';
-import type { Company as DbCompany } from './types';
+import type { Company as DbCompany, JobSeeker } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
 export type Company = Omit<DbCompany, 'created_at'>;
 
 export type CompanyContextProps = {
-  company?: Company | null;
+  company?: Company;
   setCompany: (company: Company) => void;
 };
 
 export type JobSeekerContextProps = {
+  jobSeeker?: JobSeeker;
+  setJobSeeker: (jobSeeker: JobSeeker) => void;
   companiesContext: CompanySearchFilters & {
     page: number;
     companyId?: number;
@@ -51,6 +53,7 @@ export const defaultCompanyContext: CompanyContextProps = {
 };
 
 export const defaultJobSeekerContext: JobSeekerContextProps = {
+  setJobSeeker: () => {},
   companiesContext: {
     page: 1,
     ...INITIAL_COMPANY_SEARCH_FILTERS
