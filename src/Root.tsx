@@ -34,7 +34,6 @@ const Root = () => {
 
   const session = getSession();
 
-  // TODO consolidate with function in auth/utils.ts
   const isLoggedIn = useMemo(() => {
     return (
       session !== null &&
