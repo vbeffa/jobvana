@@ -132,7 +132,7 @@ const Root = () => {
       >
         <Header />
         {(isLoggedIn || currPage === 'about') && <Outlet />}
-        {!isLoggedIn && currPage !== 'about' && <Login />}
+        {!isLoggedIn && !resetPassword && currPage !== 'about' && <Login />}
 
         {/* <TanStackRouterDevtools /> */}
       </JobSeekerContext.Provider>

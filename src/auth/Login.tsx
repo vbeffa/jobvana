@@ -17,10 +17,9 @@ const MAX_FIRST_NAME_LENGTH = 100;
 const MAX_LAST_NAME_LENGTH = 100;
 
 const REGISTER_REDIRECT_TO_DEV = 'http://localhost:5173/jobvana';
-const REGISTER_REDIRECT_TO_PROD = 'https://vbeffa.github.io/jobvana/';
-const RESET_PASSWORD_REDIRECT_TO_DEV = 'http://localhost:5173/jobvana/account';
-const RESET_PASSWORD_REDIRECT_TO_PROD =
-  'https://vbeffa.github.io/jobvana/account';
+const REGISTER_REDIRECT_TO_PROD = 'https://vbeffa.github.io/jobvana';
+const RESET_PASSWORD_REDIRECT_TO_DEV = 'http://localhost:5173/jobvana';
+const RESET_PASSWORD_REDIRECT_TO_PROD = 'https://vbeffa.github.io/jobvana';
 
 const Login = () => {
   const [mode, setMode] = useState<'register' | 'login' | 'forgot_password'>(
