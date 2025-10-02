@@ -22,7 +22,6 @@ const Onboarding = ({ userId }: { userId: string }) => {
     () => isSubmitting || !isValidJobSeeker(newJobSeeker),
     [isSubmitting, newJobSeeker]
   );
-  console.log(newJobSeeker);
 
   const addJobSeeker = useCallback(async () => {
     if (!isValidJobSeeker(newJobSeeker)) {

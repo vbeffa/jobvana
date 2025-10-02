@@ -13,6 +13,7 @@ import {
 } from './Context';
 import supabase from './db/supabase';
 import Header from './Header';
+import { findJobSeeker } from './job_seekers/utils';
 import { type JobSeeker } from './types';
 
 const Root = () => {
@@ -54,12 +55,17 @@ const Root = () => {
 
   useEffect(() => {
     (async () => {
-      if (session && isLoggedIn && userType === 'company' && !company) {
-        const company = await findCompany(session.user.id);
-        setCompany(company);
+      if (session && isLoggedIn) {
+        if (userType === 'company' && !company) {
+          const company = await findCompany(session.user.id);
+          setCompany(company);
+        } else if (userType === 'job_seeker' && !jobSeeker) {
+          const jobSeeker = await findJobSeeker(session.user.id);
+          setJobSeeker(jobSeeker);
+        }
       }
     })();
-  }, [company, isLoggedIn, session, userType]);
+  }, [company, isLoggedIn, jobSeeker, session, userType]);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (event) => {

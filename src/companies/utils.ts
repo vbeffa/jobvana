@@ -47,7 +47,7 @@ export const findCompany = async (userId: string) => {
     throw error;
   }
 
-  return data[0] ?? null;
+  return data[0];
 };
 
 export const companyFields = (
