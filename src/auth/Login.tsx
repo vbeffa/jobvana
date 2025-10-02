@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   MAX_EMAIL_LENGTH,
   MIN_EMAIL_LENGTH
@@ -16,8 +16,11 @@ export const MAX_PASSWORD_LENGTH = 32;
 const MAX_FIRST_NAME_LENGTH = 100;
 const MAX_LAST_NAME_LENGTH = 100;
 
-const REGISTER_REDIRECT_TO_DEV = 'http://localhost:5173/';
+const REGISTER_REDIRECT_TO_DEV = 'http://localhost:5173/jobvana';
 const REGISTER_REDIRECT_TO_PROD = 'https://vbeffa.github.io/jobvana/';
+const RESET_PASSWORD_REDIRECT_TO_DEV = 'http://localhost:5173/jobvana/account';
+const RESET_PASSWORD_REDIRECT_TO_PROD =
+  'https://vbeffa.github.io/jobvana/account';
 
 const Login = () => {
   const [mode, setMode] = useState<'register' | 'login' | 'forgot_password'>(
@@ -43,35 +46,6 @@ const Login = () => {
       (mode === 'register' && (!userType || !firstName || !lastName)),
     [email, firstName, isSubmitting, lastName, mode, password, userType]
   );
-
-  /**
-   * Step 2: Once the user is redirected back to your application,
-   * ask the user to reset their password.
-   */
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(event, session);
-      if (event == 'PASSWORD_RECOVERY') {
-        const newPassword = prompt(
-          'What would you like your new password to be?'
-        );
-        if (!newPassword) {
-          alert('Password cannot be empty.');
-          return;
-        }
-        const { data, error } = await supabase.auth.updateUser({
-          password: newPassword
-        });
-        console.log(data);
-
-        if (error) {
-          alert('There was an error updating your password.');
-        } else {
-          alert('Password updated successfully!');
-        }
-      }
-    });
-  }, []);
 
   const doRegister = useCallback(async () => {
     setIsSubmitting(true);
@@ -128,7 +102,7 @@ const Login = () => {
       setIsSubmitting(false);
     }
 
-    window.dispatchEvent(new Event('login'));
+    // window.dispatchEvent(new Event('login'));
   }, [email, password]);
 
   const doResetPassword = useCallback(async () => {
@@ -139,8 +113,8 @@ const Login = () => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: import.meta.env.DEV
-          ? REGISTER_REDIRECT_TO_DEV
-          : REGISTER_REDIRECT_TO_PROD
+          ? RESET_PASSWORD_REDIRECT_TO_DEV
+          : RESET_PASSWORD_REDIRECT_TO_PROD
       });
 
       if (error) {
@@ -152,6 +126,7 @@ const Login = () => {
         'Email sent. Please check your email for a reset link.'
       );
       resetForm();
+      setMode('login');
     } finally {
       setIsSubmitting(false);
     }
@@ -310,7 +285,7 @@ const Login = () => {
             }
           />
         </div>
-        {mode !== 'forgot_password' && (
+        {mode !== 'forgot_password' && !successMessage && (
           <div className="col-span-2 flex justify-end text-sm mt-4 pr-0.5">
             <Link
               to="."
@@ -325,9 +300,7 @@ const Login = () => {
             </Link>
           </div>
         )}
-        <div
-          className={`col-span-2 flex justify-center text-sm ${mode === 'forgot_password' ? 'mt-4' : 'mt-2'}`}
-        >
+        <div className="col-span-2 flex justify-center text-sm mt-4">
           {successMessage && successMessage}
           {error && <JobvanaError error={error} />}
         </div>

@@ -24,6 +24,7 @@ const Root = () => {
   >(defaultJobSeekerContext.jobsContext);
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
+  const [resetPassword, setResetPassword] = useState(false);
   const [company, setCompany] = useState<Company | null>();
 
   const session = getSession();
@@ -58,6 +59,16 @@ const Root = () => {
     })();
   }, [company, isLoggedIn, session, userType]);
 
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (event) => {
+      if (event == 'PASSWORD_RECOVERY') {
+        setResetPassword(true);
+      } else if (event === 'SIGNED_IN') {
+        setLoggedIn(true);
+      }
+    });
+  }, []);
+
   const logout = useCallback(async () => {
     setLoggingOut(true);
     await supabase.auth.signOut({ scope: 'local' });
@@ -66,9 +77,9 @@ const Root = () => {
     setLoggingOut(false);
   }, []);
 
-  window.addEventListener('login', () => {
-    setLoggedIn(true);
-  });
+  // window.addEventListener('login', () => {
+  //   setLoggedIn(true);
+  // });
 
   if (userType === 'company') {
     return (
@@ -78,7 +89,9 @@ const Root = () => {
           setCurrPage,
           loggedIn,
           loggingOut,
-          logout
+          logout,
+          resetPassword,
+          setResetPassword
         }}
       >
         <CompanyContext.Provider
@@ -104,7 +117,9 @@ const Root = () => {
         setCurrPage,
         loggedIn,
         loggingOut,
-        logout
+        logout,
+        resetPassword,
+        setResetPassword
       }}
     >
       <JobSeekerContext.Provider

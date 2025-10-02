@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../auth/Login';
 import { getSession, isPasswordValid } from '../auth/utils';
+import { JobvanaContext } from '../Context';
 import Button from '../controls/Button';
 import supabase from '../db/supabase';
 import Label from '../inputs/Label';
@@ -8,6 +9,7 @@ import TextInput from '../inputs/TextInput';
 import JobvanaError from '../JobvanaError';
 
 const ChangePassword = () => {
+  const { resetPassword, setResetPassword } = useContext(JobvanaContext);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -22,12 +24,13 @@ const ChangePassword = () => {
   const submitDisabled = useMemo(
     () =>
       isSubmitting ||
-      !isPasswordValid(password) ||
-      !isPasswordValid(newPassword) ||
+      (!resetPassword &&
+        (!isPasswordValid(password) ||
+          !isPasswordValid(newPassword) ||
+          password.localeCompare(newPassword) === 0)) || // can't use same password
       !isPasswordValid(confirmPassword) ||
-      password.localeCompare(newPassword) === 0 || // can't use same password
       newPassword.localeCompare(confirmPassword) !== 0, // new passwords must match
-    [confirmPassword, isSubmitting, newPassword, password]
+    [confirmPassword, isSubmitting, newPassword, password, resetPassword]
   );
 
   const changePassword = useCallback(async () => {
@@ -35,32 +38,36 @@ const ChangePassword = () => {
     setChangePasswordSuccess(false);
     setError(null);
 
-    const session = getSession();
-    const email = session?.user.email;
-    if (!email) {
-      setError(Error('Email missing from session'));
-      return;
-    }
-
     try {
-      const result = await supabase.auth.signInWithPassword({
-        email,
-        password
+      if (!resetPassword) {
+        const session = getSession();
+        const email = session?.user.email;
+        if (!email) {
+          setError(Error('Email missing from session'));
+          return;
+        }
+
+        const result = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (result.error) {
+          console.log(result.error);
+          setError(Error('Current password invalid'));
+          return;
+        }
+      } else {
+        setResetPassword(false);
+      }
+
+      const result = await supabase.auth.updateUser({
+        password: newPassword
       });
 
       if (result.error) {
         console.log(result.error);
-        setError(Error('Current password invalid'));
-        return;
-      }
-
-      const result2 = await supabase.auth.updateUser({
-        password: newPassword
-      });
-
-      if (result2.error) {
-        console.log(result2.error);
-        setError(result2.error);
+        setError(result.error);
         return;
       }
       // console.log(data);
@@ -69,7 +76,7 @@ const ChangePassword = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [newPassword, password]);
+  }, [newPassword, password, resetPassword, setResetPassword]);
 
   const resetForm = () => {
     setPassword('');
@@ -79,20 +86,22 @@ const ChangePassword = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
-        <Label htmlFor="password" label="Current password" />
-        <TextInput
-          id="password"
-          // label="Current password"
-          width="w-60"
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          showEye={true}
-          onClickEye={() => setShowPassword((showPassword) => !showPassword)}
-          autoComplete={'current-password'}
-          onChange={(password) => setPassword(password)}
-        />
-      </div>
+      {!resetPassword && (
+        <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
+          <Label htmlFor="password" label="Current password" />
+          <TextInput
+            id="password"
+            // label="Current password"
+            width="w-60"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            showEye={true}
+            onClickEye={() => setShowPassword((showPassword) => !showPassword)}
+            autoComplete={'current-password'}
+            onChange={(password) => setPassword(password)}
+          />
+        </div>
+      )}
       <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
         <Label htmlFor="new_password" label="New password" />
         <TextInput

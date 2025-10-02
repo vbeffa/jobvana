@@ -35,12 +35,15 @@ export type JobvanaContextProps = {
   loggedIn?: boolean;
   loggingOut?: boolean;
   logout: () => Promise<void>;
+  resetPassword?: boolean;
+  setResetPassword: (resetPassword: boolean) => void;
 };
 
 export const defaultContext: JobvanaContextProps = {
   currPage: 'home',
   setCurrPage: () => {},
-  logout: () => Promise.resolve()
+  logout: () => Promise.resolve(),
+  setResetPassword: () => {}
 };
 
 export const defaultCompanyContext: CompanyContextProps = {
