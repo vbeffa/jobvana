@@ -27,7 +27,7 @@ const Index = () => {
       userType === 'job_seeker'
         ? jobSeeker?.first_name
         : session?.user.user_metadata.first_name;
-    return `Welcome to Jobvana, ${name}!`;
+    return name ? `Welcome to Jobvana, ${name}!` : '';
   }, [jobSeeker?.first_name, session?.user.user_metadata.first_name, userType]);
 
   return (
