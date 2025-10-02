@@ -9,8 +9,8 @@ import {
   FaUser,
   FaWrench
 } from 'react-icons/fa6';
-import { CompanyContext, JobvanaContext } from './Context';
 import { getUserType } from './auth/utils';
+import { CompanyContext, JobSeekerContext, JobvanaContext } from './Context';
 
 export const HEADER_HEIGHT = 16;
 export const HEADER_MARGIN_BOTTOM = 4;
@@ -22,6 +22,7 @@ const Header = () => {
   const { logout, loggedIn, currPage, setCurrPage } =
     useContext(JobvanaContext);
   const { company } = useContext(CompanyContext);
+  const { jobSeeker } = useContext(JobSeekerContext);
 
   useEffect(() => {
     let trimmed = location.pathname.substring(9);
@@ -78,12 +79,12 @@ const Header = () => {
       {currPage === 'home' && activeHeaderItem('Home', <FaHouse />)}
       {loggedIn && (
         <>
-          {userType === 'company' && company !== undefined && (
+          {userType === 'company' && company !== null && (
             <>
               {currPage !== 'companies' &&
                 linkHeaderItem({
-                  to: '/jobvana/companies/$id',
-                  params: { id: company.id.toString() },
+                  to: company ? '/jobvana/companies/$id' : '.',
+                  params: company ? { id: company.id.toString() } : undefined,
                   title: 'My Company',
                   icon: <FaBuilding />
                 })}
@@ -106,7 +107,7 @@ const Header = () => {
                 activeHeaderItem('Job Applications', <FaPaperPlane />)}
             </>
           )}
-          {userType === 'job_seeker' && (
+          {userType === 'job_seeker' && jobSeeker !== null && (
             <>
               {currPage !== 'jobs' &&
                 linkHeaderItem({
