@@ -1,6 +1,6 @@
 import PillContainer from '../../containers/PillContainer';
-import Error from '../../Error';
 import JobsList from '../../jobs/job_seekers/JobsList';
+import JobvanaError from '../../JobvanaError';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
 import type { InterviewProcess } from '../company/utils';
@@ -13,7 +13,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
   const { company, error, isPlaceholderData, isPending } = useCompany(id);
 
   if (error) {
-    return <Error error={error} />;
+    return <JobvanaError error={error} />;
   }
 
   if (isPending) {

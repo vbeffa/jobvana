@@ -4,7 +4,7 @@ import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
 import SummaryCardsContainer from '../containers/SummaryCardsContainer';
 import Button from '../controls/Button';
-import Error from '../Error';
+import JobvanaError from '../JobvanaError';
 import SummaryCard from '../SummaryCard';
 import SkillCategoryDetails from './SkillCategoryDetails';
 import SkillCategoryTree from './SkillCategoryTree';
@@ -22,7 +22,7 @@ const SkillCategories = () => {
 
   return (
     <div className="mx-4 relative">
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <h1>Skill Categories</h1>
       <div className="absolute top-8 right-0.5 text-right w-full min-w-[1100px]">
         <Button

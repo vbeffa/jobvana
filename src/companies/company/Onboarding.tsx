@@ -3,7 +3,7 @@ import { getSession } from '../../auth/utils';
 import { CompanyContext } from '../../Context';
 import Button from '../../controls/Button';
 import supabase from '../../db/supabase';
-import Error from '../../Error';
+import JobvanaError from '../../JobvanaError';
 import { isValidCompany, type ToInsert } from '../utils';
 import MyCompanyOverviewEdit from './MyCompanyOverviewEdit';
 import { EMPTY_PROCESS } from './utils';
@@ -54,7 +54,7 @@ const Onboarding = ({ userId }: { userId: string }) => {
   return (
     <>
       <h1>Onboarding</h1>
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         <div className="border-[0.5px] border-blue-300 rounded-lg w-[36rem]">
           <div className="m-4 grid grid-cols-[25%_75%] gap-y-2">

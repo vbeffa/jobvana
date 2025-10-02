@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Error from '../Error';
+import JobvanaError from '../JobvanaError';
 import SummaryCard from '../SummaryCard';
 import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../containers/ResourceListContainer';
@@ -18,7 +18,7 @@ const Roles = () => {
 
   return (
     <div className="mx-4">
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <h1>Roles</h1>
       <ResourcesContainer hasFilters={false}>
         <ResourceListContainer>

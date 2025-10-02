@@ -3,7 +3,7 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { CompanyContext, type Company } from '../../Context';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import supabase from '../../db/supabase';
-import Error from '../../Error';
+import JobvanaError from '../../JobvanaError';
 import UpdatingModal from '../../UpdatingModal';
 import InterviewProcessDisplay from '../InterviewProcessDisplay';
 import { isValidInterviewProcess } from '../utils';
@@ -66,7 +66,7 @@ const MyCompanyInterviewProcess = ({
 
   return (
     <>
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       {isSubmitting && <UpdatingModal />}
       <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditDeleteButtons

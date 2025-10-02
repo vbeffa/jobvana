@@ -1,6 +1,7 @@
 import type { Session } from '@supabase/supabase-js';
 import type { UserType } from '../Context';
 import supabase from '../db/supabase';
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from './Login';
 
 const getSession = () => {
   const authToken = window.localStorage.getItem(
@@ -57,4 +58,8 @@ const refreshSession = async () => {
   }
 };
 
-export { getSession, getUserType, isLoggedIn, refreshSession };
+const isPasswordValid = (password: string) =>
+  password.length >= MIN_PASSWORD_LENGTH &&
+  password.length <= MAX_PASSWORD_LENGTH;
+
+export { getSession, getUserType, isLoggedIn, isPasswordValid, refreshSession };

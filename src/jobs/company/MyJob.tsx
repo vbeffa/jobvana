@@ -2,8 +2,8 @@ import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import supabase from '../../db/supabase';
-import Error from '../../Error';
 import Hr from '../../Hr';
+import JobvanaError from '../../JobvanaError';
 import type { CompanyAddress, JobRole, JobSkill } from '../../types';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
@@ -272,7 +272,7 @@ const MyJob = ({
 
   return (
     <div className="relative">
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <EditDeleteButtons
         type="job"
         isEditing={isEditing}

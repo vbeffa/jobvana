@@ -1,5 +1,5 @@
-import Error from '../Error';
 import Hr from '../Hr';
+import JobvanaError from '../JobvanaError';
 import useSkill from './useSkill';
 import useSkillVersion from './useSkillVersion';
 
@@ -27,8 +27,8 @@ const SkillVersionDetails = ({
 
   return (
     <>
-      {error && <Error error={error} />}
-      {error2 && <Error error={error2} />}
+      {error && <JobvanaError error={error} />}
+      {error2 && <JobvanaError error={error2} />}
       <h2>
         {skill.name}
         {skill.abbreviation && ` (${skill.abbreviation})`}{' '}

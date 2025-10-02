@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
-import Error from '../../Error';
+import JobvanaError from '../../JobvanaError';
 import UpdatingModal from '../../UpdatingModal';
 import MyCompanyAddress from './MyCompanyAddress';
 import MyCompanyNewAddress from './MyCompanyNewAddress';
@@ -22,7 +22,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
 
   return (
     <>
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       {updating && <UpdatingModal />}
       <div className="grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
         {addresses.map((address, idx) => (

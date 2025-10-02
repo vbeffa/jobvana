@@ -6,7 +6,7 @@ import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
 import SummaryCardsContainer from '../containers/SummaryCardsContainer';
-import Error from '../Error';
+import JobvanaError from '../JobvanaError';
 import PageNav from '../PageNav';
 import SkillDetails from '../skills/SkillDetails';
 import SummaryCard from '../SummaryCard';
@@ -52,7 +52,7 @@ const Skills = () => {
 
   return (
     <div className="mx-4">
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <FiltersContainer
         reset={() => {
           setPage(1);

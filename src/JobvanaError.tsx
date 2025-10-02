@@ -1,4 +1,4 @@
-const Error = ({ error }: { error: Error }) => {
+const JobvanaError = ({ error }: { error: Error }) => {
   return (
     <div className="pb-2 text-red-500 text-center font-bold">
       {error.message}
@@ -6,4 +6,4 @@ const Error = ({ error }: { error: Error }) => {
   );
 };
 
-export default Error;
+export default JobvanaError;

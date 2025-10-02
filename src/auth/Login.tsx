@@ -7,11 +7,12 @@ import {
 import { type UserType } from '../Context';
 import Button from '../controls/Button';
 import supabase from '../db/supabase';
-import Error from '../Error';
 import TextInput from '../inputs/TextInput';
+import JobvanaError from '../JobvanaError';
+import { isPasswordValid } from './utils';
 
-const MIN_PASSWORD_LENGTH = 6;
-const MAX_PASSWORD_LENGTH = 32;
+export const MIN_PASSWORD_LENGTH = 6;
+export const MAX_PASSWORD_LENGTH = 32;
 const MAX_FIRST_NAME_LENGTH = 100;
 const MAX_LAST_NAME_LENGTH = 100;
 
@@ -36,9 +37,7 @@ const Login = () => {
     () =>
       isLoggingIn ||
       !email ||
-      !password ||
-      password.length < MIN_PASSWORD_LENGTH ||
-      password.length > MAX_PASSWORD_LENGTH ||
+      !isPasswordValid(password) ||
       (mode === 'register' && (!userType || !firstName || !lastName)),
     [email, firstName, isLoggingIn, lastName, mode, password, userType]
   );
@@ -230,7 +229,7 @@ const Login = () => {
           {registrationSuccess && (
             <>Success! Please check your email for a verification link.</>
           )}
-          {error && <Error error={error} />}
+          {error && <JobvanaError error={error} />}
         </div>
       </div>
     </div>

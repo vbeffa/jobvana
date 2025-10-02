@@ -1,5 +1,5 @@
 import PillContainer from '../containers/PillContainer';
-import Error from '../Error';
+import JobvanaError from '../JobvanaError';
 import LoadingModal from '../LoadingModal';
 import Section from '../Section';
 import SkillCategoryLink from '../skill_categories/SkillCategoryLink';
@@ -11,7 +11,7 @@ const SkillDetails = ({ id }: { id: number }) => {
   const { skill, error, isPlaceholderData, isPending } = useSkill(id);
 
   if (error) {
-    return <Error error={error} />;
+    return <JobvanaError error={error} />;
   }
 
   if (isPending) {

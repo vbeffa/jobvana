@@ -1,4 +1,4 @@
-import Error from '../Error';
+import JobvanaError from '../JobvanaError';
 import type { SkillCategory } from '../types';
 import SkillCategoryLink from './SkillCategoryLink';
 import useSkillsForCategory from './useSkillsForCategory';
@@ -24,7 +24,7 @@ const SkillCategoryLinkWithNumSkills = ({
 
   return (
     <>
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <SkillCategoryLink id={id} name={name} />
       {numSkillsString}
     </>

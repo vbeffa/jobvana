@@ -7,7 +7,7 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import { JobSeekerContext } from '../../Context';
-import Error from '../../Error';
+import JobvanaError from '../../JobvanaError';
 import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.companies.index';
 import SummaryCard from '../../SummaryCard';
@@ -106,7 +106,7 @@ const Companies = () => {
 
   return (
     <div className="mx-4">
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       <FiltersContainer
         reset={() => {
           setPage(1);

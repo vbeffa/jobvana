@@ -3,7 +3,7 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { CompanyContext, type Company } from '../../Context';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import supabase from '../../db/supabase';
-import Error from '../../Error';
+import JobvanaError from '../../JobvanaError';
 import UpdatingModal from '../../UpdatingModal';
 import { isValidCompany, type ToUpdate } from '../utils';
 import CompanyOverviewDisplay from './CompanyOverviewDisplay';
@@ -53,7 +53,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
 
   return (
     <>
-      {error && <Error error={error} />}
+      {error && <JobvanaError error={error} />}
       {isSubmitting && <UpdatingModal />}
       <div className="relative grid grid-cols-[20%_65%] gap-y-2">
         <EditDeleteButtons

@@ -1,5 +1,5 @@
 import CompanyLink from '../../companies/CompanyLink';
-import Error from '../../Error';
+import JobvanaError from '../../JobvanaError';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
 import SkillsList from '../../skills/SkillsList';
@@ -11,7 +11,7 @@ const JobDetails = ({ id }: { id: number }) => {
   const { job, error, isPlaceholderData, isPending } = useJob(id);
 
   if (error) {
-    return <Error error={error} />;
+    return <JobvanaError error={error} />;
   }
 
   if (isPending) {
