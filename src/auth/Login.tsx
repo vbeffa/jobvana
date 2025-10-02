@@ -50,17 +50,25 @@ const Login = () => {
    */
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(event);
+      console.log(event, session);
       if (event == 'PASSWORD_RECOVERY') {
         const newPassword = prompt(
           'What would you like your new password to be?'
         );
+        if (!newPassword) {
+          alert('Password cannot be empty.');
+          return;
+        }
         const { data, error } = await supabase.auth.updateUser({
           password: newPassword
         });
+        console.log(data);
 
-        if (data) alert('Password updated successfully!');
-        if (error) alert('There was an error updating your password.');
+        if (error) {
+          alert('There was an error updating your password.');
+        } else {
+          alert('Password updated successfully!');
+        }
       }
     });
   }, []);
