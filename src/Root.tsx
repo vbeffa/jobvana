@@ -24,11 +24,13 @@ const Root = () => {
   const [jobsContext, setJobsContext] = useState<
     JobSeekerContextProps['jobsContext']
   >(defaultJobSeekerContext.jobsContext);
+
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
   const [resetPassword, setResetPassword] = useState(false);
-  const [company, setCompany] = useState<Company>();
-  const [jobSeeker, setJobSeeker] = useState<JobSeeker>();
+
+  const [company, setCompany] = useState<Company | null>();
+  const [jobSeeker, setJobSeeker] = useState<JobSeeker | null>();
 
   const session = getSession();
 

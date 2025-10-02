@@ -17,7 +17,7 @@ export const findJobSeeker = async (userId: string) => {
     throw error;
   }
 
-  return data[0];
+  return data[0] ?? null;
 };
 
 export const isValidJobSeeker = (jobSeeker: Partial<ToInsert>) => {

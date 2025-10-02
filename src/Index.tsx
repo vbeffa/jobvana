@@ -13,12 +13,12 @@ const Index = () => {
   const userType = getUserType();
 
   const isCompanyOnboarding = useMemo(
-    () => userType === 'company' && company === undefined,
+    () => userType === 'company' && company === null,
     [company, userType]
   );
 
   const isJobSeekerOnboarding = useMemo(
-    () => userType === 'job_seeker' && jobSeeker === undefined,
+    () => userType === 'job_seeker' && jobSeeker === null,
     [jobSeeker, userType]
   );
 

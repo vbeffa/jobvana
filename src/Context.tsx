@@ -10,12 +10,12 @@ export type UserType = 'company' | 'job_seeker';
 export type Company = Omit<DbCompany, 'created_at'>;
 
 export type CompanyContextProps = {
-  company?: Company;
+  company?: Company | null;
   setCompany: (company: Company) => void;
 };
 
 export type JobSeekerContextProps = {
-  jobSeeker?: JobSeeker;
+  jobSeeker?: JobSeeker | null;
   setJobSeeker: (jobSeeker: JobSeeker) => void;
   companiesContext: CompanySearchFilters & {
     page: number;
