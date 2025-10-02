@@ -1,4 +1,8 @@
 import type { Session } from '@supabase/supabase-js';
+import {
+  MAX_EMAIL_LENGTH,
+  MIN_EMAIL_LENGTH
+} from '../companies/job_seeker/useCompanies';
 import type { UserType } from '../Context';
 import supabase from '../db/supabase';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from './Login';
@@ -62,4 +66,15 @@ const isPasswordValid = (password: string) =>
   password.length >= MIN_PASSWORD_LENGTH &&
   password.length <= MAX_PASSWORD_LENGTH;
 
-export { getSession, getUserType, isLoggedIn, isPasswordValid, refreshSession };
+// TODO add email address validation
+const isEmailValid = (email: string) =>
+  email.length >= MIN_EMAIL_LENGTH && email.length <= MAX_EMAIL_LENGTH;
+
+export {
+  getSession,
+  getUserType,
+  isEmailValid,
+  isLoggedIn,
+  isPasswordValid,
+  refreshSession
+};

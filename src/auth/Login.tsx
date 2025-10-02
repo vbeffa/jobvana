@@ -9,7 +9,7 @@ import Button from '../controls/Button';
 import supabase from '../db/supabase';
 import TextInput from '../inputs/TextInput';
 import JobvanaError from '../JobvanaError';
-import { isPasswordValid } from './utils';
+import { isEmailValid, isPasswordValid } from './utils';
 
 export const MIN_PASSWORD_LENGTH = 6;
 export const MAX_PASSWORD_LENGTH = 32;
@@ -20,7 +20,9 @@ const REGISTER_REDIRECT_TO_DEV = 'http://localhost:5173/';
 const REGISTER_REDIRECT_TO_PROD = 'https://vbeffa.github.io/jobvana/';
 
 const Login = () => {
-  const [mode, setMode] = useState<'register' | 'login'>('login');
+  const [mode, setMode] = useState<'register' | 'login' | 'forgot_password'>(
+    'login'
+  );
 
   const [userType, setUserType] = useState<UserType | null>('company');
   const [email, setEmail] = useState('');
@@ -29,22 +31,22 @@ const Login = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const loginDisabled = useMemo(
+  const submitDisabled = useMemo(
     () =>
-      isLoggingIn ||
-      !email ||
-      !isPasswordValid(password) ||
+      isSubmitting ||
+      !isEmailValid(email) ||
+      (mode !== 'forgot_password' && !isPasswordValid(password)) ||
       (mode === 'register' && (!userType || !firstName || !lastName)),
-    [email, firstName, isLoggingIn, lastName, mode, password, userType]
+    [email, firstName, isSubmitting, lastName, mode, password, userType]
   );
 
   const doRegister = useCallback(async () => {
-    setIsLoggingIn(true);
-    setRegistrationSuccess(false);
+    setIsSubmitting(true);
+    setSuccessMessage('');
     setError(null);
 
     try {
@@ -68,18 +70,19 @@ const Login = () => {
         setError(error);
         return;
       }
-      // console.log(data);
-      setRegistrationSuccess(true);
+      setSuccessMessage(
+        'Success! Please check your email for a verification link.'
+      );
       resetForm();
       setMode('login');
     } finally {
-      setIsLoggingIn(false);
+      setIsSubmitting(false);
     }
   }, [email, firstName, lastName, password, userType]);
 
   const doLogin = useCallback(async () => {
-    setIsLoggingIn(true);
-    setRegistrationSuccess(false);
+    setIsSubmitting(true);
+    setSuccessMessage('');
     setError(null);
 
     try {
@@ -91,15 +94,39 @@ const Login = () => {
       if (error) {
         console.log(error);
         setError(error);
-        return;
       }
-      // console.log(data);
     } finally {
-      setIsLoggingIn(false);
+      setIsSubmitting(false);
     }
 
     window.dispatchEvent(new Event('login'));
   }, [email, password]);
+
+  const doResetPassword = useCallback(async () => {
+    setIsSubmitting(true);
+    setSuccessMessage('');
+    setError(null);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: import.meta.env.DEV
+          ? REGISTER_REDIRECT_TO_DEV
+          : REGISTER_REDIRECT_TO_PROD
+      });
+
+      if (error) {
+        console.log(error);
+        setError(error);
+        return;
+      }
+      setSuccessMessage(
+        'Email sent. Please check your email for a reset link.'
+      );
+      resetForm();
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [email]);
 
   const resetForm = () => {
     setEmail('');
@@ -109,6 +136,7 @@ const Login = () => {
   };
 
   const activeModeStyle = 'border-b-3 border-b-blue-600';
+  const inactiveModeStyle = 'border-b-3 border-white';
 
   return (
     <div className="flex justify-center">
@@ -116,11 +144,14 @@ const Login = () => {
         className={`relative border-[0.5px] border-blue-300 rounded-lg w-[24rem] ${mode === 'register' ? 'h-[20.25rem]' : 'h-[11rem]'}`}
       >
         <div className="flex justify-center gap-8 mt-2 mb-2">
-          <div className={mode === 'login' ? activeModeStyle : ''}>
+          <div
+            className={mode === 'login' ? activeModeStyle : inactiveModeStyle}
+          >
             <Link
               to="."
               onClick={() => {
                 setError(null);
+                setSuccessMessage('');
                 setMode('login');
                 resetForm();
               }}
@@ -128,11 +159,16 @@ const Login = () => {
               Log In
             </Link>
           </div>
-          <div className={mode === 'register' ? activeModeStyle : ''}>
+          <div
+            className={
+              mode === 'register' ? activeModeStyle : inactiveModeStyle
+            }
+          >
             <Link
               to="."
               onClick={() => {
                 setError(null);
+                setSuccessMessage('');
                 setMode('register');
                 resetForm();
               }}
@@ -156,23 +192,29 @@ const Login = () => {
             autoComplete="email"
             onChange={(email) => setEmail(email)}
           />
-          <TextInput
-            id="password"
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            minLength={MIN_PASSWORD_LENGTH}
-            maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
-            showEye={true}
-            onClickEye={() => setShowPassword((showPassword) => !showPassword)}
-            placeholder={
-              mode === 'register' ? `Min ${MIN_PASSWORD_LENGTH} characters` : ''
-            }
-            autoComplete={
-              mode === 'register' ? 'new-password' : 'current-password'
-            }
-            onChange={(password) => setPassword(password)}
-          />
+          {mode !== 'forgot_password' && (
+            <TextInput
+              id="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              minLength={MIN_PASSWORD_LENGTH}
+              maxLength={mode === 'register' ? MAX_PASSWORD_LENGTH : undefined}
+              showEye={true}
+              onClickEye={() =>
+                setShowPassword((showPassword) => !showPassword)
+              }
+              placeholder={
+                mode === 'register'
+                  ? `Min ${MIN_PASSWORD_LENGTH} characters`
+                  : ''
+              }
+              autoComplete={
+                mode === 'register' ? 'new-password' : 'current-password'
+              }
+              onChange={(password) => setPassword(password)}
+            />
+          )}
           {mode === 'register' && (
             <>
               <TextInput
@@ -218,17 +260,44 @@ const Login = () => {
             </>
           )}
         </div>
-        <div className="flex justify-center mt-2">
+        <div
+          className={`flex justify-center ${mode === 'forgot_password' ? 'mt-12' : 'mt-2'}`}
+        >
           <Button
-            label={mode === 'register' ? 'Sign Up' : 'Log In'}
-            disabled={loginDisabled}
-            onClick={() => (mode === 'register' ? doRegister() : doLogin())}
+            label={
+              mode === 'login'
+                ? 'Login'
+                : mode === 'register'
+                  ? 'Sign Up'
+                  : 'Send Email'
+            }
+            disabled={submitDisabled}
+            onClick={() =>
+              mode === 'login'
+                ? doLogin()
+                : mode === 'register'
+                  ? doRegister()
+                  : doResetPassword()
+            }
           />
         </div>
-        <div className="col-span-2 flex justify-center text-sm mt-4">
-          {registrationSuccess && (
-            <>Success! Please check your email for a verification link.</>
-          )}
+        {mode !== 'forgot_password' && (
+          <div className="col-span-2 flex justify-end text-sm mt-4 pr-0.5">
+            <Link
+              to="."
+              onClick={() => {
+                setError(null);
+                setSuccessMessage('');
+                setMode('forgot_password');
+                resetForm();
+              }}
+            >
+              Forgot Password?
+            </Link>
+          </div>
+        )}
+        <div className="col-span-2 flex justify-center text-sm mt-2">
+          {successMessage && successMessage}
           {error && <JobvanaError error={error} />}
         </div>
       </div>
