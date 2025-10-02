@@ -57,8 +57,6 @@ const ChangePassword = () => {
           setError(Error('Current password invalid'));
           return;
         }
-      } else {
-        setResetPassword(false);
       }
 
       const result = await supabase.auth.updateUser({
@@ -75,6 +73,7 @@ const ChangePassword = () => {
       resetForm();
     } finally {
       setIsSubmitting(false);
+      setResetPassword(false);
     }
   }, [newPassword, password, resetPassword, setResetPassword]);
 
@@ -91,7 +90,6 @@ const ChangePassword = () => {
           <Label htmlFor="password" label="Current password" />
           <TextInput
             id="password"
-            // label="Current password"
             width="w-60"
             type={showPassword ? 'text' : 'password'}
             value={password}
@@ -106,7 +104,6 @@ const ChangePassword = () => {
         <Label htmlFor="new_password" label="New password" />
         <TextInput
           id="new_password"
-          // label="New password"
           width="w-60"
           type={showNewPassword ? 'text' : 'password'}
           value={newPassword}
@@ -123,7 +120,6 @@ const ChangePassword = () => {
         <Label htmlFor="confirm_new_password" label="Confirm password" />
         <TextInput
           id="confirm_new_password"
-          // label="New password"
           width="w-60"
           type={showConfirmPassword ? 'text' : 'password'}
           value={confirmPassword}
@@ -138,8 +134,8 @@ const ChangePassword = () => {
           onChange={(password) => setConfirmPassword(password)}
         />
       </div>
-      <div className="grid grid-cols-2 mt-4">
-        <div className="flex justify-center">
+      <div className="grid-cols-2 w-[400px] mt-2">
+        <div className="flex justify-center w-full">
           <Button
             label="Submit"
             disabled={submitDisabled}
