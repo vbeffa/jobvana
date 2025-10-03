@@ -92,9 +92,13 @@ const NumberInput = ({
           </div>
         )}
         {outOfRange && (
-          <Tooltip message={validRangeMessage}>
-            <FaTriangleExclamation />
-          </Tooltip>
+          <div className="absolute top-2 right-6">
+            <Tooltip message={validRangeMessage}>
+              <div className="text-red-500">
+                <FaTriangleExclamation />
+              </div>
+            </Tooltip>
+          </div>
         )}
       </div>
     </>
