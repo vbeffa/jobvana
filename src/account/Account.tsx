@@ -11,7 +11,7 @@ import ChangePassword from './ChangePassword';
 import Profile from './Profile';
 
 const Account = () => {
-  const [card, setCard] = useState('skills');
+  const [card, setCard] = useState<'account' | 'profile' | 'skills'>('skills');
   const { jobSeeker } = useContext(JobSeekerContext);
   const userType = getUserType();
 
