@@ -3,7 +3,7 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { JobSeekerContext } from '../Context';
 import Button from '../controls/Button';
 import supabase from '../db/supabase';
-import JobSeekerOverviewEdit from '../job_seekers/JobSeekerOverviewEdit';
+import ProfileEdit from '../job_seekers/ProfileEdit';
 import { isValidJobSeeker, type ToUpdate } from '../job_seekers/utils';
 import JobvanaError from '../JobvanaError';
 import type { JobSeeker } from '../types';
@@ -56,11 +56,8 @@ const Profile = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
 
   return (
     <div className="grid grid-cols-[25%_75%] w-[400px] gap-y-2">
-      <JobSeekerOverviewEdit
-        jobSeeker={editJobSeeker}
-        setJobSeeker={setEditJobSeeker}
-      />
-      <div className="text-center col-span-2">
+      <ProfileEdit jobSeeker={editJobSeeker} setJobSeeker={setEditJobSeeker} />
+      <div className="text-center col-span-2 mt-2">
         <Button
           label="Update"
           disabled={submitDisabled}
@@ -68,7 +65,7 @@ const Profile = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         />
       </div>
       <div className="text-center col-span-2">
-        {updateSuccess && <>Update successful.</>}
+        {updateSuccess && <>Profile updated.</>}
         {error && <JobvanaError error={error} />}
       </div>
     </div>

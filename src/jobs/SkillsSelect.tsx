@@ -18,7 +18,7 @@ const SkillsSelect = ({
   onChange: (skillIds: Array<number>) => void;
 }) => {
   const [filter, setFilter] = useState('');
-  const { skills, findSkill } = useSkillsLite();
+  const { skills, isPending, findSkill } = useSkillsLite();
 
   const filteredSkills = useMemo(
     () =>
@@ -57,6 +57,7 @@ const SkillsSelect = ({
         />
         <SkillsContainer
           skills={filteredSkills}
+          isLoading={isPending}
           selectedSkillIds={selectedSkillIds}
           outerHeight={outerHeight}
           innerHeight={innerHeight}

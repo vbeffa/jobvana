@@ -5,14 +5,18 @@ import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
 import SummaryCardsContainer from '../containers/SummaryCardsContainer';
 import { JobSeekerContext } from '../Context';
+import ProfileSkills from '../job_seekers/JobSeekerSkills';
+import useSkillsForJobSeeker from '../job_seekers/useSkillsForJobSeeker';
 import SummaryCard from '../SummaryCard';
 import ChangePassword from './ChangePassword';
 import Profile from './Profile';
 
 const Account = () => {
-  const [card, setCard] = useState('account');
+  const [card, setCard] = useState('skills');
   const { jobSeeker } = useContext(JobSeekerContext);
   const userType = getUserType();
+  const { count } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
+  console.log(count);
 
   return (
     <div className="mx-4">
@@ -29,14 +33,24 @@ const Account = () => {
               borderBottom={true}
             />
             {userType === 'job_seeker' ? (
-              <SummaryCard
-                key={2}
-                selected={card === 'profile'}
-                onClick={() => setCard('profile')}
-                title="Profile"
-                text="Update your name"
-                borderBottom={true}
-              />
+              <>
+                <SummaryCard
+                  key={2}
+                  selected={card === 'profile'}
+                  onClick={() => setCard('profile')}
+                  title="Profile"
+                  text="Update your name"
+                  borderBottom={true}
+                />
+                <SummaryCard
+                  key={3}
+                  selected={card === 'skills'}
+                  onClick={() => setCard('skills')}
+                  title="Skills"
+                  text={`${count ? 'Update' : 'Add'} your skills`}
+                  borderBottom={true}
+                />
+              </>
             ) : (
               <></>
             )}
@@ -47,6 +61,9 @@ const Account = () => {
             {card === 'account' && <ChangePassword />}
             {card === 'profile' && jobSeeker && (
               <Profile jobSeeker={jobSeeker} />
+            )}
+            {card === 'skills' && jobSeeker && (
+              <ProfileSkills jobSeeker={jobSeeker} />
             )}
           </>
         </ResourceDetailsContainer>

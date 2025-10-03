@@ -3,16 +3,16 @@ import Label from '../inputs/Label';
 import TextInput from '../inputs/TextInput';
 import type { ToInsert, ToUpdate } from './utils';
 
-export type JobSeekerOverviewEditProps<T extends ToUpdate | ToInsert> = {
+export type ProfileEditProps<T extends ToUpdate | ToInsert> = {
   jobSeeker: T;
   setJobSeeker: React.Dispatch<React.SetStateAction<T>>;
   isOnboarding?: boolean;
 };
 
-const JobSeekerOverviewEdit = <T extends ToUpdate | ToInsert>({
+const ProfileEdit = <T extends ToUpdate | ToInsert>({
   jobSeeker,
   setJobSeeker
-}: JobSeekerOverviewEditProps<T>) => {
+}: ProfileEditProps<T>) => {
   return (
     <div className="grid grid-cols-[25%_75%] w-[400px] gap-2">
       <Label htmlFor="first_name" label="First name" />
@@ -20,6 +20,7 @@ const JobSeekerOverviewEdit = <T extends ToUpdate | ToInsert>({
         id="first_name"
         value={jobSeeker.first_name}
         maxLength={MAX_NAME_LENGTH}
+        autoComplete="given-name"
         onChange={(first_name) => {
           setJobSeeker((jobSeeker) => ({
             ...jobSeeker,
@@ -32,6 +33,7 @@ const JobSeekerOverviewEdit = <T extends ToUpdate | ToInsert>({
         id="last_name"
         value={jobSeeker.last_name}
         maxLength={MAX_NAME_LENGTH}
+        autoComplete="family-name"
         onChange={(last_name) => {
           setJobSeeker((jobSeeker) => ({
             ...jobSeeker,
@@ -43,4 +45,4 @@ const JobSeekerOverviewEdit = <T extends ToUpdate | ToInsert>({
   );
 };
 
-export default JobSeekerOverviewEdit;
+export default ProfileEdit;
