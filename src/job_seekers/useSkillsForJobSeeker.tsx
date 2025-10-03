@@ -1,15 +1,10 @@
-import {
-  keepPreviousData,
-  useQuery,
-  type QueryObserverResult
-} from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../db/supabase';
 import type { Skill } from '../types';
 
 export type Skills = {
   skills: Array<Skill> | undefined;
-  count: number | undefined;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
@@ -27,21 +22,19 @@ const useSkillsForJobSeeker = (jobSeekerId: number): Skills => {
     error,
     refetch
   } = useQuery({
-    queryKey: ['jobs', queryKey],
+    queryKey: ['job_seeker_skills', queryKey],
     queryFn: async () => {
-      const { error, data, count } = await supabase
+      const { error, data } = await supabase
         .from('job_seeker_skills')
-        .select('skills(*)', { count: 'exact' })
+        .select('*, skills(*)')
         .filter('job_seeker_id', 'eq', jobSeekerId);
       // console.log(data);
       if (error) {
         console.log(error);
       }
-      return { error, data, count };
-    },
-    placeholderData: keepPreviousData
+      return { error, data };
+    }
   });
-  console.log(skillsData);
 
   const skills: Array<Skill> | undefined = useMemo(() => {
     return skillsData?.data?.map((skillData) => skillData.skills);
@@ -49,7 +42,6 @@ const useSkillsForJobSeeker = (jobSeekerId: number): Skills => {
 
   return {
     skills,
-    count: skillsData?.count ?? undefined,
     error: error ?? undefined,
     refetch
   };

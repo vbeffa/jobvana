@@ -6,7 +6,6 @@ import ResourcesContainer from '../containers/ResourcesContainer';
 import SummaryCardsContainer from '../containers/SummaryCardsContainer';
 import { JobSeekerContext } from '../Context';
 import ProfileSkills from '../job_seekers/JobSeekerSkills';
-import useSkillsForJobSeeker from '../job_seekers/useSkillsForJobSeeker';
 import SummaryCard from '../SummaryCard';
 import ChangePassword from './ChangePassword';
 import Profile from './Profile';
@@ -15,8 +14,6 @@ const Account = () => {
   const [card, setCard] = useState('skills');
   const { jobSeeker } = useContext(JobSeekerContext);
   const userType = getUserType();
-  const { count } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
-  console.log(count);
 
   return (
     <div className="mx-4">
@@ -47,7 +44,7 @@ const Account = () => {
                   selected={card === 'skills'}
                   onClick={() => setCard('skills')}
                   title="Skills"
-                  text={`${count ? 'Update' : 'Add'} your skills`}
+                  text="Select your skills"
                   borderBottom={true}
                 />
               </>
