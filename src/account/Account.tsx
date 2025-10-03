@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { FaTools } from 'react-icons/fa';
 import { FaFile, FaLock, FaPerson } from 'react-icons/fa6';
-import { getUserType } from '../auth/utils';
 import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
@@ -15,11 +14,10 @@ import ChangePassword from './ChangePassword';
 import Profile from './Profile';
 
 const Account = () => {
-  const [card, setCard] = useState<'account' | 'profile' | 'skills' | 'resume'>(
-    'resume'
-  );
+  const [card, setCard] = useState<
+    'account' | 'profile' | 'skills' | 'resumes'
+  >('resumes');
   const { jobSeeker } = useContext(JobSeekerContext);
-  const userType = getUserType();
   const { count: skillsCount } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
 
   return (
@@ -28,36 +26,21 @@ const Account = () => {
       <ResourcesContainer hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer>
-            <SummaryCard
-              key={1}
-              selected={card === 'account'}
-              onClick={() => setCard('account')}
-              title={
-                <div className="flex flex-row gap-1">
-                  <div className="content-center">
-                    <FaLock />
-                  </div>
-                  Security
-                </div>
-              }
-              text="Change your password"
-              borderBottom={true}
-            />
-            {userType === 'job_seeker' ? (
+            {jobSeeker ? (
               <>
                 <SummaryCard
-                  key={2}
-                  selected={card === 'profile'}
-                  onClick={() => setCard('profile')}
+                  key={4}
+                  selected={card === 'resumes'}
+                  onClick={() => setCard('resumes')}
                   title={
                     <div className="flex flex-row gap-1">
                       <div className="content-center">
-                        <FaPerson />
+                        <FaFile />
                       </div>
-                      Profile
+                      Resumes
                     </div>
                   }
-                  text="Update your name"
+                  text="Manage your resumes"
                   borderBottom={true}
                 />
                 <SummaryCard
@@ -80,24 +63,39 @@ const Account = () => {
                   borderBottom={true}
                 />
                 <SummaryCard
-                  key={4}
-                  selected={card === 'resume'}
-                  onClick={() => setCard('resume')}
+                  key={2}
+                  selected={card === 'profile'}
+                  onClick={() => setCard('profile')}
                   title={
                     <div className="flex flex-row gap-1">
                       <div className="content-center">
-                        <FaFile />
+                        <FaPerson />
                       </div>
-                      Resume
+                      Profile
                     </div>
                   }
-                  text="Upload your resume"
+                  text={`${jobSeeker.first_name} ${jobSeeker.last_name}`}
                   borderBottom={true}
                 />
               </>
             ) : (
               <></>
             )}
+            <SummaryCard
+              key={1}
+              selected={card === 'account'}
+              onClick={() => setCard('account')}
+              title={
+                <div className="flex flex-row gap-1">
+                  <div className="content-center">
+                    <FaLock />
+                  </div>
+                  Security
+                </div>
+              }
+              text="Change your password"
+              borderBottom={true}
+            />
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
@@ -109,7 +107,7 @@ const Account = () => {
             {card === 'skills' && jobSeeker && (
               <ProfileSkills jobSeeker={jobSeeker} />
             )}
-            {card === 'resume' && jobSeeker && (
+            {card === 'resumes' && jobSeeker && (
               <Resumes jobSeeker={jobSeeker} />
             )}
           </>
