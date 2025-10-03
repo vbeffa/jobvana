@@ -5,6 +5,7 @@ import type { Skill } from '../types';
 
 export type Skills = {
   skills: Array<Skill> | undefined;
+  count: number | undefined;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
@@ -24,15 +25,15 @@ const useSkillsForJobSeeker = (jobSeekerId: number): Skills => {
   } = useQuery({
     queryKey: ['job_seeker_skills', queryKey],
     queryFn: async () => {
-      const { error, data } = await supabase
+      const { error, data, count } = await supabase
         .from('job_seeker_skills')
-        .select('*, skills(*)')
+        .select('*, skills(*)', { count: 'exact' })
         .filter('job_seeker_id', 'eq', jobSeekerId);
       // console.log(data);
       if (error) {
         console.log(error);
       }
-      return { error, data };
+      return { error, data, count };
     }
   });
 
@@ -42,6 +43,7 @@ const useSkillsForJobSeeker = (jobSeekerId: number): Skills => {
 
   return {
     skills,
+    count: skillsData?.count ?? undefined,
     error: error ?? undefined,
     refetch
   };
