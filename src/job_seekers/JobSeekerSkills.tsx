@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { JobSeeker } from '../Context';
 import Button from '../controls/Button';
 import supabase from '../db/supabase';
 import SkillsSelect from '../jobs/SkillsSelect';
 import JobvanaError from '../JobvanaError';
-import { type JobSeeker } from '../types';
 import useSkillsForJobSeeker from './useSkillsForJobSeeker';
 
 export type JobSeekerSkillsProps = {

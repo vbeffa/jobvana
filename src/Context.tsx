@@ -3,11 +3,12 @@ import { type SearchFilters as CompanySearchFilters } from './companies/job_seek
 import { INITIAL_SEARCH_FILTERS as INITIAL_COMPANY_SEARCH_FILTERS } from './companies/utils';
 import { type SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
 import { INITIAL_SEARCH_FILTERS as INITIAL_JOB_SEARCH_FILTERS } from './jobs/utils';
-import type { Company as DbCompany, JobSeeker } from './types';
+import type { Company as DbCompany, JobSeeker as DbJobSeeker } from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
 export type Company = Omit<DbCompany, 'created_at'>;
+export type JobSeeker = Omit<DbJobSeeker, 'created_at'>;
 
 export type CompanyContextProps = {
   company?: Company | null;

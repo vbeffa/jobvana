@@ -9,12 +9,12 @@ import {
   JobSeekerContext,
   JobvanaContext,
   type Company,
+  type JobSeeker,
   type JobSeekerContextProps
 } from './Context';
 import supabase from './db/supabase';
 import Header from './Header';
 import { findJobSeeker } from './job_seekers/utils';
-import { type JobSeeker } from './types';
 
 const Root = () => {
   const [currPage, setCurrPage] = useState('home');

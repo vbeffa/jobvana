@@ -315,6 +315,7 @@ export type Database = {
           first_name: string
           id: number
           last_name: string
+          resume_id: string | null
           user_id: string | null
         }
         Insert: {
@@ -322,6 +323,7 @@ export type Database = {
           first_name: string
           id?: number
           last_name: string
+          resume_id?: string | null
           user_id?: string | null
         }
         Update: {
@@ -329,6 +331,7 @@ export type Database = {
           first_name?: string
           id?: number
           last_name?: string
+          resume_id?: string | null
           user_id?: string | null
         }
         Relationships: []

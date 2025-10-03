@@ -1,12 +1,11 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { JobSeekerContext } from '../Context';
+import { JobSeekerContext, type JobSeeker } from '../Context';
 import Button from '../controls/Button';
 import supabase from '../db/supabase';
 import ProfileEdit from '../job_seekers/ProfileEdit';
 import { isValidJobSeeker, type ToUpdate } from '../job_seekers/utils';
 import JobvanaError from '../JobvanaError';
-import type { JobSeeker } from '../types';
 
 const Profile = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
   const { setJobSeeker } = useContext(JobSeekerContext);
