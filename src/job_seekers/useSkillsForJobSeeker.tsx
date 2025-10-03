@@ -13,7 +13,7 @@ export type Skills = {
 const useSkillsForJobSeeker = (jobSeekerId: number): Skills => {
   const queryKey = useMemo(
     () => ({
-      companyId: jobSeekerId
+      jobSeekerId
     }),
     [jobSeekerId]
   );
