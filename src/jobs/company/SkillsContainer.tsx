@@ -28,6 +28,7 @@ const SkillsContainer = ({
               <PillContainer
                 type="check"
                 checked={selectedSkillIds.includes(skill.id)}
+                tooltipMessage={skill.abbreviation ? skill.name : undefined}
                 onAdd={() => {
                   const updatedSkillIds = _.cloneDeep(selectedSkillIds);
                   updatedSkillIds.push(skill.id);
