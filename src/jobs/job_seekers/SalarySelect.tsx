@@ -22,6 +22,12 @@ const SalarySelect = ({
   const step = useMemo(() => (type === 'annual' ? 10000 : 5), [type]);
   const salaries = useMemo(() => _.range(min, max + 1, step), [max, min, step]);
 
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  });
+
   return (
     <Select
       id={id}
@@ -31,11 +37,7 @@ const SalarySelect = ({
     >
       {salaries.map((salary, idx) => (
         <option key={idx} value={salary}>
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            maximumFractionDigits: 0
-          }).format(salary)}
+          {formatter.format(salary)}
         </option>
       ))}
     </Select>
