@@ -32,6 +32,15 @@ const NumberInput = ({
     [max, min, value]
   );
 
+  const validRangeMessage = useMemo(() => {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: showCurrency ? 'currency' : showPercent ? 'percent' : 'decimal',
+      currency: showCurrency ? 'USD' : undefined,
+      maximumFractionDigits: 0
+    });
+    return `Valid range is ${formatter.format(showPercent ? min / 100 : min)} - ${formatter.format(showPercent ? max / 100 : max)}`;
+  }, [max, min, showCurrency, showPercent]);
+
   return (
     <>
       {label && (
@@ -83,9 +92,7 @@ const NumberInput = ({
           </div>
         )}
         {outOfRange && (
-          <Tooltip
-            message={`Valid range is ${showCurrency ? '$' : ''}${min} - ${showCurrency ? '$' : ''}${max}`}
-          >
+          <Tooltip message={validRangeMessage}>
             <FaTriangleExclamation />
           </Tooltip>
         )}
