@@ -51,9 +51,13 @@ const SkillsSelect = ({
       <div className={`${width} h-fit`}>
         <TextInput
           id="skills_filter"
-          height="h-6"
+          value={filter}
+          size="sm"
+          width="w-full max-w-84"
           placeholder="Search for skill"
           onChange={setFilter}
+          showClear={true}
+          onClear={() => setFilter('')}
         />
         <SkillsContainer
           skills={filteredSkills}

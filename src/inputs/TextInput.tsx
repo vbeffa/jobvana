@@ -11,7 +11,7 @@ export type TextInputProps = {
   maxLength?: number;
   placeholder?: string;
   disabled?: boolean;
-  height?: string;
+  size?: 'sm' | 'reg';
   autoComplete?: HTMLInputAutoCompleteAttribute;
   showLength?: boolean;
   showClear?: boolean;
@@ -31,7 +31,7 @@ const TextInput = ({
   maxLength,
   placeholder,
   disabled,
-  height,
+  size = 'reg',
   autoComplete,
   showLength = true,
   showClear,
@@ -47,7 +47,7 @@ const TextInput = ({
           {label}:
         </label>
       )}
-      <div className="relative">
+      <div className={`relative ${width}`}>
         <input
           id={id}
           type={type}
@@ -57,7 +57,7 @@ const TextInput = ({
           placeholder={placeholder}
           disabled={disabled}
           autoComplete={autoComplete}
-          className={`p-1 ${width ? width : ''} ${
+          className={`p-1 ${width} ${
             maxLength && showEye
               ? 'pr-18'
               : maxLength
@@ -65,7 +65,7 @@ const TextInput = ({
                 : showEye
                   ? 'pr-7'
                   : ''
-          } border-[0.5px] border-gray-500 ${height || ''}`}
+          } border-[0.5px] border-gray-500 ${size === 'sm' && 'h-6'}`}
           onChange={(e) => onChange(e.target.value)}
         />
         {showLength && maxLength && value !== undefined && (
@@ -77,7 +77,7 @@ const TextInput = ({
         )}
         {showClear && onClear && (
           <div
-            className="absolute right-[0.45rem] top-[0.525rem] text-gray-400 cursor-pointer"
+            className={`absolute right-[0.45rem] ${size === 'sm' ? 'text-sm top-[0.3rem]' : 'top-[0.525rem]'} text-gray-400 cursor-pointer`}
             onClick={() => {
               onClear();
               document.getElementById(id)?.focus();
