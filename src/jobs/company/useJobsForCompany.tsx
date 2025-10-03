@@ -33,7 +33,7 @@ const useJobsForCompany = (companyId: number): Jobs => {
   } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
-      const { error, data, count } = await supabase
+      const { error, data } = await supabase
         .from('jobs')
         .select('*, job_roles(*), job_skills(*)')
         .filter('company_id', 'eq', companyId);
@@ -41,7 +41,7 @@ const useJobsForCompany = (companyId: number): Jobs => {
       if (error) {
         console.log(error);
       }
-      return { error, data, count };
+      return { error, data };
     },
     placeholderData: keepPreviousData
   });

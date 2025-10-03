@@ -64,9 +64,7 @@ const useJobsForSkill = (
         .from('jobs')
         .select(
           '*, companies!jobs_company_id_fkey!inner(*), job_roles(*), skills(*), applications(*)',
-          {
-            count: 'exact'
-          }
+          { count: 'exact' }
         )
         .filter('status', 'eq', 'open');
 

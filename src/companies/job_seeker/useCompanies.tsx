@@ -59,9 +59,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
           `id, name,
           company_addresses(type, city, state),
           industries!inner(name)`,
-          {
-            count: 'exact'
-          }
+          { count: 'exact' }
         )
         .filter('company_addresses.type', 'eq', 'headquarters');
       const { filters } = params;
