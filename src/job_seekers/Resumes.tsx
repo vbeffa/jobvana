@@ -1,5 +1,5 @@
 import { StorageError } from '@supabase/storage-js';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { FaDownload, FaTrash } from 'react-icons/fa6';
 import type { JobSeeker } from '../Context';
 import Button from '../controls/Button';
@@ -12,32 +12,58 @@ export type ResumeProps = {
 };
 
 const Resumes = ({ jobSeeker }: ResumeProps) => {
-  const { resumes, isPending, download, deleteResume, error, refetch } =
+  const { resumes, isPending, upload, download, deleteResume, error, refetch } =
     useResumes(jobSeeker.user_id);
+
+  const ref = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+
   const [deleteError, setDeleteError] = useState<StorageError>();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const doDelete = useCallback(
-    async (name: string) => {
-      if (!confirm('Are you sure you want to delete this resume?')) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const doUpload = useCallback(async () => {
+    if (!file) {
+      return;
+    }
+    let replace = false;
+    if (resumes?.find((resume) => resume.name.localeCompare(file.name) === 0)) {
+      if (!confirm(`Resume ${file.name} already exists. Replace?`)) {
         return;
       }
-      const { data, error } = await deleteResume(name);
+      replace = true;
+    }
+    console.log(file.name);
+    setIsUploading(true);
+    setDeleteError(undefined);
+    try {
+      const { data, error } = await upload(file, replace);
       if (error) {
         setDeleteError(error);
-      } else if (data?.length) {
-        alert(`Deleted ${data[0].name}`);
-        await refetch();
       } else {
-        setDeleteError(new StorageError('Could not delete resume'));
+        console.log(data);
+        alert(`Uploaded ${file.name}`);
+        await refetch();
       }
-    },
-    [deleteResume, refetch]
-  );
+    } finally {
+      if (ref.current) {
+        ref.current.value = '';
+      }
+      setIsUploading(false);
+      setFile(null);
+    }
+  }, [file, refetch, resumes, upload]);
 
   const doDownload = useCallback(
     async (name: string) => {
       setIsDownloading(true);
+      setDeleteError(undefined);
       try {
         const { data, error } = await download(name);
         if (error) {
@@ -58,6 +84,26 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
     [download]
   );
 
+  const doDelete = useCallback(
+    async (name: string) => {
+      if (!confirm(`Are you sure you want to delete ${name}?`)) {
+        return;
+      }
+      setDeleteError(undefined);
+      const { data, error } = await deleteResume(name);
+      if (error) {
+        setDeleteError(error);
+      } else if (data?.length) {
+        alert(`Deleted ${data[0].name}`);
+        await refetch();
+      } else {
+        setDeleteError(new StorageError('Could not delete resume'));
+      }
+    },
+    [deleteResume, refetch]
+  );
+
+  // console.log(file);
   // console.log(resumes);
 
   return (
@@ -65,7 +111,6 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       {isPending && <LoadingModal />}
       <div className="flex justify-between">
         <div className="content-center">Your resumes:</div>
-        <Button label="Add" onClick={() => {}} />
       </div>
       <table>
         <thead>
@@ -102,9 +147,21 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
             ))}
         </tbody>
       </table>
+      <div className="flex flex-row gap-2">
+        <input
+          id="file_input"
+          type="file"
+          ref={ref}
+          accept="application/pdf"
+          className="pl-1 text-sm border-[0.5px] border-blue-400 content-center"
+          onChange={handleFileChange}
+        />
+        <Button label="Upload" disabled={file === null} onClick={doUpload} />
+      </div>
       <div className="text-center col-span-2">
         {error && <JobvanaError error={error} />}
         {isDownloading && <>Downloading...</>}
+        {isUploading && <>Uploading...</>}
         {deleteError && <JobvanaError error={deleteError} />}
       </div>
     </div>

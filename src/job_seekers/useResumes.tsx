@@ -1,4 +1,5 @@
 import type { FileObject, StorageError } from '@supabase/storage-js';
+import type StorageFileApi from '@supabase/storage-js/dist/module/packages/StorageFileApi';
 import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import supabase from '../db/supabase';
@@ -6,6 +7,10 @@ import supabase from '../db/supabase';
 export type Resumes = {
   resumes: Array<FileObject> | undefined;
   isPending: boolean;
+  upload: (
+    file: File,
+    replace?: boolean
+  ) => ReturnType<StorageFileApi['upload']>;
   download: (name: string) => Promise<{
     data: Blob | null;
     error: StorageError | null;
@@ -48,6 +53,23 @@ const useResumes = (userId: string | null): Resumes => {
     }
   });
 
+  const upload = useCallback(
+    async (file: File, replace?: boolean) => {
+      const result = replace
+        ? await supabase.storage
+            .from('resumes')
+            .update(`${userId}/${file.name}`, file)
+        : await supabase.storage
+            .from('resumes')
+            .upload(`${userId}/${file.name}`, file);
+      if (result.error) {
+        console.log(result.error);
+      }
+      return result;
+    },
+    [userId]
+  );
+
   const download = useCallback(
     async (name: string) => {
       const { data, error } = await supabase.storage
@@ -81,6 +103,7 @@ const useResumes = (userId: string | null): Resumes => {
   return {
     resumes,
     isPending,
+    upload,
     download,
     deleteResume,
     error: error ?? undefined,
