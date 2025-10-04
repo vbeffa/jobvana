@@ -7,6 +7,7 @@ export type Roles = {
   roles: Array<Role> | undefined;
   isPending: boolean;
   error?: Error;
+  findRole: (roleId: number) => Role | undefined;
 };
 
 // roles are few - no paging needed
@@ -34,7 +35,8 @@ const useRoles = (): Roles => {
   return {
     roles,
     isPending,
-    error: error ?? undefined
+    error: error ?? undefined,
+    findRole: (roleId: number) => roles?.find((role) => role.id === roleId)
   };
 };
 

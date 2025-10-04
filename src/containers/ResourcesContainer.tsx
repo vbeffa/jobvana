@@ -21,15 +21,15 @@ const ResourcesContainer = ({
   // }, [hasFilters, hasTitle]);
 
   const height = hasFilters
-    ? 'h-[calc(100dvh-243px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX
+    ? 'h-[calc(100dvh-173px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX = 80 + 16 + 77
     : hasTitle
-      ? 'h-[calc(100dvh-168px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + TITLE_TOTAL_HEIGHT_PX
-      : 'h-[calc(100dvh-96px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX
+      ? 'h-[calc(100dvh-168px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + TITLE_TOTAL_HEIGHT_PX = 80 + 16 + 72
+      : 'h-[calc(100dvh-96px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX = 80 + 16
 
   return (
     <div className="flex justify-center">
       <div
-        className={`border-[0.5px] border-blue-300 ${height} rounded-lg overflow-hidden w-full flex flex-row`}
+        className={`border-[0.5px] border-blue-300 ${height} rounded-lg overflow-hidden w-[1400px] flex flex-row`}
       >
         {children}
       </div>

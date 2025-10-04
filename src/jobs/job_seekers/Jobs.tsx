@@ -12,6 +12,7 @@ import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.jobs.index';
 import SummaryCard from '../../SummaryCard';
 import { INITIAL_SEARCH_FILTERS } from '../utils';
+import ActiveFilters from './ActiveFilters';
 import JobDetails from './JobDetails';
 import JobFilters from './JobFilters';
 import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
@@ -24,27 +25,28 @@ const Jobs = () => {
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [showFilters, setShowFilters] = useState(false);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  const [debouncedCompany] = useDebounce(
-    searchFilters.company,
-    searchFilters.company ? 500 : 0
-  );
-  const [debouncedTitle] = useDebounce(
-    searchFilters.title,
-    searchFilters.title ? 500 : 0
-  );
+  // const [debouncedCompany] = useDebounce(
+  //   searchFilters.company,
+  //   searchFilters.company ? 500 : 0
+  // );
+  // const [debouncedTitle] = useDebounce(
+  //   searchFilters.title,
+  //   searchFilters.title ? 500 : 0
+  // );
   const [jobId, setJobId] = useState<number | null>(null);
 
-  const filters: SearchFilters = useMemo(
-    () => ({
-      ...searchFilters,
-      company: debouncedCompany,
-      title: debouncedTitle
-    }),
-    [debouncedCompany, debouncedTitle, searchFilters]
-  );
+  // const filters: SearchFilters = useMemo(
+  //   () => ({
+  //     ...searchFilters,
+  //     company: debouncedCompany,
+  //     title: debouncedTitle
+  //   }),
+  //   [debouncedCompany, debouncedTitle, searchFilters]
+  // );
 
   const paging: JobsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -53,7 +55,11 @@ const Jobs = () => {
 
   const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
     paging,
-    filters
+    filters: {
+      ...searchFilters
+      // company: debouncedCompany,
+      // title: debouncedTitle
+    }
   });
 
   useEffect(() => {
@@ -81,35 +87,44 @@ const Jobs = () => {
       search: {
         page: debouncedPage,
         job_id: jobId ?? undefined,
-        company: debouncedCompany || undefined,
-        job_type: filters.jobType || undefined,
-        title: debouncedTitle || undefined,
-        role_id: filters.roleId,
-        min_salary: filters.minSalary,
-        max_salary: filters.maxSalary,
-        skill_ids: `[${filters.skillIds?.toString()}]`,
-        created: filters.created
+        company: searchFilters.company || undefined,
+        job_type: searchFilters.jobType || undefined,
+        title: searchFilters.title || undefined,
+        role_id: searchFilters.roleId,
+        min_salary: searchFilters.minSalary,
+        max_salary: searchFilters.maxSalary,
+        skill_ids: `[${searchFilters.skillIds?.toString()}]`,
+        created: searchFilters.created
       }
     });
   }, [
-    debouncedCompany,
     debouncedPage,
-    debouncedTitle,
-    filters.created,
-    filters.jobType,
-    filters.maxSalary,
-    filters.minSalary,
-    filters.roleId,
-    filters.skillIds,
     jobId,
-    navigate
+    navigate,
+    searchFilters.company,
+    searchFilters.created,
+    searchFilters.jobType,
+    searchFilters.maxSalary,
+    searchFilters.minSalary,
+    searchFilters.roleId,
+    searchFilters.skillIds,
+    searchFilters.title
   ]);
 
   return (
     <div className="mx-4">
       {error && <JobvanaError error={error} />}
       <FiltersContainer
+        activeFilters={
+          <ActiveFilters
+            filters={searchFilters}
+            setFilters={setSearchFilters}
+          />
+        }
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
         reset={() => {
+          console.log('reset');
           setPage(1);
           setJobId(null);
           setSearchFilters(INITIAL_SEARCH_FILTERS);
@@ -120,10 +135,11 @@ const Jobs = () => {
             jobId: undefined
           });
         }}
-        resetDisabled={_.isEqual(filters, INITIAL_SEARCH_FILTERS)}
+        resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
       >
         <JobFilters
           filters={searchFilters}
+          setShowFilters={setShowFilters}
           onChange={(filters) => {
             setPage(1);
             setJobId(null);

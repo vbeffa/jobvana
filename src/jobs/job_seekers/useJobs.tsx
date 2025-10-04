@@ -30,7 +30,7 @@ export type SearchFilters = {
   minSalary: number;
   maxSalary: number;
   skillIds?: Array<number>;
-  created?: CreatedRange;
+  created: CreatedRange;
 };
 
 export type JobSummary = {
@@ -110,7 +110,7 @@ const useJobs = (params: JobsParams): Jobs => {
       if (filters.skillIds && filters.skillIds.length > 0) {
         q = q.in('job_skills.skill_id', filters.skillIds);
       }
-      if (filters.created && filters.created !== 'all') {
+      if (filters.created !== 'all') {
         const createdAfter = (() => {
           switch (filters.created) {
             case 'today':

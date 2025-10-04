@@ -1,5 +1,8 @@
+import _ from 'lodash';
+import { useMemo, useState } from 'react';
 import IndustrySelect from '../../companies/IndustrySelect';
 import CompanySizeFilters from '../../companies/job_seeker/CompanySizeFilters';
+import Button from '../../controls/Button';
 import Filter from '../../inputs/Filter';
 import Label from '../../inputs/Label';
 import JobTypeSelect from '../company/JobTypeSelect';
@@ -13,166 +16,183 @@ import type { SearchFilters } from './useJobs';
 
 const JobFilters = ({
   filters,
+  setShowFilters,
   onChange
 }: {
   filters: SearchFilters;
+  setShowFilters: (showFilters: boolean) => void;
   onChange: (filters: SearchFilters) => void;
 }) => {
+  const [newFilters, setNewFilters] = useState<SearchFilters>(filters);
+
+  const isDirty = useMemo(
+    () => !_.isEqual(filters, newFilters),
+    [filters, newFilters]
+  );
+
   return (
-    <div className="p-2 w-full">
-      <div className="flex flex-row gap-x-4">
-        <div className="grid grid-cols-[37%_63%] w-86 gap-y-2">
+    <div className="absolute border-[0.5px] border-blue-400 rounded-lg w-[80%] h-[600px] top-[148px] bg-white px-2 z-10">
+      <div className="px-2 py-4 w-full flex flex-row gap-x-4">
+        <div className="grid grid-cols-[37%_63%] w-[500px] gap-y-2">
           <Label htmlFor="company_filter" label="Company Name" />
           <Filter
             id="company_filter"
             width="w-54"
             placeholder="Filter by company"
-            value={filters.company}
+            value={newFilters.company}
             onChange={(company) => {
-              onChange({ ...filters, company });
+              setNewFilters({ ...newFilters, company });
             }}
-            onClear={() => onChange({ ...filters, company: '' })}
+            onClear={() => setNewFilters({ ...newFilters, company: '' })}
           />
           <Label htmlFor="min_size" label="Company Size" />
           <CompanySizeFilters
-            low={filters.minSize}
-            high={filters.maxSize}
+            low={newFilters.minSize}
+            high={newFilters.maxSize}
             width="w-24"
             onChangeLow={(size) => {
               if (!size) {
                 return;
               }
-              onChange({
-                ...filters,
+              setNewFilters({
+                ...newFilters,
                 minSize: size,
-                maxSize: size > filters.maxSize ? size : filters.maxSize
+                maxSize: size > newFilters.maxSize ? size : newFilters.maxSize
               });
             }}
             onChangeHigh={(size) => {
               if (!size) {
                 return;
               }
-              onChange({
-                ...filters,
+              setNewFilters({
+                ...newFilters,
                 maxSize: size,
-                minSize: size < filters.minSize ? size : filters.minSize
+                minSize: size < newFilters.minSize ? size : newFilters.minSize
               });
             }}
           />
           <Label htmlFor="industry" label="Industry" />
           <IndustrySelect
-            industryId={filters.industryId}
+            industryId={newFilters.industryId}
             width="w-54"
             showAny={true}
             onChange={(industryId) => {
-              onChange({ ...filters, industryId });
+              setNewFilters({ ...newFilters, industryId });
             }}
           />
-        </div>
-        <div className="grid grid-cols-[29%_71%] w-68 gap-y-2">
           <Label htmlFor="job_title_filter" label="Job Title" />
           <Filter
             id="job_title_filter"
-            width="w-48"
-            placeholder="Filter by job title"
-            value={filters.title}
+            width="w-54"
+            placeholder="Enter keywords"
+            value={newFilters.title}
             onChange={(title) => {
-              onChange({ ...filters, title });
+              setNewFilters({ ...newFilters, title });
             }}
-            onClear={() => onChange({ ...filters, title: '' })}
+            onClear={() => setNewFilters({ ...newFilters, title: '' })}
           />
           <Label htmlFor="role" label="Role" />
           <RoleSelect
             id="role"
-            roleId={filters.roleId}
-            width="w-48"
+            roleId={newFilters.roleId}
+            width="w-54"
             onChange={(roleId) => {
               if (!roleId) {
-                onChange({ ...filters, roleId: undefined });
+                setNewFilters({ ...newFilters, roleId: undefined });
               } else {
-                onChange({ ...filters, roleId });
+                setNewFilters({ ...newFilters, roleId });
               }
             }}
           />
           <Label htmlFor="job_type" label="Job Type" />
           <JobTypeSelect
-            value={filters.jobType}
-            width="w-48"
+            value={newFilters.jobType}
+            width="w-54"
             showAny={true}
             onChange={(jobType) => {
-              onChange({ ...filters, jobType });
+              setNewFilters({ ...newFilters, jobType });
             }}
           />
-        </div>
-        <div className="grid grid-cols-[30%_70%] w-fit gap-y-2">
           <Label htmlFor="salary_type" label="Salary Type" />
           <SalaryTypeSelect
-            value={filters.salaryType}
-            width="w-28"
+            value={newFilters.salaryType}
+            width="w-24"
             onChange={(salaryType) => {
-              const newFilters = {
-                ...filters,
+              const updatedFilters = {
+                ...newFilters,
                 salaryType,
                 minSalary: minJobSalary(salaryType),
                 maxSalary: maxJobSalary(salaryType)
               };
-              onChange(newFilters);
+              setNewFilters(updatedFilters);
             }}
           />
           <Label htmlFor="min_salary" label="Salary Range" />
           <SalaryRangeSelect
-            type={filters.salaryType}
-            low={filters.minSalary}
-            high={filters.maxSalary}
+            type={newFilters.salaryType}
+            low={newFilters.minSalary}
+            high={newFilters.maxSalary}
             width="w-29"
             onChangeLow={(minSalary) => {
-              const newFilters = {
-                ...filters,
+              const updatedFilters = {
+                ...newFilters,
                 minSalary,
                 maxSalary:
-                  filters.maxSalary && minSalary > filters.maxSalary
+                  newFilters.maxSalary && minSalary > newFilters.maxSalary
                     ? minSalary
-                    : filters.maxSalary
+                    : newFilters.maxSalary
               };
-              onChange(newFilters);
+              setNewFilters(updatedFilters);
             }}
             onChangeHigh={(maxSalary) => {
-              const newFilters = {
-                ...filters,
+              const updatedFilters = {
+                ...newFilters,
                 maxSalary,
                 minSalary:
-                  filters.minSalary && maxSalary < filters.minSalary
+                  newFilters.minSalary && maxSalary < newFilters.minSalary
                     ? maxSalary
-                    : filters.minSalary
+                    : newFilters.minSalary
               };
-              onChange(newFilters);
+              setNewFilters(updatedFilters);
             }}
           />
           <Label htmlFor="created" label="Posted" />
           <CreatedSelect
             id="created"
-            value={filters.created}
+            value={newFilters.created}
             width="w-28"
             onChange={(created) => {
-              if (created === 'all') {
-                onChange({ ...filters, created: undefined });
-              } else {
-                onChange({ ...filters, created });
-              }
+              setNewFilters({ ...newFilters, created });
             }}
           />
         </div>
-        <div className="grid grid-cols-1 w-84 gap-y-2">
+        <div className="grid grid-cols-1 w-full gap-y-2">
           <SkillsSelect
-            selectedSkillIds={filters.skillIds ?? []}
+            selectedSkillIds={newFilters.skillIds ?? []}
             width="w-full"
-            outerHeight="h-22.5"
-            innerHeight="max-h-21.5"
+            outerHeight="h-68.5"
+            innerHeight="max-h-67.5"
             onChange={(skillIds) => {
-              onChange({ ...filters, skillIds: skillIds });
+              setNewFilters({ ...newFilters, skillIds: skillIds });
             }}
           />
         </div>
+      </div>
+      <div className="absolute bottom-4 right-4 flex flex-row gap-2">
+        <Button
+          label="Cancel"
+          onClick={() => {
+            setShowFilters(false);
+          }}
+        />
+        <Button
+          label="Apply"
+          disabled={!isDirty}
+          onClick={() => {
+            onChange(newFilters);
+            setShowFilters(false);
+          }}
+        />
       </div>
     </div>
   );

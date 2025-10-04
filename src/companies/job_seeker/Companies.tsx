@@ -12,6 +12,7 @@ import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.companies.index';
 import SummaryCard from '../../SummaryCard';
 import { INITIAL_SEARCH_FILTERS } from '../utils';
+import ActiveFilters from './ActiveFilters';
 import CompanyDetails from './CompanyDetails';
 import CompanyFilters from './CompanyFilters';
 import useCompanies, {
@@ -27,26 +28,27 @@ const Companies = () => {
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [showFilters, setShowFilters] = useState(false);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  const [debouncedName] = useDebounce(
-    searchFilters.name,
-    searchFilters.name ? 500 : 0
-  );
-  const [debouncedMinSize] = useDebounce(searchFilters.minSize, 500);
-  const [debouncedMaxSize] = useDebounce(searchFilters.maxSize, 500);
+  // const [debouncedName] = useDebounce(
+  //   searchFilters.name,
+  //   searchFilters.name ? 500 : 0
+  // );
+  // const [debouncedMinSize] = useDebounce(searchFilters.minSize, 500);
+  // const [debouncedMaxSize] = useDebounce(searchFilters.maxSize, 500);
   const [companyId, setCompanyId] = useState<number | null>(null);
 
-  const filters: SearchFilters = useMemo(
-    () => ({
-      ...searchFilters,
-      name: debouncedName,
-      minSize: debouncedMinSize,
-      maxSize: debouncedMaxSize
-    }),
-    [debouncedMaxSize, debouncedMinSize, debouncedName, searchFilters]
-  );
+  // const filters: SearchFilters = useMemo(
+  //   () => ({
+  //     ...searchFilters,
+  //     name: debouncedName,
+  //     minSize: debouncedMinSize,
+  //     maxSize: debouncedMaxSize
+  //   }),
+  //   [debouncedMaxSize, debouncedMinSize, debouncedName, searchFilters]
+  // );
 
   const paging: CompaniesParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -54,7 +56,7 @@ const Companies = () => {
   );
 
   const { companies, error, isPending, isPlaceholderData, companyCount } =
-    useCompanies({ paging, filters });
+    useCompanies({ paging, filters: searchFilters });
 
   useEffect(() => {
     setPage(context.page);
@@ -62,14 +64,8 @@ const Companies = () => {
 
   useEffect(() => {
     setSearchFilters({
-      ..._.pick(context, [
-        'minSize',
-        'maxSize',
-        'minRounds',
-        'maxRounds',
-        'industryId'
-      ]),
-      name: context.name ?? ''
+      ..._.omit(context, ['page', 'companyId'])
+      // name: context.name ?? ''
     });
   }, [context]);
 
@@ -86,28 +82,34 @@ const Companies = () => {
       search: {
         page: debouncedPage,
         company_id: companyId ?? undefined,
-        name: debouncedName || undefined,
-        industry_id: filters.industryId,
-        min_size: debouncedMinSize,
-        max_size: debouncedMaxSize
+        name: searchFilters.name || undefined,
+        industry_id: searchFilters.industryId,
+        min_size: searchFilters.minSize,
+        max_size: searchFilters.maxSize
       }
     });
   }, [
     companyId,
-    debouncedMaxSize,
-    debouncedMinSize,
-    debouncedName,
     debouncedPage,
-    filters.industryId,
-    filters.maxSize,
-    filters.minSize,
-    navigate
+    navigate,
+    searchFilters.industryId,
+    searchFilters.maxSize,
+    searchFilters.minSize,
+    searchFilters.name
   ]);
 
   return (
     <div className="mx-4">
       {error && <JobvanaError error={error} />}
       <FiltersContainer
+        activeFilters={
+          <ActiveFilters
+            filters={searchFilters}
+            setFilters={setSearchFilters}
+          />
+        }
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
         reset={() => {
           setPage(1);
           setCompanyId(null);
@@ -119,10 +121,11 @@ const Companies = () => {
             companyId: undefined
           });
         }}
-        resetDisabled={_.isEqual(filters, INITIAL_SEARCH_FILTERS)}
+        resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
       >
         <CompanyFilters
           filters={searchFilters}
+          setShowFilters={setShowFilters}
           onChange={(filters) => {
             setPage(1);
             setCompanyId(null);

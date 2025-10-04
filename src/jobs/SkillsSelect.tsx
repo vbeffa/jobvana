@@ -48,13 +48,12 @@ const SkillsSelect = ({
 
   return (
     <>
-      <div className={`${width} h-fit`}>
+      <div className={`${width} h-fit flex flex-col gap-2`}>
         <TextInput
           id="skills_filter"
           value={filter}
-          size="sm"
           width="w-full max-w-84"
-          placeholder="Search for skill"
+          placeholder="Search skills"
           onChange={setFilter}
           showClear={true}
           onClear={() => setFilter('')}

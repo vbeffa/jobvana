@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
-import { FaCheck, FaPlus, FaTrash } from 'react-icons/fa6';
+import { FaCheck, FaPlus, FaTrash, FaX } from 'react-icons/fa6';
 import Tooltip from '../inputs/Tooltip';
 
 const PillContainer = ({
@@ -23,13 +23,13 @@ const PillContainer = ({
 
   return (
     <div
-      className={`relative border-[1px] border-blue-500 ${
+      className={`border-[1px] border-blue-500 ${
         checked ? 'bg-blue-300' : 'bg-blue-200'
       } w-fit flex gap-1 whitespace-nowrap cursor-default`}
     >
       {tooltipMessage && (
         <div className="p-1 relative">
-          <Tooltip message={tooltipMessage} pos="top-[25%] left-[75%]">
+          <Tooltip message={tooltipMessage} pos="top-[75%] left-[50%]">
             {children}
           </Tooltip>
         </div>
@@ -53,6 +53,13 @@ const PillContainer = ({
         <div className={style} onClick={() => (checked ? onDelete() : onAdd())}>
           <div className="hover:text-blue-400">
             {checked ? <FaCheckCircle /> : <FaCheck />}
+          </div>
+        </div>
+      )}
+      {type === undefined && onDelete && onAdd === undefined && (
+        <div className={style} onClick={onDelete}>
+          <div className="hover:text-blue-400">
+            <FaX />
           </div>
         </div>
       )}

@@ -10,33 +10,32 @@ import JobvanaError from '../JobvanaError';
 import PageNav from '../PageNav';
 import SkillDetails from '../skills/SkillDetails';
 import SummaryCard from '../SummaryCard';
+import ActiveFilters from './ActiveFilters';
 import SkillFilters from './SkillFilters';
 import useSkills, { type SearchFilters, type SkillsParams } from './useSkills';
-
-const INITIAL_FILTERS: SearchFilters = {
-  name: '',
-  skillCategoryId: 0
-};
+import { INITIAL_SEARCH_FILTERS } from './utils';
 
 const Skills = () => {
   const [page, setPage] = useState<number>(1);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
-  const [searchFilters, setSearchFilters] =
-    useState<SearchFilters>(INITIAL_FILTERS);
-  const [debouncedName] = useDebounce(
-    searchFilters.name,
-    searchFilters.name ? 500 : 0
+  const [showFilters, setShowFilters] = useState(false);
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>(
+    INITIAL_SEARCH_FILTERS
   );
+  // const [debouncedName] = useDebounce(
+  //   searchFilters.name,
+  //   searchFilters.name ? 500 : 0
+  // );
   const [skillId, setSkillId] = useState<number | null>(null);
 
-  const filters: SearchFilters = useMemo(
-    () => ({
-      ...searchFilters,
-      name: debouncedName
-    }),
-    [debouncedName, searchFilters]
-  );
+  // const filters: SearchFilters = useMemo(
+  //   () => ({
+  //     ...searchFilters,
+  //     name: debouncedName
+  //   }),
+  //   [debouncedName, searchFilters]
+  // );
 
   const paging: SkillsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -44,7 +43,7 @@ const Skills = () => {
   );
 
   const { skills, error, isPending, isPlaceholderData, skillsCount } =
-    useSkills({ paging, filters });
+    useSkills({ paging, filters: searchFilters });
 
   useEffect(() => {
     setSkillId(skills?.[0]?.id ?? null);
@@ -54,15 +53,24 @@ const Skills = () => {
     <div className="mx-4">
       {error && <JobvanaError error={error} />}
       <FiltersContainer
+        activeFilters={
+          <ActiveFilters
+            filters={searchFilters}
+            setFilters={setSearchFilters}
+          />
+        }
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
         reset={() => {
           setPage(1);
           setSkillId(null);
-          setSearchFilters(INITIAL_FILTERS);
+          setSearchFilters(INITIAL_SEARCH_FILTERS);
         }}
-        resetDisabled={_.isEqual(filters, INITIAL_FILTERS)}
+        resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
       >
         <SkillFilters
           filters={searchFilters}
+          setShowFilters={setShowFilters}
           onChange={(filters) => {
             setPage(1);
             setSkillId(null);
