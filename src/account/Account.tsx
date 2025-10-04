@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { FaTools } from 'react-icons/fa';
 import { FaFile, FaLock, FaPerson } from 'react-icons/fa6';
+import { getUserType } from '../auth/utils';
 import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
@@ -17,8 +18,13 @@ const Account = () => {
   const [card, setCard] = useState<
     'account' | 'profile' | 'skills' | 'resumes'
   >('resumes');
+  const userType = getUserType();
   const { jobSeeker } = useContext(JobSeekerContext);
   const { count: skillsCount } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
+
+  if (userType === undefined || (userType === 'job_seeker' && !jobSeeker)) {
+    return null;
+  }
 
   return (
     <div className="mx-4">
