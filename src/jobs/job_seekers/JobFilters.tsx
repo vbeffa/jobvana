@@ -31,7 +31,7 @@ const JobFilters = ({
   );
 
   return (
-    <div className="absolute border-[0.5px] border-blue-400 rounded-lg w-[80%] h-[600px] top-[148px] bg-white px-2 z-10">
+    <div className="absolute border-[0.5px] border-blue-400 rounded-lg w-[80%] h-[600px] left-[10%] top-[156px] bg-white px-2 z-10">
       <div className="px-2 py-4 w-full flex flex-row gap-x-4">
         <div className="grid grid-cols-[37%_63%] w-[500px] gap-y-2">
           <Label htmlFor="company_filter" label="Company Name" />

@@ -7,14 +7,12 @@ export const FILTERS_TOTAL_HEIGHT_PX = 77; // FILTERS_HEIGHT_PX + FILTERS_MARGIN
 
 const FiltersContainer = ({
   activeFilters,
-  children,
   showFilters,
   setShowFilters,
   reset,
   resetDisabled
 }: {
   activeFilters: JSX.Element;
-  children?: JSX.Element;
   showFilters: boolean;
   setShowFilters: (showFilters: boolean) => void;
   reset: () => void;
@@ -22,32 +20,35 @@ const FiltersContainer = ({
 }) => {
   return (
     <div className="flex justify-center h-[60px] mb-4">
-      <div
-        className={`border-[0.5px] border-blue-300 rounded-lg p-2 w-[1400px] flex justify-start relative`}
-      >
-        <div className="w-full flex justify-between">
-          <div className="flex flex-row gap-2">
-            <div className="content-center whitespace-nowrap">
-              Active Filters:
-            </div>
-            <div className="w-0.5 -my-2 border-r-[0.5px] border-blue-300"></div>
-            <div className="w-[1160px] content-center">{activeFilters}</div>
+      <div className={`border-[0.5px] border-blue-300 rounded-lg w-[80%] flex`}>
+        <div className="w-full flex">
+          <div className="flex w-fit border-r-[0.5px] h-full border-blue-300 justify-start px-2">
+            <div className="content-center">Filters:</div>
           </div>
-          <div className="flex flex-row gap-2 items-center">
-            <Button
-              label="Reset"
-              disabled={resetDisabled || showFilters}
-              onClick={reset}
-            />
-            <Button
-              label="Edit"
-              disabled={showFilters}
-              onClick={() => setShowFilters(true)}
-            />
+          <div className="w-full flex overflow-auto justify-start px-2">
+            <div className="content-center">{activeFilters}</div>
+          </div>
+          <div className="flex justify-end pr-2">
+            <div className="border-l-[0.5px] border-blue-300 pl-2 flex flex-row gap-2">
+              <div className="content-center">
+                <Button
+                  label="Reset"
+                  disabled={resetDisabled || showFilters}
+                  onClick={reset}
+                />
+              </div>
+              <div className="content-center">
+                <Button
+                  label="Edit"
+                  disabled={showFilters}
+                  onClick={() => setShowFilters(true)}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      {showFilters && <>{children}</>}
+      {/* {showFilters && <>{children}</>} */}
     </div>
   );
 };

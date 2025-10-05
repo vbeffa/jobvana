@@ -54,7 +54,7 @@ const ActiveFilters = ({
   console.log(filters);
 
   return (
-    <div className="flex flex-row gap-2 w-full whitespace-nowrap overflow-auto">
+    <div className="flex gap-2 whitespace-nowrap">
       {filters.company && (
         <div className="flex flex-row gap-2">
           <div className="content-center">Company Name:</div>

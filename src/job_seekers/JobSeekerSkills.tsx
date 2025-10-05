@@ -85,7 +85,7 @@ const JobSeekerSkills = ({ jobSeeker }: JobSeekerSkillsProps) => {
         selectedSkillIds={editSkillIds}
         width="w-[75%]"
         outerHeight="h-64"
-        innerHeight="h-63"
+        innerHeight="max-h-63"
         onChange={(skillIds) => {
           setEditSkillIds(skillIds);
         }}

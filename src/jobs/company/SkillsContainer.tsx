@@ -21,7 +21,7 @@ const SkillsContainer = ({
     <div className={`${outerHeight} border-[0.5px] border-gray-500`}>
       {!isLoading && (
         <div
-          className={`w-full h-fit ${innerHeight} p-1 flex flex-row flex-wrap gap-1`}
+          className={`w-full h-fit overflow-auto ${innerHeight} p-1 flex flex-row flex-wrap gap-1`}
         >
           {skills.map((skill, idx) => (
             <div key={idx}>

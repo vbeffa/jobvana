@@ -23,19 +23,7 @@ const Skills = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  // const [debouncedName] = useDebounce(
-  //   searchFilters.name,
-  //   searchFilters.name ? 500 : 0
-  // );
   const [skillId, setSkillId] = useState<number | null>(null);
-
-  // const filters: SearchFilters = useMemo(
-  //   () => ({
-  //     ...searchFilters,
-  //     name: debouncedName
-  //   }),
-  //   [debouncedName, searchFilters]
-  // );
 
   const paging: SkillsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -50,7 +38,7 @@ const Skills = () => {
   }, [skills]);
 
   return (
-    <div className="mx-4">
+    <div className="mx-0">
       {error && <JobvanaError error={error} />}
       <FiltersContainer
         activeFilters={
@@ -67,7 +55,8 @@ const Skills = () => {
           setSearchFilters(INITIAL_SEARCH_FILTERS);
         }}
         resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
-      >
+      />
+      {showFilters && (
         <SkillFilters
           filters={searchFilters}
           setShowFilters={setShowFilters}
@@ -77,7 +66,7 @@ const Skills = () => {
             setSearchFilters(filters);
           }}
         />
-      </FiltersContainer>
+      )}
       <ResourcesContainer>
         <ResourceListContainer>
           <PageNav

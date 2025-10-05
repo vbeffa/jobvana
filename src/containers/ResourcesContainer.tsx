@@ -29,7 +29,7 @@ const ResourcesContainer = ({
   return (
     <div className="flex justify-center">
       <div
-        className={`border-[0.5px] border-blue-300 ${height} rounded-lg overflow-hidden w-[1400px] flex flex-row`}
+        className={`border-[0.5px] border-blue-300 ${height} rounded-lg overflow-hidden w-[80%] flex flex-row`}
       >
         {children}
       </div>

@@ -64,7 +64,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   }
 
   return (
-    <div className="mx-4">
+    <div className="mx-0">
       <ResourcesContainer hasTitle={false} hasFilters={false}>
         <ResourceListContainer>
           <SummaryCardsContainer hasFilters={false}>

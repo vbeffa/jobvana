@@ -29,24 +29,7 @@ const Jobs = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  // const [debouncedCompany] = useDebounce(
-  //   searchFilters.company,
-  //   searchFilters.company ? 500 : 0
-  // );
-  // const [debouncedTitle] = useDebounce(
-  //   searchFilters.title,
-  //   searchFilters.title ? 500 : 0
-  // );
   const [jobId, setJobId] = useState<number | null>(null);
-
-  // const filters: SearchFilters = useMemo(
-  //   () => ({
-  //     ...searchFilters,
-  //     company: debouncedCompany,
-  //     title: debouncedTitle
-  //   }),
-  //   [debouncedCompany, debouncedTitle, searchFilters]
-  // );
 
   const paging: JobsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -55,11 +38,7 @@ const Jobs = () => {
 
   const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
     paging,
-    filters: {
-      ...searchFilters
-      // company: debouncedCompany,
-      // title: debouncedTitle
-    }
+    filters: searchFilters
   });
 
   useEffect(() => {
@@ -69,8 +48,6 @@ const Jobs = () => {
   useEffect(() => {
     setSearchFilters({
       ..._.omit(context, ['page', 'jobId'])
-      // company: context.company,
-      // title: context.title
     });
   }, [context]);
 
@@ -112,7 +89,7 @@ const Jobs = () => {
   ]);
 
   return (
-    <div className="mx-4">
+    <div className="mx-0">
       {error && <JobvanaError error={error} />}
       <FiltersContainer
         activeFilters={
@@ -136,7 +113,8 @@ const Jobs = () => {
           });
         }}
         resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
-      >
+      />
+      {showFilters && (
         <JobFilters
           filters={searchFilters}
           setShowFilters={setShowFilters}
@@ -152,7 +130,7 @@ const Jobs = () => {
             });
           }}
         />
-      </FiltersContainer>
+      )}
       <ResourcesContainer>
         <ResourceListContainer>
           <PageNav

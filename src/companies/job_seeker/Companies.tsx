@@ -32,23 +32,7 @@ const Companies = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  // const [debouncedName] = useDebounce(
-  //   searchFilters.name,
-  //   searchFilters.name ? 500 : 0
-  // );
-  // const [debouncedMinSize] = useDebounce(searchFilters.minSize, 500);
-  // const [debouncedMaxSize] = useDebounce(searchFilters.maxSize, 500);
   const [companyId, setCompanyId] = useState<number | null>(null);
-
-  // const filters: SearchFilters = useMemo(
-  //   () => ({
-  //     ...searchFilters,
-  //     name: debouncedName,
-  //     minSize: debouncedMinSize,
-  //     maxSize: debouncedMaxSize
-  //   }),
-  //   [debouncedMaxSize, debouncedMinSize, debouncedName, searchFilters]
-  // );
 
   const paging: CompaniesParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
@@ -99,7 +83,7 @@ const Companies = () => {
   ]);
 
   return (
-    <div className="mx-4">
+    <div className="mx-0">
       {error && <JobvanaError error={error} />}
       <FiltersContainer
         activeFilters={
@@ -122,7 +106,8 @@ const Companies = () => {
           });
         }}
         resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
-      >
+      />
+      {showFilters && (
         <CompanyFilters
           filters={searchFilters}
           setShowFilters={setShowFilters}
@@ -138,7 +123,7 @@ const Companies = () => {
             });
           }}
         />
-      </FiltersContainer>
+      )}
       <ResourcesContainer>
         <ResourceListContainer>
           <PageNav
