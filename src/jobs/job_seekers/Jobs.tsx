@@ -19,8 +19,11 @@ import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
 
 const Jobs = () => {
   const navigate = Route.useNavigate();
-  const { jobsContext: context, setJobsContext: setContext } =
-    useContext(JobSeekerContext);
+  const {
+    jobsContext: context,
+    setJobsContext: setContext,
+    jobSeeker
+  } = useContext(JobSeekerContext);
 
   const [page, setPage] = useState<number>(context.page);
   const [debouncePage, setDebouncePage] = useState(false);
@@ -87,6 +90,11 @@ const Jobs = () => {
     searchFilters.skillIds,
     searchFilters.title
   ]);
+
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    month: 'numeric',
+    day: 'numeric'
+  });
 
   return (
     <div className="mx-0">
@@ -163,14 +171,21 @@ const Jobs = () => {
                   });
                 }}
                 title={job.title}
-                text={job.companyName}
+                text={
+                  <div className="flex justify-between pr-1">
+                    <span className="truncate">{job.companyName}</span>
+                    <span>{formatter.format(new Date(job.created_at))}</span>
+                  </div>
+                }
                 borderBottom={idx < jobs.length - 1}
               />
             ))}
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {jobId ? <JobDetails id={jobId} /> : undefined}
+          {jobId && jobSeeker ? (
+            <JobDetails id={jobId} jobSeeker={jobSeeker} />
+          ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </div>

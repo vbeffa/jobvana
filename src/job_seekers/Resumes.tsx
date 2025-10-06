@@ -39,7 +39,6 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       }
       replace = true;
     }
-    console.log(file.name);
     setIsUploading(true);
     setDeleteError(undefined);
     try {
@@ -102,9 +101,6 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
     },
     [deleteResume, refetch]
   );
-
-  // console.log(file);
-  // console.log(resumes);
 
   return (
     <div className="flex flex-col gap-2">

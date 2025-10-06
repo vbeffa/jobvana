@@ -33,7 +33,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           <div>Link</div>
         </>
       )}
-      {application.status === 'rejected' && (
+      {application.status === 'declined' && (
         <>
           <h2>Reason</h2>
           <div>{application.reason}</div>

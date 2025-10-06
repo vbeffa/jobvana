@@ -51,8 +51,6 @@ const ActiveFilters = ({
     maximumFractionDigits: 0
   });
 
-  console.log(filters);
-
   return (
     <div className="flex gap-2 whitespace-nowrap">
       {filters.company && (

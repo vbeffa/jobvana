@@ -4,6 +4,7 @@ import { CompanyContext } from '../../Context';
 import Button from '../../controls/Button';
 import supabase from '../../db/supabase';
 import JobvanaError from '../../JobvanaError';
+import type { Company as DbCompany } from '../../types';
 import { isValidCompany, type ToInsert } from '../utils';
 import MyCompanyOverviewEdit from './MyCompanyOverviewEdit';
 import { EMPTY_PROCESS } from './utils';
@@ -44,7 +45,7 @@ const Onboarding = ({ userId }: { userId: string }) => {
         console.log(error);
         setError(error);
       } else {
-        setCompany(data[0]);
+        setCompany(data[0] as DbCompany);
       }
     } finally {
       setIsSubmitting(false);

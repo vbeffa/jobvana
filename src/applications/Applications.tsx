@@ -1,18 +1,100 @@
-import { useState } from 'react';
+import _ from 'lodash';
+import { useCallback, useState } from 'react';
+import { FaTrash } from 'react-icons/fa6';
 import { getUserType } from '../auth/utils';
-import SummaryCard from '../SummaryCard';
-import ApplicationDetails from './ApplicationDetails';
+import supabase from '../db/supabase';
+import JobLink from '../jobs/JobLink';
+import JobvanaError from '../JobvanaError';
+import LoadingModal from '../LoadingModal';
+import UpdatingModal from '../UpdatingModal';
 import useApplications from './useApplications';
 
 const Applications = () => {
-  const { applications } = useApplications();
-  const [applicationId, setApplicationId] = useState<number | null>(null);
+  const { applications, isPending } = useApplications({ jobSeekerId: 2 });
+  // const [applicationId, setApplicationId] = useState<number | null>(null);
   const userType = getUserType();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<Error>();
+
+  const onWithdraw = useCallback(async (applicationId: number) => {
+    if (!confirm('Are you sure you want to withdraw this application?')) {
+      return;
+    }
+    try {
+      setIsSubmitting(true);
+      const { error } = await supabase
+        .from('applications')
+        .update({ status: 'withdrawn' })
+        .eq('id', applicationId);
+
+      if (error) {
+        console.log(error);
+        setError(error);
+      } else {
+        alert('Application withdrawn.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, []);
 
   return (
     <>
       <h1>{userType === 'job_seeker' && 'My'} Applications</h1>
-      <div className="flex flex-row gap-x-2">
+      {isSubmitting && <UpdatingModal />}
+      {isPending && <LoadingModal />}
+      {error && <JobvanaError error={error} />}
+      <div className="flex justify-center">
+        {!isPending && (
+          <table className="w-3/4">
+            <thead>
+              <tr>
+                <th>Job</th>
+                <th>Applied</th>
+                <th>Status</th>
+                <th>Total Applications</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {applications?.map((application, idx) => (
+                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                  <td>
+                    <JobLink {...application.job} />
+                  </td>
+                  <td>
+                    <div className="flex justify-center">
+                      {new Date(application.created_at).toLocaleDateString()}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex justify-center">
+                      {application.status && _.capitalize(application.status)}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex justify-center">
+                      {application.job.applications.length} /{' '}
+                      {application.company.interview_process?.pipeline_size}
+                    </div>
+                  </td>
+                  <td className="content-center">
+                    <div className="flex justify-center text-blue-400">
+                      {application.status === 'submitted' && (
+                        <FaTrash
+                          className="cursor-pointer"
+                          onClick={() => onWithdraw(application.id)}
+                        />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+      {/* <div className="flex flex-row gap-x-2">
         <div className="w-[20%]">
           {applications?.map((application, idx) => (
             <SummaryCard
@@ -29,7 +111,7 @@ const Applications = () => {
         <div className="w-[80%]">
           {applicationId && <ApplicationDetails id={applicationId} />}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

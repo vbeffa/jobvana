@@ -8,6 +8,7 @@ import type {
   Job as DbJob,
   SkillVersion as DbSkillVersion
 } from '../../types';
+import type { InterviewProcess } from '../company/utils';
 
 export type CompanyJob = Pick<DbJob, 'id' | 'title'>;
 
@@ -70,7 +71,7 @@ const useCompany = (id?: number): CompanyH => {
       num_employees: company.num_employees,
       user_id: company.user_id,
       contact_email: company.contact_email,
-      interview_process: company.interview_process,
+      interview_process: company.interview_process as InterviewProcess,
       jobs: company.jobs,
       addresses: company.company_addresses,
       industry: company.industries,

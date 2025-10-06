@@ -1,4 +1,9 @@
+import { useCallback, useMemo } from 'react';
+import useApplications from '../../applications/useApplications';
 import CompanyLink from '../../companies/CompanyLink';
+import type { JobSeeker } from '../../Context';
+import Button from '../../controls/Button';
+import useResumes from '../../job_seekers/useResumes';
 import JobvanaError from '../../JobvanaError';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
@@ -7,8 +12,41 @@ import JobRoles from '../JobRoles';
 import Salary from './Salary';
 import useJob from './useJob';
 
-const JobDetails = ({ id }: { id: number }) => {
+const JobDetails = ({
+  id,
+  jobSeeker
+}: {
+  id: number;
+  jobSeeker: JobSeeker;
+}) => {
   const { job, error, isPlaceholderData, isPending } = useJob(id);
+  const { resumes } = useResumes(jobSeeker.user_id);
+  const { applications } = useApplications({ jobSeekerId: jobSeeker.id });
+
+  const onApply = useCallback(() => {
+    if (!job) {
+      return;
+    }
+    if (!resumes?.length) {
+      alert('Please upload a resume to apply for this job.');
+      return;
+    }
+    if (
+      job.applications.filter((app) => app.status === 'accepted').length >=
+      job.company.interviewProcess.pipeline_size
+    ) {
+      alert('Pipeline size limit reached.');
+      return;
+    }
+    if (confirm('Your resume will be sent to this company. Proceed?')) {
+      alert('Application sent!');
+    }
+  }, [job, resumes?.length]);
+
+  const application = useMemo(
+    () => applications?.find((app) => app.job_id === id),
+    [applications, id]
+  );
 
   if (error) {
     return <JobvanaError error={error} />;
@@ -39,6 +77,14 @@ const JobDetails = ({ id }: { id: number }) => {
         </div>
         <div className="text-sm">
           {job.address ? `${job.address.city}, ${job.address.state}` : 'Remote'}
+        </div>
+        <div className="absolute right-0 top-7">
+          {!application && <Button label="Apply" onClick={onApply} />}
+          {application && (
+            <div className="text-sm content-center">
+              Applied {new Date(application.created_at).toLocaleDateString()}
+            </div>
+          )}
         </div>
       </Section>
       <Section title="Description">{job.description}</Section>

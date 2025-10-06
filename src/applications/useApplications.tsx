@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { InterviewProcess } from '../companies/company/utils';
 import supabase from '../db/supabase';
 import type {
   Application as DbApplication,
@@ -8,7 +9,7 @@ import type {
 } from '../types';
 
 export type Application = DbApplication & {
-  job: Job;
+  job: Job & { applications: Array<DbApplication> };
   company: DbCompany;
 };
 
@@ -17,13 +18,18 @@ export type Applications = {
   isPending: boolean;
 };
 
-const useApplications = (): Applications => {
+const useApplications = ({
+  jobSeekerId
+}: {
+  jobSeekerId: number;
+}): Applications => {
   const { isPending, data: applicationsData } = useQuery({
-    queryKey: ['applications'],
+    queryKey: ['applications', jobSeekerId],
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
-        .select('*, jobs(*, companies!inner(*))');
+        .select('*, jobs(*, companies!inner(*), applications(*))')
+        .filter('job_seeker_id', 'eq', jobSeekerId);
       return data;
     }
   });
@@ -39,7 +45,11 @@ const useApplications = (): Applications => {
         .map((applicationData) => ({
           ...applicationData,
           job: applicationData.jobs,
-          company: applicationData.jobs.companies
+          company: {
+            ...applicationData.jobs.companies,
+            interview_process: applicationData.jobs.companies
+              .interview_process as InterviewProcess
+          }
         })),
     [applicationsData]
   );

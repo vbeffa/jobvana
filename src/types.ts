@@ -1,3 +1,4 @@
+import type { InterviewProcess } from './companies/company/utils';
 import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import type { Database } from './db/types';
 import type { SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
@@ -17,7 +18,12 @@ export type Params<
 };
 
 export type Application = Database['public']['Tables']['applications']['Row'];
-export type Company = Database['public']['Tables']['companies']['Row'];
+export type Company = Omit<
+  Database['public']['Tables']['companies']['Row'],
+  'interview_process'
+> & {
+  interview_process: InterviewProcess | null;
+};
 export type CompanyAddress =
   Database['public']['Tables']['company_addresses']['Row'];
 export type CompanyTechStack =

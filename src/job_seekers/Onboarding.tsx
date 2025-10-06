@@ -13,8 +13,7 @@ const Onboarding = ({ userId }: { userId: string }) => {
   const [newJobSeeker, setNewJobSeeker] = useState<ToInsert>({
     user_id: userId,
     first_name: session?.user.user_metadata.first_name,
-    last_name: session?.user.user_metadata.last_name,
-    resume_id: null
+    last_name: session?.user.user_metadata.last_name
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Error>();

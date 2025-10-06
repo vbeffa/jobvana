@@ -37,7 +37,9 @@ export const isHeadquarters = (address: CompanyAddress) =>
 export const findHeadquarters = (company: FullCompany) =>
   company.addresses.find((addr) => addr.type === 'headquarters');
 
-export const findCompany = async (userId: string) => {
+export const findCompany = async (
+  userId: string
+): Promise<DbCompany | null> => {
   const { data, error } = await supabase
     .from('companies')
     .select(`*`)
@@ -47,7 +49,7 @@ export const findCompany = async (userId: string) => {
     throw error;
   }
 
-  return data[0] ?? null;
+  return data[0] as DbCompany | null;
 };
 
 export const companyFields = (

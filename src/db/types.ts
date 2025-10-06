@@ -19,27 +19,34 @@ export type Database = {
           created_at: string
           id: number
           job_id: number
+          job_seeker_id: number
           reason: string | null
           status: Database['public']['Enums']['application_status'] | null
-          user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           job_id: number
+          job_seeker_id: number
           reason?: string | null
           status?: Database['public']['Enums']['application_status'] | null
-          user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           job_id?: number
+          job_seeker_id?: number
           reason?: string | null
           status?: Database['public']['Enums']['application_status'] | null
-          user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: 'applications_job_seeker_id_fkey'
+            columns: ['job_seeker_id']
+            isOneToOne: false
+            referencedRelation: 'job_seekers'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'job_applications_job_id_fkey'
             columns: ['job_id']
@@ -315,7 +322,6 @@ export type Database = {
           first_name: string
           id: number
           last_name: string
-          resume_id: string | null
           user_id: string | null
         }
         Insert: {
@@ -323,7 +329,6 @@ export type Database = {
           first_name: string
           id?: number
           last_name: string
-          resume_id?: string | null
           user_id?: string | null
         }
         Update: {
@@ -331,7 +336,6 @@ export type Database = {
           first_name?: string
           id?: number
           last_name?: string
-          resume_id?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -630,7 +634,7 @@ export type Database = {
     }
     Enums: {
       address_type: 'headquarters' | 'office'
-      application_status: 'accepted' | 'rejected'
+      application_status: 'submitted' | 'accepted' | 'declined' | 'withdrawn'
       job_salary_type: 'annual' | 'hourly'
       job_status: 'open' | 'filled' | 'closed'
       job_type: 'full_time' | 'part_time' | 'contract' | 'internship'
@@ -763,7 +767,7 @@ export const Constants = {
   public: {
     Enums: {
       address_type: ['headquarters', 'office'],
-      application_status: ['accepted', 'rejected'],
+      application_status: ['submitted', 'accepted', 'declined', 'withdrawn'],
       job_salary_type: ['annual', 'hourly'],
       job_status: ['open', 'filled', 'closed'],
       job_type: ['full_time', 'part_time', 'contract', 'internship'],

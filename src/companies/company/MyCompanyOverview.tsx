@@ -44,7 +44,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
         console.log(error);
         setError(error);
       } else {
-        setCompany(data[0]);
+        setCompany(data[0] as Company);
       }
     } finally {
       setIsSubmitting(false);
