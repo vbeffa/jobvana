@@ -18,8 +18,6 @@ const ActiveFilters = ({
     [filters.industryId, findIndustry]
   );
 
-  console.log(filters);
-
   return (
     <div className="flex flex-row gap-2 w-full whitespace-nowrap overflow-auto">
       {filters.name && (

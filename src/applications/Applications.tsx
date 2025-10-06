@@ -7,10 +7,12 @@ import JobLink from '../jobs/JobLink';
 import JobvanaError from '../JobvanaError';
 import LoadingModal from '../LoadingModal';
 import UpdatingModal from '../UpdatingModal';
-import useApplications from './useApplications';
+import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 
 const Applications = () => {
-  const { applications, isPending } = useApplications({ jobSeekerId: 2 });
+  const { applications, isPending } = useApplicationsForJobSeeker({
+    jobSeekerId: 2
+  });
   // const [applicationId, setApplicationId] = useState<number | null>(null);
   const userType = getUserType();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,52 +48,62 @@ const Applications = () => {
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         {!isPending && (
-          <table className="w-3/4">
-            <thead>
-              <tr>
-                <th>Job</th>
-                <th>Applied</th>
-                <th>Status</th>
-                <th>Total Applications</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {applications?.map((application, idx) => (
-                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                  <td>
-                    <JobLink {...application.job} />
-                  </td>
-                  <td>
-                    <div className="flex justify-center">
-                      {new Date(application.created_at).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="flex justify-center">
-                      {application.status && _.capitalize(application.status)}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="flex justify-center">
-                      {application.job.applications.length} /{' '}
-                      {application.company.interview_process?.pipeline_size}
-                    </div>
-                  </td>
-                  <td className="content-center">
-                    <div className="flex justify-center text-blue-400">
-                      {application.status === 'submitted' && (
-                        <FaTrash
-                          className="cursor-pointer"
-                          onClick={() => onWithdraw(application.id)}
-                        />
-                      )}
-                    </div>
-                  </td>
+          <div className="w-3/4 flex flex-col gap-1">
+            <table>
+              <thead>
+                <tr>
+                  <th>Job</th>
+                  <th>Applied</th>
+                  <th>Status</th>
+                  <th>Total Applications*</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {applications?.map((application, idx) => (
+                  <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                    <td>
+                      <JobLink {...application.job} />
+                    </td>
+                    <td>
+                      <div className="flex justify-center">
+                        {new Date(application.created_at).toLocaleDateString()}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex justify-center">
+                        {application.status && _.capitalize(application.status)}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex justify-center">
+                        {
+                          application.job.applications.filter(
+                            (app) =>
+                              app.status === 'submitted' ||
+                              app.status === 'accepted'
+                          ).length
+                        }{' '}
+                        / {application.company.interview_process?.pipeline_size}
+                      </div>
+                    </td>
+                    <td className="content-center">
+                      <div className="flex justify-center text-blue-400">
+                        {application.status === 'submitted' && (
+                          <FaTrash
+                            className="cursor-pointer"
+                            onClick={() => onWithdraw(application.id)}
+                          />
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            Notes: Total Applications = Number of submitted or accepted
+            applications / Company pipeline size
+          </div>
         )}
       </div>
       {/* <div className="flex flex-row gap-x-2">

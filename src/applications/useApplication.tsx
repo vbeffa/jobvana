@@ -1,7 +1,7 @@
-import useApplications from './useApplications';
+import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 
 const useApplication = ({ id }: { id: number }) => {
-  const { applications } = useApplications({ jobSeekerId: 2 });
+  const { applications } = useApplicationsForJobSeeker({ jobSeekerId: 2 });
 
   return {
     application: applications?.find((application) => application.id === id)

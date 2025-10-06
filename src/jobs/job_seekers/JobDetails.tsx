@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import useApplications from '../../applications/useApplications';
+import { FaPaperPlane } from 'react-icons/fa6';
+import useApplicationsForJobSeeker from '../../applications/useApplicationsForJobSeeker';
 import CompanyLink from '../../companies/CompanyLink';
 import type { JobSeeker } from '../../Context';
 import Button from '../../controls/Button';
@@ -21,7 +22,9 @@ const JobDetails = ({
 }) => {
   const { job, error, isPlaceholderData, isPending } = useJob(id);
   const { resumes } = useResumes(jobSeeker.user_id);
-  const { applications } = useApplications({ jobSeekerId: jobSeeker.id });
+  const { applications } = useApplicationsForJobSeeker({
+    jobSeekerId: jobSeeker.id
+  });
 
   const onApply = useCallback(() => {
     if (!job) {
@@ -81,8 +84,11 @@ const JobDetails = ({
         <div className="absolute right-0 top-7">
           {!application && <Button label="Apply" onClick={onApply} />}
           {application && (
-            <div className="text-sm content-center">
-              Applied {new Date(application.created_at).toLocaleDateString()}
+            <div className="flex flex-row gap-1 text-sm">
+              <div className="content-center">
+                <FaPaperPlane />
+              </div>
+              {new Date(application.created_at).toLocaleDateString()}
             </div>
           )}
         </div>

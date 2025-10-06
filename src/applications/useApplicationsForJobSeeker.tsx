@@ -5,12 +5,17 @@ import supabase from '../db/supabase';
 import type {
   Application as DbApplication,
   Company as DbCompany,
-  Job
+  Job as DbJob
 } from '../types';
 
+export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'> & {
+  // numApplications: number | null;
+};
+export type Job = Pick<DbJob, 'id' | 'title'>;
+
 export type Application = DbApplication & {
-  job: Job & { applications: Array<DbApplication> };
-  company: DbCompany;
+  job: Job & { applications: Array<Pick<DbApplication, 'status'>> };
+  company: Company;
 };
 
 export type Applications = {
@@ -18,7 +23,7 @@ export type Applications = {
   isPending: boolean;
 };
 
-const useApplications = ({
+const useApplicationsForJobSeeker = ({
   jobSeekerId
 }: {
   jobSeekerId: number;
@@ -28,8 +33,17 @@ const useApplications = ({
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
-        .select('*, jobs(*, companies!inner(*), applications(*))')
+        .select(
+          `*,
+          jobs(
+            id,
+            title,
+            companies!inner(id, name, interview_process, company_applications!company_id(num_applications)),
+            applications(status)
+          )`
+        )
         .filter('job_seeker_id', 'eq', jobSeekerId);
+      console.log(data);
       return data;
     }
   });
@@ -49,6 +63,7 @@ const useApplications = ({
             ...applicationData.jobs.companies,
             interview_process: applicationData.jobs.companies
               .interview_process as InterviewProcess
+            // numApplications: applicationData.jobs.companies.company_applications.
           }
         })),
     [applicationsData]
@@ -60,4 +75,4 @@ const useApplications = ({
   };
 };
 
-export default useApplications;
+export default useApplicationsForJobSeeker;

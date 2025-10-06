@@ -1,4 +1,4 @@
-import type { Application } from './useApplications';
+import type { Application } from './useApplicationsForJobSeeker';
 
 export type ApplicationsListParams = {
   applications: Array<Pick<Application, 'status'>>;
