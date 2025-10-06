@@ -7,7 +7,7 @@ export type ResourceDetailsContainerProps = {
 const ResourceDetailsContainer = ({
   children
 }: ResourceDetailsContainerProps) => {
-  return <div className={`px-4 pt-4 w-[80%] overflow-auto`}>{children}</div>;
+  return <div className={`px-4 pt-4 w-full overflow-auto`}>{children}</div>;
 };
 
 export default ResourceDetailsContainer;

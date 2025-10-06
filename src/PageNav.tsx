@@ -30,7 +30,7 @@ const PageNav = ({
     [pageSize, total]
   );
 
-  const navButtonStyles = `h-full w-6 pb-0.5
+  const navButtonStyles = `px-1
                            cursor-pointer
                            hover:text-gray-700
                            disabled:cursor-default
@@ -38,31 +38,27 @@ const PageNav = ({
 
   return (
     <div
-      className={`${borderBottom ? 'border-b-[0.5px] border-b-blue-300' : ''} h-${PAGE_NAV_HEIGHT} flex justify-center`}
+      className={`w-full overflow-auto ${borderBottom ? 'border-b-[0.5px] border-b-blue-300' : ''} h-${PAGE_NAV_HEIGHT} flex justify-center`}
     >
-      <div className="text-gray-500 flex flex-col justify-evenly items-center">
+      <div className="text-gray-500 w-full flex flex-col justify-evenly items-center">
         {total !== 0 && (
-          <div className="flex flex-row">
-            <div>
-              <input
-                type="button"
-                disabled={page === 1}
-                className={navButtonStyles}
-                onClick={() => onSetPage(1, false)}
-                value="≪"
-              />
-            </div>
-            <div>
-              <input
-                type="button"
-                disabled={page === 1}
-                className={navButtonStyles}
-                onClick={() => {
-                  onSetPage(page - 1, false);
-                }}
-                value="<"
-              />
-            </div>
+          <div className="w-full flex flex-row justify-center gap-1">
+            <input
+              type="button"
+              disabled={page === 1}
+              className={navButtonStyles}
+              onClick={() => onSetPage(1, false)}
+              value="≪"
+            />
+            <input
+              type="button"
+              disabled={page === 1}
+              className={navButtonStyles}
+              onClick={() => {
+                onSetPage(page - 1, false);
+              }}
+              value="<"
+            />
             <div className="content-center ml-2">
               <input
                 id="page"
@@ -92,24 +88,22 @@ const PageNav = ({
                 }}
               />
             </div>
-            <div className="content-center mx-2">of</div>
-            <div className="content-center mr-2">{numPages}</div>
-            <div>
-              <input
-                type="button"
-                disabled={page === numPages}
-                className={navButtonStyles}
-                onClick={() => onSetPage(page + 1, false)}
-                value=">"
-              />
-              <input
-                type="button"
-                disabled={page === numPages}
-                className={navButtonStyles}
-                onClick={() => numPages && onSetPage(numPages, false)}
-                value="≫"
-              />
-            </div>
+            <div className="content-center">of</div>
+            <div className="content-center">{numPages}</div>
+            <input
+              type="button"
+              disabled={page === numPages}
+              className={navButtonStyles}
+              onClick={() => onSetPage(page + 1, false)}
+              value=">"
+            />
+            <input
+              type="button"
+              disabled={page === numPages}
+              className={navButtonStyles}
+              onClick={() => numPages && onSetPage(numPages, false)}
+              value="≫"
+            />
           </div>
         )}
         <div>
