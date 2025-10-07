@@ -7,6 +7,15 @@ import type { UserType } from '../Context';
 import supabase from '../db/supabase';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from './Login';
 
+const checkIsLoggedIn = () => {
+  const session = getSession();
+  return (
+    session !== null &&
+    session.expires_at !== undefined &&
+    session.expires_at * 1000 > Date.now()
+  );
+};
+
 const getSession = () => {
   const authToken = window.localStorage.getItem(
     `sb-${import.meta.env.VITE_SUPABASE_PROJECT_ID}-auth-token`
@@ -62,6 +71,7 @@ const isEmailValid = (email: string) =>
   email.length >= MIN_EMAIL_LENGTH && email.length <= MAX_EMAIL_LENGTH;
 
 export {
+  checkIsLoggedIn,
   getSession,
   getUserType,
   isEmailValid,

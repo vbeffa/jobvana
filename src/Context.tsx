@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, type Dispatch, type SetStateAction } from 'react';
 import { type SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import { INITIAL_SEARCH_FILTERS as INITIAL_COMPANY_SEARCH_FILTERS } from './companies/utils';
 import { type SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
@@ -18,18 +18,32 @@ export type CompanyContextProps = {
 export type JobSeekerContextProps = {
   jobSeeker?: JobSeeker | null;
   setJobSeeker: (jobSeeker: JobSeeker) => void;
-  companiesContext: CompanySearchFilters & {
+  // companiesContext: CompanySearchFilters & {
+  //   page: number;
+  //   companyId?: number;
+  // };
+  // setCompaniesContext: (
+  //   companiesContext: JobSeekerContextProps['companiesContext']
+  // ) => void;
+  companySearchFilters: CompanySearchFilters;
+  setCompanySearchFilters: Dispatch<SetStateAction<CompanySearchFilters>>;
+  companyNav: {
     page: number;
     companyId?: number;
   };
-  setCompaniesContext: (
-    companiesContext: JobSeekerContextProps['companiesContext']
-  ) => void;
-  jobsContext: JobSearchFilters & {
+  setCompanyNav: Dispatch<SetStateAction<JobSeekerContextProps['companyNav']>>;
+  // jobsContext: JobSearchFilters & {
+  //   page: number;
+  //   jobId?: number;
+  // };
+  // setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
+  jobSearchFilters: JobSearchFilters;
+  setJobSearchFilters: Dispatch<SetStateAction<JobSearchFilters>>;
+  jobNav: {
     page: number;
     jobId?: number;
   };
-  setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
+  setJobNav: Dispatch<SetStateAction<JobSeekerContextProps['jobNav']>>;
 };
 
 export type JobvanaContextProps = {
@@ -55,16 +69,28 @@ export const defaultCompanyContext: CompanyContextProps = {
 
 export const defaultJobSeekerContext: JobSeekerContextProps = {
   setJobSeeker: () => {},
-  companiesContext: {
-    page: 1,
-    ...INITIAL_COMPANY_SEARCH_FILTERS
+  // companiesContext: {
+  //   page: 1,
+  //   ...INITIAL_COMPANY_SEARCH_FILTERS
+  // },
+  // setCompaniesContext: () => {},
+  companySearchFilters: INITIAL_COMPANY_SEARCH_FILTERS,
+  setCompanySearchFilters: () => {},
+  companyNav: {
+    page: 1
   },
-  setCompaniesContext: () => {},
-  jobsContext: {
-    page: 1,
-    ...INITIAL_JOB_SEARCH_FILTERS
+  setCompanyNav: () => {},
+  // jobsContext: {
+  //   page: 1,
+  //   ...INITIAL_JOB_SEARCH_FILTERS
+  // },
+  // setJobsContext: () => {}
+  jobSearchFilters: INITIAL_JOB_SEARCH_FILTERS,
+  setJobSearchFilters: () => {},
+  jobNav: {
+    page: 1
   },
-  setJobsContext: () => {}
+  setJobNav: () => {}
 };
 
 export const JobvanaContext =

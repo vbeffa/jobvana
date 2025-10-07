@@ -79,7 +79,7 @@ const useSkills = (params: SkillsParams): Skills => {
       .sort((skill1, skill2) => {
         return skill1.name.localeCompare(skill2.name);
       });
-  }, [data?.skills]);
+  }, [data]);
 
   const skillsCount = useMemo(() => data?.count ?? undefined, [data?.count]);
 

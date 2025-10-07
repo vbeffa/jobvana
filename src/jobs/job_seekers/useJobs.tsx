@@ -154,7 +154,7 @@ const useJobs = (params: JobsParams): Jobs => {
         companyName: job.companies.name
       };
     });
-  }, [data?.jobs]);
+  }, [data]);
 
   const openJobCount = useMemo(() => data?.count ?? undefined, [data?.count]);
 

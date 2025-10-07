@@ -50,7 +50,7 @@ const useSkillCategories = (): SkillCategories => {
       );
     });
     return skillCategories;
-  }, [data?.skillCategories]);
+  }, [data]);
 
   return {
     skillCategories,

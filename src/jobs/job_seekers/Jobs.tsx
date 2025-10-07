@@ -20,12 +20,16 @@ import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
 const Jobs = () => {
   const navigate = Route.useNavigate();
   const {
-    jobsContext: context,
-    setJobsContext: setContext,
+    // jobsContext: context,
+    // setJobsContext: setContext,
+    jobSearchFilters,
+    setJobSearchFilters,
+    jobNav,
+    setJobNav,
     jobSeeker
   } = useContext(JobSeekerContext);
 
-  const [page, setPage] = useState<number>(context.page);
+  const [page, setPage] = useState<number>(jobNav.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
   const [showFilters, setShowFilters] = useState(false);
@@ -45,22 +49,20 @@ const Jobs = () => {
   });
 
   useEffect(() => {
-    setPage(context.page);
-  }, [context.page]);
+    setPage(jobNav.page);
+  }, [jobNav.page]);
 
   useEffect(() => {
-    setSearchFilters({
-      ..._.omit(context, ['page', 'jobId'])
-    });
-  }, [context]);
+    setSearchFilters(jobSearchFilters);
+  }, [jobSearchFilters]);
 
   useEffect(() => {
-    if (context.jobId) {
-      setJobId(context.jobId);
+    if (jobNav.jobId && jobs?.find((job) => job.id === jobNav.jobId)) {
+      setJobId(jobNav.jobId);
     } else {
       setJobId(jobs?.[0]?.id ?? null);
     }
-  }, [context.jobId, jobs]);
+  }, [jobNav.jobId, jobs]);
 
   useEffect(() => {
     navigate({
@@ -113,9 +115,8 @@ const Jobs = () => {
           setPage(1);
           setJobId(null);
           setSearchFilters(INITIAL_SEARCH_FILTERS);
-          setContext({
-            ...context,
-            ...INITIAL_SEARCH_FILTERS,
+          setJobSearchFilters(INITIAL_SEARCH_FILTERS);
+          setJobNav({
             page: 1,
             jobId: undefined
           });
@@ -130,9 +131,8 @@ const Jobs = () => {
             setPage(1);
             setJobId(null);
             setSearchFilters(filters);
-            setContext({
-              ...context,
-              ...filters,
+            setJobSearchFilters(filters);
+            setJobNav({
               page: 1,
               jobId: undefined
             });
@@ -149,8 +149,7 @@ const Jobs = () => {
               setPage(page);
               setJobId(null);
               setDebouncePage(debounce);
-              setContext({
-                ...context,
+              setJobNav({
                 page,
                 jobId: undefined
               });
@@ -165,8 +164,8 @@ const Jobs = () => {
                 selected={jobId === job.id}
                 onClick={() => {
                   setJobId(job.id);
-                  setContext({
-                    ...context,
+                  setJobNav({
+                    ...jobNav,
                     jobId: job.id
                   });
                 }}

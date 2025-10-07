@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import useCompanyAddresses from '../../companies/company/useCompanyAddresses';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
@@ -20,11 +20,9 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
   const { jobs, refetch } = useJobsForCompany(companyId);
   const { addresses } = useCompanyAddresses(companyId);
 
-  useEffect(() => {
-    if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
-      setSelectedJob(jobs[0]);
-    }
-  }, [isAddingNew, jobs, selectedJob]);
+  if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
+    setSelectedJob(jobs[0]);
+  }
 
   const newJob: Job = useMemo(
     () => ({

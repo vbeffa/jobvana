@@ -1,6 +1,7 @@
-import { useMemo, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useMemo, type Dispatch, type SetStateAction } from 'react';
 import useIndustries from '../../companies/useIndustries';
 import PillContainer from '../../containers/PillContainer';
+import { JobSeekerContext } from '../../Context';
 import { INITIAL_SEARCH_FILTERS } from '../utils';
 import type { SearchFilters } from './useCompanies';
 
@@ -11,6 +12,7 @@ const ActiveFilters = ({
   filters: SearchFilters;
   setFilters: Dispatch<SetStateAction<SearchFilters>>;
 }) => {
+  const { setCompanySearchFilters } = useContext(JobSeekerContext);
   const { findIndustry } = useIndustries();
 
   const industry = useMemo(
@@ -25,10 +27,13 @@ const ActiveFilters = ({
           <div className="content-center">Company Name:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
-                company: INITIAL_SEARCH_FILTERS.name
-              }));
+                name: INITIAL_SEARCH_FILTERS.name
+              };
+              console.log(updatedFilters);
+              setFilters(updatedFilters);
+              setCompanySearchFilters(updatedFilters);
             }}
           >
             {filters.name}
@@ -41,11 +46,13 @@ const ActiveFilters = ({
           <div className="content-center">Size:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 minSize: INITIAL_SEARCH_FILTERS.minSize,
                 maxSize: INITIAL_SEARCH_FILTERS.maxSize
-              }));
+              };
+              setFilters(updatedFilters);
+              setCompanySearchFilters(updatedFilters);
             }}
           >{`${filters.minSize} - ${filters.maxSize}`}</PillContainer>
         </div>
@@ -55,10 +62,12 @@ const ActiveFilters = ({
           <div className="content-center">Industry:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 industryId: INITIAL_SEARCH_FILTERS.industryId
-              }));
+              };
+              setFilters(updatedFilters);
+              setCompanySearchFilters(updatedFilters);
             }}
           >
             {industry.name}

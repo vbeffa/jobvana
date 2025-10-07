@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { FaTools } from 'react-icons/fa';
 import { FaFile, FaLock, FaPerson } from 'react-icons/fa6';
 import { getUserType } from '../auth/utils';
@@ -15,18 +15,12 @@ import ChangePassword from './ChangePassword';
 import Profile from './Profile';
 
 const Account = () => {
+  const userType = getUserType();
   const [card, setCard] = useState<
     'account' | 'profile' | 'skills' | 'resumes'
-  >('resumes');
-  const userType = getUserType();
+  >(userType === 'company' ? 'account' : 'resumes');
   const { jobSeeker } = useContext(JobSeekerContext);
   const { count: skillsCount } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
-
-  useEffect(() => {
-    if (userType === 'company') {
-      setCard('account');
-    }
-  }, [userType]);
 
   if (userType === undefined || (userType === 'job_seeker' && !jobSeeker)) {
     return null;

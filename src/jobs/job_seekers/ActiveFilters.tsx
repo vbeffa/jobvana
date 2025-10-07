@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import { useMemo, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useMemo, type Dispatch, type SetStateAction } from 'react';
 import useIndustries from '../../companies/useIndustries';
 import PillContainer from '../../containers/PillContainer';
+import { JobSeekerContext } from '../../Context';
 import useRoles from '../../roles/useRoles';
 import useSkillsLite from '../../skills/useSkillsLite';
 import {
@@ -18,6 +19,7 @@ const ActiveFilters = ({
   filters: SearchFilters;
   setFilters: Dispatch<SetStateAction<SearchFilters>>;
 }) => {
+  const { setJobSearchFilters } = useContext(JobSeekerContext);
   const { findIndustry } = useIndustries();
   const { findRole } = useRoles();
   const { skills } = useSkillsLite();
@@ -58,10 +60,12 @@ const ActiveFilters = ({
           <div className="content-center">Company Name:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 company: INITIAL_SEARCH_FILTERS.company
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >
             {filters.company}
@@ -74,11 +78,13 @@ const ActiveFilters = ({
           <div className="content-center">Size:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 minSize: INITIAL_SEARCH_FILTERS.minSize,
                 maxSize: INITIAL_SEARCH_FILTERS.maxSize
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >{`${filters.minSize} - ${filters.maxSize}`}</PillContainer>
         </div>
@@ -88,10 +94,12 @@ const ActiveFilters = ({
           <div className="content-center">Industry:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 industryId: INITIAL_SEARCH_FILTERS.industryId
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >
             {industry.name}
@@ -103,10 +111,12 @@ const ActiveFilters = ({
           <div className="content-center">Job Title:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 title: INITIAL_SEARCH_FILTERS.title
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >
             {filters.title}
@@ -118,10 +128,12 @@ const ActiveFilters = ({
           <div className="content-center">Role:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 roleId: INITIAL_SEARCH_FILTERS.roleId
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >
             {role.name}
@@ -133,10 +145,12 @@ const ActiveFilters = ({
           <div className="content-center">Job Type:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 jobType: INITIAL_SEARCH_FILTERS.jobType
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >
             {jobType}
@@ -153,11 +167,13 @@ const ActiveFilters = ({
           <div className="content-center">Salary Range:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 minSalary: INITIAL_SEARCH_FILTERS.minSalary,
                 maxSalary: INITIAL_SEARCH_FILTERS.maxSalary
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >{`${formatter.format(filters.minSalary)} - ${formatter.format(filters.maxSalary)}`}</PillContainer>
         </div>
@@ -167,10 +183,12 @@ const ActiveFilters = ({
           <div className="content-center">Posted:</div>
           <PillContainer
             onDelete={() => {
-              setFilters((filters) => ({
+              const updatedFilters = {
                 ...filters,
                 created: INITIAL_SEARCH_FILTERS.created
-              }));
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
             }}
           >
             {createdRangeToString(filters.created)}

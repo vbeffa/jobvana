@@ -22,10 +22,16 @@ import useCompanies, {
 
 const Companies = () => {
   const navigate = Route.useNavigate();
-  const { companiesContext: context, setCompaniesContext: setContext } =
-    useContext(JobSeekerContext);
+  const {
+    // companiesContext: context,
+    // setCompaniesContext: setContext,
+    companySearchFilters,
+    setCompanySearchFilters,
+    companyNav,
+    setCompanyNav
+  } = useContext(JobSeekerContext);
 
-  const [page, setPage] = useState<number>(context.page);
+  const [page, setPage] = useState<number>(companyNav.page);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
   const [showFilters, setShowFilters] = useState(false);
@@ -43,23 +49,23 @@ const Companies = () => {
     useCompanies({ paging, filters: searchFilters });
 
   useEffect(() => {
-    setPage(context.page);
-  }, [context.page]);
+    setPage(companyNav.page);
+  }, [companyNav.page]);
 
   useEffect(() => {
-    setSearchFilters({
-      ..._.omit(context, ['page', 'companyId'])
-      // name: context.name ?? ''
-    });
-  }, [context]);
+    setSearchFilters(companySearchFilters);
+  }, [companySearchFilters]);
 
   useEffect(() => {
-    if (context.companyId) {
-      setCompanyId(context.companyId);
+    if (
+      companyNav.companyId &&
+      companies?.find((company) => company.id === companyNav.companyId)
+    ) {
+      setCompanyId(companyNav.companyId);
     } else {
       setCompanyId(companies?.[0]?.id ?? null);
     }
-  }, [companies, context.companyId]);
+  }, [companies, companyNav.companyId]);
 
   useEffect(() => {
     navigate({
@@ -98,9 +104,8 @@ const Companies = () => {
           setPage(1);
           setCompanyId(null);
           setSearchFilters(INITIAL_SEARCH_FILTERS);
-          setContext({
-            ...context,
-            ...INITIAL_SEARCH_FILTERS,
+          setCompanySearchFilters(INITIAL_SEARCH_FILTERS);
+          setCompanyNav({
             page: 1,
             companyId: undefined
           });
@@ -115,9 +120,8 @@ const Companies = () => {
             setPage(1);
             setCompanyId(null);
             setSearchFilters(filters);
-            setContext({
-              ...context,
-              ...filters,
+            setCompanySearchFilters(filters);
+            setCompanyNav({
               page: 1,
               companyId: undefined
             });
@@ -134,8 +138,7 @@ const Companies = () => {
               setPage(page);
               setCompanyId(null);
               setDebouncePage(debounce);
-              setContext({
-                ...context,
+              setCompanyNav({
                 page,
                 companyId: undefined
               });
@@ -152,9 +155,9 @@ const Companies = () => {
                   selected={companyId === company.id}
                   onClick={() => {
                     setCompanyId(company.id);
-                    context.companyId = company.id;
-                    setContext({
-                      ...context,
+                    // context.companyId = company.id;
+                    setCompanyNav({
+                      ...companyNav,
                       companyId: company.id
                     });
                   }}

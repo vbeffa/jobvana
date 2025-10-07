@@ -99,7 +99,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
       headquarters: companyData.company_addresses[0],
       industryName: companyData.industries.name
     }));
-  }, [data?.companies]);
+  }, [data]);
 
   const companyCount = useMemo(() => data?.count ?? undefined, [data?.count]);
 

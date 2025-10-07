@@ -1,7 +1,13 @@
 import { Outlet } from '@tanstack/react-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Login from './auth/Login';
-import { getSession, getUserType, refreshSession } from './auth/utils';
+import {
+  checkIsLoggedIn,
+  getSession,
+  getUserType,
+  refreshSession
+} from './auth/utils';
+import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import { findCompany } from './companies/utils';
 import {
   CompanyContext,
@@ -15,15 +21,29 @@ import {
 import supabase from './db/supabase';
 import Header from './Header';
 import { findJobSeeker } from './job_seekers/utils';
+import type { SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
 
 const Root = () => {
   const [currPage, setCurrPage] = useState('home');
-  const [companiesContext, setCompaniesContext] = useState<
-    JobSeekerContextProps['companiesContext']
-  >(defaultJobSeekerContext.companiesContext);
-  const [jobsContext, setJobsContext] = useState<
-    JobSeekerContextProps['jobsContext']
-  >(defaultJobSeekerContext.jobsContext);
+  // const [companiesContext, setCompaniesContext] = useState<
+  //   JobSeekerContextProps['companiesContext']
+  // >(defaultJobSeekerContext.companiesContext);
+  const [companySearchFilters, setCompanySearchFilters] =
+    useState<CompanySearchFilters>(
+      defaultJobSeekerContext.companySearchFilters
+    );
+  const [companyNav, setCompanyNav] = useState<
+    JobSeekerContextProps['companyNav']
+  >(defaultJobSeekerContext.companyNav);
+  // const [jobsContext, setJobsContext] = useState<
+  //   JobSeekerContextProps['jobsContext']
+  // >(defaultJobSeekerContext.jobsContext);
+  const [jobSearchFilters, setJobSearchFilters] = useState<JobSearchFilters>(
+    defaultJobSeekerContext.jobSearchFilters
+  );
+  const [jobNav, setJobNav] = useState<JobSeekerContextProps['jobNav']>(
+    defaultJobSeekerContext.jobNav
+  );
 
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
@@ -34,17 +54,11 @@ const Root = () => {
 
   const session = getSession();
 
-  const isLoggedIn = useMemo(() => {
-    return (
-      session !== null &&
-      session.expires_at !== undefined &&
-      session.expires_at * 1000 > Date.now()
-    );
-  }, [session]);
+  const isLoggedIn = checkIsLoggedIn();
 
-  useEffect(() => {
+  if (loggedIn === undefined) {
     setLoggedIn(session !== null && isLoggedIn);
-  }, [isLoggedIn, session]);
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -136,10 +150,18 @@ const Root = () => {
         value={{
           jobSeeker,
           setJobSeeker,
-          companiesContext,
-          setCompaniesContext,
-          jobsContext,
-          setJobsContext
+          // companiesContext,
+          // setCompaniesContext,
+          companySearchFilters,
+          setCompanySearchFilters,
+          companyNav,
+          setCompanyNav,
+          // jobsContext,
+          // setJobsContext
+          jobSearchFilters,
+          setJobSearchFilters,
+          jobNav,
+          setJobNav
         }}
       >
         <Header />
