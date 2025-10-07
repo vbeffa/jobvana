@@ -318,6 +318,7 @@ export type Database = {
       }
       job_seekers: {
         Row: {
+          active_resume_id: string | null
           created_at: string
           first_name: string
           id: number
@@ -325,6 +326,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          active_resume_id?: string | null
           created_at?: string
           first_name: string
           id?: number
@@ -332,6 +334,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          active_resume_id?: string | null
           created_at?: string
           first_name?: string
           id?: number

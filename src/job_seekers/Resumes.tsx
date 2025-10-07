@@ -1,10 +1,14 @@
 import { StorageError } from '@supabase/storage-js';
-import { useCallback, useRef, useState } from 'react';
-import { FaDownload, FaTrash } from 'react-icons/fa6';
-import type { JobSeeker } from '../Context';
+import _ from 'lodash';
+import { useCallback, useContext, useRef, useState } from 'react';
+import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheck, FaDownload, FaTrash } from 'react-icons/fa6';
+import { JobSeekerContext, type JobSeeker } from '../Context';
 import Button from '../controls/Button';
 import JobvanaError from '../JobvanaError';
 import LoadingModal from '../LoadingModal';
+import UpdatingModal from '../UpdatingModal';
+import useJobSeeker from './useJobSeeker';
 import useResumes from './useResumes';
 
 export type ResumeProps = {
@@ -14,11 +18,14 @@ export type ResumeProps = {
 const Resumes = ({ jobSeeker }: ResumeProps) => {
   const { resumes, isPending, upload, download, deleteResume, error, refetch } =
     useResumes(jobSeeker.user_id);
+  const { setJobSeeker } = useContext(JobSeekerContext);
+  const { updateJobSeeker } = useJobSeeker();
 
   const ref = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
 
-  const [deleteError, setDeleteError] = useState<StorageError>();
+  const [storageError, setStorageError] = useState<Error>();
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -40,11 +47,11 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       replace = true;
     }
     setIsUploading(true);
-    setDeleteError(undefined);
+    setStorageError(undefined);
     try {
       const { data, error } = await upload(file, replace);
       if (error) {
-        setDeleteError(error);
+        setStorageError(error);
       } else {
         console.log(data);
         alert(`Uploaded ${file.name}`);
@@ -59,16 +66,36 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
     }
   }, [file, refetch, resumes, upload]);
 
+  const setActive = useCallback(
+    async (name: string, active: boolean) => {
+      setIsUpdating(true);
+      setStorageError(undefined);
+      try {
+        const toUpdate = _.cloneDeep(jobSeeker);
+        toUpdate.active_resume_id = active
+          ? (resumes?.find((resume) => resume.name === name)?.id ?? null)
+          : null;
+        const updated = await updateJobSeeker(toUpdate);
+        setJobSeeker(updated);
+      } catch (err) {
+        setStorageError(err as Error);
+      } finally {
+        setIsUpdating(false);
+      }
+    },
+    [jobSeeker, resumes, setJobSeeker, updateJobSeeker]
+  );
+
   const doDownload = useCallback(
     async (name: string) => {
       setIsDownloading(true);
-      setDeleteError(undefined);
+      setStorageError(undefined);
       try {
         const { data, error } = await download(name);
         if (error) {
-          setDeleteError(error);
+          setStorageError(error);
         } else if (!data) {
-          setDeleteError(new StorageError('Could not download resume'));
+          setStorageError(new StorageError('Could not download resume'));
         } else {
           const link = document.createElement('a');
           link.href = window.URL.createObjectURL(data);
@@ -88,79 +115,122 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       if (!confirm(`Are you sure you want to delete ${name}?`)) {
         return;
       }
-      setDeleteError(undefined);
+      setStorageError(undefined);
       const { data, error } = await deleteResume(name);
       if (error) {
-        setDeleteError(error);
+        setStorageError(error);
       } else if (data?.length) {
         alert(`Deleted ${data[0].name}`);
         await refetch();
       } else {
-        setDeleteError(new StorageError('Could not delete resume'));
+        setStorageError(new StorageError('Could not delete resume'));
       }
     },
     [deleteResume, refetch]
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <>
       {isPending && <LoadingModal />}
-      <div className="flex justify-between">
-        <div className="content-center">Your resumes:</div>
+      {isUpdating && <UpdatingModal />}
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between">
+          <div className="content-center">Your resumes:</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th className="w-1/2">Name</th>
+              <th className="w-3/10">Modified</th>
+              <th className="w-1/5">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {resumes
+              ?.sort(
+                (r1, r2) =>
+                  new Date(r2.updated_at).getTime() -
+                  new Date(r1.updated_at).getTime()
+              )
+              .map((resume, idx) => (
+                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                  <td>
+                    <div className="flex justify-between">
+                      {resume.name}
+                      {jobSeeker.active_resume_id === resume.id && (
+                        <div className="text-blue-400 content-center">
+                          <FaCheckCircle />
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex justify-center">
+                      {new Date(resume.updated_at).toLocaleDateString()}
+                    </div>
+                  </td>
+                  <td className="content-center">
+                    <div className="flex justify-end pr-[25%] text-blue-400 gap-2">
+                      {jobSeeker.active_resume_id !== resume.id && (
+                        <FaCheck
+                          className="cursor-pointer"
+                          onClick={() => setActive(resume.name, true)}
+                        />
+                      )}
+                      {jobSeeker.active_resume_id === resume.id && (
+                        <FaCheckCircle
+                          className="cursor-pointer"
+                          onClick={() => setActive(resume.name, false)}
+                        />
+                      )}
+                      <FaDownload
+                        className="cursor-pointer"
+                        onClick={() => doDownload(resume.name)}
+                      />
+                      <FaTrash
+                        className="cursor-pointer"
+                        onClick={() => doDelete(resume.name)}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <div className="flex flex-row gap-2">
+          <input
+            id="file_input"
+            type="file"
+            ref={ref}
+            accept="application/pdf"
+            className="pl-1 text-sm border-[0.5px] border-blue-400 content-center"
+            onChange={handleFileChange}
+          />
+          <Button label="Upload" disabled={file === null} onClick={doUpload} />
+        </div>
+        <div className="flex flex-col">
+          Notes:
+          <div className="flex flex-row gap-1 text-sm">
+            <div className="text-blue-400 content-center">
+              <FaCheckCircle />
+            </div>
+            = active resume; click to unset
+          </div>
+          <div className="flex flex-row gap-1 text-sm">
+            <div className="text-blue-400 content-center">
+              <FaCheck />
+            </div>
+            = inactive resume; click to make active
+          </div>
+        </div>
+        <div className="text-center col-span-2">
+          {error && <JobvanaError error={error} />}
+          {isDownloading && <>Downloading...</>}
+          {isUploading && <>Uploading...</>}
+          {storageError && <JobvanaError error={storageError} />}
+        </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Modified</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {resumes
-            ?.sort(
-              (r1, r2) =>
-                new Date(r2.updated_at).getTime() -
-                new Date(r1.updated_at).getTime()
-            )
-            .map((resume, idx) => (
-              <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                <td>{resume.name}</td>
-                <td>{resume.updated_at}</td>
-                <td className="content-center">
-                  <div className="flex justify-center text-blue-400 gap-2">
-                    <FaDownload
-                      className="cursor-pointer"
-                      onClick={() => doDownload(resume.name)}
-                    />
-                    <FaTrash
-                      className="cursor-pointer"
-                      onClick={() => doDelete(resume.name)}
-                    />
-                  </div>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-      <div className="flex flex-row gap-2">
-        <input
-          id="file_input"
-          type="file"
-          ref={ref}
-          accept="application/pdf"
-          className="pl-1 text-sm border-[0.5px] border-blue-400 content-center"
-          onChange={handleFileChange}
-        />
-        <Button label="Upload" disabled={file === null} onClick={doUpload} />
-      </div>
-      <div className="text-center col-span-2">
-        {error && <JobvanaError error={error} />}
-        {isDownloading && <>Downloading...</>}
-        {isUploading && <>Uploading...</>}
-        {deleteError && <JobvanaError error={deleteError} />}
-      </div>
-    </div>
+    </>
   );
 };
 
