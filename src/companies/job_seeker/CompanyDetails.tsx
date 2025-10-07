@@ -3,7 +3,6 @@ import JobsList from '../../jobs/job_seekers/JobsList';
 import JobvanaError from '../../JobvanaError';
 import LoadingModal from '../../LoadingModal';
 import Section from '../../Section';
-import type { InterviewProcess } from '../company/utils';
 import CompanyEmailDisplay from '../CompanyEmailDisplay';
 import InterviewProcessDisplay from '../InterviewProcessDisplay';
 import { findHeadquarters, isHeadquarters } from '../utils';
@@ -67,7 +66,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
         {company.interview_process ? (
           <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
             <InterviewProcessDisplay
-              interviewProcess={company.interview_process as InterviewProcess}
+              interviewProcess={company.interview_process}
             />
           </div>
         ) : null}

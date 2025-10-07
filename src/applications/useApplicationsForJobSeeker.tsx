@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import _ from 'lodash';
+import { useCallback, useMemo } from 'react';
 import type { InterviewProcess } from '../companies/company/utils';
 import supabase from '../db/supabase';
 import type {
@@ -8,19 +9,18 @@ import type {
   Job as DbJob
 } from '../types';
 
-export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'> & {
-  // numApplications: number | null;
-};
+export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'>;
 export type Job = Pick<DbJob, 'id' | 'title'>;
 
 export type Application = DbApplication & {
-  job: Job & { applications: Array<Pick<DbApplication, 'status'>> };
+  job: Job;
   company: Company;
 };
 
 export type Applications = {
   applications: Array<Application> | undefined;
   isPending: boolean;
+  total: (companyId: number) => Promise<number | undefined>;
 };
 
 const useApplicationsForJobSeeker = ({
@@ -38,8 +38,7 @@ const useApplicationsForJobSeeker = ({
           jobs(
             id,
             title,
-            companies!inner(id, name, interview_process, company_applications!company_id(num_applications)),
-            applications(status)
+            companies!inner(id, name, interview_process)
           )`
         )
         .filter('job_seeker_id', 'eq', jobSeekerId);
@@ -57,8 +56,8 @@ const useApplicationsForJobSeeker = ({
             new Date(application2.created_at).getTime()
         )
         .map((applicationData) => ({
-          ...applicationData,
-          job: applicationData.jobs,
+          ..._.omit(applicationData, 'jobs'),
+          job: _.pick(applicationData.jobs, 'id', 'title'),
           company: {
             ...applicationData.jobs.companies,
             interview_process: applicationData.jobs.companies
@@ -68,10 +67,21 @@ const useApplicationsForJobSeeker = ({
         })),
     [applicationsData]
   );
+  console.log(applications);
+
+  const total = useCallback(async (companyId: number) => {
+    const { data } = await supabase
+      .from('company_applications')
+      .select('*')
+      .filter('company_id', 'eq', companyId);
+    console.log(data);
+    return data?.[0].num_applications ?? undefined;
+  }, []);
 
   return {
     applications,
-    isPending
+    isPending,
+    total
   };
 };
 

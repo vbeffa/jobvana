@@ -36,7 +36,7 @@ const JobDetails = ({
     }
     if (
       job.applications.filter((app) => app.status === 'accepted').length >=
-      job.company.interviewProcess.pipeline_size
+      (job.company.interviewProcess?.pipeline_size ?? 1)
     ) {
       alert('Pipeline size limit reached.');
       return;

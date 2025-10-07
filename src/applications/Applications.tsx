@@ -7,6 +7,7 @@ import JobLink from '../jobs/JobLink';
 import JobvanaError from '../JobvanaError';
 import LoadingModal from '../LoadingModal';
 import UpdatingModal from '../UpdatingModal';
+import CompanyApplications from './CompanyApplications';
 import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 
 const Applications = () => {
@@ -76,16 +77,7 @@ const Applications = () => {
                       </div>
                     </td>
                     <td>
-                      <div className="flex justify-center">
-                        {
-                          application.job.applications.filter(
-                            (app) =>
-                              app.status === 'submitted' ||
-                              app.status === 'accepted'
-                          ).length
-                        }{' '}
-                        / {application.company.interview_process?.pipeline_size}
-                      </div>
+                      <CompanyApplications application={application} />
                     </td>
                     <td className="content-center">
                       <div className="flex justify-center text-blue-400">
@@ -101,8 +93,19 @@ const Applications = () => {
                 ))}
               </tbody>
             </table>
-            Notes: Total Applications = Number of submitted or accepted
-            applications / Company pipeline size
+            <div>Notes:</div>
+            <div className="flex flex-row text-sm gap-2">
+              <div className="content-center">* Total Applications</div>
+              <div className="content-center">=</div>
+              <div>
+                <div className="border-b-[0.5px]">
+                  Number of submitted or accepted applications for company
+                </div>
+                <div className="border-t-[0.5px] flex justify-center">
+                  Company pipeline size
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -71,7 +71,7 @@ const useCompany = (id?: number): CompanyH => {
       num_employees: company.num_employees,
       user_id: company.user_id,
       contact_email: company.contact_email,
-      interview_process: company.interview_process as InterviewProcess,
+      interview_process: company.interview_process as InterviewProcess | null,
       jobs: company.jobs,
       addresses: company.company_addresses,
       industry: company.industries,

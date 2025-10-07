@@ -15,7 +15,7 @@ import type {
 export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'> & {
     techStack: Array<SkillVersion>;
-    interviewProcess: InterviewProcess;
+    interviewProcess: InterviewProcess | null;
   };
   address: CompanyAddress | null;
   jobRoles: Array<JobRole>;
@@ -72,7 +72,8 @@ const useJob = (id: number): JobH => {
       company: {
         id: job.companies.id,
         name: job.companies.name,
-        interviewProcess: job.companies.interview_process as InterviewProcess,
+        interviewProcess: job.companies
+          .interview_process as InterviewProcess | null,
         techStack: job.companies.company_tech_stacks.map(
           (techStack) => techStack.skill_versions
         )
