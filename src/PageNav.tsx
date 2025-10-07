@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 
 export const PAGE_NAV_HEIGHT = 16;
 export const PAGE_NAV_HEIGHT_PX = 4 * PAGE_NAV_HEIGHT;
@@ -30,11 +32,8 @@ const PageNav = ({
     [pageSize, total]
   );
 
-  const navButtonStyles = `px-1
-                           cursor-pointer
-                           hover:text-gray-700
-                           disabled:cursor-default
-                           disabled:text-gray-300`;
+  const navButtonStyles = (disabled: boolean) =>
+    `content-center text-sm ${disabled ? 'text-gray-200' : 'text-gray-400 cursor-pointer'}`;
 
   return (
     <div
@@ -43,23 +42,13 @@ const PageNav = ({
       <div className="text-gray-500 w-full flex flex-col justify-evenly items-center">
         {total !== 0 && (
           <div className="w-full flex flex-row justify-center gap-1">
-            <input
-              type="button"
-              disabled={page === 1}
-              className={navButtonStyles}
-              onClick={() => onSetPage(1, false)}
-              value="≪"
-            />
-            <input
-              type="button"
-              disabled={page === 1}
-              className={navButtonStyles}
-              onClick={() => {
-                onSetPage(page - 1, false);
-              }}
-              value="<"
-            />
-            <div className="content-center ml-2">
+            <div className={navButtonStyles(page === 1)}>
+              <FaAngleDoubleLeft onClick={() => onSetPage(1, false)} />
+            </div>
+            <div className={navButtonStyles(page === 1)}>
+              <FaAngleLeft onClick={() => onSetPage(page - 1, false)} />
+            </div>
+            <div className="content-center ml-1">
               <input
                 id="page"
                 type="number"
@@ -89,21 +78,15 @@ const PageNav = ({
               />
             </div>
             <div className="content-center">of</div>
-            <div className="content-center">{numPages}</div>
-            <input
-              type="button"
-              disabled={page === numPages}
-              className={navButtonStyles}
-              onClick={() => onSetPage(page + 1, false)}
-              value=">"
-            />
-            <input
-              type="button"
-              disabled={page === numPages}
-              className={navButtonStyles}
-              onClick={() => numPages && onSetPage(numPages, false)}
-              value="≫"
-            />
+            <div className="content-center mr-1">{numPages}</div>
+            <div className={navButtonStyles(page === numPages)}>
+              <FaAngleRight onClick={() => onSetPage(page + 1, false)} />
+            </div>
+            <div className={navButtonStyles(page === numPages)}>
+              <FaAngleDoubleRight
+                onClick={() => numPages && onSetPage(numPages, false)}
+              />
+            </div>
           </div>
         )}
         <div>

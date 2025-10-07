@@ -23,7 +23,7 @@ const SummaryCardsContainer = ({
     ? 'h-[calc(100dvh-237px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX + PAGE_NAV_HEIGHT_PX = 80 + 16 + 77 + 64
     : 'h-[calc(100dvh-168px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + TITLE_TOTAL_HEIGHT_PX = 80 + 16 + 72
 
-  return <div className={`${height} overflow-y-auto`}>{children}</div>;
+  return <div className={`${height} truncate overflow-y-auto`}>{children}</div>;
 };
 
 export default SummaryCardsContainer;
