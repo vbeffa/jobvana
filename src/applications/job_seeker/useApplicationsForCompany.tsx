@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import supabase from '../db/supabase';
+import supabase from '../../db/supabase';
 
 export type Applications = {
   total: number | undefined;

@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
 import { FaDownload, FaFileCircleMinus } from 'react-icons/fa6';
-import { getUserType } from '../auth/utils';
-import supabase from '../db/supabase';
-import JobLink from '../jobs/JobLink';
-import JobvanaError from '../JobvanaError';
-import Modal from '../Modal';
+import { getUserType } from '../../auth/utils';
+import supabase from '../../db/supabase';
+import JobLink from '../../jobs/JobLink';
+import JobvanaError from '../../JobvanaError';
+import Modal from '../../Modal';
 import ApplicationResume from './ApplicationResume';
 import CompanyApplications from './CompanyApplications';
 import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';

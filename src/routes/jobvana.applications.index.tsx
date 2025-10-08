@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useContext } from 'react';
-import Applications from '../applications/Applications';
+import Applications from '../applications/job_seeker/Applications';
 import { getUserType } from '../auth/utils';
 import { CompanyContext, JobSeekerContext } from '../Context';
 

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
-import ApplicationsList from '../../applications/ApplicationsList';
-import useApplicationsForJobSeeker from '../../applications/useApplicationsForJobSeeker';
+import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
+import useApplicationsForJobSeeker from '../../applications/job_seeker/useApplicationsForJobSeeker';
 import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import type { JobSeeker } from '../../Context';

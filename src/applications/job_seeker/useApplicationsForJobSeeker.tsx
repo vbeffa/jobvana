@@ -1,14 +1,14 @@
 import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useCallback, useMemo } from 'react';
-import type { InterviewProcess } from '../companies/company/utils';
-import type { JobSeeker } from '../Context';
-import supabase from '../db/supabase';
+import type { InterviewProcess } from '../../companies/company/utils';
+import type { JobSeeker } from '../../Context';
+import supabase from '../../db/supabase';
 import type {
   Application as DbApplication,
   Company as DbCompany,
   Job as DbJob
-} from '../types';
+} from '../../types';
 
 export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'>;
 export type Job = Pick<DbJob, 'id' | 'title'>;

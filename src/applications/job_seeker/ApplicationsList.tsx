@@ -24,14 +24,6 @@ const ApplicationsList = ({ applications }: ApplicationsListParams) => {
       <li>{numAccepted} accepted</li>
       <li>{numDeclined} declined</li>
       <li>{numWithdrawn} withdrawn</li>
-      {/* {applications.map((application) => (
-        <li key={application.id}>
-          <ApplicationLink
-            applicationId={application.id}
-            jobTitle={job.title}
-          />
-        </li>
-      ))} */}
     </ul>
   );
 };
