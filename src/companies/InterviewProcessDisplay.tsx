@@ -1,5 +1,11 @@
 import { capitalize } from 'lodash';
-import { FaTriangleExclamation } from 'react-icons/fa6';
+import { FaHome } from 'react-icons/fa';
+import {
+  FaBuilding,
+  FaPhone,
+  FaTriangleExclamation,
+  FaVideo
+} from 'react-icons/fa6';
 import Hr from '../Hr';
 import { type InterviewProcess, formatType } from './company/utils';
 
@@ -33,7 +39,15 @@ const InterviewProcessDisplay = ({
             <div key={idx} className="grid grid-cols-[20%_30%_20%_20%] gap-2">
               <div className="flex justify-center">{idx + 1}</div>
               <div>{formatType(round.type)}</div>
-              <div className="pl-1">{capitalize(round.location)}</div>
+              <div className="flex flex-row gap-1 pl-1">
+                <div className="text-blue-400 content-center">
+                  {round.location === 'video' && <FaVideo />}
+                  {round.location === 'phone' && <FaPhone />}
+                  {round.location === 'offline' && <FaHome />}
+                  {round.location === 'office' && <FaBuilding />}
+                </div>
+                {capitalize(round.location)}
+              </div>
               <div className="pl-1">
                 {round.duration} {round.durationUnit}
                 {round.duration !== 1 && 's'}
