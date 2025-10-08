@@ -77,7 +77,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                       </div>
                     </td>
                     <td>
-                      <CompanyApplications application={application} />
+                      <CompanyApplications {...application.company} />
                     </td>
                     <td className="content-center">
                       <div className="flex justify-end pr-[25%] text-blue-400 gap-2">

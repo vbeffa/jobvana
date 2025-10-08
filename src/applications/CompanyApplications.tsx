@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
 import useApplicationsForCompany from './useApplicationsForCompany';
-import type { Application } from './useApplicationsForJobSeeker';
+import type { Company } from './useApplicationsForJobSeeker';
 
-export type CompanyApplicationParams = {
-  application: Application;
-};
+export type CompanyApplicationParams = Pick<
+  Company,
+  'id' | 'interview_process'
+>;
 
-const CompanyApplications = ({ application }: CompanyApplicationParams) => {
-  const { total } = useApplicationsForCompany(application.company.id);
+const CompanyApplications = ({
+  id,
+  interview_process
+}: CompanyApplicationParams) => {
+  const { total } = useApplicationsForCompany(id);
 
   const capacity = useMemo(
-    () => application.company.interview_process?.pipeline_size,
-    [application.company.interview_process?.pipeline_size]
+    () => interview_process?.pipeline_size,
+    [interview_process?.pipeline_size]
   );
 
   return (
