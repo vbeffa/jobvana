@@ -13,7 +13,7 @@ const useApplicationsForCompany = (companyId: number): Applications => {
         .from('company_applications')
         .select('*')
         .filter('company_id', 'eq', companyId);
-      console.log(data);
+      // console.log(data);
       return data;
     }
   });

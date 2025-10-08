@@ -2,6 +2,7 @@ import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useCallback, useMemo } from 'react';
 import type { InterviewProcess } from '../companies/company/utils';
+import type { JobSeeker } from '../Context';
 import supabase from '../db/supabase';
 import type {
   Application as DbApplication,
@@ -23,7 +24,11 @@ export type Applications = {
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
   total: (companyId: number) => Promise<number | undefined>;
-  apply: (jobId: number, jobSeekerId: number) => Promise<void>;
+  apply: (
+    jobId: number,
+    jobSeeker: JobSeeker,
+    resumeName: string
+  ) => Promise<void>;
 };
 
 const useApplicationsForJobSeeker = ({
@@ -50,7 +55,7 @@ const useApplicationsForJobSeeker = ({
           )`
         )
         .filter('job_seeker_id', 'eq', jobSeekerId);
-      console.log(data);
+      // console.log(data);
       return data;
     }
   });
@@ -85,14 +90,43 @@ const useApplicationsForJobSeeker = ({
     return data?.[0].num_applications ?? undefined;
   }, []);
 
-  const apply = async (jobId: number, jobSeekerId: number) => {
-    const { data, error } = await supabase.from('applications').insert({
+  const apply = async (
+    jobId: number,
+    jobSeeker: JobSeeker,
+    resumeName: string
+  ) => {
+    const fromFile = `${jobSeeker.user_id}/${resumeName}`;
+    const toFile = `${jobId}/${jobSeeker.user_id}.pdf`;
+
+    const result = await supabase.storage
+      .from('resumes')
+      .copy(fromFile, toFile, {
+        destinationBucket: 'applications'
+      });
+    if (result.error) {
+      console.log(result.error);
+      throw result.error;
+    }
+    console.log(result.data);
+
+    const result2 = await supabase.storage.from('applications').info(toFile);
+    if (result2.error) {
+      console.log(result2.error);
+      throw result2.error;
+    }
+
+    const result3 = await supabase.from('applications').insert({
       job_id: jobId,
       job_seeker_id: jobSeekerId,
-      status: 'submitted'
+      status: 'submitted',
+      resume_path: result2.data.name
     });
+    if (result3.error) {
+      console.log(result3.error);
+      throw result3.error;
+    }
 
-    console.log(data, error);
+    console.log(result3.data);
   };
 
   return {

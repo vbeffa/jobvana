@@ -1,17 +1,18 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
-import { FaTrash } from 'react-icons/fa6';
+import { FaDownload, FaFileCircleMinus } from 'react-icons/fa6';
 import { getUserType } from '../auth/utils';
 import supabase from '../db/supabase';
 import JobLink from '../jobs/JobLink';
 import JobvanaError from '../JobvanaError';
 import Modal from '../Modal';
+import ApplicationResume from './ApplicationResume';
 import CompanyApplications from './CompanyApplications';
 import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 
-const Applications = () => {
+const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
   const { applications, isPending } = useApplicationsForJobSeeker({
-    jobSeekerId: 2
+    jobSeekerId
   });
   // const [applicationId, setApplicationId] = useState<number | null>(null);
   const userType = getUserType();
@@ -79,9 +80,16 @@ const Applications = () => {
                       <CompanyApplications application={application} />
                     </td>
                     <td className="content-center">
-                      <div className="flex justify-center text-blue-400">
+                      <div className="flex justify-end pr-[25%] text-blue-400 gap-2">
+                        {application.resume_path && (
+                          <ApplicationResume
+                            jobId={application.job_id}
+                            resumePath={application.resume_path}
+                            setError={setError}
+                          />
+                        )}
                         {application.status === 'submitted' && (
-                          <FaTrash
+                          <FaFileCircleMinus
                             className="cursor-pointer"
                             onClick={() => onWithdraw(application.id)}
                           />
@@ -104,6 +112,18 @@ const Applications = () => {
                   Company pipeline size
                 </div>
               </div>
+            </div>
+            <div className="flex flex-row gap-1 text-sm">
+              <div className="text-blue-400 content-center">
+                <FaDownload />
+              </div>
+              = download resume for application
+            </div>
+            <div className="flex flex-row gap-1 text-sm">
+              <div className="text-blue-400 content-center">
+                <FaFileCircleMinus />
+              </div>
+              = withdraw application
             </div>
           </div>
         )}

@@ -22,11 +22,11 @@ const JobDetails = ({
 }) => {
   const { job, error, isPlaceholderData, isPending } = useJob(id);
   const { resumes } = useResumes(jobSeeker.user_id);
-  const { applications } = useApplicationsForJobSeeker({
+  const { applications, apply, refetch } = useApplicationsForJobSeeker({
     jobSeekerId: jobSeeker.id
   });
 
-  const onApply = useCallback(() => {
+  const onApply = useCallback(async () => {
     if (!job) {
       return;
     }
@@ -34,17 +34,31 @@ const JobDetails = ({
       alert('Please upload a resume to apply for this job.');
       return;
     }
+    const activeResume = resumes.find(
+      (resume) => resume.id === jobSeeker.active_resume_id
+    );
+    if (/* should never happen */ !activeResume) {
+      alert('Please make a resume active to apply for this job.');
+      return;
+    }
     if (
       job.applications.filter((app) => app.status === 'accepted').length >=
-      (job.company.interviewProcess?.pipeline_size ?? 1)
+      (job.company.interviewProcess?.pipeline_size ?? 0)
     ) {
       alert('Pipeline size limit reached.');
       return;
     }
     if (confirm('Your resume will be sent to this company. Proceed?')) {
-      alert('Application sent!');
+      try {
+        await apply(id, jobSeeker, activeResume.name);
+        await refetch();
+        alert('Application sent!');
+      } catch (err) {
+        console.log(err);
+        alert(err);
+      }
     }
-  }, [job, resumes?.length]);
+  }, [apply, id, job, jobSeeker, refetch, resumes]);
 
   const application = useMemo(
     () => applications?.find((app) => app.job_id === id),

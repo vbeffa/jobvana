@@ -161,8 +161,6 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
     [activeResume?.name, deleteResume, refetch, resumes]
   );
 
-  console.log(isPending, isUpdating, isDownloading, isUploading, isDeleting);
-
   return (
     <>
       {isPending && <Modal type="loading" />}
