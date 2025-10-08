@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useCallback, useMemo } from 'react';
 import type { InterviewProcess } from '../companies/company/utils';
@@ -20,7 +20,10 @@ export type Application = DbApplication & {
 export type Applications = {
   applications: Array<Application> | undefined;
   isPending: boolean;
+  error?: Error;
+  refetch: () => Promise<QueryObserverResult>;
   total: (companyId: number) => Promise<number | undefined>;
+  apply: (jobId: number, jobSeekerId: number) => Promise<void>;
 };
 
 const useApplicationsForJobSeeker = ({
@@ -28,7 +31,12 @@ const useApplicationsForJobSeeker = ({
 }: {
   jobSeekerId: number;
 }): Applications => {
-  const { isPending, data: applicationsData } = useQuery({
+  const {
+    data: applicationsData,
+    isPending,
+    error,
+    refetch
+  } = useQuery({
     queryKey: ['applications', jobSeekerId],
     queryFn: async () => {
       const { data } = await supabase
@@ -67,7 +75,6 @@ const useApplicationsForJobSeeker = ({
         })),
     [applicationsData]
   );
-  console.log(applications);
 
   const total = useCallback(async (companyId: number) => {
     const { data } = await supabase
@@ -78,10 +85,23 @@ const useApplicationsForJobSeeker = ({
     return data?.[0].num_applications ?? undefined;
   }, []);
 
+  const apply = async (jobId: number, jobSeekerId: number) => {
+    const { data, error } = await supabase.from('applications').insert({
+      job_id: jobId,
+      job_seeker_id: jobSeekerId,
+      status: 'submitted'
+    });
+
+    console.log(data, error);
+  };
+
   return {
     applications,
     isPending,
-    total
+    error: error ?? undefined,
+    refetch,
+    total,
+    apply
   };
 };
 

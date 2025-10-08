@@ -1,6 +1,5 @@
 import { StorageError } from '@supabase/storage-js';
-import _ from 'lodash';
-import { useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FaCheck, FaDownload, FaTrash } from 'react-icons/fa6';
 import { JobSeekerContext, type JobSeeker } from '../Context';
@@ -27,6 +26,41 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const activeResume = useMemo(() => {
+    if (!jobSeeker.active_resume_id) {
+      return undefined;
+    }
+    return resumes?.find((resume) => resume.id === jobSeeker.active_resume_id);
+  }, [jobSeeker.active_resume_id, resumes]);
+
+  const setActive = useCallback(
+    async ({ id, name }: { id?: string; name?: string }) => {
+      const resumeId =
+        id ?? resumes?.find((resume) => resume.name === name)?.id;
+      if (!resumeId) {
+        return;
+      }
+      const toUpdate: JobSeeker = {
+        ...jobSeeker,
+        active_resume_id: resumeId
+      };
+      if (!id) {
+        setIsUpdating(true);
+      }
+      setStorageError(undefined);
+      try {
+        const updated = await updateJobSeeker(toUpdate);
+        setJobSeeker(updated);
+      } catch (err) {
+        setStorageError(err as Error);
+      } finally {
+        setIsUpdating(false);
+      }
+    },
+    [jobSeeker, resumes, setJobSeeker, updateJobSeeker]
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -36,8 +70,10 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
 
   const doUpload = useCallback(async () => {
     if (!file) {
+      alert('No file found!');
       return;
     }
+
     let replace = false;
     if (resumes?.find((resume) => resume.name.localeCompare(file.name) === 0)) {
       if (!confirm(`Resume ${file.name} already exists. Replace?`)) {
@@ -45,10 +81,14 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       }
       replace = true;
     }
+
     setIsUploading(true);
     setStorageError(undefined);
     try {
       const { data, error } = await upload(file, replace);
+      if (data) {
+        await setActive({ id: data.id });
+      }
       if (error) {
         setStorageError(error);
       } else {
@@ -63,27 +103,7 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       setIsUploading(false);
       setFile(null);
     }
-  }, [file, refetch, resumes, upload]);
-
-  const setActive = useCallback(
-    async (name: string, active: boolean) => {
-      setIsUpdating(true);
-      setStorageError(undefined);
-      try {
-        const toUpdate = _.cloneDeep(jobSeeker);
-        toUpdate.active_resume_id = active
-          ? (resumes?.find((resume) => resume.name === name)?.id ?? null)
-          : null;
-        const updated = await updateJobSeeker(toUpdate);
-        setJobSeeker(updated);
-      } catch (err) {
-        setStorageError(err as Error);
-      } finally {
-        setIsUpdating(false);
-      }
-    },
-    [jobSeeker, resumes, setJobSeeker, updateJobSeeker]
-  );
+  }, [file, refetch, resumes, setActive, upload]);
 
   const doDownload = useCallback(
     async (name: string) => {
@@ -111,27 +131,45 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
 
   const doDelete = useCallback(
     async (name: string) => {
+      if (activeResume?.name === name && resumes && resumes.length > 1) {
+        alert(
+          'This resume is active. Please set another one before deleting this one.'
+        );
+        return;
+      }
+
       if (!confirm(`Are you sure you want to delete ${name}?`)) {
         return;
       }
+
+      setIsDeleting(true);
       setStorageError(undefined);
-      const { data, error } = await deleteResume(name);
-      if (error) {
-        setStorageError(error);
-      } else if (data?.length) {
-        alert(`Deleted ${data[0].name}`);
-        await refetch();
-      } else {
-        setStorageError(new StorageError('Could not delete resume'));
+      try {
+        const { data, error } = await deleteResume(name);
+        if (error) {
+          setStorageError(error);
+        } else if (data?.length) {
+          alert(`Deleted ${data[0].name}`);
+          await refetch();
+        } else {
+          setStorageError(new StorageError('Could not delete resume'));
+        }
+      } finally {
+        setIsDeleting(false);
       }
     },
-    [deleteResume, refetch]
+    [activeResume?.name, deleteResume, refetch, resumes]
   );
+
+  console.log(isPending, isUpdating, isDownloading, isUploading, isDeleting);
 
   return (
     <>
       {isPending && <Modal type="loading" />}
       {isUpdating && <Modal type="updating" />}
+      {isDownloading && <Modal type="downloading" />}
+      {isUploading && <Modal type="uploading" />}
+      {isDeleting && <Modal type="deleting" />}
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
           <div className="content-center">Your resumes:</div>
@@ -173,13 +211,7 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
                       {jobSeeker.active_resume_id !== resume.id && (
                         <FaCheck
                           className="cursor-pointer"
-                          onClick={() => setActive(resume.name, true)}
-                        />
-                      )}
-                      {jobSeeker.active_resume_id === resume.id && (
-                        <FaCheckCircle
-                          className="cursor-pointer"
-                          onClick={() => setActive(resume.name, false)}
+                          onClick={() => setActive({ name: resume.name })}
                         />
                       )}
                       <FaDownload
@@ -213,7 +245,7 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
             <div className="text-blue-400 content-center">
               <FaCheckCircle />
             </div>
-            = active resume; click to unset
+            = active resume
           </div>
           <div className="flex flex-row gap-1 text-sm">
             <div className="text-blue-400 content-center">
@@ -224,8 +256,6 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
         </div>
         <div className="text-center col-span-2">
           {error && <JobvanaError error={error} />}
-          {isDownloading && <>Downloading...</>}
-          {isUploading && <>Uploading...</>}
           {storageError && <JobvanaError error={storageError} />}
         </div>
       </div>
