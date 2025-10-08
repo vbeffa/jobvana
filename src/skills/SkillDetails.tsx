@@ -1,6 +1,6 @@
 import PillContainer from '../containers/PillContainer';
 import JobvanaError from '../JobvanaError';
-import LoadingModal from '../LoadingModal';
+import Modal from '../Modal';
 import Section from '../Section';
 import SkillCategoryLink from '../skill_categories/SkillCategoryLink';
 import SkillsList from './SkillsList';
@@ -15,7 +15,7 @@ const SkillDetails = ({ id }: { id: number }) => {
   }
 
   if (isPending) {
-    return <LoadingModal />;
+    return <Modal type="loading" />;
   }
 
   if (!skill) {
@@ -26,7 +26,7 @@ const SkillDetails = ({ id }: { id: number }) => {
 
   return (
     <>
-      {isPlaceholderData && <LoadingModal />}
+      {isPlaceholderData && <Modal type="loading" />}
       <Section
         title={
           <>

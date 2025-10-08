@@ -1,7 +1,7 @@
 import PillContainer from '../../containers/PillContainer';
 import JobsList from '../../jobs/job_seekers/JobsList';
 import JobvanaError from '../../JobvanaError';
-import LoadingModal from '../../LoadingModal';
+import Modal from '../../Modal';
 import Section from '../../Section';
 import CompanyEmailDisplay from '../CompanyEmailDisplay';
 import InterviewProcessDisplay from '../InterviewProcessDisplay';
@@ -16,7 +16,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
   }
 
   if (isPending) {
-    return <LoadingModal />;
+    return <Modal type="loading" />;
   }
 
   if (!company) {
@@ -27,7 +27,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
 
   return (
     <div className="mx-4">
-      {isPlaceholderData && <LoadingModal />}
+      {isPlaceholderData && <Modal type="loading" />}
       <Section title={company.name}>
         <div className="flex flex-row gap-1">
           {

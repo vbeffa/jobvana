@@ -6,7 +6,7 @@ import type { JobSeeker } from '../../Context';
 import Button from '../../controls/Button';
 import useResumes from '../../job_seekers/useResumes';
 import JobvanaError from '../../JobvanaError';
-import LoadingModal from '../../LoadingModal';
+import Modal from '../../Modal';
 import Section from '../../Section';
 import SkillsList from '../../skills/SkillsList';
 import JobRoles from '../JobRoles';
@@ -56,7 +56,7 @@ const JobDetails = ({
   }
 
   if (isPending) {
-    return <LoadingModal />;
+    return <Modal type="loading" />;
   }
 
   if (!job) {
@@ -65,7 +65,7 @@ const JobDetails = ({
 
   return (
     <>
-      {isPlaceholderData && <LoadingModal />}
+      {isPlaceholderData && <Modal type="loading" />}
       <Section
         title={
           <div className="flex justify-between">

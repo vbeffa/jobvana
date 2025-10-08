@@ -5,8 +5,7 @@ import { getUserType } from '../auth/utils';
 import supabase from '../db/supabase';
 import JobLink from '../jobs/JobLink';
 import JobvanaError from '../JobvanaError';
-import LoadingModal from '../LoadingModal';
-import UpdatingModal from '../UpdatingModal';
+import Modal from '../Modal';
 import CompanyApplications from './CompanyApplications';
 import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 
@@ -44,8 +43,8 @@ const Applications = () => {
   return (
     <>
       <h1>{userType === 'job_seeker' && 'My'} Applications</h1>
-      {isSubmitting && <UpdatingModal />}
-      {isPending && <LoadingModal />}
+      {isSubmitting && <Modal type="updating" />}
+      {isPending && <Modal type="loading" />}
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         {!isPending && (

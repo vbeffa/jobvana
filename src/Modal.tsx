@@ -1,4 +1,13 @@
-const LoadingModal = () => {
+import _ from 'lodash';
+
+export type ModalType =
+  | 'loading'
+  | 'updating'
+  | 'uploading'
+  | 'downloading'
+  | 'deleting';
+
+const Modal = ({ type }: { type: ModalType }) => {
   return (
     <div className="relative">
       <div
@@ -6,10 +15,10 @@ const LoadingModal = () => {
                     bg-blue-300 rounded-lg text-center content-center
                     opacity-70`}
       >
-        Loading...
+        {_.capitalize(type)}...
       </div>
     </div>
   );
 };
 
-export default LoadingModal;
+export default Modal;

@@ -4,7 +4,7 @@ import { CompanyContext, type Company } from '../../Context';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import supabase from '../../db/supabase';
 import JobvanaError from '../../JobvanaError';
-import UpdatingModal from '../../UpdatingModal';
+import Modal from '../../Modal';
 import InterviewProcessDisplay from '../InterviewProcessDisplay';
 import { isValidInterviewProcess } from '../utils';
 import InterviewProcessEdit from './InterviewProcessEdit';
@@ -67,7 +67,7 @@ const MyCompanyInterviewProcess = ({
   return (
     <>
       {error && <JobvanaError error={error} />}
-      {isSubmitting && <UpdatingModal />}
+      {isSubmitting && <Modal type="updating" />}
       <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
         <EditDeleteButtons
           isEditing={isEditing}

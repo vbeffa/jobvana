@@ -5,8 +5,8 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import Button from '../../controls/Button';
+import Modal from '../../Modal';
 import SummaryCard from '../../SummaryCard';
-import UpdatingModal from '../../UpdatingModal';
 import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
 import MyJob from './MyJob';
 import useJobsForCompany, { type Job } from './useJobsForCompany';
@@ -101,7 +101,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer>
           <>
-            {updating && <UpdatingModal />}
+            {updating && <Modal type="updating" />}
             {selectedJobDetails ? (
               <MyJob
                 job={selectedJobDetails}

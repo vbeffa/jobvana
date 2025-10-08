@@ -6,8 +6,7 @@ import { FaCheck, FaDownload, FaTrash } from 'react-icons/fa6';
 import { JobSeekerContext, type JobSeeker } from '../Context';
 import Button from '../controls/Button';
 import JobvanaError from '../JobvanaError';
-import LoadingModal from '../LoadingModal';
-import UpdatingModal from '../UpdatingModal';
+import Modal from '../Modal';
 import useJobSeeker from './useJobSeeker';
 import useResumes from './useResumes';
 
@@ -131,8 +130,8 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
 
   return (
     <>
-      {isPending && <LoadingModal />}
-      {isUpdating && <UpdatingModal />}
+      {isPending && <Modal type="loading" />}
+      {isUpdating && <Modal type="updating" />}
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
           <div className="content-center">Your resumes:</div>

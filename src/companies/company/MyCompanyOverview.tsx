@@ -4,7 +4,7 @@ import { CompanyContext, type Company } from '../../Context';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import supabase from '../../db/supabase';
 import JobvanaError from '../../JobvanaError';
-import UpdatingModal from '../../UpdatingModal';
+import Modal from '../../Modal';
 import { isValidCompany, type ToUpdate } from '../utils';
 import CompanyOverviewDisplay from './CompanyOverviewDisplay';
 import MyCompanyOverviewEdit from './MyCompanyOverviewEdit';
@@ -54,7 +54,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   return (
     <>
       {error && <JobvanaError error={error} />}
-      {isSubmitting && <UpdatingModal />}
+      {isSubmitting && <Modal type="updating" />}
       <div className="relative grid grid-cols-[20%_65%] gap-y-2">
         <EditDeleteButtons
           isEditing={isEditing}
