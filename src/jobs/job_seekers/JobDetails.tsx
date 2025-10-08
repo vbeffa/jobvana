@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
+import ApplicationsList from '../../applications/ApplicationsList';
 import useApplicationsForJobSeeker from '../../applications/useApplicationsForJobSeeker';
 import CompanyLink from '../../companies/CompanyLink';
+import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import type { JobSeeker } from '../../Context';
 import Button from '../../controls/Button';
 import useResumes from '../../job_seekers/useResumes';
@@ -42,7 +44,7 @@ const JobDetails = ({
       return;
     }
     if (
-      job.applications.filter((app) => app.status === 'accepted').length >=
+      job.company.totalApplications >=
       (job.company.interviewProcess?.pipeline_size ?? 0)
     ) {
       alert('Pipeline size limit reached.');
@@ -111,14 +113,22 @@ const JobDetails = ({
       <Section title="Roles">
         <JobRoles {...job} />
       </Section>
-      <Section title="Skills" isLast={true}>
+      <Section title="Skills">
         <SkillsList skills={job.skills} />
       </Section>
-      {/* <Section title="Applications" isLast={true}>
-        {job.applications ? (
-          <ApplicationsList applications={job.applications} />
+      <Section title="Company Interview Process">
+        {job.company.interviewProcess ? (
+          <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
+            <InterviewProcessDisplay
+              interviewProcess={job.company.interviewProcess}
+              totalApplications={job.company.totalApplications}
+            />
+          </div>
         ) : null}
-      </Section> */}
+      </Section>
+      <Section title="All Applications" isLast={true}>
+        <ApplicationsList applications={job.applications} />
+      </Section>
     </>
   );
 };

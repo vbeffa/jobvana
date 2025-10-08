@@ -15,6 +15,7 @@ export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'> & {
     // techStack: Array<SkillVersion>;
     interviewProcess: InterviewProcess | null;
+    totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
   };
   address: CompanyAddress | null;
   jobRoles: Array<JobRole>;
@@ -48,7 +49,7 @@ const useJob = (id: number): JobH => {
         .select(
           `created_at, updated_at, type, description, salary_type, salary_low, salary_high, title,
           company_addresses(*),
-          companies!inner(id, name, interview_process),
+          companies!inner(id, name, interview_process, company_applications(num_applications)),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
           applications(status)`
@@ -72,10 +73,9 @@ const useJob = (id: number): JobH => {
         id: job.companies.id,
         name: job.companies.name,
         interviewProcess: job.companies
-          .interview_process as InterviewProcess | null
-        // techStack: job.companies.company_tech_stacks.map(
-        //   (techStack) => techStack.skill_versions
-        // )
+          .interview_process as InterviewProcess | null,
+        totalApplications:
+          job.companies.company_applications[0]?.num_applications ?? 0
       },
       address: job.company_addresses,
       jobRoles: job.job_roles

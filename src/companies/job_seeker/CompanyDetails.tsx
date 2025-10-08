@@ -67,6 +67,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
           <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
             <InterviewProcessDisplay
               interviewProcess={company.interview_process}
+              totalApplications={company.totalApplications}
             />
           </div>
         ) : null}

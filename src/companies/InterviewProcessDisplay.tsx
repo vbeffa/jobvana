@@ -4,9 +4,11 @@ import Hr from '../Hr';
 import { type InterviewProcess, formatType } from './company/utils';
 
 const InterviewProcessDisplay = ({
-  interviewProcess
+  interviewProcess,
+  totalApplications
 }: {
   interviewProcess: InterviewProcess;
+  totalApplications?: number;
 }) => {
   return (
     <>
@@ -41,8 +43,17 @@ const InterviewProcessDisplay = ({
         })}
       </div>
       <Hr />
-      Pipeline: {interviewProcess.pipeline_size} job seeker
-      {interviewProcess.pipeline_size !== 1 ? 's' : ''}
+      <div>
+        Pipeline size: {interviewProcess.pipeline_size} job seeker
+        {interviewProcess.pipeline_size !== 1 && 's'}
+      </div>
+      {totalApplications !== undefined && (
+        <div>
+          Current Pipeline: {totalApplications} total application
+          {totalApplications !== 1 && 's'} out of{' '}
+          {interviewProcess.pipeline_size}
+        </div>
+      )}
     </>
   );
 };

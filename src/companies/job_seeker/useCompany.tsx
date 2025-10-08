@@ -17,6 +17,7 @@ export type FullCompany = Company & {
   addresses: Array<CompanyAddress>;
   // techStack: Array<SkillVersion>;
   jobs: Array<CompanyJob>;
+  totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
 };
 
 export type Company = Omit<DbCompany, 'created_at'>;
@@ -46,7 +47,8 @@ const useCompany = (id?: number): CompanyH => {
           `id, name, description, industry_id, num_employees, user_id, contact_email, interview_process,
           industries(id, name),
           company_addresses(id, city, street, street_2, zip, state, phone, type),
-          jobs(id, title)`
+          jobs(id, title),
+          company_applications(num_applications)`
         )
         .filter('id', 'eq', id)
         .filter('jobs.status', 'eq', 'open');
@@ -73,10 +75,8 @@ const useCompany = (id?: number): CompanyH => {
       interview_process: company.interview_process as InterviewProcess | null,
       jobs: company.jobs,
       addresses: company.company_addresses,
-      industry: company.industries
-      // techStack: company.company_tech_stacks.map(
-      //   (techStackRow) => techStackRow.skill_versions
-      // )
+      industry: company.industries,
+      totalApplications: company.company_applications[0]?.num_applications ?? 0
     };
   }, [data?.company]);
 

@@ -51,7 +51,7 @@ const useApplicationsForJobSeeker = ({
           jobs(
             id,
             title,
-            companies!inner(id, name, interview_process)
+            companies!inner(id, name, interview_process, company_applications(num_applications))
           )`
         )
         .filter('job_seeker_id', 'eq', jobSeekerId);
