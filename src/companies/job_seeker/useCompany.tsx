@@ -15,7 +15,7 @@ export type CompanyJob = Pick<DbJob, 'id' | 'title'>;
 export type FullCompany = Company & {
   industry: DbIndustry;
   addresses: Array<CompanyAddress>;
-  techStack: Array<SkillVersion>;
+  // techStack: Array<SkillVersion>;
   jobs: Array<CompanyJob>;
 };
 
@@ -46,7 +46,6 @@ const useCompany = (id?: number): CompanyH => {
           `id, name, description, industry_id, num_employees, user_id, contact_email, interview_process,
           industries(id, name),
           company_addresses(id, city, street, street_2, zip, state, phone, type),
-          company_tech_stacks(skill_versions(id, skill_id, version, ordinal)),
           jobs(id, title)`
         )
         .filter('id', 'eq', id)
@@ -74,10 +73,10 @@ const useCompany = (id?: number): CompanyH => {
       interview_process: company.interview_process as InterviewProcess | null,
       jobs: company.jobs,
       addresses: company.company_addresses,
-      industry: company.industries,
-      techStack: company.company_tech_stacks.map(
-        (techStackRow) => techStackRow.skill_versions
-      )
+      industry: company.industries
+      // techStack: company.company_tech_stacks.map(
+      //   (techStackRow) => techStackRow.skill_versions
+      // )
     };
   }, [data?.company]);
 
