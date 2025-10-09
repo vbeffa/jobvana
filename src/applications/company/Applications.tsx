@@ -57,21 +57,21 @@ const Applications = ({ companyId }: { companyId: number }) => {
             <table>
               <thead>
                 <tr>
-                  <th>Job</th>
-                  <th>Job Seeker</th>
+                  <th className="min-w-[25%]">Job</th>
+                  <th className="min-w-[15%] whitespace-nowrap">Job Seeker</th>
                   <th>Applied</th>
                   <th>Status</th>
                   <th>Updated</th>
-                  <th>Actions</th>
+                  <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {applications?.map((application, idx) => (
                   <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                    <td>
+                    <td className="whitespace-nowrap">
                       <JobLink {...application.job} />
                     </td>
-                    <td>
+                    <td className="whitespace-nowrap">
                       {application.jobSeeker.first_name}{' '}
                       {application.jobSeeker.last_name}
                     </td>

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
-import { FaDownload, FaFileCircleXmark } from 'react-icons/fa6';
+import { FaDownload, FaEye, FaFileCircleXmark } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
 import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
@@ -54,21 +54,21 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             <table>
               <thead>
                 <tr>
-                  <th>Company</th>
-                  <th>Job</th>
+                  <th className="min-w-[15%]">Company</th>
+                  <th className="min-w-[25%]">Job</th>
                   <th>Applied</th>
                   <th>Status</th>
-                  <th>Total Applications*</th>
-                  <th>Actions</th>
+                  <th className="whitespace-nowrap">Total Applications*</th>
+                  <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {applications?.map((application, idx) => (
                   <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                    <td>
+                    <td className="whitespace-nowrap">
                       <CompanyLink {...application.company} />
                     </td>
-                    <td>
+                    <td className="whitespace-nowrap">
                       <JobLink {...application.job} />
                     </td>
                     <td>
@@ -85,12 +85,13 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                       <CompanyApplications {...application.company} />
                     </td>
                     <td className="content-center">
-                      <div className="flex justify-end pr-[25%] text-blue-400 gap-2">
+                      <div className="flex justify-center text-blue-400 gap-2">
                         <ApplicationResume
                           jobId={application.job_id}
                           resumePath={application.resume_path}
                           setError={setError}
                         />
+                        <FaEye className="cursor-pointer" />
                         {(application.status === 'submitted' ||
                           application.status === 'accepted') && (
                           <FaFileCircleXmark
@@ -122,6 +123,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                 <FaDownload />
               </div>
               = download resume for application
+            </div>
+            <div className="flex flex-row gap-1 text-sm">
+              <div className="text-blue-400 content-center">
+                <FaEye />
+              </div>
+              = view application details
             </div>
             <div className="flex flex-row gap-1 text-sm">
               <div className="text-blue-400 content-center">
