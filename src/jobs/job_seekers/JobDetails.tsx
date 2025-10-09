@@ -42,6 +42,7 @@ const JobDetails = ({
 
   const onApply = useCallback(async () => {
     if (!job) {
+      alert('Job is undefined.');
       return;
     }
     if (!resumes?.length) {
@@ -56,13 +57,10 @@ const JobDetails = ({
       return;
     }
     if (
-      job.company.totalApplications >=
-      (job.company.interviewProcess?.pipeline_size ?? 0)
+      confirm(
+        `Your active resume ${activeResume.name} will be sent to this company. Proceed?`
+      )
     ) {
-      alert('Pipeline size limit reached.');
-      return;
-    }
-    if (confirm('Your resume will be sent to this company. Proceed?')) {
       setIsApplying(true);
       setApplyError(undefined);
       try {
@@ -81,6 +79,20 @@ const JobDetails = ({
   const application = useMemo(
     () => applications?.find((app) => app.job_id === id),
     [applications, id]
+  );
+
+  // TODO remove once interviewProcess is not nullable
+  const noInterviewProcess = useMemo(
+    () => job && !job.company.interviewProcess,
+    [job]
+  );
+  const pipelineLimitReached = useMemo(
+    () =>
+      job &&
+      job.company.interviewProcess &&
+      job.company.totalApplications >=
+        job.company.interviewProcess.pipeline_size,
+    [job]
   );
 
   if (error) {
@@ -117,7 +129,21 @@ const JobDetails = ({
         </div>
         <div className="absolute right-0 top-7">
           {!application && (
-            <Button label="Apply" disabled={isApplying} onClick={onApply} />
+            <div className="flex flex-row gap-2">
+              <div className="text-sm text-gray-400 content-center">
+                {noInterviewProcess && <>No interview process</>}
+                {pipelineLimitReached && (
+                  <>Company pipeline size limit reached</>
+                )}
+              </div>
+              <Button
+                label="Apply"
+                disabled={
+                  noInterviewProcess || pipelineLimitReached || isApplying
+                }
+                onClick={onApply}
+              />
+            </div>
           )}
           {application && (
             <div className="flex flex-row gap-1 text-sm">
