@@ -70,7 +70,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
         setIsSubmitting(false);
       }
     },
-    [jobSeeker?.user_id]
+    [jobSeeker?.user_id, refetch]
   );
 
   return (
