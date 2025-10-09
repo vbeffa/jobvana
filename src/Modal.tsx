@@ -3,6 +3,7 @@ import _ from 'lodash';
 export type ModalType =
   | 'loading'
   | 'updating'
+  | 'applying'
   | 'uploading'
   | 'downloading'
   | 'deleting';

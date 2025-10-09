@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
 import useApplicationsForJobSeeker from '../../applications/job_seeker/useApplicationsForJobSeeker';
@@ -27,6 +27,8 @@ const JobDetails = ({
   const { applications, apply, refetch } = useApplicationsForJobSeeker({
     jobSeekerId: jobSeeker.id
   });
+  const [isApplying, setIsApplying] = useState(false);
+  const [applyError, setApplyError] = useState<Error>();
 
   const onApply = useCallback(async () => {
     if (!job) {
@@ -51,13 +53,17 @@ const JobDetails = ({
       return;
     }
     if (confirm('Your resume will be sent to this company. Proceed?')) {
+      setIsApplying(true);
+      setApplyError(undefined);
       try {
         await apply(id, jobSeeker, activeResume.name);
         await refetch();
         alert('Application sent!');
       } catch (err) {
         console.log(err);
-        alert(err);
+        setApplyError(err as Error);
+      } finally {
+        setIsApplying(false);
       }
     }
   }, [apply, id, job, jobSeeker, refetch, resumes]);
@@ -82,6 +88,8 @@ const JobDetails = ({
   return (
     <>
       {isPlaceholderData && <Modal type="loading" />}
+      {isApplying && <Modal type="applying" />}
+      {applyError && <JobvanaError error={applyError} />}
       <Section
         title={
           <div className="flex justify-between">
@@ -98,7 +106,9 @@ const JobDetails = ({
           {job.address ? `${job.address.city}, ${job.address.state}` : 'Remote'}
         </div>
         <div className="absolute right-0 top-7">
-          {!application && <Button label="Apply" onClick={onApply} />}
+          {!application && (
+            <Button label="Apply" disabled={isApplying} onClick={onApply} />
+          )}
           {application && (
             <div className="flex flex-row gap-1 text-sm">
               <div className="content-center">
