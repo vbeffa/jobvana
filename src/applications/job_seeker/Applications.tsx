@@ -85,7 +85,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                       <CompanyApplications {...application.company} />
                     </td>
                     <td className="content-center">
-                      <div className="flex justify-center text-blue-400 gap-2">
+                      <div className="flex justify-left pl-[25%] text-blue-400 gap-2">
                         <ApplicationResume
                           jobId={application.job_id}
                           resumePath={application.resume_path}
