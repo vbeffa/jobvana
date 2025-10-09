@@ -98,35 +98,30 @@ const useApplicationsForJobSeeker = ({
     const fromFile = `${jobSeeker.user_id}/${resumeName}`;
     const toFile = `${jobId}/${jobSeeker.user_id}.pdf`;
 
-    const result = await supabase.storage
-      .from('resumes')
-      .copy(fromFile, toFile, {
-        destinationBucket: 'applications'
-      });
-    if (result.error) {
-      console.log(result.error);
-      throw result.error;
-    }
-    console.log(result.data);
-
-    // const result2 = await supabase.storage.from('applications').info(toFile);
-    // if (result2.error) {
-    //   console.log(result2.error);
-    //   throw result2.error;
-    // }
-
-    const result3 = await supabase.from('applications').insert({
+    // TODO add a transaction for this
+    const result = await supabase.from('applications').insert({
       job_id: jobId,
       job_seeker_id: jobSeekerId,
       status: 'submitted',
       resume_path: toFile
     });
-    if (result3.error) {
-      console.log(result3.error);
-      throw result3.error;
+    if (result.error) {
+      console.log(result.error);
+      throw result.error;
     }
 
-    console.log(result3.data);
+    console.log(result.data);
+
+    const result2 = await supabase.storage
+      .from('resumes')
+      .copy(fromFile, toFile, {
+        destinationBucket: 'applications'
+      });
+    if (result2.error) {
+      console.log(result2.error);
+      throw result2.error;
+    }
+    console.log(result2.data);
   };
 
   return {
