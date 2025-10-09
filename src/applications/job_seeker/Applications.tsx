@@ -78,7 +78,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                     </td>
                     <td>
                       <div className="flex justify-center">
-                        {application.status && _.capitalize(application.status)}
+                        {_.capitalize(application.status)}
                       </div>
                     </td>
                     <td>

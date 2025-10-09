@@ -22,7 +22,7 @@ export type Database = {
           job_seeker_id: number
           reason: string | null
           resume_path: string
-          status: Database['public']['Enums']['application_status'] | null
+          status: Database['public']['Enums']['application_status']
           updated_at: string | null
         }
         Insert: {
@@ -32,7 +32,7 @@ export type Database = {
           job_seeker_id: number
           reason?: string | null
           resume_path: string
-          status?: Database['public']['Enums']['application_status'] | null
+          status?: Database['public']['Enums']['application_status']
           updated_at?: string | null
         }
         Update: {
@@ -42,7 +42,7 @@ export type Database = {
           job_seeker_id?: number
           reason?: string | null
           resume_path?: string
-          status?: Database['public']['Enums']['application_status'] | null
+          status?: Database['public']['Enums']['application_status']
           updated_at?: string | null
         }
         Relationships: [
