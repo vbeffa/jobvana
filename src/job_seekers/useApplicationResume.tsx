@@ -10,10 +10,6 @@ import supabase from '../db/supabase';
 export type ApplicationResume = {
   resume: Camelize<FileObjectV2> | undefined;
   isPending: boolean;
-  // upload: (
-  //   file: File,
-  //   replace?: boolean
-  // ) => ReturnType<StorageFileApi['upload']>;
   download: () => Promise<{
     data: Blob | null;
     error: StorageError | null;
@@ -40,7 +36,6 @@ const useApplicationResume = ({
   } = useQuery({
     queryKey: ['application_resumes', queryKey],
     queryFn: async () => {
-      // console.log(userId);
       const { data, error } = await supabase.storage
         .from('applications')
         .info(resumePath);
@@ -51,23 +46,6 @@ const useApplicationResume = ({
       return { data, error };
     }
   });
-
-  // const upload = useCallback(
-  //   async (file: File, replace?: boolean) => {
-  //     const result = replace
-  //       ? await supabase.storage
-  //           .from('resumes')
-  //           .update(`${userId}/${file.name}`, file)
-  //       : await supabase.storage
-  //           .from('resumes')
-  //           .upload(`${userId}/${file.name}`, file);
-  //     if (result.error) {
-  //       console.log(result.error);
-  //     }
-  //     return result;
-  //   },
-  //   [userId]
-  // );
 
   const download = useCallback(async () => {
     const { data, error } = await supabase.storage
@@ -86,7 +64,6 @@ const useApplicationResume = ({
   return {
     resume,
     isPending,
-    // upload,
     download,
     error: error ?? undefined
   };
