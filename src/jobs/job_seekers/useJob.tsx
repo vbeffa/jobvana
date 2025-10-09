@@ -24,7 +24,7 @@ export type FullJob = Job & {
   address: CompanyAddress | null;
   jobRoles: Array<JobRole>;
   skills: Array<Skill>;
-  applications: Array<Pick<Application, 'status'>>;
+  applicationStatuses: Array<Application['status']>;
 };
 
 export type Job = Omit<
@@ -83,9 +83,10 @@ const useJob = (id: number): JobH => {
           job.companies.company_applications[0]?.num_applications ?? 0
       },
       address: job.company_addresses,
-      jobRoles: job.job_roles
+      jobRoles: job.job_roles,
+      applicationStatuses: data.job.applications.map((app) => app.status)
     };
-  }, [data?.job]);
+  }, [data]);
 
   return {
     job,

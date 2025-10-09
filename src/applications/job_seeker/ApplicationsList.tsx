@@ -1,21 +1,17 @@
-import type { Application } from './useApplicationsForJobSeeker';
+import type { ApplicationStatus } from '../../types';
 
 export type ApplicationsListParams = {
-  applications: Array<Pick<Application, 'status'>>;
+  statuses: Array<ApplicationStatus>;
 };
 
-const ApplicationsList = ({ applications }: ApplicationsListParams) => {
-  const numSubmitted = applications.filter(
-    (app) => app.status === 'submitted'
+const ApplicationsList = ({ statuses }: ApplicationsListParams) => {
+  const numSubmitted = statuses.filter(
+    (status) => status === 'submitted'
   ).length;
-  const numAccepted = applications.filter(
-    (app) => app.status === 'accepted'
-  ).length;
-  const numDeclined = applications.filter(
-    (app) => app.status === 'declined'
-  ).length;
-  const numWithdrawn = applications.filter(
-    (app) => app.status === 'withdrawn'
+  const numAccepted = statuses.filter((status) => status === 'accepted').length;
+  const numDeclined = statuses.filter((status) => status === 'declined').length;
+  const numWithdrawn = statuses.filter(
+    (status) => status === 'withdrawn'
   ).length;
 
   return (

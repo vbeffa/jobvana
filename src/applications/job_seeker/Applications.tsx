@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
-import { FaDownload, FaEye, FaFileCircleXmark } from 'react-icons/fa6';
+import {
+  FaArrowUpRightFromSquare,
+  FaEye,
+  FaFileCircleXmark
+} from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
 import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
@@ -15,6 +19,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
     jobSeekerId
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
 
   const onWithdraw = useCallback(async (applicationId: number) => {
@@ -47,6 +52,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
       <h1>My Applications</h1>
       {isSubmitting && <Modal type="updating" />}
       {isPending && <Modal type="loading" />}
+      {isDownloading && <Modal type="downloading" />}
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         {!isPending && (
@@ -58,7 +64,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                   <th className="min-w-[25%]">Job</th>
                   <th>Applied</th>
                   <th>Status</th>
-                  <th className="whitespace-nowrap">Total Applications*</th>
+                  <th className="whitespace-nowrap">Total Applications</th>
                   <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
@@ -87,8 +93,8 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                     <td className="content-center">
                       <div className="flex justify-left pl-[25%] text-blue-400 gap-2">
                         <ApplicationResume
-                          jobId={application.job_id}
-                          resumePath={application.resume_path}
+                          resumePath={application.resumePath}
+                          setIsDownloading={setIsDownloading}
                           setError={setError}
                         />
                         <FaEye className="cursor-pointer" />
@@ -120,9 +126,9 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             </div>
             <div className="flex flex-row gap-1 text-sm">
               <div className="text-blue-400 content-center">
-                <FaDownload />
+                <FaArrowUpRightFromSquare />
               </div>
-              = download resume for application
+              = open resume for application in new tab
             </div>
             <div className="flex flex-row gap-1 text-sm">
               <div className="text-blue-400 content-center">

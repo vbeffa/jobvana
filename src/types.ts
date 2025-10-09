@@ -18,6 +18,7 @@ export type Params<
 };
 
 export type Application = Database['public']['Tables']['applications']['Row'];
+export type ApplicationStatus = Application['status'];
 export type Company = Omit<
   Database['public']['Tables']['companies']['Row'],
   'interview_process'

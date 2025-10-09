@@ -1,30 +1,26 @@
 import { StorageError } from '@supabase/storage-js';
-import {
-  useCallback,
-  useState,
-  type Dispatch,
-  type SetStateAction
-} from 'react';
-import { FaDownload } from 'react-icons/fa6';
+import { useCallback, type Dispatch, type SetStateAction } from 'react';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import useApplicationResume from '../job_seekers/useApplicationResume';
-import Modal from '../Modal';
 
 export type ApplicationResumeProps = {
-  jobId: number;
   resumePath: string;
+  setIsDownloading: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<Error | undefined>>;
 };
 
 const ApplicationResume = ({
-  jobId,
   resumePath,
+  setIsDownloading,
   setError
 }: ApplicationResumeProps) => {
-  const { resume, download } = useApplicationResume(jobId, resumePath);
-
-  const [isDownloading, setIsDownloading] = useState(false);
+  const { resume, download } = useApplicationResume({ resumePath });
 
   const doDownload = useCallback(async () => {
+    if (!resume) {
+      setError(Error('resume is undefined'));
+      return;
+    }
     setIsDownloading(true);
     setError(undefined);
     try {
@@ -36,23 +32,28 @@ const ApplicationResume = ({
       } else {
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(data);
-        link.download = `job_id_${jobId}_resume.pdf`;
+        link.target = '_blank';
+        // link.download = `job_id_${jobId}_resume.pdf`;
+        link.title = `job_id_${resume.name}_resume.pdf`;
         link.click();
         window.URL.revokeObjectURL(link.href);
       }
     } finally {
       setIsDownloading(false);
     }
-  }, [download, jobId, setError]);
+  }, [download, resume, setError, setIsDownloading]);
+
   if (!resume) {
     return null;
   }
 
   return (
     <>
-      {isDownloading && <Modal type="downloading" />}
       <div className="flex justify-center text-blue-400">
-        <FaDownload className="cursor-pointer" onClick={doDownload} />
+        <FaArrowUpRightFromSquare
+          className="cursor-pointer"
+          onClick={doDownload}
+        />
       </div>
     </>
   );

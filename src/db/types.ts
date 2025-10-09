@@ -14,6 +14,29 @@ export type Database = {
   }
   public: {
     Tables: {
+      application_resumes: {
+        Row: {
+          application_id: number
+          resume_path: string
+        }
+        Insert: {
+          application_id: number
+          resume_path: string
+        }
+        Update: {
+          application_id?: number
+          resume_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_resumes_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: true
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       applications: {
         Row: {
           created_at: string
@@ -21,7 +44,6 @@ export type Database = {
           job_id: number
           job_seeker_id: number
           reason: string | null
-          resume_path: string
           status: Database['public']['Enums']['application_status']
           updated_at: string | null
         }
@@ -31,8 +53,7 @@ export type Database = {
           job_id: number
           job_seeker_id: number
           reason?: string | null
-          resume_path: string
-          status?: Database['public']['Enums']['application_status']
+          status: Database['public']['Enums']['application_status']
           updated_at?: string | null
         }
         Update: {
@@ -41,7 +62,6 @@ export type Database = {
           job_id?: number
           job_seeker_id?: number
           reason?: string | null
-          resume_path?: string
           status?: Database['public']['Enums']['application_status']
           updated_at?: string | null
         }
@@ -329,7 +349,7 @@ export type Database = {
           first_name: string
           id: number
           last_name: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           active_resume_id?: string | null
@@ -337,7 +357,7 @@ export type Database = {
           first_name: string
           id?: number
           last_name: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           active_resume_id?: string | null
@@ -345,7 +365,7 @@ export type Database = {
           first_name?: string
           id?: number
           last_name?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -653,7 +673,14 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      is_company: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
+      is_job_seeker: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       address_type: 'headquarters' | 'office'

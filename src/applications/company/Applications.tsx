@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
-import { FaCheck, FaDownload, FaEye, FaX } from 'react-icons/fa6';
+import { FaArrowUpRightFromSquare, FaCheck, FaEye, FaX } from 'react-icons/fa6';
 import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
-import type { Application } from '../../types';
+import type { ApplicationStatus } from '../../types';
 import ApplicationResume from '../ApplicationResume';
 import useApplicationsForCompany from './useApplicationsForCompany';
 
@@ -14,10 +14,11 @@ const Applications = ({ companyId }: { companyId: number }) => {
     companyId
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
 
   const updateStatus = useCallback(
-    async (applicationId: number, status: Application['status']) => {
+    async (applicationId: number, status: ApplicationStatus) => {
       if (!confirm('Are you sure you want to decline this application?')) {
         return;
       }
@@ -50,6 +51,7 @@ const Applications = ({ companyId }: { companyId: number }) => {
       <h1>Applications</h1>
       {isSubmitting && <Modal type="updating" />}
       {isPending && <Modal type="loading" />}
+      {isDownloading && <Modal type="downloading" />}
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         {!isPending && (
@@ -94,8 +96,8 @@ const Applications = ({ companyId }: { companyId: number }) => {
                     <td className="content-center">
                       <div className="flex justify-start pl-[20%] text-blue-400 gap-2">
                         <ApplicationResume
-                          jobId={application.job_id}
-                          resumePath={application.resume_path}
+                          resumePath={application.resumePath}
+                          setIsDownloading={setIsDownloading}
                           setError={setError}
                         />
                         <FaEye className="cursor-pointer" />
@@ -125,9 +127,9 @@ const Applications = ({ companyId }: { companyId: number }) => {
             <div>Notes:</div>
             <div className="flex flex-row gap-1 text-sm">
               <div className="text-blue-400 content-center">
-                <FaDownload />
+                <FaArrowUpRightFromSquare />
               </div>
-              = download resume for application
+              = open resume for application in new tab
             </div>
             <div className="flex flex-row gap-1 text-sm">
               <div className="text-blue-400 content-center">

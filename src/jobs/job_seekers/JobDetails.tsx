@@ -147,7 +147,7 @@ const JobDetails = ({
         ) : null}
       </Section>
       <Section title="All Applications" isLast={true}>
-        <ApplicationsList applications={job.applications} />
+        <ApplicationsList statuses={job.applicationStatuses} />
       </Section>
     </>
   );

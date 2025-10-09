@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
 import type {
+  ApplicationStatus,
   Application as DbApplication,
   Job as DbJob,
   JobSeeker as DbJobSeeker
@@ -14,6 +15,8 @@ export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
 export type Application = DbApplication & {
   job: Job;
   jobSeeker: JobSeeker;
+  status: ApplicationStatus;
+  resumePath: string;
 };
 
 export type Applications = {
@@ -45,7 +48,8 @@ const useApplicationsForCompany = ({
             title,
             companies(id)
           ),
-          job_seekers!inner(first_name, last_name)`
+          job_seekers!inner(first_name, last_name),
+          application_resumes!inner(resume_path)`
         )
         .filter('jobs.companies.id', 'eq', companyId);
       // console.log(data);
@@ -64,7 +68,8 @@ const useApplicationsForCompany = ({
         .map((applicationData) => ({
           ..._.omit(applicationData, 'jobs'),
           job: _.pick(applicationData.jobs, 'id', 'title'),
-          jobSeeker: applicationData.job_seekers
+          jobSeeker: applicationData.job_seekers,
+          resumePath: applicationData.application_resumes.resume_path
         })),
     [applicationsData]
   );

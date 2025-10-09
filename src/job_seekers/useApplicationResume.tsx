@@ -21,16 +21,16 @@ export type ApplicationResume = {
   error?: Error;
 };
 
-const useApplicationResume = (
-  jobId: number,
-  resumePath: string
-): ApplicationResume => {
+const useApplicationResume = ({
+  resumePath
+}: {
+  resumePath: string;
+}): ApplicationResume => {
   const queryKey = useMemo(
     () => ({
-      jobId,
       resumePath
     }),
-    [jobId, resumePath]
+    [resumePath]
   );
 
   const {
@@ -40,7 +40,7 @@ const useApplicationResume = (
   } = useQuery({
     queryKey: ['application_resumes', queryKey],
     queryFn: async () => {
-      // console.log(resumePath);
+      // console.log(userId);
       const { data, error } = await supabase.storage
         .from('applications')
         .info(resumePath);

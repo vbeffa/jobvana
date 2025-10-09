@@ -5,6 +5,7 @@ import type { InterviewProcess } from '../../companies/company/utils';
 import type { JobSeeker } from '../../Context';
 import supabase from '../../db/supabase';
 import type {
+  ApplicationStatus,
   Application as DbApplication,
   Company as DbCompany,
   Job as DbJob
@@ -16,6 +17,8 @@ export type Job = Pick<DbJob, 'id' | 'title'>;
 export type Application = DbApplication & {
   job: Job;
   company: Company;
+  status: ApplicationStatus;
+  resumePath: string;
 };
 
 export type Applications = {
@@ -52,7 +55,8 @@ const useApplicationsForJobSeeker = ({
             id,
             title,
             companies!inner(id, name, interview_process, company_applications(num_applications))
-          )`
+          ),
+          application_resumes!inner(resume_path)`
         )
         .filter('job_seeker_id', 'eq', jobSeekerId);
       // console.log(data);
@@ -76,7 +80,8 @@ const useApplicationsForJobSeeker = ({
             interview_process: applicationData.jobs.companies
               .interview_process as InterviewProcess
             // numApplications: applicationData.jobs.companies.company_applications.
-          }
+          },
+          resumePath: applicationData.application_resumes.resume_path
         })),
     [applicationsData]
   );
@@ -99,29 +104,40 @@ const useApplicationsForJobSeeker = ({
     const toFile = `${jobId}/${jobSeeker.user_id}.pdf`;
 
     // TODO add a transaction for this
-    const result = await supabase.from('applications').insert({
-      job_id: jobId,
-      job_seeker_id: jobSeekerId,
-      status: 'submitted',
-      resume_path: toFile
-    });
-    if (result.error) {
-      console.log(result.error);
-      throw result.error;
+    const { data, error } = await supabase
+      .from('applications')
+      .insert({
+        job_id: jobId,
+        job_seeker_id: jobSeekerId,
+        status: 'submitted',
+        resume_path: toFile
+      })
+      .select();
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+    console.log(data);
+    const id = data[0].id;
+
+    const { error: error2 } = await supabase
+      .from('application_resumes')
+      .insert({ application_id: id, resume_path: toFile });
+    if (error2) {
+      console.log(error2);
+      throw error2;
     }
 
-    console.log(result.data);
-
-    const result2 = await supabase.storage
+    const { data: data3, error: error3 } = await supabase.storage
       .from('resumes')
       .copy(fromFile, toFile, {
         destinationBucket: 'applications'
       });
-    if (result2.error) {
-      console.log(result2.error);
-      throw result2.error;
+    if (error3) {
+      console.log(error3);
+      throw error3;
     }
-    console.log(result2.data);
+    console.log(data3);
   };
 
   return {
