@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
 import { FaDownload, FaFileCircleXmark } from 'react-icons/fa6';
+import CompanyLink from '../../companies/CompanyLink';
 import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
@@ -53,6 +54,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             <table>
               <thead>
                 <tr>
+                  <th>Company</th>
                   <th>Job</th>
                   <th>Applied</th>
                   <th>Status</th>
@@ -63,6 +65,9 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
               <tbody>
                 {applications?.map((application, idx) => (
                   <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                    <td>
+                      <CompanyLink {...application.company} />
+                    </td>
                     <td>
                       <JobLink {...application.job} />
                     </td>
