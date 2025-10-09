@@ -6,7 +6,7 @@ import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import type { Application } from '../../types';
-import ApplicationResume from '../job_seeker/ApplicationResume';
+import ApplicationResume from '../ApplicationResume';
 import useApplicationsForCompany from './useApplicationsForCompany';
 
 const Applications = ({ companyId }: { companyId: number }) => {

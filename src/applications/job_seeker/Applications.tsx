@@ -6,7 +6,7 @@ import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
-import ApplicationResume from './ApplicationResume';
+import ApplicationResume from '../ApplicationResume';
 import CompanyApplications from './CompanyApplications';
 import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 

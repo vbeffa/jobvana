@@ -6,8 +6,8 @@ import {
   type SetStateAction
 } from 'react';
 import { FaDownload } from 'react-icons/fa6';
-import useApplicationResume from '../../job_seekers/useApplicationResume';
-import Modal from '../../Modal';
+import useApplicationResume from '../job_seekers/useApplicationResume';
+import Modal from '../Modal';
 
 export type ApplicationResumeProps = {
   jobId: number;
