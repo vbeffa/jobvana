@@ -111,7 +111,6 @@ const Jobs = () => {
         showFilters={showFilters}
         setShowFilters={setShowFilters}
         reset={() => {
-          console.log('reset');
           setPage(1);
           setJobId(null);
           setSearchFilters(INITIAL_SEARCH_FILTERS);
