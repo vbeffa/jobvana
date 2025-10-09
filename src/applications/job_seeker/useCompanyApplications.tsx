@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import supabase from '../../db/supabase';
 
-export type Applications = {
+export type CompanyApplications = {
   total: number | undefined;
 };
 
-const useApplicationsForCompany = (companyId: number): Applications => {
+const useCompanyApplications = (companyId: number): CompanyApplications => {
   const { data } = useQuery({
     queryKey: ['company_applications', companyId],
     queryFn: async () => {
@@ -23,4 +23,4 @@ const useApplicationsForCompany = (companyId: number): Applications => {
   };
 };
 
-export default useApplicationsForCompany;
+export default useCompanyApplications;

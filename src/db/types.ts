@@ -21,8 +21,9 @@ export type Database = {
           job_id: number
           job_seeker_id: number
           reason: string | null
-          resume_path: string | null
+          resume_path: string
           status: Database['public']['Enums']['application_status'] | null
+          updated_at: string | null
         }
         Insert: {
           created_at?: string
@@ -30,8 +31,9 @@ export type Database = {
           job_id: number
           job_seeker_id: number
           reason?: string | null
-          resume_path?: string | null
+          resume_path: string
           status?: Database['public']['Enums']['application_status'] | null
+          updated_at?: string | null
         }
         Update: {
           created_at?: string
@@ -39,8 +41,9 @@ export type Database = {
           job_id?: number
           job_seeker_id?: number
           reason?: string | null
-          resume_path?: string | null
+          resume_path?: string
           status?: Database['public']['Enums']['application_status'] | null
+          updated_at?: string | null
         }
         Relationships: [
           {

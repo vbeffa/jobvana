@@ -109,17 +109,17 @@ const useApplicationsForJobSeeker = ({
     }
     console.log(result.data);
 
-    const result2 = await supabase.storage.from('applications').info(toFile);
-    if (result2.error) {
-      console.log(result2.error);
-      throw result2.error;
-    }
+    // const result2 = await supabase.storage.from('applications').info(toFile);
+    // if (result2.error) {
+    //   console.log(result2.error);
+    //   throw result2.error;
+    // }
 
     const result3 = await supabase.from('applications').insert({
       job_id: jobId,
       job_seeker_id: jobSeekerId,
       status: 'submitted',
-      resume_path: result2.data.name
+      resume_path: toFile
     });
     if (result3.error) {
       console.log(result3.error);
