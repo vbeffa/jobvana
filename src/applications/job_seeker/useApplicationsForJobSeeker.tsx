@@ -69,8 +69,8 @@ const useApplicationsForJobSeeker = ({
       applicationsData
         ?.sort(
           (application1, application2) =>
-            new Date(application1.created_at).getTime() -
-            new Date(application2.created_at).getTime()
+            new Date(application2.created_at).getTime() -
+            new Date(application1.created_at).getTime()
         )
         .map((applicationData) => ({
           ..._.omit(applicationData, 'jobs'),
