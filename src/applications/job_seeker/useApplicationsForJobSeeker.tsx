@@ -109,8 +109,7 @@ const useApplicationsForJobSeeker = ({
       .insert({
         job_id: jobId,
         job_seeker_id: jobSeekerId,
-        status: 'submitted',
-        resume_path: toFile
+        status: 'submitted'
       })
       .select();
     if (error) {
