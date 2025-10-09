@@ -1,6 +1,7 @@
 import _ from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaCheck, FaEye, FaX } from 'react-icons/fa6';
+import { CompanyContext } from '../../Context';
 import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
@@ -10,6 +11,7 @@ import ApplicationResume from '../ApplicationResume';
 import useApplicationsForCompany from './useApplicationsForCompany';
 
 const Applications = ({ companyId }: { companyId: number }) => {
+  const { company } = useContext(CompanyContext);
   const { applications, isPending, refetch } = useApplicationsForCompany({
     companyId
   });
@@ -19,9 +21,19 @@ const Applications = ({ companyId }: { companyId: number }) => {
 
   const updateStatus = useCallback(
     async (applicationId: number, status: ApplicationStatus) => {
-      if (!confirm('Are you sure you want to decline this application?')) {
+      if (!company?.user_id) {
+        alert('Missing user id');
         return;
       }
+
+      if (
+        !confirm(
+          `Are you sure you want to ${status === 'accepted' ? 'accept' : 'decline'} this application?`
+        )
+      ) {
+        return;
+      }
+
       try {
         setIsSubmitting(true);
         const { error } = await supabase
@@ -35,15 +47,29 @@ const Applications = ({ companyId }: { companyId: number }) => {
         if (error) {
           console.log(error);
           setError(error);
-        } else {
-          await refetch();
-          alert('Application declined.');
+          return;
         }
+
+        const { error: error2 } = await supabase
+          .from('application_events')
+          .insert({
+            application_id: applicationId,
+            user_id: company.user_id,
+            event: status
+          });
+        if (error2) {
+          console.log(error2);
+          setError(error2);
+          return;
+        }
+
+        alert('Application declined.');
+        await refetch();
       } finally {
         setIsSubmitting(false);
       }
     },
-    [refetch]
+    [company?.user_id, refetch]
   );
 
   return (

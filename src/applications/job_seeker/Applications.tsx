@@ -1,11 +1,12 @@
 import _ from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import {
   FaArrowUpRightFromSquare,
   FaEye,
   FaFileCircleXmark
 } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
+import { JobSeekerContext } from '../../Context';
 import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
@@ -15,37 +16,62 @@ import CompanyApplications from './CompanyApplications';
 import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
 
 const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
-  const { applications, isPending } = useApplicationsForJobSeeker({
+  const { jobSeeker } = useContext(JobSeekerContext);
+  const { applications, isPending, refetch } = useApplicationsForJobSeeker({
     jobSeekerId
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
 
-  const onWithdraw = useCallback(async (applicationId: number) => {
-    if (!confirm('Are you sure you want to withdraw this application?')) {
-      return;
-    }
-    try {
-      setIsSubmitting(true);
-      const { error } = await supabase
-        .from('applications')
-        .update({
-          status: 'withdrawn',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', applicationId);
-
-      if (error) {
-        console.log(error);
-        setError(error);
-      } else {
-        alert('Application withdrawn.');
+  const onWithdraw = useCallback(
+    async (applicationId: number) => {
+      if (!jobSeeker?.user_id) {
+        alert('Missing user id');
+        return;
       }
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, []);
+
+      if (!confirm('Are you sure you want to withdraw this application?')) {
+        return;
+      }
+
+      try {
+        setIsSubmitting(true);
+        const { error } = await supabase
+          .from('applications')
+          .update({
+            status: 'withdrawn',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', applicationId);
+
+        if (error) {
+          console.log(error);
+          setError(error);
+          return;
+        }
+
+        const { error: error2 } = await supabase
+          .from('application_events')
+          .insert({
+            application_id: applicationId,
+            user_id: jobSeeker.user_id,
+            event: 'withdrawn'
+          });
+        if (error2) {
+          console.log(error2);
+          setError(error2);
+          return;
+        }
+
+        alert('Application withdrawn.');
+        await refetch();
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [jobSeeker?.user_id]
+  );
 
   return (
     <>

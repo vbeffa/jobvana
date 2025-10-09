@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      application_events: {
+        Row: {
+          application_id: number
+          created_at: string
+          event: Database['public']['Enums']['application_status']
+          id: number
+          user_id: string
+        }
+        Insert: {
+          application_id: number
+          created_at?: string
+          event: Database['public']['Enums']['application_status']
+          id?: number
+          user_id: string
+        }
+        Update: {
+          application_id?: number
+          created_at?: string
+          event?: Database['public']['Enums']['application_status']
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_events_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       application_resumes: {
         Row: {
           application_id: number

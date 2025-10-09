@@ -104,7 +104,7 @@ const useApplicationsForJobSeeker = ({
     const toFile = `${jobId}/${jobSeeker.user_id}.pdf`;
 
     // TODO add a transaction for this
-    const { data, error } = await supabase
+    const { data: appData, error: appErr } = await supabase
       .from('applications')
       .insert({
         job_id: jobId,
@@ -112,31 +112,43 @@ const useApplicationsForJobSeeker = ({
         status: 'submitted'
       })
       .select();
-    if (error) {
-      console.log(error);
-      throw error;
+    if (appErr) {
+      console.log(appErr);
+      throw appErr;
     }
-    console.log(data);
-    const id = data[0].id;
+    console.log(appData);
+    const id = appData[0].id;
 
-    const { error: error2 } = await supabase
-      .from('application_resumes')
-      .insert({ application_id: id, resume_path: toFile });
-    if (error2) {
-      console.log(error2);
-      throw error2;
+    const { error: appEventsErr } = await supabase
+      .from('application_events')
+      .insert({
+        application_id: id,
+        user_id: jobSeeker.user_id,
+        event: 'withdrawn'
+      });
+    if (appEventsErr) {
+      console.log(appEventsErr);
+      throw appEventsErr;
     }
 
-    const { data: data3, error: error3 } = await supabase.storage
+    const { data: storageData, error: storageErr } = await supabase.storage
       .from('resumes')
       .copy(fromFile, toFile, {
         destinationBucket: 'applications'
       });
-    if (error3) {
-      console.log(error3);
-      throw error3;
+    if (storageErr) {
+      console.log(storageErr);
+      throw storageErr;
     }
-    console.log(data3);
+    console.log(storageData);
+
+    const { error: appResumesErr } = await supabase
+      .from('application_resumes')
+      .insert({ application_id: id, resume_path: toFile });
+    if (appResumesErr) {
+      console.log(appResumesErr);
+      throw appResumesErr;
+    }
   };
 
   return {
