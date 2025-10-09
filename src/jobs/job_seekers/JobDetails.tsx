@@ -22,9 +22,19 @@ const JobDetails = ({
   id: number;
   jobSeeker: JobSeeker;
 }) => {
-  const { job, error, isPlaceholderData, isPending } = useJob(id);
+  const {
+    job,
+    error,
+    isPlaceholderData,
+    isPending,
+    refetch: refetchJob
+  } = useJob(id);
   const { resumes } = useResumes(jobSeeker.user_id);
-  const { applications, apply, refetch } = useApplicationsForJobSeeker({
+  const {
+    applications,
+    apply,
+    refetch: refetchApplications
+  } = useApplicationsForJobSeeker({
     jobSeekerId: jobSeeker.id
   });
   const [isApplying, setIsApplying] = useState(false);
@@ -57,7 +67,7 @@ const JobDetails = ({
       setApplyError(undefined);
       try {
         await apply(id, jobSeeker, activeResume.name);
-        await refetch();
+        await Promise.all([refetchJob(), refetchApplications()]);
         alert('Application sent!');
       } catch (err) {
         console.log(err);
@@ -66,7 +76,7 @@ const JobDetails = ({
         setIsApplying(false);
       }
     }
-  }, [apply, id, job, jobSeeker, refetch, resumes]);
+  }, [apply, id, job, jobSeeker, refetchApplications, refetchJob, resumes]);
 
   const application = useMemo(
     () => applications?.find((app) => app.job_id === id),

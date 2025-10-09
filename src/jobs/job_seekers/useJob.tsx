@@ -1,4 +1,8 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryObserverResult
+} from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
 import supabase from '../../db/supabase';
@@ -38,10 +42,11 @@ export type JobH = {
   error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 const useJob = (id: number): JobH => {
-  const { data, isPlaceholderData, isPending, error } = useQuery({
+  const { data, isPlaceholderData, isPending, error, refetch } = useQuery({
     queryKey: ['jobs', id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -86,7 +91,8 @@ const useJob = (id: number): JobH => {
     job,
     error: error ?? undefined,
     isPlaceholderData,
-    isPending
+    isPending,
+    refetch
   };
 };
 
