@@ -4,6 +4,7 @@ import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer'
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
+import type { Company } from '../../Context';
 import Button from '../../controls/Button';
 import Modal from '../../Modal';
 import SummaryCard from '../../SummaryCard';
@@ -13,12 +14,12 @@ import useJobsForCompany, { type Job } from './useJobsForCompany';
 
 type JobSummary = Pick<Job, 'id'>;
 
-const MyJobs = ({ companyId }: { companyId: number }) => {
+const MyJobs = ({ company }: { company: Company }) => {
   const [selectedJob, setSelectedJob] = useState<JobSummary>();
   const [updating, setUpdating] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const { jobs, refetch } = useJobsForCompany(companyId);
-  const { addresses } = useCompanyAddresses(companyId);
+  const { jobs, refetch } = useJobsForCompany({ companyId: company.id });
+  const { addresses } = useCompanyAddresses(company.id);
 
   if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
     setSelectedJob(jobs[0]);
@@ -29,14 +30,14 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
       id: 0,
       created_at: new Date().toISOString(),
       type: 'full_time',
-      company_id: companyId,
-      status: 'open',
+      company_id: company.id,
+      status: 'draft',
       title: 'New Job',
       description: '',
       job_roles: [
         {
           job_id: 0,
-          role_id: 1,
+          role_id: 0,
           percent: 100,
           role_level: 2
         }
@@ -46,9 +47,10 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
       salary_low: MIN_SALARY,
       salary_high: MAX_SALARY,
       updated_at: new Date().toISOString(),
-      company_address_id: null
+      company_address_id: null,
+      interview_process: company.interview_process
     }),
-    [companyId]
+    [company]
   );
 
   const selectedJobDetails = useMemo(
@@ -85,8 +87,10 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                 />
               ))
               .concat(
-                <div key={jobs.length} className="pt-4 flex justify-center">
-                  {!isAddingNew && (
+                isAddingNew ? (
+                  []
+                ) : (
+                  <div key={jobs.length} className="pt-4 flex justify-center">
                     <Button
                       label="New"
                       onClick={() => {
@@ -94,8 +98,8 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
                         setSelectedJob(undefined);
                       }}
                     />
-                  )}
-                </div>
+                  </div>
+                )
               )}
           </SummaryCardsContainer>
         </ResourceListContainer>
@@ -104,6 +108,7 @@ const MyJobs = ({ companyId }: { companyId: number }) => {
             {updating && <Modal type="updating" />}
             {selectedJobDetails ? (
               <MyJob
+                company={company}
                 job={selectedJobDetails}
                 isNew={isAddingNew}
                 addresses={addresses ?? []}

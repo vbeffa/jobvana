@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
-import useApplicationsForJobSeeker from '../../applications/job_seeker/useApplicationsForJobSeeker';
+import useApplications from '../../applications/job_seeker/useApplications';
 import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import type { JobSeeker } from '../../Context';
@@ -34,7 +34,7 @@ const JobDetails = ({
     applications,
     apply,
     refetch: refetchApplications
-  } = useApplicationsForJobSeeker({
+  } = useApplications({
     jobSeekerId: jobSeeker.id
   });
   const [isApplying, setIsApplying] = useState(false);
@@ -162,11 +162,11 @@ const JobDetails = ({
       <Section title="Skills">
         <SkillsList skills={job.skills} />
       </Section>
-      <Section title="Company Interview Process">
-        {job.company.interviewProcess ? (
+      <Section title="Interview Process">
+        {job.interviewProcess ? (
           <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
             <InterviewProcessDisplay
-              interviewProcess={job.company.interviewProcess}
+              interviewProcess={job.interviewProcess}
               totalApplications={job.company.totalApplications}
             />
           </div>

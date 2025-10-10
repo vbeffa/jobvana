@@ -468,6 +468,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
+          interview_process: Json | null
           salary_high: number
           salary_low: number
           salary_type: Database['public']['Enums']['job_salary_type']
@@ -482,6 +483,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          interview_process?: Json | null
           salary_high: number
           salary_low: number
           salary_type?: Database['public']['Enums']['job_salary_type']
@@ -496,6 +498,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          interview_process?: Json | null
           salary_high?: number
           salary_low?: number
           salary_type?: Database['public']['Enums']['job_salary_type']
@@ -718,7 +721,7 @@ export type Database = {
       address_type: 'headquarters' | 'office'
       application_status: 'submitted' | 'accepted' | 'declined' | 'withdrawn'
       job_salary_type: 'annual' | 'hourly'
-      job_status: 'open' | 'filled' | 'closed'
+      job_status: 'open' | 'filled' | 'closed' | 'draft'
       job_type: 'full_time' | 'part_time' | 'contract' | 'internship'
       user_type: 'company' | 'job_seeker'
     }
@@ -851,7 +854,7 @@ export const Constants = {
       address_type: ['headquarters', 'office'],
       application_status: ['submitted', 'accepted', 'declined', 'withdrawn'],
       job_salary_type: ['annual', 'hourly'],
-      job_status: ['open', 'filled', 'closed'],
+      job_status: ['open', 'filled', 'closed', 'draft'],
       job_type: ['full_time', 'part_time', 'contract', 'internship'],
       user_type: ['company', 'job_seeker'],
     },

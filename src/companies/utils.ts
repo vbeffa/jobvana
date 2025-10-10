@@ -49,7 +49,11 @@ export const findCompany = async (
     throw error;
   }
 
-  return data[0] as DbCompany | null;
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0] as DbCompany; // need cast for InterviewProcess
 };
 
 export const companyFields = (
@@ -93,7 +97,9 @@ export const isValidInterviewProcess = (process: InterviewProcess | null) => {
     process &&
     process.rounds.length > 0 &&
     process.rounds.length <= 5 &&
-    process.rounds.every(isValidInterviewRound)
+    process.rounds.every(isValidInterviewRound) &&
+    process.pipeline_size > 0 &&
+    process.pipeline_size <= 10
   );
 };
 

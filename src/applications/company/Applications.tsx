@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import _ from 'lodash';
 import { useCallback, useContext, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaCheck, FaEye, FaX } from 'react-icons/fa6';
@@ -8,11 +9,11 @@ import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import type { ApplicationStatus } from '../../types';
 import ApplicationResume from '../ApplicationResume';
-import useApplicationsForCompany from './useApplicationsForCompany';
+import useApplications from './useApplications';
 
 const Applications = ({ companyId }: { companyId: number }) => {
   const { company } = useContext(CompanyContext);
-  const { applications, isPending, refetch } = useApplicationsForCompany({
+  const { applications, isPending, refetch } = useApplications({
     companyId
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -126,7 +127,12 @@ const Applications = ({ companyId }: { companyId: number }) => {
                           setIsDownloading={setIsDownloading}
                           setError={setError}
                         />
-                        <FaEye className="cursor-pointer" />
+                        <Link
+                          to="/jobvana/applications/$id"
+                          params={{ id: application.id.toString() }}
+                        >
+                          <FaEye />
+                        </Link>
                         {application.status === 'submitted' && (
                           <FaCheck
                             className="cursor-pointer"

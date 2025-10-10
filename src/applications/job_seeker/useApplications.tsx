@@ -11,8 +11,8 @@ import type {
   Job as DbJob
 } from '../../types';
 
-export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'>;
 export type Job = Pick<DbJob, 'id' | 'title'>;
+export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'>;
 
 export type Application = DbApplication & {
   job: Job;
@@ -34,7 +34,7 @@ export type Applications = {
   ) => Promise<void>;
 };
 
-const useApplicationsForJobSeeker = ({
+const useApplications = ({
   jobSeekerId
 }: {
   jobSeekerId: number;
@@ -161,4 +161,4 @@ const useApplicationsForJobSeeker = ({
   };
 };
 
-export default useApplicationsForJobSeeker;
+export default useApplications;

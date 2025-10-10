@@ -3,6 +3,7 @@ import {
   useQuery,
   type QueryObserverResult
 } from '@tanstack/react-query';
+import _ from 'lodash';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
 import supabase from '../../db/supabase';
@@ -29,8 +30,10 @@ export type FullJob = Job & {
 
 export type Job = Omit<
   DbJob,
-  'id' | 'company_id' | 'status' | 'company_address_id'
->;
+  'id' | 'company_id' | 'status' | 'company_address_id' | 'interview_process'
+> & {
+  interviewProcess: InterviewProcess | null;
+};
 export type Skill = Pick<
   DbSkill,
   'id' | 'skill_category_id' | 'name' | 'abbreviation'
@@ -52,7 +55,7 @@ const useJob = (id: number): JobH => {
       const { data, error } = await supabase
         .from('jobs')
         .select(
-          `created_at, updated_at, type, description, salary_type, salary_low, salary_high, title,
+          `created_at, updated_at, type, description, salary_type, salary_low, salary_high, title, interview_process,
           company_addresses(*),
           companies!inner(id, name, interview_process, company_applications(num_applications)),
           job_roles(role_id, percent, role_level),
@@ -73,7 +76,14 @@ const useJob = (id: number): JobH => {
     }
     const job = data.job;
     return {
-      ...job,
+      ..._.omit(
+        job,
+        'id',
+        'company_id',
+        'status',
+        'company_address_id',
+        'interview_process'
+      ),
       company: {
         id: job.companies.id,
         name: job.companies.name,
@@ -84,7 +94,8 @@ const useJob = (id: number): JobH => {
       },
       address: job.company_addresses,
       jobRoles: job.job_roles,
-      applicationStatuses: data.job.applications.map((app) => app.status)
+      applicationStatuses: data.job.applications.map((app) => app.status),
+      interviewProcess: job.interview_process as InterviewProcess
     };
   }, [data]);
 

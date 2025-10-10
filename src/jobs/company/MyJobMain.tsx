@@ -16,12 +16,23 @@ import { type ToUpdate } from './utils';
 
 export type MyJobMainProps = {
   job: ToUpdate;
+  isDraft: boolean;
   setJob: React.Dispatch<React.SetStateAction<Job>>;
+  updateInterviewProcess: boolean;
+  setUpdateInterviewProcess: React.Dispatch<React.SetStateAction<boolean>>;
   addresses: Array<CompanyAddress>;
   isEditing: boolean;
 };
 
-const MyJobMain = ({ job, setJob, addresses, isEditing }: MyJobMainProps) => {
+const MyJobMain = ({
+  job,
+  isDraft,
+  setJob,
+  updateInterviewProcess,
+  setUpdateInterviewProcess,
+  addresses,
+  isEditing
+}: MyJobMainProps) => {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -49,7 +60,7 @@ const MyJobMain = ({ job, setJob, addresses, isEditing }: MyJobMainProps) => {
   }, [addresses, job.company_address_id]);
 
   return (
-    <div className="grid grid-cols-[15%_70%] gap-y-2">
+    <div className="grid grid-cols-[15%_70%] max-w-[57dvw] gap-y-2">
       {!isEditing && (
         <>
           <div>Title:</div>
@@ -107,6 +118,7 @@ const MyJobMain = ({ job, setJob, addresses, isEditing }: MyJobMainProps) => {
             <Label htmlFor="status" label="Status" />
             <StatusSelect
               status={job.status}
+              isDraft={isDraft}
               onChange={(status) => {
                 setJob((job) => ({
                   ...job,
@@ -172,6 +184,23 @@ const MyJobMain = ({ job, setJob, addresses, isEditing }: MyJobMainProps) => {
               }));
             }}
           />
+          <div className="flex flex-row gap-1 col-start-2">
+            <div className="">
+              <input
+                id="update_interview_process"
+                type="checkbox"
+                checked={updateInterviewProcess}
+                disabled={true}
+                onChange={() => setUpdateInterviewProcess((update) => !update)}
+              />
+            </div>
+            <label htmlFor="update_interview_process">
+              Update interview process{' '}
+              <span className="text-sm">
+                (not available once an application has been submitted)
+              </span>
+            </label>
+          </div>
         </>
       )}
     </div>

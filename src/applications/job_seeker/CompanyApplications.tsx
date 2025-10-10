@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { Company } from './useApplicationsForJobSeeker';
+import type { Company } from './useApplications';
 import useCompanyApplications from './useCompanyApplications';
 
 export type CompanyApplicationParams = Pick<

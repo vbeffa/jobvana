@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import _ from 'lodash';
 import { useCallback, useContext, useState } from 'react';
 import {
@@ -13,11 +14,11 @@ import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import ApplicationResume from '../ApplicationResume';
 import CompanyApplications from './CompanyApplications';
-import useApplicationsForJobSeeker from './useApplicationsForJobSeeker';
+import useApplications from './useApplications';
 
 const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
   const { jobSeeker } = useContext(JobSeekerContext);
-  const { applications, isPending, refetch } = useApplicationsForJobSeeker({
+  const { applications, isPending, refetch } = useApplications({
     jobSeekerId
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,12 +76,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
 
   return (
     <>
-      <h1>My Applications</h1>
+      {/* <h1>My Applications</h1> */}
       {isSubmitting && <Modal type="updating" />}
       {isPending && <Modal type="loading" />}
       {isDownloading && <Modal type="downloading" />}
       {error && <JobvanaError error={error} />}
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-8">
         {!isPending && (
           <div className="w-3/4 flex flex-col gap-1">
             <table>
@@ -123,7 +124,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                           setIsDownloading={setIsDownloading}
                           setError={setError}
                         />
-                        <FaEye className="cursor-pointer" />
+                        <Link
+                          to="/jobvana/applications/$id"
+                          params={{ id: application.id.toString() }}
+                        >
+                          <FaEye />
+                        </Link>
                         {(application.status === 'submitted' ||
                           application.status === 'accepted') && (
                           <FaFileCircleXmark

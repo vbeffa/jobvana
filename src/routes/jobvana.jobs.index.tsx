@@ -54,7 +54,7 @@ function Switcher() {
   const { company } = useContext(CompanyContext);
 
   return userType === 'company' ? (
-    company && <MyJobs companyId={company.id} />
+    company && <MyJobs company={company} />
   ) : (
     <Jobs />
   );

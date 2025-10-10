@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { Company } from '../../Context';
 import EditDeleteButtons from '../../controls/EditDeleteButtons';
 import supabase from '../../db/supabase';
 import Hr from '../../Hr';
@@ -12,6 +13,7 @@ import type { Job } from './useJobsForCompany';
 import { areValidJobRoles, duplicateJobRoles, isValidJob } from './utils';
 
 export type MyJobProps = {
+  company: Company;
   job: Job;
   isNew: boolean;
   addresses: Array<CompanyAddress>;
@@ -21,6 +23,7 @@ export type MyJobProps = {
 };
 
 const MyJob = ({
+  company,
   job,
   isNew,
   addresses,
@@ -29,6 +32,7 @@ const MyJob = ({
   onCancelNewJob
 }: MyJobProps) => {
   const [editJob, setEditJob] = useState<Job>(job);
+  const [updateInterviewProcess, setUpdateInterviewProcess] = useState(true);
   const [editJobRoles, setEditJobRoles] = useState<Array<JobRole>>(
     job.job_roles
   );
@@ -74,6 +78,9 @@ const MyJob = ({
     if (toUpdate.company_address_id === -1) {
       toUpdate.company_address_id = null;
     }
+    if (updateInterviewProcess) {
+      toUpdate.interview_process = company.interview_process;
+    }
     const { error } = await supabase
       .from('jobs')
       .update({
@@ -85,7 +92,7 @@ const MyJob = ({
     if (error) {
       throw error;
     }
-  }, [editJob, job.id]);
+  }, [company.interview_process, editJob, job.id, updateInterviewProcess]);
 
   const createJob = useCallback(async () => {
     const toInsert = _.omit(editJob, 'id', 'job_roles', 'job_skills');
@@ -206,7 +213,7 @@ const MyJob = ({
           await updateJob();
         }
       }
-      if (areJobRolesDirty && areJobRolesValid) {
+      if ((isNew || areJobRolesDirty) && areJobRolesValid) {
         await updateJobRoles(newJobId);
       }
       if (areJobSkillsDirty) {
@@ -299,7 +306,10 @@ const MyJob = ({
       />
       <MyJobMain
         job={editJob}
+        isDraft={job.status === 'draft'}
         setJob={setEditJob}
+        updateInterviewProcess={updateInterviewProcess}
+        setUpdateInterviewProcess={setUpdateInterviewProcess}
         addresses={addresses}
         isEditing={isEditing}
       />

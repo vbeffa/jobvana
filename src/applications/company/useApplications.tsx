@@ -26,7 +26,7 @@ export type Applications = {
   refetch: () => Promise<QueryObserverResult>;
 };
 
-const useApplicationsForCompany = ({
+const useApplications = ({
   companyId
 }: {
   companyId: number;
@@ -82,4 +82,4 @@ const useApplicationsForCompany = ({
   };
 };
 
-export default useApplicationsForCompany;
+export default useApplications;

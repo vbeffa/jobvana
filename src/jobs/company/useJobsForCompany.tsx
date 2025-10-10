@@ -18,7 +18,13 @@ export type Jobs = {
   refetch: () => Promise<QueryObserverResult>;
 };
 
-const useJobsForCompany = (companyId: number): Jobs => {
+const useJobsForCompany = ({
+  companyId,
+  jobId
+}: {
+  companyId: number;
+  jobId?: number;
+}): Jobs => {
   const queryKey = useMemo(
     () => ({
       companyId
@@ -33,10 +39,13 @@ const useJobsForCompany = (companyId: number): Jobs => {
   } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
-      const { error, data } = await supabase
-        .from('jobs')
-        .select('*, job_roles(*), job_skills(*)')
-        .filter('company_id', 'eq', companyId);
+      let q = supabase.from('jobs').select('*, job_roles(*), job_skills(*)');
+      if (jobId) {
+        q = q.filter('id', 'eq', jobId);
+      } else {
+        q = q.filter('company_id', 'eq', companyId);
+      }
+      const { error, data } = await q;
       // console.log(data);
       if (error) {
         console.log(error);

@@ -30,16 +30,23 @@ const RoleSelect = ({
     >
       <>
         {isPending && (
-          <option key={0} value={Number.NEGATIVE_INFINITY}>
+          <option
+            key={Number.NEGATIVE_INFINITY}
+            value={Number.NEGATIVE_INFINITY}
+          >
             Loading...
           </option>
         )}
-        {!isPending && showAny && (
-          <option key={0} value={0}>
-            Any
-          </option>
+        {!isPending && (
+          <>
+            {showAny && (
+              <option key={0} value={0}>
+                Any
+              </option>
+            )}
+            {showEmpty && <option key={0} value={0} />}
+          </>
         )}
-        {showEmpty && <option key={0} value="" />}
         {roles?.map((role, idx) => (
           <option key={idx} value={role.id}>
             {role.name}

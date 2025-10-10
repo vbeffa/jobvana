@@ -149,7 +149,7 @@ const MyJobRoles = ({
                     const updatedJobRoles = _.cloneDeep(roles);
                     updatedJobRoles.push({
                       job_id: jobId,
-                      role_id: 1,
+                      role_id: 0,
                       percent: 100,
                       role_level: 2
                     });
