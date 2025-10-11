@@ -17,7 +17,7 @@ export type FullCompany = Company & {
   addresses: Array<CompanyAddress>;
   // techStack: Array<SkillVersion>;
   jobs: Array<CompanyJob>;
-  totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
+  // totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
 };
 
 export type Company = Omit<DbCompany, 'created_at'>;
@@ -75,8 +75,8 @@ const useCompany = (id?: number): CompanyH => {
       interview_process: company.interview_process as InterviewProcess | null,
       jobs: company.jobs,
       addresses: company.company_addresses,
-      industry: company.industries,
-      totalApplications: company.company_applications[0]?.num_applications ?? 0
+      industry: company.industries
+      // totalApplications: company.company_applications[0]?.num_applications ?? 0
     };
   }, [data?.company]);
 

@@ -103,12 +103,11 @@ const MyJobs = ({ company }: { company: Company }) => {
               )}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           <>
             {updating && <Modal type="updating" />}
             {selectedJobDetails ? (
               <MyJob
-                company={company}
                 job={selectedJobDetails}
                 isNew={isAddingNew}
                 addresses={addresses ?? []}

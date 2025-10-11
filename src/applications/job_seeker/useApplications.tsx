@@ -2,23 +2,34 @@ import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useCallback, useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
-import type { JobSeeker } from '../../Context';
 import supabase from '../../db/supabase';
 import type {
   ApplicationStatus,
   Application as DbApplication,
   Company as DbCompany,
-  Job as DbJob
+  Job as DbJob,
+  JobSeeker as DbJobSeeker
 } from '../../types';
+import { dateComparator } from '../../utils';
+// import { fetchApplications, mapper } from './utils';
 
+export type Company = Pick<DbCompany, 'id' | 'name'>;
 export type Job = Pick<DbJob, 'id' | 'title'>;
-export type Company = Pick<DbCompany, 'id' | 'name' | 'interview_process'>;
+export type JobSeeker = Pick<
+  DbJobSeeker,
+  'first_name' | 'last_name' | 'user_id'
+>;
 
-export type Application = DbApplication & {
+export type Application = Pick<
+  DbApplication,
+  'id' | 'job_id' | 'created_at' | 'status' | 'updated_at'
+> & {
   job: Job;
   company: Company;
+  jobSeeker: JobSeeker;
   status: ApplicationStatus;
   resumePath: string;
+  interview_process: InterviewProcess | null;
 };
 
 export type Applications = {
@@ -45,18 +56,20 @@ const useApplications = ({
     error,
     refetch
   } = useQuery({
-    queryKey: ['applications', jobSeekerId],
+    queryKey: ['applications', { jobSeekerId }],
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
         .select(
-          `*,
-          jobs(
-            id,
-            title,
-            companies!inner(id, name, interview_process, company_applications(num_applications))
-          ),
-          application_resumes!inner(resume_path)`
+          `id, job_id, created_at, status, updated_at,
+            jobs!inner(
+              id,
+              title,
+              companies!inner(id, name, company_applications(num_applications)),
+              interview_process
+            ),
+            job_seekers!inner(first_name, last_name, user_id),
+            application_resumes!inner(resume_path)`
         )
         .filter('job_seeker_id', 'eq', jobSeekerId);
       // console.log(data);
@@ -66,23 +79,15 @@ const useApplications = ({
 
   const applications: Array<Application> | undefined = useMemo(
     () =>
-      applicationsData
-        ?.sort(
-          (application1, application2) =>
-            new Date(application2.created_at).getTime() -
-            new Date(application1.created_at).getTime()
-        )
-        .map((applicationData) => ({
-          ..._.omit(applicationData, 'jobs'),
-          job: _.pick(applicationData.jobs, 'id', 'title'),
-          company: {
-            ...applicationData.jobs.companies,
-            interview_process: applicationData.jobs.companies
-              .interview_process as InterviewProcess
-            // numApplications: applicationData.jobs.companies.company_applications.
-          },
-          resumePath: applicationData.application_resumes.resume_path
-        })),
+      applicationsData?.sort(dateComparator).map((applicationData) => ({
+        ..._.omit(applicationData, 'jobs'),
+        job: _.pick(applicationData.jobs, 'id', 'title'),
+        company: _.pick(applicationData.jobs.companies, 'id', 'name'),
+        jobSeeker: applicationData.job_seekers,
+        resumePath: applicationData.application_resumes.resume_path,
+        interview_process: applicationData.jobs
+          .interview_process as InterviewProcess
+      })),
     [applicationsData]
   );
 

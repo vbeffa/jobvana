@@ -8,11 +8,15 @@ import type {
   Job as DbJob,
   JobSeeker as DbJobSeeker
 } from '../../types';
+import { dateComparator } from '../../utils';
 
 export type Job = Pick<DbJob, 'id' | 'title'>;
 export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
 
-export type Application = DbApplication & {
+export type Application = Pick<
+  DbApplication,
+  'id' | 'created_at' | 'status' | 'updated_at'
+> & {
   job: Job;
   jobSeeker: JobSeeker;
   status: ApplicationStatus;
@@ -37,17 +41,13 @@ const useApplications = ({
     error,
     refetch
   } = useQuery({
-    queryKey: ['applications', companyId],
+    queryKey: ['applications', { companyId }],
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
         .select(
-          `*,
-          jobs(
-            id,
-            title,
-            companies(id)
-          ),
+          `id, created_at, status, updated_at,
+          jobs!inner(id, title, companies(id)),
           job_seekers!inner(first_name, last_name),
           application_resumes!inner(resume_path)`
         )
@@ -59,18 +59,12 @@ const useApplications = ({
 
   const applications: Array<Application> | undefined = useMemo(
     () =>
-      applicationsData
-        ?.sort(
-          (application1, application2) =>
-            new Date(application2.created_at).getTime() -
-            new Date(application1.created_at).getTime()
-        )
-        .map((applicationData) => ({
-          ..._.omit(applicationData, 'jobs'),
-          job: _.pick(applicationData.jobs, 'id', 'title'),
-          jobSeeker: applicationData.job_seekers,
-          resumePath: applicationData.application_resumes.resume_path
-        })),
+      applicationsData?.sort(dateComparator).map((applicationData) => ({
+        ..._.omit(applicationData, 'jobs'),
+        job: _.pick(applicationData.jobs, 'id', 'title'),
+        jobSeeker: applicationData.job_seekers,
+        resumePath: applicationData.application_resumes.resume_path
+      })),
     [applicationsData]
   );
 

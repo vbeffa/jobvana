@@ -164,7 +164,7 @@ const JobDetails = ({
       </Section>
       <Section title="Interview Process">
         {job.interviewProcess ? (
-          <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
+          <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
             <InterviewProcessDisplay
               interviewProcess={job.interviewProcess}
               totalApplications={job.company.totalApplications}

@@ -3,15 +3,36 @@ import _ from 'lodash';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
 import supabase from '../../db/supabase';
-import type { Application } from './useApplications';
+import type {
+  ApplicationStatus,
+  Application as DbApplication,
+  Job as DbJob,
+  JobSeeker as DbJobSeeker
+} from '../../types';
+// import type { Application } from './useApplications';
+// import { fetchApplication, mapper } from './utils';
+
+export type Job = Pick<DbJob, 'id' | 'title'>;
+export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
+
+export type Application = Pick<
+  DbApplication,
+  'id' | 'created_at' | 'status' | 'updated_at'
+> & {
+  job: Job;
+  jobSeeker: JobSeeker;
+  status: ApplicationStatus;
+  resumePath: string;
+  interviewProcess: InterviewProcess | null;
+};
 
 export type ApplicationH = {
-  applications: Application | undefined;
+  application: Application | undefined;
   isPending: boolean;
   error?: Error;
 };
 
-const useApplication = ({ id }: { id: number }) => {
+const useApplication = ({ id }: { id: number }): ApplicationH => {
   const {
     data: applicationData,
     isPending,
@@ -22,13 +43,14 @@ const useApplication = ({ id }: { id: number }) => {
       const { data } = await supabase
         .from('applications')
         .select(
-          `*,
-          jobs(
-            id,
-            title,
-            companies!inner(id, name, interview_process, company_applications(num_applications))
-          ),
-          application_resumes!inner(resume_path)`
+          `id, created_at, status, updated_at,
+            jobs(
+              id,
+              title,
+              interview_process
+            ),
+            job_seekers!inner(first_name, last_name),
+            application_resumes!inner(resume_path)`
         )
         .filter('id', 'eq', id);
       // console.log(data);
@@ -36,18 +58,15 @@ const useApplication = ({ id }: { id: number }) => {
     }
   });
 
-  const application = useMemo(
+  const application: Application | undefined = useMemo(
     () =>
       applicationData?.map((applicationData) => ({
         ..._.omit(applicationData, 'jobs'),
         job: _.pick(applicationData.jobs, 'id', 'title'),
-        company: {
-          ...applicationData.jobs.companies,
-          interview_process: applicationData.jobs.companies
-            .interview_process as InterviewProcess
-          // numApplications: applicationData.jobs.companies.company_applications.
-        },
-        resumePath: applicationData.application_resumes.resume_path
+        jobSeeker: applicationData.job_seekers,
+        resumePath: applicationData.application_resumes.resume_path,
+        interviewProcess: applicationData.jobs
+          .interview_process as InterviewProcess
       }))[0],
     [applicationData]
   );
@@ -55,7 +74,7 @@ const useApplication = ({ id }: { id: number }) => {
   return {
     application,
     isPending,
-    error
+    error: error ?? undefined
   };
 };
 

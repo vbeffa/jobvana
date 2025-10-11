@@ -36,6 +36,7 @@ export type Interview = Database['public']['Tables']['interviews']['Row'] & {
   // rounds: Array<InterviewRound>;
 };
 export type Job = Database['public']['Tables']['jobs']['Row'];
+export type JobStatus = Job['status'];
 export type JobRole = Database['public']['Tables']['job_roles']['Row'];
 export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'];
 export type JobSeekerSkill =

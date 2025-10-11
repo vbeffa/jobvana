@@ -19,13 +19,17 @@ const JobRoute = () => {
   }
 
   return (
-    <div className="mx-4 flex flex-col gap-2">
-      {userType === 'job_seeker' && jobSeeker && (
-        <JobSeekerJobDetails id={id} jobSeeker={jobSeeker} />
-      )}
-      {userType === 'company' && company && job && (
-        <CompanyJobDetails company={company} jobId={id} />
-      )}
+    <div className="flex justify-center mb-4">
+      <div className="border-[0.5px] border-blue-400 rounded-lg w-[75%]">
+        {userType === 'job_seeker' && jobSeeker && (
+          <div className="px-4 pt-2">
+            <JobSeekerJobDetails id={id} jobSeeker={jobSeeker} />
+          </div>
+        )}
+        {userType === 'company' && company && job && (
+          <CompanyJobDetails company={company} jobId={id} />
+        )}
+      </div>
     </div>
   );
 };

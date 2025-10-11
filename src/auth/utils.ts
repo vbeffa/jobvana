@@ -54,11 +54,14 @@ const refreshSession = async () => {
     return;
   }
 
+  const refreshToken = session.refresh_token;
   const authResponse = await supabase.auth.refreshSession({
-    refresh_token: session.refresh_token
+    refresh_token: refreshToken
   });
   if (authResponse.error) {
-    console.log(authResponse.error);
+    console.log(
+      `Could not refresh session with token ${refreshToken}: ${authResponse.error}`
+    );
   }
 };
 

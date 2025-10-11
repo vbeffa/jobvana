@@ -26,7 +26,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
   const hq = findHeadquarters(company);
 
   return (
-    <div className="mx-4">
+    <>
       {isPlaceholderData && <Modal type="loading" />}
       <Section title={company.name}>
         <div className="flex flex-row gap-1">
@@ -64,15 +64,20 @@ const CompanyDetails = ({ id }: { id?: number }) => {
       <Section title="Current Jobs">{<JobsList jobs={company.jobs} />}</Section>
       <Section title="Interview Process" isLast={true}>
         {company.interview_process ? (
-          <div className="border-[0.5px] border-blue-300 rounded-lg w-fit mt-2 px-4 py-4">
+          <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
             <InterviewProcessDisplay
               interviewProcess={company.interview_process}
-              totalApplications={company.totalApplications}
+              // totalApplications={company.totalApplications}
             />
+            <div className="text-sm mt-2 text-justify hyphens-auto">
+              Note: this is the current process as defined by the company and
+              only applies to new jobs. Existing jobs may have a different
+              process or pipeline.
+            </div>
           </div>
         ) : null}
       </Section>
-    </div>
+    </>
   );
 };
 

@@ -1,11 +1,19 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { Company } from '../../Context';
-import EditDeleteButtons from '../../controls/EditDeleteButtons';
+import { FaArchive } from 'react-icons/fa';
+import { FaCaretDown, FaCaretRight, FaPaperPlane } from 'react-icons/fa6';
+import {
+  MdArchive,
+  MdCheckCircleOutline,
+  MdOutlineUnpublished
+} from 'react-icons/md';
+import useApplicationsForJob from '../../applications/company/useApplicationsForJob';
+import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
+import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import Hr from '../../Hr';
 import JobvanaError from '../../JobvanaError';
-import type { CompanyAddress, JobRole, JobSkill } from '../../types';
+import type { CompanyAddress, JobRole, JobSkill, JobStatus } from '../../types';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
 import MyJobSkills from './MyJobSkills';
@@ -13,7 +21,6 @@ import type { Job } from './useJobsForCompany';
 import { areValidJobRoles, duplicateJobRoles, isValidJob } from './utils';
 
 export type MyJobProps = {
-  company: Company;
   job: Job;
   isNew: boolean;
   addresses: Array<CompanyAddress>;
@@ -23,7 +30,6 @@ export type MyJobProps = {
 };
 
 const MyJob = ({
-  company,
   job,
   isNew,
   addresses,
@@ -31,8 +37,11 @@ const MyJob = ({
   onFinishUpdate,
   onCancelNewJob
 }: MyJobProps) => {
+  const { activeApplications } = useApplicationsForJob({
+    jobId: job.id
+  });
   const [editJob, setEditJob] = useState<Job>(job);
-  const [updateInterviewProcess, setUpdateInterviewProcess] = useState(true);
+  const [showInterviewProcess, setShowInterviewProcess] = useState(false);
   const [editJobRoles, setEditJobRoles] = useState<Array<JobRole>>(
     job.job_roles
   );
@@ -65,6 +74,11 @@ const MyJob = ({
     [editJobSkills, job.job_skills]
   );
 
+  const isFrozen = useMemo(
+    () => activeApplications === undefined || activeApplications > 0,
+    [activeApplications]
+  );
+
   useEffect(() => setIsEditing(isNew), [isNew]);
 
   useEffect(() => {
@@ -73,26 +87,32 @@ const MyJob = ({
     setEditJobSkills(job.job_skills);
   }, [job]);
 
-  const updateJob = useCallback(async () => {
-    const toUpdate = _.omit(editJob, 'job_roles', 'job_skills');
-    if (toUpdate.company_address_id === -1) {
-      toUpdate.company_address_id = null;
-    }
-    if (updateInterviewProcess) {
-      toUpdate.interview_process = company.interview_process;
-    }
-    const { error } = await supabase
-      .from('jobs')
-      .update({
-        ...toUpdate,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', job.id);
+  const updateJob = useCallback(
+    async (status?: JobStatus) => {
+      const toUpdate = _.omit(editJob, 'job_roles', 'job_skills');
+      if (toUpdate.company_address_id === -1) {
+        toUpdate.company_address_id = null;
+      }
+      // if (updateInterviewProcess) {
+      //   toUpdate.interview_process = company.interview_process;
+      // }
+      if (status) {
+        toUpdate.status = status;
+      }
+      const { error } = await supabase
+        .from('jobs')
+        .update({
+          ...toUpdate,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', job.id);
 
-    if (error) {
-      throw error;
-    }
-  }, [company.interview_process, editJob, job.id, updateInterviewProcess]);
+      if (error) {
+        throw error;
+      }
+    },
+    [editJob, job.id]
+  );
 
   const createJob = useCallback(async () => {
     const toInsert = _.omit(editJob, 'id', 'job_roles', 'job_skills');
@@ -199,49 +219,52 @@ const MyJob = ({
     [editJobSkills, job.id]
   );
 
-  const onSave = useCallback(async () => {
-    setIsEditing(false);
-    setIsSubmitting(true);
-    setError(undefined);
-    onStartUpdate();
-    try {
-      let newJobId: number | undefined;
-      if (isJobDirty && isJobValid) {
-        if (isNew) {
-          newJobId = await createJob();
-        } else {
-          await updateJob();
+  const onSave = useCallback(
+    async (status?: JobStatus) => {
+      setIsEditing(false);
+      setIsSubmitting(true);
+      setError(undefined);
+      onStartUpdate();
+      try {
+        let newJobId: number | undefined;
+        if ((isJobDirty && isJobValid) || status) {
+          if (isNew) {
+            newJobId = await createJob();
+          } else {
+            await updateJob(status);
+          }
         }
+        if ((isNew || areJobRolesDirty) && areJobRolesValid) {
+          await updateJobRoles(newJobId);
+        }
+        if (areJobSkillsDirty) {
+          await updateJobSkills(newJobId);
+        }
+        onFinishUpdate();
+      } catch (err) {
+        console.log(err);
+        setError(err as Error);
+      } finally {
+        setIsSubmitting(false);
+        onFinishUpdate(error);
       }
-      if ((isNew || areJobRolesDirty) && areJobRolesValid) {
-        await updateJobRoles(newJobId);
-      }
-      if (areJobSkillsDirty) {
-        await updateJobSkills(newJobId);
-      }
-      onFinishUpdate();
-    } catch (err) {
-      console.log(err);
-      setError(err as Error);
-    } finally {
-      setIsSubmitting(false);
-      onFinishUpdate(error);
-    }
-  }, [
-    areJobRolesDirty,
-    areJobRolesValid,
-    areJobSkillsDirty,
-    createJob,
-    error,
-    isJobDirty,
-    isJobValid,
-    isNew,
-    onFinishUpdate,
-    onStartUpdate,
-    updateJob,
-    updateJobRoles,
-    updateJobSkills
-  ]);
+    },
+    [
+      areJobRolesDirty,
+      areJobRolesValid,
+      areJobSkillsDirty,
+      createJob,
+      error,
+      isJobDirty,
+      isJobValid,
+      isNew,
+      onFinishUpdate,
+      onStartUpdate,
+      updateJob,
+      updateJobRoles,
+      updateJobSkills
+    ]
+  );
 
   const onDelete = useCallback(async () => {
     setIsEditing(false);
@@ -278,60 +301,169 @@ const MyJob = ({
   );
 
   return (
-    <div className="relative">
-      {error && <JobvanaError error={error} />}
-      <EditDeleteButtons
-        type="job"
-        isEditing={isEditing}
-        disabled={saveDisabled}
-        onEdit={() => {
-          setError(undefined);
-          setEditJob(job);
-          setEditJobRoles(job.job_roles);
-          setEditJobSkills(job.job_skills);
-          setIsEditing(true);
-        }}
-        onCancel={() => {
-          if (isNew) {
-            onCancelNewJob();
-          } else {
+    <div>
+      <div className="w-full bg-blue-200">
+        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-between">
+          <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
+            Status:
+            {job.status === 'draft' && <MdOutlineUnpublished />}
+            {job.status === 'open' && <MdCheckCircleOutline />}
+            {job.status === 'closed' && <FaArchive />}
+            {_.capitalize(job.status)}
+          </div>
+          {job.status === 'draft' && (
+            <>
+              {!isEditing && (
+                <div className="content-center pr-12">
+                  <div
+                    className="text-lg text-blue-400 cursor-pointer"
+                    onClick={() => {
+                      if (
+                        confirm('Are you sure you want to publish this job?')
+                      ) {
+                        onSave('open');
+                      }
+                    }}
+                  >
+                    <FaPaperPlane />
+                  </div>
+                </div>
+              )}
+              <EditDeleteIcons
+                isEditing={isEditing}
+                disabled={saveDisabled}
+                bgColor="--color-blue-200"
+                top="top-1.25"
+                onEdit={() => {
+                  setError(undefined);
+                  setEditJob(job);
+                  setEditJobRoles(job.job_roles);
+                  setEditJobSkills(job.job_skills);
+                  setIsEditing(true);
+                }}
+                onCancel={() => {
+                  if (isNew) {
+                    onCancelNewJob();
+                  } else {
+                    setEditJob(job);
+                    setEditJobRoles(job.job_roles);
+                    setEditJobSkills(job.job_skills);
+                    setIsEditing(false);
+                  }
+                }}
+                onDelete={!isNew ? onDelete : undefined}
+                onSave={onSave}
+              />
+            </>
+          )}
+          {job.status === 'open' && (
+            <>
+              {isFrozen && activeApplications ? (
+                <div className="text-blue-400 text-sm content-center">
+                  {activeApplications} active application
+                  {activeApplications > 1 ? 's' : ''}
+                </div>
+              ) : null}
+              {!isFrozen && (
+                <div className="content-center">
+                  <div
+                    className="text-lg text-blue-400 cursor-pointer"
+                    onClick={() => {
+                      if (
+                        confirm('Are you sure you want to archive this job?')
+                      ) {
+                        onSave('closed');
+                      }
+                    }}
+                  >
+                    <MdArchive />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+      <div className="px-4 mt-2 relative">
+        {error && <JobvanaError error={error} />}
+        {/* <EditDeleteButtons
+          type="job"
+          isEditing={isEditing}
+          disabled={saveDisabled}
+          onEdit={() => {
+            setError(undefined);
             setEditJob(job);
             setEditJobRoles(job.job_roles);
             setEditJobSkills(job.job_skills);
-            setIsEditing(false);
-          }
-        }}
-        onDelete={!isNew ? onDelete : undefined}
-        onSave={onSave}
-      />
-      <MyJobMain
-        job={editJob}
-        isDraft={job.status === 'draft'}
-        setJob={setEditJob}
-        updateInterviewProcess={updateInterviewProcess}
-        setUpdateInterviewProcess={setUpdateInterviewProcess}
-        addresses={addresses}
-        isEditing={isEditing}
-      />
-      <div className="col-span-2">
-        <Hr />
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            if (isNew) {
+              onCancelNewJob();
+            } else {
+              setEditJob(job);
+              setEditJobRoles(job.job_roles);
+              setEditJobSkills(job.job_skills);
+              setIsEditing(false);
+            }
+          }}
+          onDelete={!isNew ? onDelete : undefined}
+          onSave={onSave}
+        /> */}
+        <MyJobMain
+          job={editJob}
+          // isNew={isNew}
+          // isDraft={job.status === 'draft'}
+          setJob={setEditJob}
+          // updateInterviewProcess={updateInterviewProcess}
+          // setUpdateInterviewProcess={setUpdateInterviewProcess}
+          addresses={addresses}
+          isEditing={isEditing}
+        />
+        <div className="col-span-2">
+          <Hr />
+        </div>
+        <MyJobRoles
+          jobId={editJob.id}
+          jobRoles={editJobRoles}
+          setJobRoles={setEditJobRoles}
+          isEditing={isEditing}
+          duplicateRole={duplicateRole}
+        />
+        <div className="col-span-2">
+          <Hr />
+        </div>
+        <MyJobSkills
+          job={job}
+          jobSkills={editJobSkills}
+          setJobSkills={setEditJobSkills}
+          isEditing={isEditing}
+        />
+        {!isEditing && job.interview_process && (
+          <>
+            <div className="col-span-2">
+              <Hr />
+            </div>
+            <div className="flex flex-row gap-1 mb-2">
+              Interview Process
+              <div
+                className="content-center cursor-pointer"
+                onClick={() => setShowInterviewProcess(!showInterviewProcess)}
+              >
+                {!showInterviewProcess && <FaCaretRight />}
+                {showInterviewProcess && <FaCaretDown />}
+              </div>
+            </div>
+            {showInterviewProcess && (
+              <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
+                <InterviewProcessDisplay
+                  interviewProcess={job.interview_process}
+                />
+              </div>
+            )}
+          </>
+        )}
       </div>
-      <MyJobRoles
-        jobId={editJob.id}
-        jobRoles={editJobRoles}
-        setJobRoles={setEditJobRoles}
-        isEditing={isEditing}
-        duplicateRole={duplicateRole}
-      />
-      <div className="col-span-2">
-        <Hr />
-      </div>
-      <MyJobSkills
-        job={job}
-        jobSkills={editJobSkills}
-        setJobSkills={setEditJobSkills}
-        isEditing={isEditing}
-      />
     </div>
   );
 };

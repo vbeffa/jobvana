@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router';
-import _ from 'lodash';
 import { useCallback, useContext, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaCheck, FaEye, FaX } from 'react-icons/fa6';
 import { CompanyContext } from '../../Context';
@@ -9,6 +8,7 @@ import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import type { ApplicationStatus } from '../../types';
 import ApplicationResume from '../ApplicationResume';
+import Status from '../Status';
 import useApplications from './useApplications';
 
 const Applications = ({ companyId }: { companyId: number }) => {
@@ -27,11 +27,8 @@ const Applications = ({ companyId }: { companyId: number }) => {
         return;
       }
 
-      if (
-        !confirm(
-          `Are you sure you want to ${status === 'accepted' ? 'accept' : 'decline'} this application?`
-        )
-      ) {
+      const action = status === 'accepted' ? 'accept' : 'decline';
+      if (!confirm(`Are you sure you want to ${action} this application?`)) {
         return;
       }
 
@@ -64,7 +61,7 @@ const Applications = ({ companyId }: { companyId: number }) => {
           return;
         }
 
-        alert('Application declined.');
+        alert(`Application ${status}.`);
         await refetch();
       } finally {
         setIsSubmitting(false);
@@ -100,9 +97,11 @@ const Applications = ({ companyId }: { companyId: number }) => {
                     <td className="whitespace-nowrap">
                       <JobLink {...application.job} />
                     </td>
-                    <td className="whitespace-nowrap">
-                      {application.jobSeeker.first_name}{' '}
-                      {application.jobSeeker.last_name}
+                    <td>
+                      <div className="pl-[10%] whitespace-nowrap">
+                        {application.jobSeeker.first_name}{' '}
+                        {application.jobSeeker.last_name}
+                      </div>
                     </td>
                     <td>
                       <div className="flex justify-center">
@@ -110,8 +109,8 @@ const Applications = ({ companyId }: { companyId: number }) => {
                       </div>
                     </td>
                     <td>
-                      <div className="flex justify-center">
-                        {_.capitalize(application.status)}
+                      <div className="pl-[15%]">
+                        <Status {...application} />
                       </div>
                     </td>
                     <td>

@@ -22,7 +22,7 @@ const MyJobSkills = ({
   const { findSkill } = useSkillsLite();
 
   return (
-    <div className="relative grid grid-cols-[15%_75%] gap-y-2 mb-4">
+    <div className="relative grid grid-cols-[15%_85%] gap-y-2 mb-4">
       {!isEditing && <div>Skills:</div>}
       {isEditing && (
         <Label
@@ -57,7 +57,7 @@ const MyJobSkills = ({
         {isEditing && (
           <SkillsSelect
             selectedSkillIds={jobSkills.map((jobSkill) => jobSkill.skill_id)}
-            width="w-[75%]"
+            width="w-[100%]"
             outerHeight="h-64"
             innerHeight="max-h-63"
             onChange={(skillIds) => {

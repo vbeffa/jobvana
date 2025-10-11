@@ -88,7 +88,11 @@ const MyCompany = ({ company }: { company: Company }) => {
             />
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>{currComponent}</ResourceDetailsContainer>
+        <ResourceDetailsContainer
+          padding={card === 'interview_process' ? '' : 'px-4 pt-4'}
+        >
+          {currComponent}
+        </ResourceDetailsContainer>
       </ResourcesContainer>
     </div>
   );

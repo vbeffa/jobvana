@@ -2,12 +2,14 @@ import type { JSX } from 'react';
 
 export type ResourceDetailsContainerProps = {
   children?: JSX.Element;
+  padding?: string;
 };
 
 const ResourceDetailsContainer = ({
-  children
+  children,
+  padding = 'px-4 pt-4'
 }: ResourceDetailsContainerProps) => {
-  return <div className={`px-4 pt-4 w-full overflow-auto`}>{children}</div>;
+  return <div className={`${padding} w-full overflow-auto`}>{children}</div>;
 };
 
 export default ResourceDetailsContainer;

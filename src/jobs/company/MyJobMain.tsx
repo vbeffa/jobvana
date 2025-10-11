@@ -10,26 +10,27 @@ import LocationSelect from './LocationSelect';
 import MyJobTitle from './MyJobTitle';
 import SalaryRangeInput from './SalaryRangeInput';
 import SalaryTypeSelect from './SalaryTypeSelect';
-import StatusSelect from './StatusSelect';
 import type { Job } from './useJobsForCompany';
 import { type ToUpdate } from './utils';
 
 export type MyJobMainProps = {
   job: ToUpdate;
-  isDraft: boolean;
+  // isNew: boolean;
+  // isDraft: boolean;
   setJob: React.Dispatch<React.SetStateAction<Job>>;
-  updateInterviewProcess: boolean;
-  setUpdateInterviewProcess: React.Dispatch<React.SetStateAction<boolean>>;
+  // updateInterviewProcess: boolean;
+  // setUpdateInterviewProcess: React.Dispatch<React.SetStateAction<boolean>>;
   addresses: Array<CompanyAddress>;
   isEditing: boolean;
 };
 
 const MyJobMain = ({
   job,
-  isDraft,
+  // isNew,
+  // isDraft,
   setJob,
-  updateInterviewProcess,
-  setUpdateInterviewProcess,
+  // updateInterviewProcess,
+  // setUpdateInterviewProcess,
   addresses,
   isEditing
 }: MyJobMainProps) => {
@@ -60,7 +61,7 @@ const MyJobMain = ({
   }, [addresses, job.company_address_id]);
 
   return (
-    <div className="grid grid-cols-[15%_70%] max-w-[57dvw] gap-y-2">
+    <div className="grid grid-cols-[15%_85%] gap-y-2">
       {!isEditing && (
         <>
           <div>Title:</div>
@@ -70,8 +71,14 @@ const MyJobMain = ({
           <div>Type</div>
           <div className="flex flex-row">
             <div className="w-[40%]">{jobTypeToString(job.type)}</div>
-            <div className="w-[20%]">Status:</div>
-            <div>{capitalize(job.status)}</div>
+            {/* <div className="w-[20%]">Status:</div>
+            <div className="flex flex-row gap-1">
+              <div className="content-center">
+                {job.status === 'draft' && <MdOutlineUnpublished />}
+                {job.status === 'open' && <MdCheckCircleOutline />}
+              </div>
+              {capitalize(job.status)}
+            </div> */}
           </div>
           <div>Salary Type:</div>
           <div className="flex flex-row">
@@ -115,7 +122,7 @@ const MyJobMain = ({
                 }));
               }}
             />
-            <Label htmlFor="status" label="Status" />
+            {/* <Label htmlFor="status" label="Status" />
             <StatusSelect
               status={job.status}
               isDraft={isDraft}
@@ -125,7 +132,7 @@ const MyJobMain = ({
                   status
                 }));
               }}
-            />
+            /> */}
           </div>
           <Label htmlFor="salary_type" label="Salary Type" />
           <div className="grid grid-cols-[30%_20%_30%]">
@@ -184,13 +191,13 @@ const MyJobMain = ({
               }));
             }}
           />
-          <div className="flex flex-row gap-1 col-start-2">
+          {/* <div className="flex flex-row gap-1 col-start-2">
             <div className="">
               <input
                 id="update_interview_process"
                 type="checkbox"
                 checked={updateInterviewProcess}
-                disabled={true}
+                disabled={isNew}
                 onChange={() => setUpdateInterviewProcess((update) => !update)}
               />
             </div>
@@ -200,7 +207,7 @@ const MyJobMain = ({
                 (not available once an application has been submitted)
               </span>
             </label>
-          </div>
+          </div> */}
         </>
       )}
     </div>

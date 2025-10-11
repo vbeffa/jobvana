@@ -13,7 +13,7 @@ import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import ApplicationResume from '../ApplicationResume';
-import CompanyApplications from './CompanyApplications';
+import JobApplications from './JobApplications';
 import useApplications from './useApplications';
 
 const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
@@ -21,6 +21,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
   const { applications, isPending, refetch } = useApplications({
     jobSeekerId
   });
+  const [doRefetch, setDoRefetch] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
@@ -65,10 +66,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
           return;
         }
 
+        setDoRefetch(applicationId);
         alert('Application withdrawn.');
         await refetch();
       } finally {
         setIsSubmitting(false);
+        setDoRefetch(0);
       }
     },
     [jobSeeker?.user_id, refetch]
@@ -91,7 +94,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                   <th className="min-w-[25%]">Job</th>
                   <th>Applied</th>
                   <th>Status</th>
-                  <th className="whitespace-nowrap">Total Applications</th>
+                  <th className="whitespace-nowrap">Applications*</th>
                   <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
@@ -115,7 +118,11 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                       </div>
                     </td>
                     <td>
-                      <CompanyApplications {...application.company} />
+                      <JobApplications
+                        jobId={application.job_id}
+                        jobInterviewProcess={application.interview_process}
+                        doRefetch={doRefetch === application.id}
+                      />
                     </td>
                     <td className="content-center">
                       <div className="flex justify-left pl-[25%] text-blue-400 gap-2">
@@ -145,14 +152,14 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             </table>
             <div>Notes:</div>
             <div className="flex flex-row text-sm gap-2">
-              <div className="content-center">* Total Applications</div>
+              <div className="content-center">* Applications</div>
               <div className="content-center">=</div>
               <div>
                 <div className="border-b-[0.5px]">
-                  Number of submitted or accepted applications for company
+                  Number of submitted or accepted applications for job
                 </div>
                 <div className="border-t-[0.5px] flex justify-center">
-                  Company pipeline size
+                  Job pipeline size
                 </div>
               </div>
             </div>

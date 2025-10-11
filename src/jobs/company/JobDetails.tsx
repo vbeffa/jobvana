@@ -26,7 +26,6 @@ const JobDetails = ({
     <div>
       {updating && <Modal type="updating" />}
       <MyJob
-        company={company}
         job={job}
         isNew={false}
         addresses={addresses ?? []}

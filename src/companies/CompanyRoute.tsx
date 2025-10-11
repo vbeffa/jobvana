@@ -18,7 +18,15 @@ const CompanyRoute = () => {
   return (
     <>
       {userType === 'company' && company && <MyCompany company={company} />}
-      {userType === 'job_seeker' && <CompanyDetails id={id} />}
+      {userType === 'job_seeker' && (
+        <div className="flex justify-center mb-4">
+          <div className="border-[0.5px] border-blue-400 rounded-lg overflow-hidden w-[75%]">
+            <div className="px-4 pt-2">
+              <CompanyDetails id={id} />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

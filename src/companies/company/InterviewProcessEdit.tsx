@@ -16,7 +16,7 @@ const InterviewProcessEdit = ({
 
   return (
     <>
-      <div className="border-[0.5px] border-blue-300 rounded-lg w-[720px] p-2 flex flex-col gap-2">
+      <div className="border-[0.5px] border-blue-300 rounded-lg w-[99%] p-2 flex flex-col gap-2">
         <div className="grid grid-cols-[8%_25%_20%_15%_19%] gap-2">
           <div className="flex justify-center">
             Round<span className="text-xs align-super">1</span>
@@ -165,7 +165,7 @@ const InterviewProcessEdit = ({
           }
         />
       </div>
-      <div className="mt-4 text-sm w-[85%] text-justify">
+      <div className="mt-4 text-sm text-justify hyphens-auto">
         The pipeline size determines how many applications you can accept at a
         time. Once the pipeline size limit is reached, no further applications
         can be accepted until an application is withdrawn from the pipeline
