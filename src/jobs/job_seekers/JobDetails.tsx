@@ -90,8 +90,7 @@ const JobDetails = ({
     () =>
       job &&
       job.company.interviewProcess &&
-      job.company.totalApplications >=
-        job.company.interviewProcess.pipeline_size,
+      job.activeApplicationCount >= job.company.interviewProcess.pipeline_size,
     [job]
   );
 
@@ -167,7 +166,7 @@ const JobDetails = ({
           <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
             <InterviewProcessDisplay
               interviewProcess={job.interviewProcess}
-              totalApplications={job.company.totalApplications}
+              activeApplicationCount={job.activeApplicationCount}
             />
           </div>
         ) : null}

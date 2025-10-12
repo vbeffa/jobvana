@@ -20,12 +20,13 @@ export type FullJob = Job & {
   company: Pick<Company, 'id' | 'name'> & {
     // techStack: Array<SkillVersion>;
     interviewProcess: InterviewProcess | null;
-    totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
+    // totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
   };
   address: CompanyAddress | null;
   jobRoles: Array<JobRole>;
   skills: Array<Skill>;
   applicationStatuses: Array<Application['status']>;
+  activeApplicationCount: number;
 };
 
 export type Job = Omit<
@@ -57,7 +58,7 @@ const useJob = (id: number): JobH => {
         .select(
           `created_at, updated_at, type, description, salary_type, salary_low, salary_high, title, interview_process,
           company_addresses(*),
-          companies!inner(id, name, interview_process, company_applications(num_applications)),
+          companies!inner(id, name, interview_process),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
           applications(status)`
@@ -88,14 +89,15 @@ const useJob = (id: number): JobH => {
         id: job.companies.id,
         name: job.companies.name,
         interviewProcess: job.companies
-          .interview_process as InterviewProcess | null,
-        totalApplications:
-          job.companies.company_applications[0]?.num_applications ?? 0
+          .interview_process as InterviewProcess | null
       },
       address: job.company_addresses,
       jobRoles: job.job_roles,
       applicationStatuses: data.job.applications.map((app) => app.status),
-      interviewProcess: job.interview_process as InterviewProcess
+      interviewProcess: job.interview_process as InterviewProcess,
+      activeApplicationCount: data.job.applications.filter((app) =>
+        ['submitted', 'accepted'].includes(app.status)
+      ).length
     };
   }, [data]);
 

@@ -47,8 +47,7 @@ const useCompany = (id?: number): CompanyH => {
           `id, name, description, industry_id, num_employees, user_id, contact_email, interview_process,
           industries(id, name),
           company_addresses(id, city, street, street_2, zip, state, phone, type),
-          jobs(id, title),
-          company_applications(num_applications)`
+          jobs(id, title)`
         )
         .filter('id', 'eq', id)
         .filter('jobs.status', 'eq', 'open');
@@ -76,7 +75,6 @@ const useCompany = (id?: number): CompanyH => {
       jobs: company.jobs,
       addresses: company.company_addresses,
       industry: company.industries
-      // totalApplications: company.company_applications[0]?.num_applications ?? 0
     };
   }, [data?.company]);
 

@@ -11,10 +11,10 @@ import { type InterviewProcess, formatType } from './company/utils';
 
 const InterviewProcessDisplay = ({
   interviewProcess,
-  totalApplications
+  activeApplicationCount
 }: {
   interviewProcess: InterviewProcess;
-  totalApplications?: number;
+  activeApplicationCount?: number;
 }) => {
   return (
     <>
@@ -61,10 +61,10 @@ const InterviewProcessDisplay = ({
         Pipeline size: {interviewProcess.pipeline_size} job seeker
         {interviewProcess.pipeline_size !== 1 && 's'}
       </div>
-      {totalApplications !== undefined && (
+      {activeApplicationCount !== undefined && (
         <div>
-          Current Pipeline: {totalApplications} total application
-          {totalApplications !== 1 && 's'} out of{' '}
+          Current Pipeline: {activeApplicationCount} active application
+          {activeApplicationCount !== 1 && 's'} out of{' '}
           {interviewProcess.pipeline_size}
         </div>
       )}

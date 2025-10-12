@@ -1,6 +1,6 @@
 import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import _ from 'lodash';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
 import supabase from '../../db/supabase';
 import type {
@@ -37,7 +37,6 @@ export type Applications = {
   isPending: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
-  total: (companyId: number) => Promise<number | undefined>;
   apply: (
     jobId: number,
     jobSeeker: JobSeeker,
@@ -65,7 +64,7 @@ const useApplications = ({
             jobs!inner(
               id,
               title,
-              companies!inner(id, name, company_applications(num_applications)),
+              companies!inner(id, name),
               interview_process
             ),
             job_seekers!inner(first_name, last_name, user_id),
@@ -90,15 +89,6 @@ const useApplications = ({
       })),
     [applicationsData]
   );
-
-  const total = useCallback(async (companyId: number) => {
-    const { data } = await supabase
-      .from('company_applications')
-      .select('*')
-      .filter('company_id', 'eq', companyId);
-    console.log(data);
-    return data?.[0].num_applications ?? undefined;
-  }, []);
 
   const apply = async (
     jobId: number,
@@ -161,7 +151,6 @@ const useApplications = ({
     isPending,
     error: error ?? undefined,
     refetch,
-    total,
     apply
   };
 };

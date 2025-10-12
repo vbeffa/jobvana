@@ -691,21 +691,7 @@ export type Database = {
       }
     }
     Views: {
-      company_applications: {
-        Row: {
-          company_id: number | null
-          num_applications: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'jobs_company_id_fkey'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       is_company: {
