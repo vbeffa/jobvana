@@ -53,11 +53,11 @@ const ApplicationDetails = ({ id }: { id: number }) => {
 
       <Section title="Events">
         {events ? (
-          <table className="w-[75%]">
+          <table className="w-fit">
             <thead>
               <tr>
-                <th className="w-[35%]">Date</th>
-                <th className="w-[30%]">Event</th>
+                <th>Date</th>
+                <th>Event</th>
                 <th>User</th>
               </tr>
             </thead>
@@ -65,17 +65,17 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               {events.map((event, idx) => (
                 <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
                   <td>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center px-2">
                       {new Date(event.created_at).toLocaleString()}
                     </div>
                   </td>
                   <td>
-                    <div className="pl-[25%]">
+                    <div className="px-2">
                       <Status status={event.event} />
                     </div>
                   </td>
                   <td>
-                    <div className="pl-2">{eventUser(event.event)}</div>
+                    <div className="px-2">{eventUser(event.event)}</div>
                   </td>
                 </tr>
               ))}
