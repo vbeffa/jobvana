@@ -112,7 +112,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                   <th className="min-w-[25%]">Job</th>
                   <th>Applied</th>
                   <th className="w-[10%] max-w-12">Status</th>
-                  <th className="">Applications</th>
+                  <th>Applications</th>
                   <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
@@ -202,24 +202,6 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
           </div>
         )}
       </div>
-      {/* <div className="flex flex-row gap-x-2">
-        <div className="w-[20%]">
-          {applications?.map((application, idx) => (
-            <SummaryCard
-              key={application.id}
-              selected={applicationId === application.id}
-              onClick={() => setApplicationId(application.id)}
-              title={application.job.title}
-              text=""
-              // text={`${application.jobSeeker.user.first_name} ${application.jobSeeker.user.last_name}`}
-              borderBottom={idx < applications.length - 1}
-            />
-          ))}
-        </div>
-        <div className="w-[80%]">
-          {applicationId && <ApplicationDetails id={applicationId} />}
-        </div>
-      </div> */}
     </>
   );
 };

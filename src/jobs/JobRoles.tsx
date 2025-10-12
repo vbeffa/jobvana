@@ -45,7 +45,7 @@ const JobRoles = ({ jobRoles }: JobRolesProps) => {
   };
 
   return (
-    <div className="">
+    <div>
       {jobRoles
         .sort((jobRole1, jobRole2) => {
           const role1 = roles?.find((role) => role.id === jobRole1.role_id);

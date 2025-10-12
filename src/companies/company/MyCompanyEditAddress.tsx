@@ -58,7 +58,7 @@ const MyCompanyEditAddress = <T extends ToInsert | CompanyAddress>({
             }
           />
         </div>
-        <div className="">
+        <div>
           <StateSelect
             state={address.state}
             idx={Number.MAX_VALUE}
