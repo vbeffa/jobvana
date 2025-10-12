@@ -47,8 +47,8 @@ const RoleSelect = ({
             {showEmpty && <option key={0} value={0} />}
           </>
         )}
-        {roles?.map((role, idx) => (
-          <option key={idx} value={role.id}>
+        {roles?.map((role) => (
+          <option key={role.id} value={role.id}>
             {role.name}
           </option>
         ))}

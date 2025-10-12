@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import _ from 'lodash';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import {
   FaArrowUpRightFromSquare,
   FaEye,
@@ -12,7 +11,10 @@ import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
+import type { ApplicationStatus } from '../../types';
 import ApplicationResume from '../ApplicationResume';
+import Status from '../Status';
+import StatusSelect from '../StatusSelect';
 import JobApplications from './JobApplications';
 import useApplications from './useApplications';
 
@@ -21,10 +23,19 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
   const { applications, isPending, refetch } = useApplications({
     jobSeekerId
   });
-  const [doRefetch, setDoRefetch] = useState(0);
+  const [doRefetch, setDoRefetch] = useState(0); // update applications count when application is withdrawn
+  const [status, setStatus] = useState<ApplicationStatus | 'all'>('all');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
+
+  const filteredApplications = useMemo(
+    () =>
+      (status !== 'all'
+        ? applications?.filter((app) => app.status === status)
+        : applications) ?? [],
+    [applications, status]
+  );
 
   const onWithdraw = useCallback(
     async (applicationId: number) => {
@@ -79,27 +90,34 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
 
   return (
     <>
-      {/* <h1>My Applications</h1> */}
+      <h1>My Applications</h1>
       {isSubmitting && <Modal type="updating" />}
       {isPending && <Modal type="loading" />}
       {isDownloading && <Modal type="downloading" />}
       {error && <JobvanaError error={error} />}
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center">
         {!isPending && (
-          <div className="w-3/4 flex flex-col gap-1">
+          <div className="w-fit flex flex-col gap-1">
             <table>
               <thead>
+                <tr>
+                  <th colSpan={6} className="filter">
+                    <div className="flex w-full justify-end">
+                      <StatusSelect status={status} onChange={setStatus} />
+                    </div>
+                  </th>
+                </tr>
                 <tr>
                   <th className="min-w-[15%]">Company</th>
                   <th className="min-w-[25%]">Job</th>
                   <th>Applied</th>
-                  <th>Status</th>
-                  <th className="whitespace-nowrap">Applications*</th>
+                  <th className="w-[10%] max-w-12">Status</th>
+                  <th className="">Applications</th>
                   <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {applications?.map((application, idx) => (
+                {filteredApplications.map((application, idx) => (
                   <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
                     <td className="whitespace-nowrap">
                       <CompanyLink {...application.company} />
@@ -108,13 +126,13 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                       <JobLink {...application.job} />
                     </td>
                     <td>
-                      <div className="flex justify-center">
+                      <div className="flex justify-center px-2">
                         {new Date(application.created_at).toLocaleDateString()}
                       </div>
                     </td>
                     <td>
-                      <div className="flex justify-center">
-                        {_.capitalize(application.status)}
+                      <div className="px-2">
+                        <Status {...application} />
                       </div>
                     </td>
                     <td>
@@ -152,7 +170,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             </table>
             <div>Notes:</div>
             <div className="flex flex-row text-sm gap-2">
-              <div className="content-center">* Applications</div>
+              <div className="content-center">Applications</div>
               <div className="content-center">=</div>
               <div>
                 <div className="border-b-[0.5px]">

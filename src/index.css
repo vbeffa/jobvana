@@ -86,7 +86,9 @@ table td {
 
 table .filter {
   border: none;
-  padding-bottom: 8px;
+  padding-right: 0px;
+  font-weight: normal;
+  padding-bottom: 4px;
 }
 
 table .loading {

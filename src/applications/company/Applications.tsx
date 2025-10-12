@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaCheck, FaEye, FaX } from 'react-icons/fa6';
 import { CompanyContext } from '../../Context';
 import supabase from '../../db/supabase';
@@ -9,6 +9,7 @@ import Modal from '../../Modal';
 import type { ApplicationStatus } from '../../types';
 import ApplicationResume from '../ApplicationResume';
 import Status from '../Status';
+import StatusSelect from '../StatusSelect';
 import useApplications from './useApplications';
 
 const Applications = ({ companyId }: { companyId: number }) => {
@@ -16,9 +17,18 @@ const Applications = ({ companyId }: { companyId: number }) => {
   const { applications, isPending, refetch } = useApplications({
     companyId
   });
+  const [status, setStatus] = useState<ApplicationStatus | 'all'>('all');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
+
+  const filteredApplications = useMemo(
+    () =>
+      (status !== 'all'
+        ? applications?.filter((app) => app.status === status)
+        : applications) ?? [],
+    [applications, status]
+  );
 
   const updateStatus = useCallback(
     async (applicationId: number, status: ApplicationStatus) => {
@@ -79,42 +89,49 @@ const Applications = ({ companyId }: { companyId: number }) => {
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         {!isPending && (
-          <div className="w-3/4 flex flex-col gap-1">
+          <div className="w-fit flex flex-col gap-1">
             <table>
               <thead>
+                <tr>
+                  <th colSpan={6} className="filter">
+                    <div className="flex w-full justify-end">
+                      <StatusSelect status={status} onChange={setStatus} />
+                    </div>
+                  </th>
+                </tr>
                 <tr>
                   <th className="min-w-[25%]">Job</th>
                   <th className="min-w-[15%] whitespace-nowrap">Job Seeker</th>
                   <th>Applied</th>
-                  <th>Status</th>
+                  <th className="w-[10%] max-w-12">Status</th>
                   <th>Updated</th>
                   <th className="w-[12%] min-w-32">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {applications?.map((application, idx) => (
+                {filteredApplications.map((application, idx) => (
                   <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
                     <td className="whitespace-nowrap">
                       <JobLink {...application.job} />
                     </td>
                     <td>
-                      <div className="pl-[10%] whitespace-nowrap">
+                      <div className="px-2 whitespace-nowrap">
                         {application.jobSeeker.first_name}{' '}
                         {application.jobSeeker.last_name}
                       </div>
                     </td>
                     <td>
-                      <div className="flex justify-center">
+                      <div className="flex justify-center px-2">
                         {new Date(application.created_at).toLocaleDateString()}
                       </div>
                     </td>
                     <td>
-                      <div className="pl-[15%]">
+                      <div className="px-2">
                         <Status {...application} />
                       </div>
                     </td>
                     <td>
-                      <div className="flex justify-center">
+                      <div className="flex justify-center px-2">
                         {application.updated_at &&
                           new Date(application.updated_at).toLocaleDateString()}
                       </div>

@@ -1,6 +1,7 @@
 import Select from '../../inputs/Select';
-import type { Job } from '../../types';
+import type { JobStatus } from '../../types';
 
+// TODO remove
 const StatusSelect = ({
   status,
   isDraft,
@@ -8,7 +9,7 @@ const StatusSelect = ({
 }: {
   status: string;
   isDraft: boolean;
-  onChange: (status: Job['status']) => void;
+  onChange: (status: JobStatus) => void;
 }) => {
   let options = [
     <option key={2} value="open">
@@ -36,7 +37,7 @@ const StatusSelect = ({
         width="w-34"
         disabled={true}
         onChange={(e) => {
-          const status = e.target.value as Job['status'];
+          const status = e.target.value as JobStatus;
           onChange(status);
         }}
       >
