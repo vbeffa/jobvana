@@ -1,11 +1,34 @@
+import { useCallback, useContext } from 'react';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
+import { CompanyContext } from '../../Context';
 import JobLink from '../../jobs/JobLink';
 import Section from '../../Section';
+import type { ApplicationStatus } from '../../types';
 import Status from '../Status';
+import useEventsForApplication from '../useEventsForApplication';
 import useApplication from './useApplication';
 
 const ApplicationDetails = ({ id }: { id: number }) => {
   const { application } = useApplication({ id });
+  const { events } = useEventsForApplication({ applicationId: id });
+  const { company } = useContext(CompanyContext);
+
+  const eventUser = useCallback(
+    (event: ApplicationStatus) => {
+      if (!application || !company) {
+        return undefined;
+      }
+      switch (event) {
+        case 'submitted':
+        case 'withdrawn':
+          return `${application.jobSeeker.first_name} ${application.jobSeeker.last_name}`;
+        case 'accepted':
+        case 'declined':
+          return company.name;
+      }
+    },
+    [application, company]
+  );
 
   if (!application) {
     return null;
@@ -30,7 +53,40 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         </div>
       </Section>
 
-      <Section title="Events">Events</Section>
+      <Section title="Events">
+        {events ? (
+          <table className="w-[75%]">
+            <thead>
+              <tr>
+                <th className="w-[35%]">Date</th>
+                <th className="w-[30%]">Event</th>
+                <th>User</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event, idx) => (
+                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                  <td>
+                    <div className="flex justify-center">
+                      {new Date(event.created_at).toLocaleString()}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="pl-[25%]">
+                      <Status status={event.event} />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="pl-2">{eventUser(event.event)}</div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          'No events'
+        )}
+      </Section>
 
       <Section title="Interview Rounds" isLast={true}>
         {application.interviewProcess && (

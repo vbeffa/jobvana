@@ -129,7 +129,7 @@ const useApplications = ({
       .insert({
         application_id: id,
         user_id: jobSeeker.user_id,
-        event: 'withdrawn'
+        event: 'submitted'
       });
     if (appEventsErr) {
       console.log(appEventsErr);

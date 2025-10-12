@@ -1,11 +1,32 @@
+import { useCallback } from 'react';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import JobLink from '../../jobs/JobLink';
 import Section from '../../Section';
+import type { ApplicationStatus } from '../../types';
 import Status from '../Status';
+import useEventsForApplication from '../useEventsForApplication';
 import useApplication from './useApplication';
 
 const ApplicationDetails = ({ id }: { id: number }) => {
   const { application } = useApplication({ id });
+  const { events } = useEventsForApplication({ applicationId: id });
+
+  const eventUser = useCallback(
+    (event: ApplicationStatus) => {
+      if (!application) {
+        return undefined;
+      }
+      switch (event) {
+        case 'submitted':
+        case 'withdrawn':
+          return `${application.jobSeeker.first_name} ${application.jobSeeker.last_name}`;
+        case 'accepted':
+        case 'declined':
+          return application.companyName;
+      }
+    },
+    [application]
+  );
 
   if (!application) {
     return null;
@@ -28,6 +49,41 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           Job Seeker: {application.jobSeeker.first_name}{' '}
           {application.jobSeeker.last_name}
         </div>
+      </Section>
+
+      <Section title="Events">
+        {events ? (
+          <table className="w-[75%]">
+            <thead>
+              <tr>
+                <th className="w-[35%]">Date</th>
+                <th className="w-[30%]">Event</th>
+                <th>User</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event, idx) => (
+                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                  <td>
+                    <div className="flex justify-center">
+                      {new Date(event.created_at).toLocaleString()}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="pl-[25%]">
+                      <Status status={event.event} />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="pl-2">{eventUser(event.event)}</div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          'No events'
+        )}
       </Section>
 
       <Section title="Interview Rounds" isLast={true}>

@@ -18,6 +18,8 @@ export type Params<
 };
 
 export type Application = Database['public']['Tables']['applications']['Row'];
+export type ApplicationEvent =
+  Database['public']['Tables']['application_events']['Row'];
 export type ApplicationStatus = Application['status'];
 export type Company = Omit<
   Database['public']['Tables']['companies']['Row'],

@@ -9,8 +9,6 @@ import type {
   Job as DbJob,
   JobSeeker as DbJobSeeker
 } from '../../types';
-// import type { Application } from './useApplications';
-// import { fetchApplication, mapper } from './utils';
 
 export type Job = Pick<DbJob, 'id' | 'title'>;
 export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
@@ -20,6 +18,7 @@ export type Application = Pick<
   'id' | 'created_at' | 'status' | 'updated_at'
 > & {
   job: Job;
+  companyName: string;
   jobSeeker: JobSeeker;
   status: ApplicationStatus;
   resumePath: string;
@@ -47,7 +46,8 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
             jobs(
               id,
               title,
-              interview_process
+              interview_process,
+              companies(name)
             ),
             job_seekers!inner(first_name, last_name),
             application_resumes!inner(resume_path)`
@@ -63,6 +63,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
       applicationData?.map((applicationData) => ({
         ..._.omit(applicationData, 'jobs'),
         job: _.pick(applicationData.jobs, 'id', 'title'),
+        companyName: applicationData.jobs.companies.name,
         jobSeeker: applicationData.job_seekers,
         resumePath: applicationData.application_resumes.resume_path,
         interviewProcess: applicationData.jobs
