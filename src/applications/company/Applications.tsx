@@ -2,7 +2,6 @@ import { Link } from '@tanstack/react-router';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaCheck, FaEye, FaX } from 'react-icons/fa6';
 import { CompanyContext } from '../../Context';
-import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
@@ -14,7 +13,7 @@ import useApplications from './useApplications';
 
 const Applications = ({ companyId }: { companyId: number }) => {
   const { company } = useContext(CompanyContext);
-  const { applications, isPending, refetch } = useApplications({
+  const { applications, isPending, refetch, updateStatus } = useApplications({
     companyId
   });
   const [status, setStatus] = useState<ApplicationStatus | 'all'>('all');
@@ -30,8 +29,8 @@ const Applications = ({ companyId }: { companyId: number }) => {
     [applications, status]
   );
 
-  const updateStatus = useCallback(
-    async (applicationId: number, status: ApplicationStatus) => {
+  const onUpdateStatus = useCallback(
+    async (applicationId: number, status: 'accepted' | 'declined') => {
       if (!company?.user_id) {
         alert('Missing user id');
         return;
@@ -47,40 +46,14 @@ const Applications = ({ companyId }: { companyId: number }) => {
 
       try {
         setIsSubmitting(true);
-        const { error } = await supabase
-          .from('applications')
-          .update({
-            status,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', applicationId);
-
-        if (error) {
-          console.log(error);
-          setError(error);
-          return;
-        }
-
-        const { error: error2 } = await supabase
-          .from('application_events')
-          .insert({
-            application_id: applicationId,
-            user_id: company.user_id,
-            event: status
-          });
-        if (error2) {
-          console.log(error2);
-          setError(error2);
-          return;
-        }
-
+        await updateStatus(applicationId, status, company.user_id);
+        refetch(); // don't await refetch so the alert displays immediately
         alert(`Application ${status}.`);
-        await refetch();
       } finally {
         setIsSubmitting(false);
       }
     },
-    [company?.user_id, refetch]
+    [company?.user_id, refetch, updateStatus]
   );
 
   return (
@@ -157,13 +130,13 @@ const Applications = ({ companyId }: { companyId: number }) => {
                             <FaCheck
                               className="cursor-pointer"
                               onClick={() =>
-                                updateStatus(application.id, 'accepted')
+                                onUpdateStatus(application.id, 'accepted')
                               }
                             />
                             <FaX
                               className="cursor-pointer"
                               onClick={() =>
-                                updateStatus(application.id, 'declined')
+                                onUpdateStatus(application.id, 'declined')
                               }
                             />
                           </>

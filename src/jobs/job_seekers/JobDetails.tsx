@@ -65,7 +65,7 @@ const JobDetails = ({
       setApplyError(undefined);
       try {
         await apply(id, jobSeeker, activeResume.name);
-        await Promise.all([refetchJob(), refetchApplications()]);
+        Promise.all([refetchJob(), refetchApplications()]); // don't await refetches so the alert displays immediately
         alert('Application sent!');
       } catch (err) {
         console.log(err);

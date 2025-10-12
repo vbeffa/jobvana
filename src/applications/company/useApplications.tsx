@@ -28,6 +28,11 @@ export type Applications = {
   isPending: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
+  updateStatus: (
+    applicationId: number,
+    status: 'accepted' | 'declined',
+    userId: string
+  ) => Promise<void>;
 };
 
 const useApplications = ({
@@ -68,11 +73,68 @@ const useApplications = ({
     [applicationsData]
   );
 
+  const updateStatus = async (
+    applicationId: number,
+    status: 'accepted' | 'declined',
+    userId: string
+  ) => {
+    // TODO add a transaction for this
+    const { error: appErr } = await supabase
+      .from('applications')
+      .update({
+        status,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', applicationId);
+
+    if (appErr) {
+      console.log(appErr);
+      throw appErr;
+    }
+
+    const { error: appEventsErr } = await supabase
+      .from('application_events')
+      .insert({
+        application_id: applicationId,
+        user_id: userId,
+        event: status
+      });
+    if (appEventsErr) {
+      console.log(appEventsErr);
+      throw appEventsErr;
+    }
+
+    if (status === 'accepted') {
+      const { data: interviewsData, error: interviewsErr } = await supabase
+        .from('interviews')
+        .insert({
+          application_id: applicationId
+        })
+        .select();
+      if (interviewsErr) {
+        console.log(interviewsErr);
+        throw interviewsErr;
+      }
+
+      const { error: interviewRoundsErr } = await supabase
+        .from('interview_rounds')
+        .insert({
+          interview_id: interviewsData[0].id,
+          round: 1
+        });
+      if (interviewRoundsErr) {
+        console.log(interviewRoundsErr);
+        throw interviewRoundsErr;
+      }
+    }
+  };
+
   return {
     applications,
     isPending,
     error: error ?? undefined,
-    refetch
+    refetch,
+    updateStatus
   };
 };
 

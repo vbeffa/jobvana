@@ -249,23 +249,29 @@ export type Database = {
       }
       interview_rounds: {
         Row: {
+          company_response: string | null
           created_at: string
           id: number
           interview_id: number
+          job_seeker_response: string | null
           round: number
           status: string | null
         }
         Insert: {
+          company_response?: string | null
           created_at?: string
           id?: number
           interview_id: number
+          job_seeker_response?: string | null
           round: number
           status?: string | null
         }
         Update: {
+          company_response?: string | null
           created_at?: string
           id?: number
           interview_id?: number
+          job_seeker_response?: string | null
           round?: number
           status?: string | null
         }
