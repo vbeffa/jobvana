@@ -6,6 +6,7 @@ import supabase from '../../db/supabase';
 import type {
   ApplicationStatus,
   Application as DbApplication,
+  Company as DbCompany,
   Job as DbJob,
   JobSeeker as DbJobSeeker
 } from '../../types';
@@ -18,7 +19,7 @@ export type Application = Pick<
   'id' | 'created_at' | 'status' | 'updated_at'
 > & {
   job: Job;
-  companyName: string;
+  company: Pick<DbCompany, 'name'>;
   jobSeeker: JobSeeker;
   status: ApplicationStatus;
   resumePath: string;
@@ -43,11 +44,11 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
         .from('applications')
         .select(
           `id, created_at, status, updated_at,
-            jobs(
+            jobs!inner(
               id,
               title,
               interview_process,
-              companies(name)
+              companies!inner(name)
             ),
             job_seekers!inner(first_name, last_name),
             application_resumes!inner(resume_path)`
@@ -63,7 +64,9 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
       applicationData?.map((applicationData) => ({
         ..._.omit(applicationData, 'jobs'),
         job: _.pick(applicationData.jobs, 'id', 'title'),
-        companyName: applicationData.jobs.companies.name,
+        company: {
+          name: applicationData.jobs.companies.name
+        },
         jobSeeker: applicationData.job_seekers,
         resumePath: applicationData.application_resumes.resume_path,
         interviewProcess: applicationData.jobs

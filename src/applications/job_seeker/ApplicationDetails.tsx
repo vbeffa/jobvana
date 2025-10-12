@@ -1,32 +1,16 @@
-import { useCallback } from 'react';
-import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import JobLink from '../../jobs/JobLink';
 import Section from '../../Section';
-import type { ApplicationStatus } from '../../types';
+import Events from '../Events';
+import Interview from '../Interview';
 import Status from '../Status';
-import useEventsForApplication from '../useEventsForApplication';
+import useEvents from '../useEvents';
+import useInterview from '../useInterview';
 import useApplication from './useApplication';
 
 const ApplicationDetails = ({ id }: { id: number }) => {
   const { application } = useApplication({ id });
-  const { events } = useEventsForApplication({ applicationId: id });
-
-  const eventUser = useCallback(
-    (event: ApplicationStatus) => {
-      if (!application) {
-        return undefined;
-      }
-      switch (event) {
-        case 'submitted':
-        case 'withdrawn':
-          return `${application.jobSeeker.first_name} ${application.jobSeeker.last_name}`;
-        case 'accepted':
-        case 'declined':
-          return application.companyName;
-      }
-    },
-    [application]
-  );
+  const { events } = useEvents({ applicationId: id });
+  const { interview } = useInterview({ applicationId: id });
 
   if (!application) {
     return null;
@@ -49,51 +33,28 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           Job Seeker: {application.jobSeeker.first_name}{' '}
           {application.jobSeeker.last_name}
         </div>
+        <div>Resume: {application.resumePath}</div>
       </Section>
 
       <Section title="Events">
         {events ? (
-          <table className="w-fit">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Event</th>
-                <th>User</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event, idx) => (
-                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                  <td>
-                    <div className="flex justify-center px-2">
-                      {new Date(event.created_at).toLocaleString()}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="px-2">
-                      <Status status={event.event} />
-                    </div>
-                  </td>
-                  <td>
-                    <div className="px-2">{eventUser(event.event)}</div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Events
+            events={events}
+            jobSeeker={application.jobSeeker}
+            company={application.company}
+          />
         ) : (
           'No events'
         )}
       </Section>
 
       <Section title="Interview Rounds" isLast={true}>
-        {application.interviewProcess && (
-          <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
-            <InterviewProcessDisplay
-              interviewProcess={application.interviewProcess}
-            />
-          </div>
-        )}
+        {application.interviewProcess && interview ? (
+          <Interview
+            interviewProcess={application.interviewProcess}
+            interview={interview}
+          />
+        ) : null}
       </Section>
     </div>
   );

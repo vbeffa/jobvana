@@ -45,7 +45,7 @@ export type InterviewRound = {
   durationUnit: DurationUnit;
 };
 
-export const formatType = (type: RoundType) => {
+export const roundTypeToString = (type: RoundType) => {
   switch (type) {
     case 'hr':
       return 'Human Resources';

@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import NumberInput from '../../inputs/NumberInput';
 import Select from '../../inputs/Select';
 import {
-  formatType,
   ROUND_TYPES,
+  roundTypeToString,
   type DurationUnit,
   type InterviewRound,
   type RoundLocation,
@@ -50,7 +50,7 @@ const InterviewRoundEdit = ({
       >
         {ROUND_TYPES.map((type, idx) => (
           <option key={idx} value={type}>
-            {formatType(type)}
+            {roundTypeToString(type)}
           </option>
         ))}
       </Select>
