@@ -58,7 +58,7 @@ const JobDetails = ({
     }
     if (
       confirm(
-        `Your active resume ${activeResume.name} will be sent to this company. Proceed?`
+        'Your resume will be sent to this company. If your application is accepted, you must commit to at least the first interview round. You may still withdraw your application if the company has not accepted your application, but you will not be able to reapply to this job. Proceed?'
       )
     ) {
       setIsApplying(true);

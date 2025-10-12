@@ -37,8 +37,11 @@ const Applications = ({ companyId }: { companyId: number }) => {
         return;
       }
 
-      const action = status === 'accepted' ? 'accept' : 'decline';
-      if (!confirm(`Are you sure you want to ${action} this application?`)) {
+      const message =
+        status === 'accepted'
+          ? 'Are you sure you want to accept this application? Once accepted, you must commit to at least the first interview round.'
+          : 'Are you sure you want to decline this application? Once declined, you can no longer consider this job seeker for this job.';
+      if (!confirm(message)) {
         return;
       }
 
@@ -150,21 +153,20 @@ const Applications = ({ companyId }: { companyId: number }) => {
                           <FaEye />
                         </Link>
                         {application.status === 'submitted' && (
-                          <FaCheck
-                            className="cursor-pointer"
-                            onClick={() =>
-                              updateStatus(application.id, 'accepted')
-                            }
-                          />
-                        )}
-                        {(application.status === 'submitted' ||
-                          application.status === 'accepted') && (
-                          <FaX
-                            className="cursor-pointer"
-                            onClick={() =>
-                              updateStatus(application.id, 'declined')
-                            }
-                          />
+                          <>
+                            <FaCheck
+                              className="cursor-pointer"
+                              onClick={() =>
+                                updateStatus(application.id, 'accepted')
+                              }
+                            />
+                            <FaX
+                              className="cursor-pointer"
+                              onClick={() =>
+                                updateStatus(application.id, 'declined')
+                              }
+                            />
+                          </>
                         )}
                       </div>
                     </td>

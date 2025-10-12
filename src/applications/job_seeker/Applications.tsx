@@ -1,10 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import {
-  FaArrowUpRightFromSquare,
-  FaEye,
-  FaFileCircleXmark
-} from 'react-icons/fa6';
+import { FaArrowUpRightFromSquare, FaEye, FaX } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
 import { JobSeekerContext } from '../../Context';
 import supabase from '../../db/supabase';
@@ -44,7 +40,11 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
         return;
       }
 
-      if (!confirm('Are you sure you want to withdraw this application?')) {
+      if (
+        !confirm(
+          'Are you sure you want to withdraw this application? If you withdraw it, you will not be able to reapply to this job.'
+        )
+      ) {
         return;
       }
 
@@ -155,9 +155,8 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
                         >
                           <FaEye />
                         </Link>
-                        {(application.status === 'submitted' ||
-                          application.status === 'accepted') && (
-                          <FaFileCircleXmark
+                        {application.status === 'submitted' && (
+                          <FaX
                             className="cursor-pointer"
                             onClick={() => onWithdraw(application.id)}
                           />
@@ -195,7 +194,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             </div>
             <div className="flex flex-row gap-1 text-sm">
               <div className="text-blue-400 content-center">
-                <FaFileCircleXmark />
+                <FaX />
               </div>
               = withdraw application
             </div>
