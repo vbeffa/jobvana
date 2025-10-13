@@ -8,7 +8,7 @@ import type {
   Job as DbJob,
   JobSeeker as DbJobSeeker
 } from '../../types';
-import { dateComparator } from '../../utils';
+import { descDateComparator } from '../../utils';
 
 export type Job = Pick<DbJob, 'id' | 'title'>;
 export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
@@ -64,7 +64,7 @@ const useApplications = ({
 
   const applications: Array<Application> | undefined = useMemo(
     () =>
-      applicationsData?.sort(dateComparator).map((applicationData) => ({
+      applicationsData?.sort(descDateComparator).map((applicationData) => ({
         ..._.omit(applicationData, 'jobs'),
         job: _.pick(applicationData.jobs, 'id', 'title'),
         jobSeeker: applicationData.job_seekers,

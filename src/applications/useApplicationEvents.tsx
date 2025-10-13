@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../db/supabase';
 import type { ApplicationEvent as DbApplicationEvent } from '../types';
-import { dateComparator } from '../utils';
+import { descDateComparator } from '../utils';
 
 export type ApplicationEvent = Pick<DbApplicationEvent, 'created_at' | 'event'>;
 
@@ -34,7 +34,7 @@ const useApplicationEvents = ({
     }
   });
 
-  const events = useMemo(() => data?.sort(dateComparator), [data]);
+  const events = useMemo(() => data?.sort(descDateComparator), [data]);
 
   return {
     events,

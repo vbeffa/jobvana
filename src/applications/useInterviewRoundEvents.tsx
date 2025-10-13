@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../db/supabase';
 import type { InterviewRoundEvent as DbInterviewRoundEvent } from '../types';
-import { dateComparator } from '../utils';
+import { descDateComparator } from '../utils';
 
 export type InterviewRoundEvent = Pick<
   DbInterviewRoundEvent,
@@ -46,7 +46,7 @@ const useInterviewRoundEvents = ({
 
   const events = useMemo(
     () =>
-      data?.sort(dateComparator).map((interviewRoundData) => ({
+      data?.sort(descDateComparator).map((interviewRoundData) => ({
         ..._.pick(interviewRoundData, 'created_at', 'user_id', 'event'),
         round: interviewRoundData.interview_rounds.round
       })),
