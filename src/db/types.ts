@@ -85,7 +85,7 @@ export type Database = {
           job_id: number
           job_seeker_id: number
           reason?: string | null
-          status: Database['public']['Enums']['application_status']
+          status?: Database['public']['Enums']['application_status']
           updated_at?: string | null
         }
         Update: {
