@@ -29,7 +29,7 @@
     "@tanstack/router-plugin": "^1.132.56",
     "@types/lodash": "^4.17.20",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react-swc": "^4.1.0",
     "eslint": "^9.37.0",
     "eslint-plugin-react-hooks": "^6.1.1",
@@ -37,7 +37,7 @@
     "globals": "^16.4.0",
     "supabase": "^2.51.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.0",
+    "typescript-eslint": "^8.46.1",
     "vite": "^7.1.9"
   }
 }
