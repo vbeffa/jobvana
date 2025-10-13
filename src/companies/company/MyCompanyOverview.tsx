@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { CompanyContext, type Company } from '../../Context';
-import EditDeleteButtons from '../../controls/EditDeleteButtons';
+import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
@@ -52,27 +52,33 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   }, [company.id, editCompany, setCompany, setError]);
 
   return (
-    <>
+    <div className="h-full">
+      <div className="w-full bg-blue-200">
+        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-end">
+          <EditDeleteIcons
+            isEditing={isEditing}
+            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+            bgColor="--color-blue-200"
+            top="top-1.25"
+            onEdit={() => {
+              setError(undefined);
+              setEditCompany(company);
+              setIsEditing(true);
+            }}
+            onCancel={() => {
+              setEditCompany(company);
+              setIsEditing(false);
+            }}
+            onSave={async () => {
+              setIsEditing(false);
+              await updateCompany();
+            }}
+          />
+        </div>
+      </div>
       {error && <JobvanaError error={error} />}
       {isSubmitting && <Modal type="updating" />}
-      <div className="relative grid grid-cols-[20%_65%] gap-y-2">
-        <EditDeleteButtons
-          isEditing={isEditing}
-          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          onEdit={() => {
-            setError(undefined);
-            setEditCompany(company);
-            setIsEditing(true);
-          }}
-          onCancel={() => {
-            setEditCompany(company);
-            setIsEditing(false);
-          }}
-          onSave={async () => {
-            setIsEditing(false);
-            await updateCompany();
-          }}
-        />
+      <div className="px-4 pt-4 relative grid grid-cols-[20%_80%] gap-y-2">
         {!isEditing && <CompanyOverviewDisplay company={editCompany} />}
         {isEditing && (
           <MyCompanyOverviewEdit
@@ -81,7 +87,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
           />
         )}
       </div>
-    </>
+    </div>
   );
 };
 

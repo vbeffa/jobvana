@@ -59,6 +59,11 @@ const MyJobs = ({ company }: { company: Company }) => {
     [isAddingNew, jobs, newJob, selectedJob?.id]
   );
 
+  const noInterviewProcess = useMemo(
+    () => !company.interview_process?.rounds.length,
+    [company.interview_process?.rounds.length]
+  );
+
   if (!jobs) {
     return;
   }
@@ -91,13 +96,18 @@ const MyJobs = ({ company }: { company: Company }) => {
                   []
                 ) : (
                   <div key={jobs.length} className="pt-4 flex justify-center">
-                    <Button
-                      label="New"
-                      onClick={() => {
-                        setIsAddingNew(true);
-                        setSelectedJob(undefined);
-                      }}
-                    />
+                    <div className="flex flex-col justify-center gap-2">
+                      <div className="w-full flex justify-center">
+                        <Button
+                          label="New"
+                          disabled={noInterviewProcess}
+                          onClick={() => {
+                            setIsAddingNew(true);
+                            setSelectedJob(undefined);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 )
               )}
@@ -129,7 +139,13 @@ const MyJobs = ({ company }: { company: Company }) => {
                   setIsAddingNew(false);
                 }}
               />
-            ) : undefined}
+            ) : (
+              noInterviewProcess && (
+                <div className="text-gray-400 flex justify-center pt-4">
+                  Please define your interview process before adding jobs.
+                </div>
+              )
+            )}
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>

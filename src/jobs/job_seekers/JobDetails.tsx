@@ -45,17 +45,15 @@ const JobDetails = ({
       alert('Job is undefined.');
       return;
     }
-    if (!resumes?.length) {
-      alert('Please upload a resume to apply for this job.');
-      return;
-    }
-    const activeResume = resumes.find(
+
+    const activeResume = resumes?.find(
       (resume) => resume.id === jobSeeker.active_resume_id
     );
     if (/* should never happen */ !activeResume) {
-      alert('Please make a resume active to apply for this job.');
+      alert('No active resume found!');
       return;
     }
+
     if (
       confirm(
         'Your resume will be sent to this company. If your application is accepted, you must commit to at least the first interview round. You may still withdraw your application if the company has not accepted your application, but you will not be able to reapply to this job. Proceed?'
@@ -134,11 +132,17 @@ const JobDetails = ({
                 {pipelineLimitReached && (
                   <>Company pipeline size limit reached</>
                 )}
+                {!resumes?.length && (
+                  <>Please upload a resume to apply for this job</>
+                )}
               </div>
               <Button
                 label="Apply"
                 disabled={
-                  noInterviewProcess || pipelineLimitReached || isApplying
+                  noInterviewProcess ||
+                  pipelineLimitReached ||
+                  !resumes?.length ||
+                  isApplying
                 }
                 onClick={onApply}
               />

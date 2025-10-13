@@ -1,3 +1,4 @@
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import PillContainer from '../../containers/PillContainer';
 import JobsList from '../../jobs/job_seekers/JobsList';
 import JobvanaError from '../../JobvanaError';
@@ -53,9 +54,15 @@ const CompanyDetails = ({ id }: { id?: number }) => {
         {company.addresses.length > 0 ? (
           <ul>
             {company.addresses.map((address) => (
-              <li key={address.id}>
+              <li key={address.id} className="relative w-fit">
                 {address.street} {address.city}, {address.state} {address.zip}
                 {isHeadquarters(address) && ' (HQ)'}
+                <a
+                  target="_blank"
+                  href={`https://www.google.com/maps/place/${address.street} ${address.city} ${address.state} ${address.zip}`}
+                >
+                  <FaArrowUpRightFromSquare className="absolute -right-5 top-[5px] text-sm" />
+                </a>
               </li>
             ))}
           </ul>

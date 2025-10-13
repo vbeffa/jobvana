@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FaPhone } from 'react-icons/fa6';
+import { FaArrowUpRightFromSquare, FaPhone } from 'react-icons/fa6';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import type { CompanyAddress } from '../../types';
@@ -100,6 +100,14 @@ const MyCompanyAddress = ({
           }}
           bgColor="--color-gray-100"
         />
+        {!isEditing && (
+          <a
+            target="_blank"
+            href={`https://www.google.com/maps/place/${address.street} ${address.city} ${address.state} ${address.zip}`}
+          >
+            <FaArrowUpRightFromSquare className="absolute right-12 top-[9px]" />
+          </a>
+        )}
       </div>
       <>
         {!isEditing && (

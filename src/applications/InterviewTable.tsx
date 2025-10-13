@@ -26,7 +26,7 @@ const InterviewTable = ({
   userId: string;
   onUpdate: () => void;
 }) => {
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false); // TODO move to ApplicationDetails
   const [error, setError] = useState<Error>();
 
   const updateRound = useCallback(

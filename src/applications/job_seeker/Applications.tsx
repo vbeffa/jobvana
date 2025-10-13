@@ -69,7 +69,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
       {isDownloading && <Modal type="downloading" />}
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
-        {!isPending && (
+        {!isPending && filteredApplications.length ? (
           <div className="w-fit flex flex-col gap-1">
             <table>
               <thead>
@@ -171,6 +171,11 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
               </div>
               = withdraw application
             </div>
+          </div>
+        ) : (
+          <div>
+            No applications yet. Go to <Link to="/jobvana/jobs">Jobs</Link> to
+            apply.
           </div>
         )}
       </div>

@@ -21,10 +21,22 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   }
 
   return (
-    <>
+    <div className="h-full">
+      <div className="w-full bg-blue-200">
+        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-end">
+          {!newAddress && (
+            <div className="text-blue-400 pt-1.5 flex justify-start">
+              <FaPlus
+                className="cursor-pointer"
+                onClick={() => setNewAddress(true)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}
-      <div className="grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
+      <div className="px-4 pt-4 grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
         {addresses.map((address, idx) => (
           <div key={idx}>
             <MyCompanyAddress
@@ -39,14 +51,6 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
             />
           </div>
         ))}
-        {!newAddress && (
-          <div className="text-blue-400 w-72 pt-2 flex justify-start">
-            <FaPlus
-              className="cursor-pointer"
-              onClick={() => setNewAddress(true)}
-            />
-          </div>
-        )}
         {newAddress && (
           <MyCompanyNewAddress
             companyId={companyId}
@@ -61,7 +65,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
           />
         )}
       </div>
-    </>
+    </div>
   );
 };
 
