@@ -72,7 +72,7 @@ const useJobs = (params: JobsParams): Jobs => {
         .from('jobs')
         .select(
           // 'id, title, companies!inner(name), job_roles!inner(roles!inner()), skills!inner()',
-          'id, title, created_at, companies!inner(name), job_roles!inner(roles!inner()), job_skills!inner(skills!inner())',
+          'id, title, created_at, companies!inner(name), job_roles!inner(roles!inner()), job_skills(skills!inner())',
           { count: 'exact' }
         )
         .filter('status', 'eq', 'open')
