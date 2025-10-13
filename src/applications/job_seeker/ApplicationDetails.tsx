@@ -53,7 +53,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </Section>
 
       <Section title="Events">
-        {events ? (
+        {events?.length ? (
           <Events
             events={events}
             jobSeeker={application.jobSeeker}
@@ -64,15 +64,21 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         )}
       </Section>
 
-      <Section title="Interview Rounds" isLast={true}>
-        {application.interviewProcess && interview ? (
+      <Section title="Interview" isLast={true}>
+        {application.interviewProcess &&
+        interview &&
+        application.status === 'accepted' ? (
           <InterviewTable
             interviewProcess={application.interviewProcess}
             interview={interview}
             userType="job_seeker"
             onUpdate={refetch}
           />
-        ) : null}
+        ) : application.status === 'submitted' ? (
+          'Pending until the company accepts the application.'
+        ) : (
+          `Application is ${application.status}`
+        )}
       </Section>
     </div>
   );

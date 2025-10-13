@@ -51,14 +51,20 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </Section>
 
       <Section title="Interview" isLast={true}>
-        {application.interviewProcess && interview ? (
+        {application.interviewProcess &&
+        interview &&
+        application.status === 'accepted' ? (
           <InterviewTable
             interviewProcess={application.interviewProcess}
             interview={interview}
             userType="company"
             onUpdate={refetch}
           />
-        ) : null}
+        ) : application.status === 'submitted' ? (
+          'Pending until you accept the application.'
+        ) : (
+          `Application is ${application.status}`
+        )}
       </Section>
     </div>
   );

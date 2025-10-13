@@ -19,8 +19,7 @@ const eventUser = (
       return (
         <div className="flex flex-row items-center gap-1">
           <FaUser />
-          {jobSeeker.first_name}
-          {jobSeeker.last_name}
+          {jobSeeker.first_name} {jobSeeker.last_name}
         </div>
       );
     case 'accepted':
