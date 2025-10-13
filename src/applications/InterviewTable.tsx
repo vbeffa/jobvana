@@ -145,7 +145,7 @@ const InterviewTable = ({
         setIsUpdating(false);
       }
     },
-    [interview.id, onUpdate, updateRound]
+    [interview.id, onUpdate, setIsUpdating, updateRound]
   );
 
   const decline = useCallback(
@@ -158,12 +158,15 @@ const InterviewTable = ({
         return;
       }
 
+      setIsUpdating(true);
       try {
         await updateRound(interview.id, round, 'declined');
         onUpdate();
         alert('Interview round marked as declined.');
       } catch (err) {
         setError(err as Error);
+      } finally {
+        setIsUpdating(false);
       }
     },
     [interview.id, onUpdate, updateRound]

@@ -16,11 +16,13 @@ import useApplication from './useApplication';
 
 const ApplicationDetails = ({ id }: { id: number }) => {
   const { jobSeeker } = useContext(JobSeekerContext);
-  const { application } = useApplication({ id });
+  const { application, refetch: refetchApplication } = useApplication({ id });
   const { events: applicationEvents } = useApplicationEvents({
     applicationId: id
   });
-  const { interview, refetch } = useInterview({ applicationId: id });
+  const { interview, refetch: refetchInterview } = useInterview({
+    applicationId: id
+  });
   const { events: interviewRoundEvents, refetch: refetchInterviewRoundEvents } =
     useInterviewRoundEvents({
       interviewId: interview?.id
@@ -71,7 +73,8 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               userType="job_seeker"
               userId={jobSeeker.user_id}
               onUpdate={() => {
-                refetch();
+                refetchApplication();
+                refetchInterview();
                 refetchInterviewRoundEvents();
               }}
             />

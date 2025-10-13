@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
@@ -30,13 +30,15 @@ export type ApplicationH = {
   application: Application | undefined;
   isPending: boolean;
   error?: Error;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 const useApplication = ({ id }: { id: number }): ApplicationH => {
   const {
     data: applicationData,
     isPending,
-    error
+    error,
+    refetch
   } = useQuery({
     queryKey: ['applications', { id }],
     queryFn: async () => {
@@ -78,7 +80,8 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
   return {
     application,
     isPending,
-    error: error ?? undefined
+    error: error ?? undefined,
+    refetch
   };
 };
 
