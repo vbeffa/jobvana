@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import JobLink from '../../jobs/JobLink';
+import JobvanaError from '../../JobvanaError';
+import Modal from '../../Modal';
 import Section from '../../Section';
+import ApplicationResume from '../ApplicationResume';
 import Events from '../Events';
-import Interview from '../Interview';
+import InterviewTable from '../InterviewTable';
 import Status from '../Status';
 import useEvents from '../useEvents';
 import useInterview from '../useInterview';
@@ -10,7 +14,10 @@ import useApplication from './useApplication';
 const ApplicationDetails = ({ id }: { id: number }) => {
   const { application } = useApplication({ id });
   const { events } = useEvents({ applicationId: id });
-  const { interview } = useInterview({ applicationId: id });
+  const { interview, refetch } = useInterview({ applicationId: id });
+
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [error, setError] = useState<Error>();
 
   if (!application) {
     return null;
@@ -18,6 +25,8 @@ const ApplicationDetails = ({ id }: { id: number }) => {
 
   return (
     <div className="mx-4">
+      {isDownloading && <Modal type="downloading" />}
+      {error && <JobvanaError error={error} />}
       <h1>Application Details</h1>
       <Section title="Application">
         <div>
@@ -33,7 +42,14 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           Job Seeker: {application.jobSeeker.first_name}{' '}
           {application.jobSeeker.last_name}
         </div>
-        <div>Resume: {application.resumePath}</div>
+        <div className="flex flex-row gap-1 items-center">
+          Resume:
+          <ApplicationResume
+            resumePath={application.resumePath}
+            setIsDownloading={setIsDownloading}
+            setError={setError}
+          />
+        </div>
       </Section>
 
       <Section title="Events">
@@ -50,9 +66,11 @@ const ApplicationDetails = ({ id }: { id: number }) => {
 
       <Section title="Interview Rounds" isLast={true}>
         {application.interviewProcess && interview ? (
-          <Interview
+          <InterviewTable
             interviewProcess={application.interviewProcess}
             interview={interview}
+            userType="job_seeker"
+            onUpdate={refetch}
           />
         ) : null}
       </Section>

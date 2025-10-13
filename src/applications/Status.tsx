@@ -1,9 +1,14 @@
 import { capitalize } from 'lodash';
 import { FaCircleCheck, FaPaperPlane, FaRegCircleXmark } from 'react-icons/fa6';
+import { MdOutlinePending } from 'react-icons/md';
 import { PiHandWithdraw } from 'react-icons/pi';
-import type { ApplicationStatus } from '../types';
+import type { ApplicationStatus, InterviewRoundStatus } from '../types';
 
-const Status = ({ status }: { status: ApplicationStatus }) => {
+const Status = ({
+  status
+}: {
+  status: ApplicationStatus | InterviewRoundStatus;
+}) => {
   const icon = (() => {
     switch (status) {
       case 'submitted':
@@ -14,6 +19,8 @@ const Status = ({ status }: { status: ApplicationStatus }) => {
         return <PiHandWithdraw />;
       case 'declined':
         return <FaRegCircleXmark />;
+      case 'pending':
+        return <MdOutlinePending />;
     }
   })();
 

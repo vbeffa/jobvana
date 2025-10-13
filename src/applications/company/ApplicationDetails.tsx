@@ -3,7 +3,7 @@ import { CompanyContext } from '../../Context';
 import JobLink from '../../jobs/JobLink';
 import Section from '../../Section';
 import Events from '../Events';
-import Interview from '../Interview';
+import InterviewTable from '../InterviewTable';
 import Status from '../Status';
 import useEvents from '../useEvents';
 import useInterview from '../useInterview';
@@ -13,7 +13,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
   const { company } = useContext(CompanyContext);
   const { application } = useApplication({ id });
   const { events } = useEvents({ applicationId: id });
-  const { interview } = useInterview({ applicationId: id });
+  const { interview, refetch } = useInterview({ applicationId: id });
 
   if (!application || !company) {
     return null;
@@ -52,9 +52,11 @@ const ApplicationDetails = ({ id }: { id: number }) => {
 
       <Section title="Interview" isLast={true}>
         {application.interviewProcess && interview ? (
-          <Interview
+          <InterviewTable
             interviewProcess={application.interviewProcess}
             interview={interview}
+            userType="company"
+            onUpdate={refetch}
           />
         ) : null}
       </Section>

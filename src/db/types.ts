@@ -249,31 +249,28 @@ export type Database = {
       }
       interview_rounds: {
         Row: {
-          company_response: string | null
+          company_response: Database['public']['Enums']['interview_round_status']
           created_at: string
           id: number
           interview_id: number
-          job_seeker_response: string | null
+          job_seeker_response: Database['public']['Enums']['interview_round_status']
           round: number
-          status: string | null
         }
         Insert: {
-          company_response?: string | null
+          company_response?: Database['public']['Enums']['interview_round_status']
           created_at?: string
           id?: number
           interview_id: number
-          job_seeker_response?: string | null
+          job_seeker_response?: Database['public']['Enums']['interview_round_status']
           round: number
-          status?: string | null
         }
         Update: {
-          company_response?: string | null
+          company_response?: Database['public']['Enums']['interview_round_status']
           created_at?: string
           id?: number
           interview_id?: number
-          job_seeker_response?: string | null
+          job_seeker_response?: Database['public']['Enums']['interview_round_status']
           round?: number
-          status?: string | null
         }
         Relationships: [
           {
@@ -712,6 +709,7 @@ export type Database = {
     Enums: {
       address_type: 'headquarters' | 'office'
       application_status: 'submitted' | 'accepted' | 'declined' | 'withdrawn'
+      interview_round_status: 'pending' | 'accepted' | 'declined'
       job_salary_type: 'annual' | 'hourly'
       job_status: 'open' | 'filled' | 'closed' | 'draft'
       job_type: 'full_time' | 'part_time' | 'contract' | 'internship'
@@ -845,6 +843,7 @@ export const Constants = {
     Enums: {
       address_type: ['headquarters', 'office'],
       application_status: ['submitted', 'accepted', 'declined', 'withdrawn'],
+      interview_round_status: ['pending', 'accepted', 'declined'],
       job_salary_type: ['annual', 'hourly'],
       job_status: ['open', 'filled', 'closed', 'draft'],
       job_type: ['full_time', 'part_time', 'contract', 'internship'],

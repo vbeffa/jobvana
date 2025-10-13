@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../db/supabase';
 import type {
@@ -8,10 +8,10 @@ import type {
 
 export type InterviewRound = Pick<
   DbInterviewRound,
-  'created_at' | 'company_response' | 'job_seeker_response'
+  'round' | 'company_response' | 'job_seeker_response'
 >;
 
-export type Interview = Pick<DbInterview, 'created_at'> & {
+export type Interview = Pick<DbInterview, 'id'> & {
   rounds: Array<InterviewRound>;
 };
 
@@ -19,6 +19,7 @@ export type InterviewH = {
   interview: Interview | undefined;
   isPending: boolean;
   error?: Error;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 const useInterview = ({
@@ -31,13 +32,14 @@ const useInterview = ({
     [applicationId]
   );
 
-  const { data, isPending, error } = useQuery({
+  const { data, isPending, error, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
       const { data } = await supabase
         .from('interviews')
         .select(
-          `created_at, interview_rounds!inner(created_at, company_response, job_seeker_response)`
+          `id,
+          interview_rounds!inner(round, company_response, job_seeker_response)`
         )
         .filter('application_id', 'eq', applicationId);
       // console.log(data);
@@ -51,7 +53,7 @@ const useInterview = ({
       return;
     }
     return {
-      created_at: interview.created_at,
+      id: interview.id,
       rounds: interview.interview_rounds
     };
   }, [data]);
@@ -59,7 +61,8 @@ const useInterview = ({
   return {
     interview,
     isPending,
-    error: error ?? undefined
+    error: error ?? undefined,
+    refetch
   };
 };
 
