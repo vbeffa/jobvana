@@ -1,25 +1,35 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { JobSeekerContext } from '../../Context';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import Section from '../../Section';
+import ApplicationEventsTable from '../ApplicationEventsTable';
 import ApplicationResume from '../ApplicationResume';
-import Events from '../Events';
+import InterviewRoundEventsTable from '../InterviewRoundEventsTable';
 import InterviewTable from '../InterviewTable';
 import Status from '../Status';
-import useEvents from '../useEvents';
+import useApplicationEvents from '../useApplicationEvents';
 import useInterview from '../useInterview';
+import useInterviewRoundEvents from '../useInterviewRoundEvents';
 import useApplication from './useApplication';
 
 const ApplicationDetails = ({ id }: { id: number }) => {
+  const { jobSeeker } = useContext(JobSeekerContext);
   const { application } = useApplication({ id });
-  const { events } = useEvents({ applicationId: id });
+  const { events: applicationEvents } = useApplicationEvents({
+    applicationId: id
+  });
   const { interview, refetch } = useInterview({ applicationId: id });
+  const { events: interviewRoundEvents, refetch: refetchInterviewRoundEvents } =
+    useInterviewRoundEvents({
+      interviewId: interview?.id
+    });
 
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<Error>();
 
-  if (!application) {
+  if (!application || !jobSeeker) {
     return null;
   }
 
@@ -52,32 +62,47 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         </div>
       </Section>
 
-      <Section title="Events">
-        {events?.length ? (
-          <Events
-            events={events}
+      <Section title="Interview Rounds">
+        {application.interviewProcess && interview ? (
+          <div className="flex flex-col gap-2">
+            <InterviewTable
+              interviewProcess={application.interviewProcess}
+              interview={interview}
+              userType="job_seeker"
+              userId={jobSeeker.user_id}
+              onUpdate={() => {
+                refetch();
+                refetchInterviewRoundEvents();
+              }}
+            />
+            {interviewRoundEvents?.length && (
+              <div>
+                <h2>History</h2>
+                <InterviewRoundEventsTable
+                  events={interviewRoundEvents}
+                  userId={jobSeeker.user_id}
+                  jobSeeker={application.jobSeeker}
+                  company={application.company}
+                />
+              </div>
+            )}
+          </div>
+        ) : application.status === 'submitted' ? (
+          'Pending until the company accepts the application.'
+        ) : (
+          `Application is ${application.status}`
+        )}
+      </Section>
+
+      <Section title="Events" isLast={true}>
+        {applicationEvents?.length ? (
+          <ApplicationEventsTable
+            events={applicationEvents}
             jobSeeker={application.jobSeeker}
             company={application.company}
           />
         ) : (
           'No events'
-        )}
-      </Section>
-
-      <Section title="Interview" isLast={true}>
-        {application.interviewProcess &&
-        interview &&
-        application.status === 'accepted' ? (
-          <InterviewTable
-            interviewProcess={application.interviewProcess}
-            interview={interview}
-            userType="job_seeker"
-            onUpdate={refetch}
-          />
-        ) : application.status === 'submitted' ? (
-          'Pending until the company accepts the application.'
-        ) : (
-          `Application is ${application.status}`
         )}
       </Section>
     </div>

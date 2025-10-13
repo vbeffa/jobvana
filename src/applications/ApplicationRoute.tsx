@@ -8,9 +8,9 @@ const ApplicationRoute = () => {
   const userType = getUserType();
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mb-4">
       <div className="border-[0.5px] border-blue-400 rounded-lg overflow-hidden w-[75%]">
-        <div className="mt-2 mb-4">
+        <div className="mt-2">
           {userType === 'job_seeker' && <JobSeekerApplicationDetails id={id} />}
           {userType === 'company' && <CompanyApplicationDetails id={id} />}
         </div>

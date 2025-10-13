@@ -1,8 +1,8 @@
 import Status from './Status';
-import type { ApplicationEvent } from './useEvents';
-import { eventUser, type Company, type JobSeeker } from './utils';
+import type { ApplicationEvent } from './useApplicationEvents';
+import { applicationEventUser, type Company, type JobSeeker } from './utils';
 
-const Events = ({
+const ApplicationEventsTable = ({
   events,
   jobSeeker,
   company
@@ -35,7 +35,7 @@ const Events = ({
             </td>
             <td>
               <div className="px-2">
-                {eventUser(event.event, jobSeeker, company)}
+                {applicationEventUser(event.event, jobSeeker, company)}
               </div>
             </td>
           </tr>
@@ -45,4 +45,4 @@ const Events = ({
   );
 };
 
-export default Events;
+export default ApplicationEventsTable;

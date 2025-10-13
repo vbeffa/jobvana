@@ -33,6 +33,8 @@ export type CompanyTechStack =
   Database['public']['Tables']['company_tech_stacks']['Row'];
 export type Industry = Database['public']['Tables']['industries']['Row'];
 export type Interview = Database['public']['Tables']['interviews']['Row'];
+export type InterviewRoundEvent =
+  Database['public']['Tables']['interview_round_events']['Row'];
 export type InterviewRound =
   Database['public']['Tables']['interview_rounds']['Row'];
 export type InterviewRoundStatus =

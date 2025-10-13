@@ -11,7 +11,7 @@ export type InterviewRound = Pick<
   'round' | 'company_response' | 'job_seeker_response'
 >;
 
-export type Interview = Pick<DbInterview, 'id'> & {
+export type Interview = Pick<DbInterview, 'id' | 'application_id'> & {
   rounds: Array<InterviewRound>;
 };
 
@@ -38,7 +38,7 @@ const useInterview = ({
       const { data } = await supabase
         .from('interviews')
         .select(
-          `id,
+          `id, application_id,
           interview_rounds!inner(round, company_response, job_seeker_response)`
         )
         .filter('application_id', 'eq', applicationId);
@@ -54,6 +54,7 @@ const useInterview = ({
     }
     return {
       id: interview.id,
+      application_id: interview.application_id,
       rounds: interview.interview_rounds
     };
   }, [data]);

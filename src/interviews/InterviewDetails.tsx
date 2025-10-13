@@ -12,7 +12,7 @@ const InterviewDetails = ({ id }: { id: number }) => {
       <h2>Application</h2>
       <div>{interview.application_id}</div>
       <h2>Status</h2>
-      <div>{interview.status}</div>
+      {/* <div>{interview.status}</div> */}
     </>
   );
 };

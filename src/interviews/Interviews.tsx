@@ -18,7 +18,7 @@ const Interviews = () => {
               selected={interviewId === interview.id}
               onClick={() => setInterviewId(interview.id)}
               title={interview.application_id.toString()}
-              text={interview.status ?? ''}
+              // text={interview.status ?? ''}
               borderBottom={idx < interviews.length - 1}
             />
           ))}

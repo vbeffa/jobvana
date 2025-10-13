@@ -8,7 +8,7 @@ import type {
 export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
 export type Company = Pick<DbCompany, 'name'>;
 
-const eventUser = (
+const applicationEventUser = (
   event: ApplicationStatus,
   jobSeeker: JobSeeker,
   company: Company
@@ -33,4 +33,4 @@ const eventUser = (
   }
 };
 
-export { eventUser };
+export { applicationEventUser };

@@ -6,13 +6,17 @@ import { dateComparator } from '../utils';
 
 export type ApplicationEvent = Pick<DbApplicationEvent, 'created_at' | 'event'>;
 
-export type Events = {
+export type ApplicationEvents = {
   events: Array<ApplicationEvent> | undefined;
   isPending: boolean;
   error?: Error;
 };
 
-const useEvents = ({ applicationId }: { applicationId: number }): Events => {
+const useApplicationEvents = ({
+  applicationId
+}: {
+  applicationId: number;
+}): ApplicationEvents => {
   const queryKey = useMemo(
     () => ['application_events', { applicationId }],
     [applicationId]
@@ -39,4 +43,4 @@ const useEvents = ({ applicationId }: { applicationId: number }): Events => {
   };
 };
 
-export default useEvents;
+export default useApplicationEvents;

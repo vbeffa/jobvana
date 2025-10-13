@@ -42,6 +42,11 @@ export type Applications = {
     jobSeeker: JobSeeker,
     resumeName: string
   ) => Promise<void>;
+  updateStatus: (
+    applicationId: number,
+    status: 'withdrawn',
+    userId: string
+  ) => Promise<void>;
 };
 
 const useApplications = ({
@@ -146,12 +151,45 @@ const useApplications = ({
     }
   };
 
+  const updateStatus = async (
+    applicationId: number,
+    status: 'withdrawn',
+    userId: string
+  ) => {
+    // TODO add a transaction for this
+    const { error: appErr } = await supabase
+      .from('applications')
+      .update({
+        status,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', applicationId);
+
+    if (appErr) {
+      console.log(appErr);
+      throw appErr;
+    }
+
+    const { error: appEventsErr } = await supabase
+      .from('application_events')
+      .insert({
+        application_id: applicationId,
+        user_id: userId,
+        event: status
+      });
+    if (appEventsErr) {
+      console.log(appEventsErr);
+      throw appEventsErr;
+    }
+  };
+
   return {
     applications,
     isPending,
     error: error ?? undefined,
     refetch,
-    apply
+    apply,
+    updateStatus
   };
 };
 

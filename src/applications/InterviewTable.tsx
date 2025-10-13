@@ -17,11 +17,13 @@ const InterviewTable = ({
   interviewProcess,
   interview,
   userType,
+  userId,
   onUpdate
 }: {
   interviewProcess: InterviewProcess;
   interview: Interview;
   userType: UserType;
+  userId: string;
   onUpdate: () => void;
 }) => {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -33,6 +35,7 @@ const InterviewTable = ({
       round: number,
       status: InterviewRoundStatus
     ) => {
+      let roundCompleted = false;
       const { data, error } = await supabase
         .from('interview_rounds')
         .update(
@@ -49,11 +52,25 @@ const InterviewTable = ({
         throw error;
       }
       const interviewRound = data[0];
+
+      const { error: eventsError } = await supabase
+        .from('interview_round_events')
+        .insert({
+          interview_round_id: interviewRound.id,
+          user_id: userId,
+          event: status
+        });
+      if (eventsError) {
+        console.log(eventsError);
+        throw eventsError;
+      }
+
       if (
         interviewRound.company_response === 'accepted' &&
         interviewRound.job_seeker_response === 'accepted' &&
         interviewRound.round < interviewProcess.rounds.length
       ) {
+        roundCompleted = true;
         const { error: interviewRoundsErr } = await supabase
           .from('interview_rounds')
           .insert({
@@ -64,9 +81,41 @@ const InterviewTable = ({
           console.log(interviewRoundsErr);
           throw interviewRoundsErr;
         }
+      } else if (status === 'declined') {
+        const appStatus = userType === 'company' ? 'declined' : 'withdrawn';
+        const { error: applicationsErr } = await supabase
+          .from('applications')
+          .update({
+            status: appStatus
+          })
+          .filter('id', 'eq', interview.application_id);
+        if (applicationsErr) {
+          console.log(applicationsErr);
+          throw applicationsErr;
+        }
+
+        const { error: appEventsErr } = await supabase
+          .from('application_events')
+          .insert({
+            application_id: interview.application_id,
+            user_id: userId,
+            event: appStatus
+          });
+        if (appEventsErr) {
+          console.log(appEventsErr);
+          throw appEventsErr;
+        }
       }
+
+      return roundCompleted;
     },
-    [interview.id, interviewProcess.rounds.length, userType]
+    [
+      interview.application_id,
+      interview.id,
+      interviewProcess.rounds.length,
+      userId,
+      userType
+    ]
   );
 
   const accept = useCallback(
@@ -79,9 +128,17 @@ const InterviewTable = ({
 
       setIsUpdating(true);
       try {
-        await updateRound(interview.id, round, 'accepted');
+        const roundCompleted = await updateRound(
+          interview.id,
+          round,
+          'accepted'
+        );
         onUpdate();
-        alert('Interview round marked as accepted.');
+        if (roundCompleted) {
+          alert('Round completed; on to the next round!');
+        } else {
+          alert('Interview round marked as accepted.');
+        }
       } catch (err) {
         setError(err as Error);
       } finally {

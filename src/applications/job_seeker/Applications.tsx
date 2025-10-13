@@ -3,7 +3,6 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaEye, FaX } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
 import { JobSeekerContext } from '../../Context';
-import supabase from '../../db/supabase';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
@@ -16,7 +15,7 @@ import useApplications from './useApplications';
 
 const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
   const { jobSeeker } = useContext(JobSeekerContext);
-  const { applications, isPending, refetch } = useApplications({
+  const { applications, isPending, refetch, updateStatus } = useApplications({
     jobSeekerId
   });
   const [doRefetch, setDoRefetch] = useState(0); // update applications count when application is withdrawn
@@ -50,42 +49,16 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
 
       try {
         setIsSubmitting(true);
-        const { error } = await supabase
-          .from('applications')
-          .update({
-            status: 'withdrawn',
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', applicationId);
-
-        if (error) {
-          console.log(error);
-          setError(error);
-          return;
-        }
-
-        const { error: error2 } = await supabase
-          .from('application_events')
-          .insert({
-            application_id: applicationId,
-            user_id: jobSeeker.user_id,
-            event: 'withdrawn'
-          });
-        if (error2) {
-          console.log(error2);
-          setError(error2);
-          return;
-        }
-
+        await updateStatus(applicationId, 'withdrawn', jobSeeker.user_id);
         setDoRefetch(applicationId);
+        refetch(); // don't await refetch so the alert displays immediately
         alert('Application withdrawn.');
-        await refetch();
       } finally {
         setIsSubmitting(false);
         setDoRefetch(0);
       }
     },
-    [jobSeeker?.user_id, refetch]
+    [jobSeeker?.user_id, refetch, updateStatus]
   );
 
   return (

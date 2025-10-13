@@ -247,6 +247,45 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_round_events: {
+        Row: {
+          created_at: string
+          event: Database['public']['Enums']['interview_round_status']
+          id: number
+          interview_round_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event: Database['public']['Enums']['interview_round_status']
+          id?: number
+          interview_round_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event?: Database['public']['Enums']['interview_round_status']
+          id?: number
+          interview_round_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'interview_events_interview_id_fkey'
+            columns: ['interview_round_id']
+            isOneToOne: false
+            referencedRelation: 'interviews'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'interview_round_events_interview_round_id_fkey'
+            columns: ['interview_round_id']
+            isOneToOne: false
+            referencedRelation: 'interview_rounds'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       interview_rounds: {
         Row: {
           company_response: Database['public']['Enums']['interview_round_status']
@@ -287,19 +326,16 @@ export type Database = {
           application_id: number
           created_at: string
           id: number
-          status: string | null
         }
         Insert: {
           application_id: number
           created_at?: string
           id?: number
-          status?: string | null
         }
         Update: {
           application_id?: number
           created_at?: string
           id?: number
-          status?: string | null
         }
         Relationships: [
           {

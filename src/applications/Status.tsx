@@ -1,5 +1,10 @@
 import { capitalize } from 'lodash';
-import { FaCircleCheck, FaPaperPlane, FaRegCircleXmark } from 'react-icons/fa6';
+import {
+  FaCircleCheck,
+  FaNewspaper,
+  FaPaperPlane,
+  FaRegCircleXmark
+} from 'react-icons/fa6';
 import { MdOutlinePending } from 'react-icons/md';
 import { PiHandWithdraw } from 'react-icons/pi';
 import type { ApplicationStatus, InterviewRoundStatus } from '../types';
@@ -7,10 +12,12 @@ import type { ApplicationStatus, InterviewRoundStatus } from '../types';
 const Status = ({
   status
 }: {
-  status: ApplicationStatus | InterviewRoundStatus;
+  status: ApplicationStatus | InterviewRoundStatus | 'created';
 }) => {
   const icon = (() => {
     switch (status) {
+      case 'created':
+        return <FaNewspaper />;
       case 'submitted':
         return <FaPaperPlane />;
       case 'accepted':
