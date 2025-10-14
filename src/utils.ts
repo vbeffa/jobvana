@@ -14,4 +14,10 @@ const descDateComparator = (obj1: CreatedAt, obj2: CreatedAt) => {
   );
 };
 
-export { dateComparator, descDateComparator };
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0
+});
+
+export { currencyFormatter, dateComparator, descDateComparator };

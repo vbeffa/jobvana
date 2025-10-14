@@ -5,6 +5,7 @@ import PillContainer from '../../containers/PillContainer';
 import { JobSeekerContext } from '../../Context';
 import useRoles from '../../roles/useRoles';
 import useSkillsLite from '../../skills/useSkillsLite';
+import { currencyFormatter } from '../../utils';
 import {
   createdRangeToString,
   INITIAL_SEARCH_FILTERS,
@@ -46,12 +47,6 @@ const ActiveFilters = ({
     () => (filters.jobType ? jobTypeToString(filters.jobType) : undefined),
     [filters.jobType]
   );
-
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0
-  });
 
   return (
     <div className="flex gap-2 whitespace-nowrap">
@@ -175,7 +170,7 @@ const ActiveFilters = ({
               setFilters(updatedFilters);
               setJobSearchFilters(updatedFilters);
             }}
-          >{`${formatter.format(filters.minSalary)} - ${formatter.format(filters.maxSalary)}`}</PillContainer>
+          >{`${currencyFormatter.format(filters.minSalary)} - ${currencyFormatter.format(filters.maxSalary)}`}</PillContainer>
         </div>
       )}
       {filters.created !== 'all' && (

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { useMemo } from 'react';
 import Select from '../../inputs/Select';
 import type { Job } from '../../types';
+import { currencyFormatter } from '../../utils';
 import { maxJobSalary, minJobSalary } from '../utils';
 
 const SalarySelect = ({
@@ -22,12 +23,6 @@ const SalarySelect = ({
   const step = useMemo(() => (type === 'annual' ? 10000 : 5), [type]);
   const salaries = useMemo(() => _.range(min, max + 1, step), [max, min, step]);
 
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0
-  });
-
   return (
     <Select
       id={id}
@@ -37,7 +32,7 @@ const SalarySelect = ({
     >
       {salaries.map((salary, idx) => (
         <option key={idx} value={salary}>
-          {formatter.format(salary)}
+          {currencyFormatter.format(salary)}
         </option>
       ))}
     </Select>
