@@ -37,14 +37,14 @@ const Jobs = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  const [jobId, setJobId] = useState<number | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
   const paging: JobsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
     [debouncedPage]
   );
 
-  const { jobs, error, isPlaceholderData, isPending, openJobCount } = useJobs({
+  const { jobs, isPlaceholderData, isPending, openJobCount, error } = useJobs({
     paging,
     filters: searchFilters
   });
@@ -59,9 +59,9 @@ const Jobs = () => {
 
   useEffect(() => {
     if (jobNav.jobId && jobs?.find((job) => job.id === jobNav.jobId)) {
-      setJobId(jobNav.jobId);
+      setSelectedJobId(jobNav.jobId);
     } else {
-      setJobId(jobs?.[0]?.id ?? null);
+      setSelectedJobId(jobs?.[0]?.id ?? null);
     }
   }, [jobNav.jobId, jobs]);
 
@@ -69,7 +69,7 @@ const Jobs = () => {
     navigate({
       search: {
         page: debouncedPage,
-        job_id: jobId ?? undefined,
+        job_id: selectedJobId ?? undefined,
         company: searchFilters.company || undefined,
         job_type: searchFilters.jobType || undefined,
         title: searchFilters.title || undefined,
@@ -82,7 +82,7 @@ const Jobs = () => {
     });
   }, [
     debouncedPage,
-    jobId,
+    selectedJobId,
     navigate,
     searchFilters.company,
     searchFilters.created,
@@ -108,7 +108,7 @@ const Jobs = () => {
         setShowFilters={setShowFilters}
         reset={() => {
           setPage(1);
-          setJobId(null);
+          setSelectedJobId(null);
           setSearchFilters(INITIAL_SEARCH_FILTERS);
           setJobSearchFilters(INITIAL_SEARCH_FILTERS);
           setJobNav({
@@ -124,7 +124,7 @@ const Jobs = () => {
           setShowFilters={setShowFilters}
           onChange={(filters) => {
             setPage(1);
-            setJobId(null);
+            setSelectedJobId(null);
             setSearchFilters(filters);
             setJobSearchFilters(filters);
             setJobNav({
@@ -141,7 +141,7 @@ const Jobs = () => {
             total={openJobCount}
             onSetPage={(page, debounce) => {
               setPage(page);
-              setJobId(null);
+              setSelectedJobId(null);
               setDebouncePage(debounce);
               setJobNav({
                 page,
@@ -155,9 +155,9 @@ const Jobs = () => {
             {jobs?.map((job, idx) => (
               <SummaryCard
                 key={job.id}
-                selected={jobId === job.id}
+                selected={selectedJobId === job.id}
                 onClick={() => {
-                  setJobId(job.id);
+                  setSelectedJobId(job.id);
                   setJobNav({
                     ...jobNav,
                     jobId: job.id
@@ -182,8 +182,8 @@ const Jobs = () => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {jobId && jobSeeker ? (
-            <JobDetails id={jobId} jobSeeker={jobSeeker} />
+          {selectedJobId && jobSeeker ? (
+            <JobDetails id={selectedJobId} jobSeeker={jobSeeker} />
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
