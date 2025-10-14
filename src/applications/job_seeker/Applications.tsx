@@ -69,115 +69,121 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
       {isDownloading && <Modal type="downloading" />}
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
-        {!isPending && filteredApplications.length ? (
-          <div className="w-fit flex flex-col gap-1">
-            <table>
-              <thead>
-                <tr>
-                  <th colSpan={6} className="filter">
-                    <div className="flex w-full justify-end">
-                      <StatusSelect status={status} onChange={setStatus} />
-                    </div>
-                  </th>
-                </tr>
-                <tr>
-                  <th className="min-w-[15%]">Company</th>
-                  <th className="min-w-[25%]">Job</th>
-                  <th>Applied</th>
-                  <th className="w-[10%] max-w-12">Status</th>
-                  <th>Applications</th>
-                  <th className="w-[12%] min-w-32">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredApplications.map((application, idx) => (
-                  <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                    <td className="whitespace-nowrap">
-                      <CompanyLink {...application.company} />
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <JobLink {...application.job} />
-                    </td>
-                    <td>
-                      <div className="flex justify-center px-2">
-                        {new Date(application.created_at).toLocaleDateString()}
+        {!isPending &&
+          (filteredApplications.length ? (
+            <div className="w-fit flex flex-col gap-1">
+              <table>
+                <thead>
+                  <tr>
+                    <th colSpan={6} className="filter">
+                      <div className="flex w-full justify-end">
+                        <StatusSelect status={status} onChange={setStatus} />
                       </div>
-                    </td>
-                    <td>
-                      <div className="px-2">
-                        <Status {...application} />
-                      </div>
-                    </td>
-                    <td>
-                      <JobApplications
-                        jobId={application.job_id}
-                        jobInterviewProcess={application.interview_process}
-                        doRefetch={doRefetch === application.id}
-                      />
-                    </td>
-                    <td className="content-center">
-                      <div className="flex justify-left pl-[25%] text-blue-400 gap-2">
-                        <ApplicationResume
-                          resumePath={application.resumePath}
-                          setIsDownloading={setIsDownloading}
-                          setError={setError}
-                        />
-                        <Link
-                          to="/jobvana/applications/$id"
-                          params={{ id: application.id.toString() }}
-                        >
-                          <FaEye />
-                        </Link>
-                        {application.status === 'submitted' && (
-                          <FaX
-                            className="cursor-pointer"
-                            onClick={() => onWithdraw(application.id)}
-                          />
-                        )}
-                      </div>
-                    </td>
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div>Notes:</div>
-            <div className="flex flex-row text-sm gap-2">
-              <div className="content-center">Applications</div>
-              <div className="content-center">=</div>
-              <div>
-                <div className="border-b-[0.5px]">
-                  Number of submitted or accepted applications for job
+                  <tr>
+                    <th className="min-w-[15%]">Company</th>
+                    <th className="min-w-[25%]">Job</th>
+                    <th>Applied</th>
+                    <th className="w-[10%] max-w-12">Status</th>
+                    <th>Applications</th>
+                    <th className="w-[12%] min-w-32">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredApplications.map((application, idx) => (
+                    <tr
+                      key={idx}
+                      className={idx % 2 === 1 ? 'bg-gray-200' : ''}
+                    >
+                      <td className="whitespace-nowrap">
+                        <CompanyLink {...application.company} />
+                      </td>
+                      <td className="whitespace-nowrap">
+                        <JobLink {...application.job} />
+                      </td>
+                      <td>
+                        <div className="flex justify-center px-2">
+                          {new Date(
+                            application.created_at
+                          ).toLocaleDateString()}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="px-2">
+                          <Status {...application} />
+                        </div>
+                      </td>
+                      <td>
+                        <JobApplications
+                          jobId={application.job_id}
+                          jobInterviewProcess={application.interview_process}
+                          doRefetch={doRefetch === application.id}
+                        />
+                      </td>
+                      <td className="content-center">
+                        <div className="flex justify-left pl-[25%] text-blue-400 gap-2">
+                          <ApplicationResume
+                            resumePath={application.resumePath}
+                            setIsDownloading={setIsDownloading}
+                            setError={setError}
+                          />
+                          <Link
+                            to="/jobvana/applications/$id"
+                            params={{ id: application.id.toString() }}
+                          >
+                            <FaEye />
+                          </Link>
+                          {application.status === 'submitted' && (
+                            <FaX
+                              className="cursor-pointer"
+                              onClick={() => onWithdraw(application.id)}
+                            />
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div>Notes:</div>
+              <div className="flex flex-row text-sm gap-2">
+                <div className="content-center">Applications</div>
+                <div className="content-center">=</div>
+                <div>
+                  <div className="border-b-[0.5px]">
+                    Number of submitted or accepted applications for job
+                  </div>
+                  <div className="border-t-[0.5px] flex justify-center">
+                    Job pipeline size
+                  </div>
                 </div>
-                <div className="border-t-[0.5px] flex justify-center">
-                  Job pipeline size
+              </div>
+              <div className="flex flex-row gap-1 text-sm">
+                <div className="text-blue-400 content-center">
+                  <FaArrowUpRightFromSquare />
                 </div>
+                = open resume for application in new tab
+              </div>
+              <div className="flex flex-row gap-1 text-sm">
+                <div className="text-blue-400 content-center">
+                  <FaEye />
+                </div>
+                = view application details
+              </div>
+              <div className="flex flex-row gap-1 text-sm">
+                <div className="text-blue-400 content-center">
+                  <FaX />
+                </div>
+                = withdraw application
               </div>
             </div>
-            <div className="flex flex-row gap-1 text-sm">
-              <div className="text-blue-400 content-center">
-                <FaArrowUpRightFromSquare />
-              </div>
-              = open resume for application in new tab
+          ) : (
+            <div>
+              No applications yet. Go to <Link to="/jobvana/jobs">Jobs</Link> to
+              apply.
             </div>
-            <div className="flex flex-row gap-1 text-sm">
-              <div className="text-blue-400 content-center">
-                <FaEye />
-              </div>
-              = view application details
-            </div>
-            <div className="flex flex-row gap-1 text-sm">
-              <div className="text-blue-400 content-center">
-                <FaX />
-              </div>
-              = withdraw application
-            </div>
-          </div>
-        ) : (
-          <div>
-            No applications yet. Go to <Link to="/jobvana/jobs">Jobs</Link> to
-            apply.
-          </div>
-        )}
+          ))}
       </div>
     </>
   );

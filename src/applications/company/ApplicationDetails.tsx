@@ -4,6 +4,7 @@ import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import Section from '../../Section';
+import ApplicationDetailsContainer from '../ApplicationDetailsContainer';
 import ApplicationEventsTable from '../ApplicationEventsTable';
 import ApplicationResume from '../ApplicationResume';
 import InterviewRoundEventsTable from '../InterviewRoundEventsTable';
@@ -36,9 +37,9 @@ const ApplicationDetails = ({ id }: { id: number }) => {
   }
 
   return (
-    <div className="mx-4">
-      {isDownloading && <Modal type="downloading" />}
-      {error && <JobvanaError error={error} />}
+    <ApplicationDetailsContainer>
+      {isDownloading ? <Modal type="downloading" /> : null}
+      {error ? <JobvanaError error={error} /> : null}
       <h1>Application Details</h1>
       <Section title="Application">
         <div>
@@ -108,7 +109,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           'No events'
         )}
       </Section>
-    </div>
+    </ApplicationDetailsContainer>
   );
 };
 
