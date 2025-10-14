@@ -3,6 +3,7 @@ import {
   useQuery,
   type QueryObserverResult
 } from '@tanstack/react-query';
+import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
 import type { Params } from '../../types';
@@ -11,6 +12,8 @@ export type JobSummary = {
   id: number;
   title: string;
   updated_at: string;
+  minSalary: number;
+  maxSalary: number;
 };
 
 export type Jobs = {
@@ -42,13 +45,16 @@ const useJobs = (params: JobsParams): Jobs => {
     queryFn: async () => {
       const { data, error, count } = await supabase
         .from('jobs')
-        .select('id, title, updated_at', { count: 'exact' })
+        .select('id, title, updated_at, salary_low, salary_high', {
+          count: 'exact'
+        })
         .filter('company_id', 'eq', params.filters.companyId)
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
         .order('updated_at', { ascending: false });
+
       // console.log(data);
       if (error) {
         console.log(error);
@@ -63,7 +69,9 @@ const useJobs = (params: JobsParams): Jobs => {
       return undefined;
     }
     return data.jobs.map((jobData) => ({
-      ...jobData
+      ..._.pick(jobData, 'id', 'title', 'updated_at'),
+      minSalary: jobData.salary_low,
+      maxSalary: jobData.salary_high
     }));
   }, [data]);
 

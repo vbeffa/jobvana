@@ -9,6 +9,7 @@ import Button from '../../controls/Button';
 import Modal from '../../Modal';
 import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
+import { formatCurrency, formatDate } from '../../utils';
 import JobDetails from './JobDetails';
 import useJobs, { type JobsParams } from './useJobs';
 
@@ -68,7 +69,19 @@ const MyJobs = ({ company }: { company: Company }) => {
                     setSelectedJobId(job.id);
                   }}
                   title={job.title}
-                  text={`Updated ${new Date(job.updated_at).toLocaleDateString()}`}
+                  text={
+                    <>
+                      <div className="flex justify-between pr-1">
+                        <span>
+                          Last updated {formatDate(new Date(job.updated_at))}
+                        </span>
+                      </div>
+                      <div>
+                        {formatCurrency(job.minSalary)} -{' '}
+                        {formatCurrency(job.maxSalary)}
+                      </div>
+                    </>
+                  }
                   borderBottom={true}
                 />
               ))

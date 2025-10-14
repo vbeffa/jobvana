@@ -38,7 +38,7 @@ export type JobSummary = {
   id: number;
   title: string;
   companyName: string;
-  created_at: string;
+  updated_at: string;
   minSalary: number;
   maxSalary: number;
 };
@@ -74,7 +74,7 @@ const useJobs = (params: JobsParams): Jobs => {
       let q = supabase
         .from('jobs')
         .select(
-          `id, title, created_at, salary_low, salary_high,
+          `id, title, updated_at, salary_low, salary_high,
           companies!inner(name),
           job_roles!inner(roles!inner()), job_skills!inner(skills!inner(id))`,
           { count: 'exact' }
@@ -136,8 +136,8 @@ const useJobs = (params: JobsParams): Jobs => {
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
-        .order('created_at', { ascending: false });
-      // .overrideTypes<Array<{ companies: Company }>>();
+        .order('updated_at', { ascending: false });
+
       // console.log(data);
       if (error) {
         console.log(error);
@@ -152,12 +152,12 @@ const useJobs = (params: JobsParams): Jobs => {
       return undefined;
     }
 
-    return data.jobs.map((job) => {
+    return data.jobs.map((jobData) => {
       return {
-        ..._.pick(job, 'id', 'title', 'created_at'),
-        companyName: job.companies.name,
-        minSalary: job.salary_low,
-        maxSalary: job.salary_high
+        ..._.pick(jobData, 'id', 'title', 'updated_at'),
+        companyName: jobData.companies.name,
+        minSalary: jobData.salary_low,
+        maxSalary: jobData.salary_high
       };
     });
   }, [data]);
