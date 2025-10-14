@@ -1,12 +1,8 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FaArchive } from 'react-icons/fa';
-import { FaCaretDown, FaCaretRight, FaPaperPlane } from 'react-icons/fa6';
-import {
-  MdArchive,
-  MdCheckCircleOutline,
-  MdOutlineUnpublished
-} from 'react-icons/md';
+import { FaArchive, FaDraftingCompass } from 'react-icons/fa';
+import { FaCaretDown, FaCaretRight, FaRocket } from 'react-icons/fa6';
+import { MdArchive, MdCheckCircleOutline, MdUnarchive } from 'react-icons/md';
 import useApplicationsForJob from '../../applications/company/useApplicationsForJob';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
@@ -314,17 +310,23 @@ const MyJob = ({
         <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-between">
           <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
             Status:
-            {job.status === 'draft' && <MdOutlineUnpublished />}
+            {job.status === 'draft' && <FaDraftingCompass />}
             {job.status === 'open' && <MdCheckCircleOutline />}
             {job.status === 'closed' && <FaArchive />}
-            {_.capitalize(job.status)}
+            {_.capitalize(
+              job.status === 'closed'
+                ? 'archived'
+                : job.status === 'open'
+                  ? 'published'
+                  : job.status
+            )}
           </div>
           {job.status === 'draft' && (
             <>
               {!isEditing && (
                 <div className="content-center pr-12">
                   <div
-                    className="text-lg text-blue-400 cursor-pointer"
+                    className=" text-blue-400 cursor-pointer"
                     onClick={() => {
                       if (
                         confirm('Are you sure you want to publish this job?')
@@ -333,11 +335,12 @@ const MyJob = ({
                       }
                     }}
                   >
-                    <FaPaperPlane />
+                    <FaRocket />
                   </div>
                 </div>
               )}
               <EditDeleteIcons
+                type="job"
                 isEditing={isEditing}
                 disabled={saveDisabled}
                 bgColor="--color-blue-200"
@@ -389,6 +392,20 @@ const MyJob = ({
                 </div>
               )}
             </>
+          )}
+          {job.status === 'closed' && (
+            <div className="content-center">
+              <div
+                className="text-lg text-blue-400 cursor-pointer"
+                onClick={() => {
+                  if (confirm('Are you sure you want to reopen this job?')) {
+                    onSave('open');
+                  }
+                }}
+              >
+                <MdUnarchive />
+              </div>
+            </div>
           )}
         </div>
       </div>
