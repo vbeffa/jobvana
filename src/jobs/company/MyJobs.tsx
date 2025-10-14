@@ -83,11 +83,7 @@ const MyJobs = ({ company }: { company: Company }) => {
                     setSelectedJob(job);
                   }}
                   title={job.title}
-                  text={
-                    job.updated_at
-                      ? `Updated ${new Date(job.updated_at).toLocaleDateString()}`
-                      : `Created ${new Date(job.created_at).toLocaleDateString()}`
-                  }
+                  text={`Updated ${new Date(job.updated_at).toLocaleDateString()}`}
                   borderBottom={true}
                 />
               ))
@@ -115,7 +111,15 @@ const MyJobs = ({ company }: { company: Company }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
           <>
-            {updating && <Modal type="updating" />}
+            {updating && (
+              <>
+                {isAddingNew ? (
+                  <Modal type="saving" />
+                ) : (
+                  <Modal type="updating" />
+                )}
+              </>
+            )}
             {selectedJobDetails ? (
               <MyJob
                 job={selectedJobDetails}
