@@ -11,6 +11,7 @@ import JobvanaError from '../../JobvanaError';
 import PageNav from '../../PageNav';
 import { Route } from '../../routes/jobvana.jobs.index';
 import SummaryCard from '../../SummaryCard';
+import { formatCurrency } from '../../utils';
 import { INITIAL_SEARCH_FILTERS } from '../utils';
 import ActiveFilters from './ActiveFilters';
 import JobDetails from './JobDetails';
@@ -170,10 +171,16 @@ const Jobs = () => {
                 }}
                 title={job.title}
                 text={
-                  <div className="flex justify-between pr-1">
-                    <span className="truncate">{job.companyName}</span>
-                    <span>{formatter.format(new Date(job.created_at))}</span>
-                  </div>
+                  <>
+                    <div className="flex justify-between pr-1">
+                      <span className="truncate">{job.companyName}</span>
+                      <span>{formatter.format(new Date(job.created_at))}</span>
+                    </div>
+                    <div>
+                      {formatCurrency(job.minSalary)} -{' '}
+                      {formatCurrency(job.maxSalary)}
+                    </div>
+                  </>
                 }
                 borderBottom={idx < jobs.length - 1}
               />

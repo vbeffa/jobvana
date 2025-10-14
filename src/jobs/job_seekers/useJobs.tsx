@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
 import type { Job, Params } from '../../types';
@@ -38,6 +39,8 @@ export type JobSummary = {
   title: string;
   companyName: string;
   created_at: string;
+  minSalary: number;
+  maxSalary: number;
 };
 
 export type Jobs = {
@@ -71,8 +74,9 @@ const useJobs = (params: JobsParams): Jobs => {
       let q = supabase
         .from('jobs')
         .select(
-          // 'id, title, companies!inner(name), job_roles!inner(roles!inner()), skills!inner()',
-          'id, title, created_at, companies!inner(name), job_roles!inner(roles!inner()), job_skills(skills!inner())',
+          `id, title, created_at, salary_low, salary_high,
+          companies!inner(name),
+          job_roles!inner(roles!inner()), job_skills(skills!inner(id))`,
           { count: 'exact' }
         )
         .filter('status', 'eq', 'open')
@@ -150,8 +154,10 @@ const useJobs = (params: JobsParams): Jobs => {
 
     return data.jobs.map((job) => {
       return {
-        ...job,
-        companyName: job.companies.name
+        ..._.pick(job, 'id', 'title', 'created_at'),
+        companyName: job.companies.name,
+        minSalary: job.salary_low,
+        maxSalary: job.salary_high
       };
     });
   }, [data]);
