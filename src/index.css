@@ -73,15 +73,27 @@ h2 {
   padding-bottom: 10px; */
 }
 
-table th, td {
-  padding: 4px;
-  border-width: 0.5px;
-  border-color: var(--color-blue-400);
+table {
+  border-collapse: separate;
+  border: solid 0.5px var(--color-blue-400);
+  border-radius: 8px;
+  border-spacing: 0px;
+  overflow: hidden;
 }
 
-table td {
-  text-align: left;
-  vertical-align: top;
+table th, td {
+  padding: 4px;
+  /* border-width: 0.5px; */
+  border-left: solid 0.5px var(--color-blue-400);
+  border-top: solid 0.5px var(--color-blue-400);
+}
+
+table th {
+  border-top: none;
+}
+
+table td:first-child, th:first-child {
+  border-left: none;
 }
 
 table .filter {

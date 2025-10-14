@@ -70,17 +70,13 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
       {error && <JobvanaError error={error} />}
       <div className="flex justify-center">
         {!isPending &&
-          (filteredApplications.length ? (
+          (applications?.length ? (
             <div className="w-fit flex flex-col gap-1">
+              <div className="flex w-full justify-end">
+                <StatusSelect status={status} onChange={setStatus} />
+              </div>
               <table>
                 <thead>
-                  <tr>
-                    <th colSpan={6} className="filter">
-                      <div className="flex w-full justify-end">
-                        <StatusSelect status={status} onChange={setStatus} />
-                      </div>
-                    </th>
-                  </tr>
                   <tr>
                     <th className="min-w-[15%]">Company</th>
                     <th className="min-w-[25%]">Job</th>
