@@ -6,7 +6,12 @@ import {
 import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
-import type { Params } from '../../types';
+import type { JobStatus, Params } from '../../types';
+
+export type SearchFilters = {
+  companyId: number;
+  status: JobStatus | 'all';
+};
 
 export type JobSummary = {
   id: number;
@@ -25,11 +30,11 @@ export type Jobs = {
   refetch: () => Promise<QueryObserverResult>;
 };
 
-export type JobsParams = Params<{ companyId: number }>;
+export type JobsParams = Params<SearchFilters>;
 
 type QueryKey = {
   page: number;
-} & { companyId: number };
+} & SearchFilters;
 
 const useJobs = (params: JobsParams): Jobs => {
   const queryKey: QueryKey = useMemo(
@@ -43,12 +48,19 @@ const useJobs = (params: JobsParams): Jobs => {
   const { data, isPlaceholderData, isPending, error, refetch } = useQuery({
     queryKey: ['jobs', queryKey],
     queryFn: async () => {
-      const { data, error, count } = await supabase
+      let q = supabase
         .from('jobs')
         .select('id, title, updated_at, salary_low, salary_high', {
           count: 'exact'
         })
-        .filter('company_id', 'eq', params.filters.companyId)
+        .filter('company_id', 'eq', params.filters.companyId);
+
+      const { filters } = params;
+      if (filters.status !== 'all') {
+        q = q.filter('status', 'eq', filters.status);
+      }
+
+      const { error, data, count } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1

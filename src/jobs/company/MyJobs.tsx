@@ -6,17 +6,26 @@ import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import type { Company } from '../../Context';
 import Button from '../../controls/Button';
+import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
 import { formatCurrency, formatDate } from '../../utils';
 import JobDetails from './JobDetails';
-import useJobs, { type JobsParams } from './useJobs';
+import StatusSelect from './StatusSelect';
+import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
 
 const MyJobs = ({ company }: { company: Company }) => {
   const [page, setPage] = useState<number>(1);
   const [debouncePage, setDebouncePage] = useState(false);
   const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+
+  const initialSearchFilters: SearchFilters = {
+    companyId: company.id,
+    status: 'all'
+  };
+  const [searchFilters, setSearchFilters] =
+    useState<SearchFilters>(initialSearchFilters);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
@@ -25,10 +34,12 @@ const MyJobs = ({ company }: { company: Company }) => {
     [debouncedPage]
   );
 
-  const { jobs, isPlaceholderData, isPending, total, refetch } = useJobs({
-    paging,
-    filters: { companyId: company.id }
-  });
+  const { jobs, isPlaceholderData, isPending, total, error, refetch } = useJobs(
+    {
+      paging,
+      filters: searchFilters
+    }
+  );
 
   useEffect(() => {
     if (selectedJobId && !jobs?.find((job) => job.id === selectedJobId)) {
@@ -47,6 +58,20 @@ const MyJobs = ({ company }: { company: Company }) => {
   return (
     <div className="mx-0">
       {isPending && <Modal type="loading" />}
+      {error && <JobvanaError error={error} />}
+      <div className="w-full flex justify-center pb-2">
+        <div className="w-[80%] flex justify-end">
+          <StatusSelect
+            status={searchFilters.status}
+            onChange={(status) => {
+              setSearchFilters({
+                ...searchFilters,
+                status
+              });
+            }}
+          />
+        </div>
+      </div>
       <ResourcesContainer hasStatus={true}>
         <ResourceListContainer>
           <PageNav

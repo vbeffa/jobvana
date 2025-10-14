@@ -1,15 +1,16 @@
 import type { InterviewProcess } from './companies/company/utils';
 import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import type { Database } from './db/types';
-import type { SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
+import type { SearchFilters as CompanyJobSearchFilters } from './jobs/company/useJobs';
+import type { SearchFilters as JobSeekerJobSearchFilters } from './jobs/job_seekers/useJobs';
 import type { SearchFilters as SkillSearchFilters } from './skills/useSkills';
 
 export type Params<
   SearchFilters extends
     | CompanySearchFilters
-    | JobSearchFilters
+    | JobSeekerJobSearchFilters
     | SkillSearchFilters
-    | { companyId: number }
+    | CompanyJobSearchFilters
 > = {
   paging: {
     page: number;
