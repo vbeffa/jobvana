@@ -3,7 +3,7 @@ import useCompanyAddresses from '../../companies/company/useCompanyAddresses';
 import type { Company } from '../../Context';
 import Modal from '../../Modal';
 import MyJob from './MyJob';
-import useJobsForCompany from './useJobsForCompany';
+import useJobs from './useJobs';
 
 const JobDetails = ({
   company,
@@ -12,7 +12,7 @@ const JobDetails = ({
   company: Company;
   jobId: number;
 }) => {
-  const { jobs, refetch } = useJobsForCompany({ companyId: company.id, jobId });
+  const { jobs, refetch } = useJobs({ companyId: company.id, jobId });
   const { addresses } = useCompanyAddresses(company.id);
   const [updating, setUpdating] = useState(false);
 

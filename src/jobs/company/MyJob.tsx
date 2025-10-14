@@ -13,7 +13,7 @@ import type { CompanyAddress, JobRole, JobSkill, JobStatus } from '../../types';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
 import MyJobSkills from './MyJobSkills';
-import type { Job } from './useJobsForCompany';
+import type { Job } from './useJobs';
 import { areValidJobRoles, duplicateJobRoles, isValidJob } from './utils';
 
 export type MyJobProps = {

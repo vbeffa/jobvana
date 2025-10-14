@@ -10,7 +10,7 @@ import Modal from '../../Modal';
 import SummaryCard from '../../SummaryCard';
 import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
 import MyJob from './MyJob';
-import useJobsForCompany, { type Job } from './useJobsForCompany';
+import useJobs, { type Job } from './useJobs';
 
 type JobSummary = Pick<Job, 'id'>;
 
@@ -18,7 +18,7 @@ const MyJobs = ({ company }: { company: Company }) => {
   const [selectedJob, setSelectedJob] = useState<JobSummary>();
   const [updating, setUpdating] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const { jobs, refetch } = useJobsForCompany({ companyId: company.id });
+  const { jobs, refetch } = useJobs({ companyId: company.id });
   const { addresses } = useCompanyAddresses(company.id);
 
   if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {

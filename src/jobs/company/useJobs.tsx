@@ -20,7 +20,7 @@ export type Jobs = {
   refetch: () => Promise<QueryObserverResult>;
 };
 
-const useJobsForCompany = ({
+const useJobs = ({
   companyId,
   jobId
 }: {
@@ -77,4 +77,4 @@ const useJobsForCompany = ({
   };
 };
 
-export default useJobsForCompany;
+export default useJobs;
