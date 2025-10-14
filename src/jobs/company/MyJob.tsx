@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FaArchive, FaDraftingCompass } from 'react-icons/fa';
+import { FaArchive, FaDraftingCompass, FaUndo } from 'react-icons/fa';
 import { FaCaretDown, FaCaretRight, FaRocket } from 'react-icons/fa6';
 import { MdArchive, MdCheckCircleOutline, MdUnarchive } from 'react-icons/md';
 import useApplicationsForJob from '../../applications/company/useApplicationsForJob';
@@ -376,9 +376,23 @@ const MyJob = ({
                 </div>
               ) : null}
               {!isFrozen && (
-                <div className="content-center">
+                <div className="flex flex-row gap-1 items-center">
                   <div
-                    className="text-lg text-blue-400 cursor-pointer"
+                    className="text-blue-400 cursor-pointer"
+                    onClick={() => {
+                      if (
+                        confirm(
+                          'Are you sure you want to move this job back to draft?'
+                        )
+                      ) {
+                        onSave('draft');
+                      }
+                    }}
+                  >
+                    <FaUndo />
+                  </div>
+                  <div
+                    className="text-xl text-blue-400 cursor-pointer"
                     onClick={() => {
                       if (
                         confirm('Are you sure you want to archive this job?')
@@ -396,7 +410,7 @@ const MyJob = ({
           {job.status === 'closed' && (
             <div className="content-center">
               <div
-                className="text-lg text-blue-400 cursor-pointer"
+                className="text-xl text-blue-400 cursor-pointer"
                 onClick={() => {
                   if (confirm('Are you sure you want to reopen this job?')) {
                     onSave('open');
