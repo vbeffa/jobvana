@@ -158,17 +158,7 @@ const ActiveFilters = ({
       </div>
       <div className="flex flex-row gap-2">
         <div className="content-center">Salary Range:</div>
-        <PillContainer
-          onDelete={() => {
-            const updatedFilters = {
-              ...filters,
-              minSalary: INITIAL_SEARCH_FILTERS.minSalary,
-              maxSalary: INITIAL_SEARCH_FILTERS.maxSalary
-            };
-            setFilters(updatedFilters);
-            setJobSearchFilters(updatedFilters);
-          }}
-        >{`${formatCurrency(filters.minSalary)} - ${formatCurrency(filters.maxSalary)}`}</PillContainer>
+        <PillContainer>{`${formatCurrency(filters.minSalary)} - ${formatCurrency(filters.maxSalary)}`}</PillContainer>
       </div>
       {filters.created !== 'all' && (
         <div className="flex flex-row gap-2">
