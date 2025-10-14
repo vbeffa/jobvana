@@ -74,6 +74,11 @@ const MyJob = ({
     [editJobSkills, job.job_skills]
   );
 
+  const areJobSkillsValid = useMemo(
+    () => editJobSkills.length > 0,
+    [editJobSkills.length]
+  );
+
   const isFrozen = useMemo(
     () => activeApplications === undefined || activeApplications > 0,
     [activeApplications]
@@ -237,7 +242,7 @@ const MyJob = ({
         if ((isNew || areJobRolesDirty) && areJobRolesValid) {
           await updateJobRoles(newJobId);
         }
-        if (areJobSkillsDirty) {
+        if ((isNew || areJobSkillsDirty) && areJobSkillsValid) {
           await updateJobSkills(newJobId);
         }
         onFinishUpdate();
@@ -253,6 +258,7 @@ const MyJob = ({
       areJobRolesDirty,
       areJobRolesValid,
       areJobSkillsDirty,
+      areJobSkillsValid,
       createJob,
       error,
       isJobDirty,
@@ -288,11 +294,13 @@ const MyJob = ({
       ((!isJobDirty && !areJobRolesDirty && !areJobSkillsDirty) ||
         !isJobValid ||
         !areJobRolesValid ||
+        !areJobSkillsValid ||
         isSubmitting),
     [
       areJobRolesDirty,
       areJobRolesValid,
       areJobSkillsDirty,
+      areJobSkillsValid,
       isEditing,
       isJobDirty,
       isJobValid,
