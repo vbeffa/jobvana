@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
@@ -30,11 +30,14 @@ const MyJobs = ({ company }: { company: Company }) => {
     filters: { companyId: company.id }
   });
 
-  if (selectedJobId && !jobs?.find((job) => job.id === selectedJobId)) {
-    setSelectedJobId(jobs?.[0].id ?? null);
-  } else if (!selectedJobId) {
-    setSelectedJobId(jobs?.[0].id ?? null);
-  }
+  useEffect(() => {
+    if (selectedJobId && !jobs?.find((job) => job.id === selectedJobId)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedJobId(jobs?.[0].id ?? null);
+    } else if (!selectedJobId) {
+      setSelectedJobId(jobs?.[0].id ?? null);
+    }
+  }, [jobs, selectedJobId]);
 
   const noInterviewProcess = useMemo(
     () => !company.interview_process?.rounds.length,
