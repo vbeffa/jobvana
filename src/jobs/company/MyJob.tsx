@@ -352,7 +352,7 @@ const MyJob = ({
                   }
                 }}
                 onDelete={!isNew ? onDelete : undefined}
-                onSave={onSave}
+                onSave={() => onSave()}
               />
             </>
           )}
