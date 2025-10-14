@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { useMemo } from 'react';
 import Select from '../../inputs/Select';
 import type { Job } from '../../types';
-import { currencyFormatter } from '../../utils';
+import { formatCurrency } from '../../utils';
 import { maxJobSalary, minJobSalary } from '../utils';
 
 const SalarySelect = ({
@@ -32,7 +32,7 @@ const SalarySelect = ({
     >
       {salaries.map((salary, idx) => (
         <option key={idx} value={salary}>
-          {currencyFormatter.format(salary)}
+          {formatCurrency(salary)}
         </option>
       ))}
     </Select>

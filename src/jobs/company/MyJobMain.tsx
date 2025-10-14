@@ -4,7 +4,7 @@ import { MAX_DESCRIPTION_LENGTH } from '../../companies/job_seeker/useCompanies'
 import Label from '../../inputs/Label';
 import TextArea from '../../inputs/TextArea';
 import type { CompanyAddress } from '../../types';
-import { currencyFormatter } from '../../utils';
+import { formatCurrency } from '../../utils';
 import { jobTypeToString, maxJobSalary, minJobSalary } from '../utils';
 import JobTypeSelect from './JobTypeSelect';
 import LocationSelect from './LocationSelect';
@@ -80,9 +80,9 @@ const MyJobMain = ({
             <div className="w-[40%]">{capitalize(job.salary_type)}</div>
             <div className="w-[20%]">Salary:</div>
             <div className="flex flex-row gap-1">
-              <div>{currencyFormatter.format(job.salary_low)}</div>
+              <div>{formatCurrency(job.salary_low)}</div>
               <div>-</div>
-              <div>{currencyFormatter.format(job.salary_high)}</div>
+              <div>{formatCurrency(job.salary_high)}</div>
             </div>
           </div>
           <div>Location:</div>

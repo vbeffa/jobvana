@@ -20,4 +20,6 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0
 });
 
-export { currencyFormatter, dateComparator, descDateComparator };
+const formatCurrency = currencyFormatter.format;
+
+export { dateComparator, descDateComparator, formatCurrency };

@@ -5,7 +5,7 @@ import PillContainer from '../../containers/PillContainer';
 import { JobSeekerContext } from '../../Context';
 import useRoles from '../../roles/useRoles';
 import useSkillsLite from '../../skills/useSkillsLite';
-import { currencyFormatter } from '../../utils';
+import { formatCurrency } from '../../utils';
 import {
   createdRangeToString,
   INITIAL_SEARCH_FILTERS,
@@ -156,23 +156,20 @@ const ActiveFilters = ({
         <div className="content-center">Salary Type:</div>
         <PillContainer>{_.capitalize(filters.salaryType)}</PillContainer>
       </div>
-      {(filters.minSalary > INITIAL_SEARCH_FILTERS.minSalary ||
-        filters.maxSalary < INITIAL_SEARCH_FILTERS.maxSalary) && (
-        <div className="flex flex-row gap-2">
-          <div className="content-center">Salary Range:</div>
-          <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                minSalary: INITIAL_SEARCH_FILTERS.minSalary,
-                maxSalary: INITIAL_SEARCH_FILTERS.maxSalary
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
-          >{`${currencyFormatter.format(filters.minSalary)} - ${currencyFormatter.format(filters.maxSalary)}`}</PillContainer>
-        </div>
-      )}
+      <div className="flex flex-row gap-2">
+        <div className="content-center">Salary Range:</div>
+        <PillContainer
+          onDelete={() => {
+            const updatedFilters = {
+              ...filters,
+              minSalary: INITIAL_SEARCH_FILTERS.minSalary,
+              maxSalary: INITIAL_SEARCH_FILTERS.maxSalary
+            };
+            setFilters(updatedFilters);
+            setJobSearchFilters(updatedFilters);
+          }}
+        >{`${formatCurrency(filters.minSalary)} - ${formatCurrency(filters.maxSalary)}`}</PillContainer>
+      </div>
       {filters.created !== 'all' && (
         <div className="flex flex-row gap-2">
           <div className="content-center">Posted:</div>
