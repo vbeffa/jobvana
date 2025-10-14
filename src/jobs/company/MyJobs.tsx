@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import useCompanyAddresses from '../../companies/company/useCompanyAddresses';
+import { useDebounce } from 'use-debounce';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
@@ -7,80 +7,65 @@ import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import type { Company } from '../../Context';
 import Button from '../../controls/Button';
 import Modal from '../../Modal';
+import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
-import { MAX_SALARY, MIN_SALARY } from '../job_seekers/useJobs';
-import MyJob from './MyJob';
-import useJobs, { type Job } from './useJobs';
-
-type JobSummary = Pick<Job, 'id'>;
+import JobDetails from './JobDetails';
+import useJobs, { type JobsParams } from './useJobs';
 
 const MyJobs = ({ company }: { company: Company }) => {
-  const [selectedJob, setSelectedJob] = useState<JobSummary>();
-  const [updating, setUpdating] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [debouncePage, setDebouncePage] = useState(false);
+  const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const { jobs, refetch } = useJobs({ companyId: company.id });
-  const { addresses } = useCompanyAddresses(company.id);
 
-  if (!selectedJob && !isAddingNew && jobs && jobs.length > 0) {
-    setSelectedJob(jobs[0]);
+  const paging: JobsParams['paging'] = useMemo(
+    () => ({ page: debouncedPage, pageSize: 10 }),
+    [debouncedPage]
+  );
+
+  const { jobs, isPlaceholderData, isPending, total, refetch } = useJobs({
+    paging,
+    filters: { companyId: company.id }
+  });
+
+  if (selectedJobId && !jobs?.find((job) => job.id === selectedJobId)) {
+    setSelectedJobId(jobs?.[0].id ?? null);
+  } else if (!selectedJobId) {
+    setSelectedJobId(jobs?.[0].id ?? null);
   }
-
-  const newJob: Job = useMemo(
-    () => ({
-      id: 0,
-      created_at: new Date().toISOString(),
-      type: 'full_time',
-      company_id: company.id,
-      status: 'draft',
-      title: 'New Job',
-      description: '',
-      job_roles: [
-        {
-          job_id: 0,
-          role_id: 0,
-          percent: 100,
-          role_level: 2
-        }
-      ],
-      job_skills: [],
-      salary_type: 'annual',
-      salary_low: MIN_SALARY,
-      salary_high: MAX_SALARY,
-      updated_at: new Date().toISOString(),
-      company_address_id: null,
-      interview_process: company.interview_process
-    }),
-    [company]
-  );
-
-  const selectedJobDetails = useMemo(
-    () =>
-      isAddingNew ? newJob : jobs?.find((job) => job.id === selectedJob?.id),
-    [isAddingNew, jobs, newJob, selectedJob?.id]
-  );
 
   const noInterviewProcess = useMemo(
     () => !company.interview_process?.rounds.length,
     [company.interview_process?.rounds.length]
   );
 
-  if (!jobs) {
-    return;
-  }
-
   return (
     <div className="mx-0">
+      {isPending && <Modal type="loading" />}
       <ResourcesContainer hasTitle={false} hasFilters={false}>
         <ResourceListContainer>
+          <PageNav
+            page={page}
+            disabled={isAddingNew}
+            total={total}
+            onSetPage={(page, debounce) => {
+              setPage(page);
+              setSelectedJobId(null);
+              setDebouncePage(debounce);
+            }}
+            isLoading={isPlaceholderData || isPending}
+            type="jobs"
+          />
           <SummaryCardsContainer hasFilters={false}>
             {jobs
-              .map((job, idx) => (
+              ?.map((job, idx) => (
                 <SummaryCard
                   key={idx}
-                  selected={selectedJob?.id === job.id}
+                  selected={selectedJobId === job.id}
                   disabled={isAddingNew}
                   onClick={() => {
-                    setSelectedJob(job);
+                    setSelectedJobId(job.id);
                   }}
                   title={job.title}
                   text={`Updated ${new Date(job.updated_at).toLocaleDateString()}`}
@@ -99,7 +84,7 @@ const MyJobs = ({ company }: { company: Company }) => {
                           disabled={noInterviewProcess}
                           onClick={() => {
                             setIsAddingNew(true);
-                            setSelectedJob(undefined);
+                            setSelectedJobId(0);
                           }}
                         />
                       </div>
@@ -111,35 +96,18 @@ const MyJobs = ({ company }: { company: Company }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
           <>
-            {updating && (
-              <>
-                {isAddingNew ? (
-                  <Modal type="saving" />
-                ) : (
-                  <Modal type="updating" />
-                )}
-              </>
-            )}
-            {selectedJobDetails ? (
-              <MyJob
-                job={selectedJobDetails}
+            {selectedJobId !== null ? (
+              <JobDetails
+                jobId={selectedJobId}
+                company={company}
                 isNew={isAddingNew}
-                addresses={addresses ?? []}
-                onStartUpdate={() => {
-                  setUpdating(true);
-                }}
-                onFinishUpdate={async (error?: Error) => {
-                  if (!error) {
-                    await refetch();
-                  }
-                  setSelectedJob(undefined);
-                  setUpdating(false);
+                onFinishUpdate={async () => {
                   setIsAddingNew(false);
+                  await refetch();
+                  setPage(1);
+                  setSelectedJobId(null);
                 }}
                 onCancelNewJob={() => {
-                  // console.log('pop');
-                  // jobs.pop();
-                  setSelectedJob(undefined);
                   setIsAddingNew(false);
                 }}
               />

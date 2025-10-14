@@ -132,7 +132,6 @@ const Companies = () => {
         <ResourceListContainer>
           <PageNav
             page={page}
-            pageSize={10}
             total={companyCount}
             onSetPage={(page, debounce) => {
               setPage(page);

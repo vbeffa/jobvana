@@ -143,7 +143,6 @@ const Jobs = () => {
         <ResourceListContainer>
           <PageNav
             page={page}
-            pageSize={10}
             total={openJobCount}
             onSetPage={(page, debounce) => {
               setPage(page);

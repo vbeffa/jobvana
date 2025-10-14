@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaArchive, FaDraftingCompass, FaUndo } from 'react-icons/fa';
-import { FaCaretDown, FaCaretRight, FaRocket } from 'react-icons/fa6';
+import { FaCaretDown, FaCaretRight, FaPencil, FaRocket } from 'react-icons/fa6';
 import { MdArchive, MdCheckCircleOutline, MdUnarchive } from 'react-icons/md';
 import useApplicationsForJob from '../../applications/company/useApplicationsForJob';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
@@ -13,7 +13,7 @@ import type { CompanyAddress, JobRole, JobSkill, JobStatus } from '../../types';
 import MyJobMain from './MyJobMain';
 import MyJobRoles from './MyJobRoles';
 import MyJobSkills from './MyJobSkills';
-import type { Job } from './useJobs';
+import type { Job } from './useJob';
 import { areValidJobRoles, duplicateJobRoles, isValidJob } from './utils';
 
 export type MyJobProps = {
@@ -116,16 +116,19 @@ const MyJob = ({
   );
 
   const createJob = useCallback(async () => {
-    const toInsert = _.omit(editJob, 'id', 'job_roles', 'job_skills');
+    const toInsert = _.omit(
+      editJob,
+      'id',
+      'created_at',
+      'job_roles',
+      'job_skills'
+    );
     if (toInsert.company_address_id === -1) {
       toInsert.company_address_id = null;
     }
     const { data, error } = await supabase
       .from('jobs')
-      .insert({
-        ...toInsert,
-        updated_at: new Date().toISOString()
-      })
+      .insert(toInsert)
       .select();
 
     if (error) {
@@ -304,22 +307,30 @@ const MyJob = ({
     ]
   );
 
+  const statusString = useMemo(() => {
+    switch (job.status) {
+      case 'closed':
+        return 'Archived';
+      case 'open':
+        return 'Published';
+      case 'draft':
+        return isNew ? 'Adding new job' : 'Draft';
+      case 'filled':
+        return 'Filled';
+    }
+  }, [isNew, job.status]);
+
   return (
     <div>
       <div className="w-full bg-blue-200">
         <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-between">
           <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
             Status:
-            {job.status === 'draft' && <FaDraftingCompass />}
+            {job.status === 'draft' &&
+              (isNew ? <FaPencil /> : <FaDraftingCompass />)}
             {job.status === 'open' && <MdCheckCircleOutline />}
             {job.status === 'closed' && <FaArchive />}
-            {_.capitalize(
-              job.status === 'closed'
-                ? 'archived'
-                : job.status === 'open'
-                  ? 'published'
-                  : job.status
-            )}
+            {statusString}
           </div>
           {job.status === 'draft' && (
             <>
@@ -479,7 +490,7 @@ const MyJob = ({
           isEditing={isEditing}
         />
         {!isEditing && job.interview_process && (
-          <>
+          <div className="mb-4">
             <div className="col-span-2">
               <Hr />
             </div>
@@ -500,7 +511,7 @@ const MyJob = ({
                 />
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

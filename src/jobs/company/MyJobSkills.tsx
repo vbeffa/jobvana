@@ -4,7 +4,7 @@ import SkillLink from '../../skills/SkillLink';
 import useSkillsLite from '../../skills/useSkillsLite';
 import type { JobSkill } from '../../types';
 import SkillsSelect from '../SkillsSelect';
-import type { Job } from './useJobs';
+import type { Job } from './useJob';
 
 export type MyJobSkillsProps = {
   job: Job;

@@ -11,6 +11,7 @@ export type PageNavProps = {
   page: number;
   pageSize?: number;
   total?: number;
+  disabled?: boolean;
   // debounce: true when typing in a new page number, false when clicking arrows
   onSetPage: (page: number, debounce: boolean) => void;
   isLoading: boolean;
@@ -20,7 +21,8 @@ export type PageNavProps = {
 
 const PageNav = ({
   page,
-  pageSize = 50,
+  pageSize = 10,
+  disabled = false,
   total,
   onSetPage,
   isLoading,
@@ -32,8 +34,8 @@ const PageNav = ({
     [pageSize, total]
   );
 
-  const navButtonStyles = (disabled: boolean) =>
-    `content-center text-sm ${disabled ? 'text-gray-200' : 'text-gray-400 cursor-pointer'}`;
+  const navButtonStyles = (isDisabled: boolean) =>
+    `content-center text-sm ${isDisabled || disabled ? 'text-gray-200' : 'text-gray-400 cursor-pointer'}`;
 
   return (
     <div
@@ -43,10 +45,24 @@ const PageNav = ({
         {total !== 0 && (
           <div className="w-full flex flex-row justify-center gap-1">
             <div className={navButtonStyles(page === 1)}>
-              <FaAngleDoubleLeft onClick={() => onSetPage(1, false)} />
+              <FaAngleDoubleLeft
+                onClick={() => {
+                  if (disabled || page === 1) {
+                    return;
+                  }
+                  onSetPage(1, false);
+                }}
+              />
             </div>
             <div className={navButtonStyles(page === 1)}>
-              <FaAngleLeft onClick={() => onSetPage(page - 1, false)} />
+              <FaAngleLeft
+                onClick={() => {
+                  if (disabled || page === 1) {
+                    return;
+                  }
+                  onSetPage(page - 1, false);
+                }}
+              />
             </div>
             <div className="content-center ml-1">
               <input
@@ -55,7 +71,7 @@ const PageNav = ({
                 step={1}
                 min={1}
                 max={numPages}
-                disabled={isLoading}
+                disabled={isLoading || disabled}
                 className="pagenav border-[.05rem] h-6 w-fit max-w-10 text-center
                      border-gray-400 rounded
                      disabled:bg-gray-50"
@@ -80,11 +96,23 @@ const PageNav = ({
             <div className="content-center">of</div>
             <div className="content-center mr-1">{numPages}</div>
             <div className={navButtonStyles(page === numPages)}>
-              <FaAngleRight onClick={() => onSetPage(page + 1, false)} />
+              <FaAngleRight
+                onClick={() => {
+                  if (disabled || page === numPages) {
+                    return;
+                  }
+                  onSetPage(page + 1, false);
+                }}
+              />
             </div>
             <div className={navButtonStyles(page === numPages)}>
               <FaAngleDoubleRight
-                onClick={() => numPages && onSetPage(numPages, false)}
+                onClick={() => {
+                  if (disabled || !numPages || page === numPages) {
+                    return;
+                  }
+                  onSetPage(numPages, false);
+                }}
               />
             </div>
           </div>

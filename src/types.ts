@@ -9,6 +9,7 @@ export type Params<
     | CompanySearchFilters
     | JobSearchFilters
     | SkillSearchFilters
+    | { companyId: number }
 > = {
   paging: {
     page: number;

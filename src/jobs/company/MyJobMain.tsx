@@ -11,7 +11,7 @@ import LocationSelect from './LocationSelect';
 import MyJobTitle from './MyJobTitle';
 import SalaryRangeInput from './SalaryRangeInput';
 import SalaryTypeSelect from './SalaryTypeSelect';
-import type { Job } from './useJobs';
+import type { Job } from './useJob';
 import { type ToUpdate } from './utils';
 
 export type MyJobMainProps = {

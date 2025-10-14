@@ -72,7 +72,6 @@ const Skills = () => {
         <ResourceListContainer>
           <PageNav
             page={page}
-            pageSize={10}
             total={skillsCount}
             onSetPage={(page, debounce) => {
               setPage(page);
