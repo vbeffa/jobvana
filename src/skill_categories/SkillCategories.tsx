@@ -32,9 +32,9 @@ const SkillCategories = () => {
         />
       </div>
       {view === 'list' && (
-        <ResourcesContainer hasFilters={false}>
+        <ResourcesContainer hasTitle={true}>
           <ResourceListContainer>
-            <SummaryCardsContainer hasFilters={false}>
+            <SummaryCardsContainer>
               {skillCategories?.map((skillCategory, idx) => {
                 return (
                   <SummaryCard

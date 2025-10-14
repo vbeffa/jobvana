@@ -47,7 +47,7 @@ const MyJobs = ({ company }: { company: Company }) => {
   return (
     <div className="mx-0">
       {isPending && <Modal type="loading" />}
-      <ResourcesContainer hasTitle={false} hasFilters={false}>
+      <ResourcesContainer hasStatus={true}>
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -61,7 +61,7 @@ const MyJobs = ({ company }: { company: Company }) => {
             isLoading={isPlaceholderData || isPending}
             type="jobs"
           />
-          <SummaryCardsContainer hasFilters={false}>
+          <SummaryCardsContainer hasStatus={true}>
             {jobs
               ?.map((job, idx) => (
                 <SummaryCard

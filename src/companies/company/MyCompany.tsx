@@ -38,7 +38,7 @@ const MyCompany = ({ company }: { company: Company }) => {
 
   return (
     <div className="mx-0">
-      <ResourcesContainer hasTitle={false} hasFilters={false}>
+      <ResourcesContainer>
         <ResourceListContainer>
           <SummaryCardsContainer>
             <SummaryCard

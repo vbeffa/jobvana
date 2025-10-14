@@ -2,12 +2,14 @@ import { type JSX } from 'react';
 
 const ResourcesContainer = ({
   children,
-  hasFilters = true,
-  hasTitle = true
+  hasFilters = false,
+  hasTitle = false,
+  hasStatus = false
 }: {
   children: Array<JSX.Element> | JSX.Element;
   hasFilters?: boolean;
   hasTitle?: boolean;
+  hasStatus?: boolean;
 }) => {
   // const height = useMemo(() => {
   //   let heightPx = HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX;
@@ -24,7 +26,9 @@ const ResourcesContainer = ({
     ? 'h-[calc(100dvh-173px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX = 80 + 16 + 77
     : hasTitle
       ? 'h-[calc(100dvh-168px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + TITLE_TOTAL_HEIGHT_PX = 80 + 16 + 72
-      : 'h-[calc(100dvh-96px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX = 80 + 16
+      : hasStatus
+        ? 'h-[calc(100dvh-136px)]' // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + STATUS_SELECT_TOTAL_HEIGHT_PX = 80 + 16 + 40
+        : 'h-[calc(100dvh-96px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX = 80 + 16
 
   return (
     <div className="flex justify-center">

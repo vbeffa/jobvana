@@ -134,7 +134,7 @@ const Jobs = () => {
           }}
         />
       )}
-      <ResourcesContainer>
+      <ResourcesContainer hasFilters={true}>
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -151,7 +151,7 @@ const Jobs = () => {
             isLoading={isPlaceholderData || isPending}
             type="jobs"
           />
-          <SummaryCardsContainer>
+          <SummaryCardsContainer hasFilters={true}>
             {jobs?.map((job, idx) => (
               <SummaryCard
                 key={job.id}

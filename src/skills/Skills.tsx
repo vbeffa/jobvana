@@ -68,7 +68,7 @@ const Skills = () => {
           }}
         />
       )}
-      <ResourcesContainer>
+      <ResourcesContainer hasFilters={true}>
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -81,7 +81,7 @@ const Skills = () => {
             isLoading={isPlaceholderData || isPending}
             type="skills"
           />
-          <SummaryCardsContainer>
+          <SummaryCardsContainer hasFilters={true}>
             {skills?.map((skill, idx) => {
               return (
                 <SummaryCard

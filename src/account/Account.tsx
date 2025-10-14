@@ -29,7 +29,7 @@ const Account = () => {
   return (
     <div className="mx-4">
       <h1>Account Details</h1>
-      <ResourcesContainer hasFilters={false}>
+      <ResourcesContainer hasTitle={true}>
         <ResourceListContainer>
           <SummaryCardsContainer>
             {jobSeeker ? (
