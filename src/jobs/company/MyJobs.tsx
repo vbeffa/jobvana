@@ -125,7 +125,7 @@ const MyJobs = ({ company }: { company: Company }) => {
                 ) : (
                   <div key={jobs.length} className="pt-4 flex justify-center">
                     <div className="flex flex-col justify-center gap-2">
-                      <div className="w-full flex justify-center">
+                      <div className="w-full pb-4 flex justify-center">
                         <Button
                           label="New"
                           disabled={noInterviewProcess}
