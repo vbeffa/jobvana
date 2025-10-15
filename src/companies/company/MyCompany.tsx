@@ -36,6 +36,13 @@ const MyCompany = ({ company }: { company: Company }) => {
     [company.interview_process]
   );
 
+  const pipelineSize = useMemo(
+    () =>
+      ((company.interview_process ?? EMPTY_PROCESS) as InterviewProcess)
+        .pipeline_size,
+    [company.interview_process]
+  );
+
   return (
     <div className="mx-0">
       <ResourcesContainer>
@@ -83,7 +90,7 @@ const MyCompany = ({ company }: { company: Company }) => {
                   Interview Process
                 </div>
               }
-              text={`${numRounds} round${numRounds !== 1 ? 's' : ''}`}
+              text={`${numRounds} round${numRounds !== 1 ? 's' : ''}, ${pipelineSize} job seeker${pipelineSize > 1 ? 's' : ''}`}
               borderBottom={true}
             />
           </SummaryCardsContainer>
