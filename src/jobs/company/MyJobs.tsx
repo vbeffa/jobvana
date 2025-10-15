@@ -42,13 +42,19 @@ const MyJobs = ({ company }: { company: Company }) => {
   );
 
   useEffect(() => {
-    if (selectedJobId && !jobs?.find((job) => job.id === selectedJobId)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedJobId(jobs?.[0].id ?? null);
-    } else if (!selectedJobId) {
-      setSelectedJobId(jobs?.[0].id ?? null);
+    if (isAddingNew) {
+      return;
     }
-  }, [jobs, selectedJobId]);
+    if (!jobs?.length) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedJobId(null);
+    } else if (
+      !selectedJobId ||
+      !jobs.find((job) => job.id === selectedJobId)
+    ) {
+      setSelectedJobId(jobs[0].id);
+    }
+  }, [isAddingNew, jobs, selectedJobId]);
 
   const noInterviewProcess = useMemo(
     () => !company.interview_process?.rounds.length,
