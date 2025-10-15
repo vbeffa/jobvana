@@ -55,7 +55,9 @@ const JobDetails = ({
 
   if (!myJob) {
     return isPending ? (
-      <Modal type="loading" />
+      <div className="relative top-10">
+        <Modal type="loading" />
+      </div>
     ) : (
       <div className="flex justify-center">Not found</div>
     );
@@ -63,8 +65,10 @@ const JobDetails = ({
 
   return (
     <div>
-      {isPlaceholderData && !isNew && <Modal type="loading" />}
-      {updating && <Modal type={isNew ? 'saving' : 'updating'} />}
+      <div className="relative top-10">
+        {isPlaceholderData && !isNew && <Modal type="loading" />}
+        {updating && <Modal type={isNew ? 'saving' : 'updating'} />}
+      </div>
       <MyJob
         job={myJob}
         isNew={isNew}
