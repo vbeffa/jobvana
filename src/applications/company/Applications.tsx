@@ -66,21 +66,19 @@ const Applications = ({ companyId }: { companyId: number }) => {
       <div className="flex justify-center">
         {!isPending &&
           (applications?.length ? (
-            <div className="w-fit flex flex-col gap-1">
+            <div className="w-[75%] flex flex-col gap-1">
               <div className="flex w-full justify-end">
                 <StatusSelect status={status} onChange={setStatus} />
               </div>
               <table>
                 <thead>
                   <tr>
-                    <th className="min-w-[25%]">Job</th>
-                    <th className="min-w-[15%] whitespace-nowrap">
-                      Job Seeker
-                    </th>
+                    <th>Job</th>
+                    <th>Job Seeker</th>
                     <th>Applied</th>
-                    <th className="w-[10%] max-w-12">Status</th>
+                    <th>Status</th>
                     <th>Updated</th>
-                    <th className="w-[12%] min-w-32">Actions</th>
+                    <th className="w-30 min-w-30">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,11 +87,11 @@ const Applications = ({ companyId }: { companyId: number }) => {
                       key={idx}
                       className={idx % 2 === 1 ? 'bg-gray-200' : ''}
                     >
-                      <td className="whitespace-nowrap">
+                      <td>
                         <JobLink {...application.job} />
                       </td>
                       <td>
-                        <div className="px-2 whitespace-nowrap">
+                        <div className="px-2">
                           {application.jobSeeker.first_name}{' '}
                           {application.jobSeeker.last_name}
                         </div>
@@ -119,7 +117,7 @@ const Applications = ({ companyId }: { companyId: number }) => {
                         </div>
                       </td>
                       <td className="content-center">
-                        <div className="flex justify-start pl-[20%] text-blue-400 gap-2">
+                        <div className="flex pl-4 text-blue-400 gap-2">
                           <ApplicationResume
                             resumePath={application.resumePath}
                             setIsDownloading={setIsDownloading}
@@ -153,30 +151,33 @@ const Applications = ({ companyId }: { companyId: number }) => {
                   ))}
                 </tbody>
               </table>
-              <div>Notes:</div>
-              <div className="flex flex-row gap-1 text-sm">
-                <div className="text-blue-400 content-center">
-                  <FaArrowUpRightFromSquare />
+              <div className="mt-4 border-[0.5px] border-blue-400 rounded-lg p-2">
+                <div className="flex justify-center font-bold">Notes</div>
+                <div className="-mx-2 my-2 border-b-[0.5px] border-blue-300" />
+                <div className="flex flex-row gap-1 text-sm">
+                  <div className="text-blue-400 content-center">
+                    <FaArrowUpRightFromSquare />
+                  </div>
+                  = open resume for application in new tab
                 </div>
-                = open resume for application in new tab
-              </div>
-              <div className="flex flex-row gap-1 text-sm">
-                <div className="text-blue-400 content-center">
-                  <FaEye />
+                <div className="flex flex-row gap-1 text-sm">
+                  <div className="text-blue-400 content-center">
+                    <FaEye />
+                  </div>
+                  = view application details
                 </div>
-                = view application details
-              </div>
-              <div className="flex flex-row gap-1 text-sm">
-                <div className="text-blue-400 content-center">
-                  <FaCheck />
+                <div className="flex flex-row gap-1 text-sm">
+                  <div className="text-blue-400 content-center">
+                    <FaCheck />
+                  </div>
+                  = accept application
                 </div>
-                = accept application
-              </div>
-              <div className="flex flex-row gap-1 text-sm">
-                <div className="text-blue-400 content-center">
-                  <FaX />
+                <div className="flex flex-row gap-1 text-sm">
+                  <div className="text-blue-400 content-center">
+                    <FaX />
+                  </div>
+                  = decline application
                 </div>
-                = decline application
               </div>
             </div>
           ) : (
