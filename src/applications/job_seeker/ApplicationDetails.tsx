@@ -79,7 +79,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
                 refetchInterviewRoundEvents();
               }}
             />
-            {interviewRoundEvents?.length && (
+            {interviewRoundEvents?.length ? (
               <div>
                 <h2>History</h2>
                 <InterviewRoundEventsTable
@@ -89,7 +89,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
                   company={application.company}
                 />
               </div>
-            )}
+            ) : null}
           </div>
         ) : application.status === 'submitted' ? (
           'Pending until the company accepts the application.'
