@@ -26,7 +26,7 @@ const Login = () => {
     'login'
   );
 
-  const [userType, setUserType] = useState<UserType | null>('company');
+  const [userType, setUserType] = useState<UserType>('company');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -42,8 +42,8 @@ const Login = () => {
       isSubmitting ||
       !isEmailValid(email) ||
       (mode !== 'forgot_password' && !isPasswordValid(password)) ||
-      (mode === 'register' && (!userType || !firstName || !lastName)),
-    [email, firstName, isSubmitting, lastName, mode, password, userType]
+      (mode === 'register' && (!firstName || !lastName)),
+    [email, firstName, isSubmitting, lastName, mode, password]
   );
 
   const doRegister = useCallback(async () => {
@@ -52,26 +52,48 @@ const Login = () => {
     setError(null);
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            type: userType
-          },
-          emailRedirectTo: import.meta.env.DEV
-            ? REGISTER_REDIRECT_TO_DEV
-            : REGISTER_REDIRECT_TO_PROD
-        }
-      });
+      const { data: signupData, error: signupError } =
+        await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              type: userType
+            },
+            emailRedirectTo: import.meta.env.DEV
+              ? REGISTER_REDIRECT_TO_DEV
+              : REGISTER_REDIRECT_TO_PROD
+          }
+        });
 
-      if (error) {
-        console.log(error);
-        setError(error);
+      if (signupError) {
+        console.log(signupError);
+        setError(signupError);
         return;
       }
+
+      if (!signupData.user) {
+        setError(Error('Registration failed.'));
+        return;
+      }
+
+      // console.log(signupData);
+
+      const { error: userRegErr } = await supabase
+        .from('user_registrations')
+        .insert({
+          user_id: signupData.user.id,
+          user_type: userType
+        });
+
+      if (userRegErr) {
+        console.log(userRegErr);
+        setError(userRegErr);
+        return;
+      }
+
       setSuccessMessage(
         'Success! Please check your email for a verification link.'
       );

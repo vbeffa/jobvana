@@ -271,13 +271,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'interview_events_interview_id_fkey'
-            columns: ['interview_round_id']
-            isOneToOne: false
-            referencedRelation: 'interviews'
-            referencedColumns: ['id']
-          },
-          {
             foreignKeyName: 'interview_round_events_interview_round_id_fkey'
             columns: ['interview_round_id']
             isOneToOne: false
@@ -727,6 +720,24 @@ export type Database = {
             referencedColumns: ['id']
           },
         ]
+      }
+      user_registrations: {
+        Row: {
+          created_at: string
+          user_id: string
+          user_type: Database['public']['Enums']['user_type']
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+          user_type: Database['public']['Enums']['user_type']
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+          user_type?: Database['public']['Enums']['user_type']
+        }
+        Relationships: []
       }
     }
     Views: {
