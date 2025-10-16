@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
@@ -149,12 +150,17 @@ const JobDetails = ({
             </div>
           )}
           {application && (
-            <div className="flex flex-row gap-1 text-sm">
-              <div className="content-center">
-                <FaPaperPlane />
+            <Link
+              to="/jobvana/applications/$id"
+              params={{ id: application.id.toString() }}
+            >
+              <div className="flex flex-row gap-1 text-sm">
+                <div className="content-center">
+                  <FaPaperPlane />
+                </div>
+                {new Date(application.created_at).toLocaleDateString()}
               </div>
-              {new Date(application.created_at).toLocaleDateString()}
-            </div>
+            </Link>
           )}
         </div>
       </Section>
