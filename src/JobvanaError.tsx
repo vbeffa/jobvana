@@ -1,7 +1,7 @@
-const JobvanaError = ({ error }: { error: Error }) => {
+const JobvanaError = ({ prefix, error }: { prefix?: string; error: Error }) => {
   return (
     <div className="pb-2 text-red-500 text-center font-bold">
-      {error.message}
+      {prefix && `${prefix}:`} {error.message}
     </div>
   );
 };

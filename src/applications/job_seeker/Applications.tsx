@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
+import { FaBuilding } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
+import FiltersContainer from '../../containers/FiltersContainer';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import JobvanaError from '../../JobvanaError';
-import Modal from '../../Modal';
 import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
 import { formatDate } from '../../utils';
@@ -26,16 +27,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
     [debouncedPage]
   );
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    jobSeekerId,
     status: 'all'
   });
   const [applicationId, setApplicationId] = useState<number | null>(null);
 
   const { applications, isPending, isPlaceholderData, total, error } =
-    useApplications({
-      paging,
-      filters: searchFilters
-    });
+    useApplications(jobSeekerId, { paging, filters: searchFilters });
 
   useEffect(() => {
     if (!applications?.length) {
@@ -51,9 +48,11 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
 
   return (
     <>
-      {/* <h1>My Applications</h1> */}
-      <div className="w-full flex justify-center pb-2">
-        <div className="w-[85%] flex justify-end">
+      {error && (
+        <JobvanaError prefix="Error loading applications!" error={error} />
+      )}
+      <FiltersContainer>
+        <div className="flex flex-row gap-2 items-center justify-end w-full p-2">
           <StatusSelect
             status={searchFilters.status}
             onChange={(status) => {
@@ -64,86 +63,9 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             }}
           />
         </div>
-      </div>
+      </FiltersContainer>
       <ResourcesContainer hasFilters={true}>
-        <ResourceListContainer width="w-[25%]">
-          {/* <SummaryCard
-            selected={searchFilters.status === 'all'}
-            onClick={() => setSearchFilters({ jobSeekerId, status: 'all' })}
-            title="All"
-            text={
-              applications !== undefined ? 'All applications' : 'Loading...'
-            }
-            borderBottom={true}
-          />
-          <SummaryCard
-            selected={searchFilters.status === 'submitted'}
-            onClick={() =>
-              setSearchFilters({ jobSeekerId, status: 'submitted' })
-            }
-            title="Submitted"
-            text={
-              applications !== undefined ? (
-                <div className="flex flex-row items-center gap-1">
-                  <FaPaperPlane /> submitted applications
-                </div>
-              ) : (
-                'Loading...'
-              )
-            }
-            borderBottom={true}
-          />
-          <SummaryCard
-            selected={searchFilters.status === 'accepted'}
-            onClick={() =>
-              setSearchFilters({ jobSeekerId, status: 'accepted' })
-            }
-            title="Accepted"
-            text={
-              applications !== undefined ? (
-                <div className="flex flex-row items-center gap-1">
-                  <FaCircleCheck /> accepted applications
-                </div>
-              ) : (
-                'Loading...'
-              )
-            }
-            borderBottom={true}
-          />
-          <SummaryCard
-            selected={searchFilters.status === 'withdrawn'}
-            onClick={() =>
-              setSearchFilters({ jobSeekerId, status: 'withdrawn' })
-            }
-            title="Withdrawn"
-            text={
-              applications !== undefined ? (
-                <div className="flex flex-row items-center gap-1">
-                  <PiHandWithdraw /> withdrawn applications
-                </div>
-              ) : (
-                'Loading...'
-              )
-            }
-            borderBottom={true}
-          />
-          <SummaryCard
-            selected={searchFilters.status === 'declined'}
-            onClick={() =>
-              setSearchFilters({ jobSeekerId, status: 'declined' })
-            }
-            title="Declined"
-            text={
-              applications !== undefined ? (
-                <div className="flex flex-row items-center gap-1">
-                  <FaRegCircleXmark /> withdrawn applications
-                </div>
-              ) : (
-                'Loading...'
-              )
-            }
-            borderBottom={true}
-          /> */}
+        <ResourceListContainer>
           <PageNav
             page={page}
             total={total}
@@ -154,181 +76,38 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             isLoading={isPlaceholderData || isPending}
             type="applications"
           />
-          <SummaryCardsContainer hasTitle={true}>
-            {applications
-              ? applications.map((application, idx) => {
-                  return (
-                    <SummaryCard
-                      key={idx}
-                      selected={applicationId === application.id}
-                      onClick={() => setApplicationId(application.id)}
-                      title={application.job.title}
-                      text={
-                        <>
-                          <div className="flex justify-between pr-1">
-                            <span className="truncate">
-                              {application.company.name}
-                            </span>
-                            <span className="flex flex-row gap-1 items-center">
-                              {formatDate(
-                                new Date(
-                                  application.updated_at ??
-                                    application.created_at
-                                )
-                              )}
-                            </span>
-                          </div>
-                          <div>
-                            <Status {...application} />
-                          </div>
-                        </>
-                      }
-                      borderBottom={idx < applications.length - 1}
-                    />
-                  );
-                })
-              : []}
+          <SummaryCardsContainer hasFilters={true}>
+            {applications?.map((application, idx) => {
+              return (
+                <SummaryCard
+                  key={application.id}
+                  selected={applicationId === application.id}
+                  onClick={() => {
+                    setApplicationId(application.id);
+                  }}
+                  title={application.jobTitle}
+                  text={
+                    <>
+                      <div className="flex flex-row gap-1 items-center">
+                        <FaBuilding />
+                        {application.companyName}
+                      </div>
+                      <div className="flex justify-between pr-1">
+                        <Status {...application} />
+                        {formatDate(new Date(application.lastUpdated))}
+                      </div>
+                    </>
+                  }
+                  borderBottom={idx < applications.length - 1}
+                />
+              );
+            })}
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          <>
-            {(isPending || isPlaceholderData) && <Modal type="loading" />}
-            {error && <JobvanaError error={error} />}
-            {applicationId ? (
-              <ApplicationDetails id={applicationId} />
-            ) : undefined}
-            {/* <div className="h-full flex justify-center pb-4">
-              <div className="w-full flex flex-col justify-between">
-                <div className="border-[0.5px] border-blue-400 rounded-lg h-full flex flex-col justify-between">
-                  <table className="w-full">
-                    <thead>
-                      <tr>
-                        <th>Company</th>
-                        <th>Job</th>
-                        <th>Applied</th>
-                        <th>Status</th>
-                        <th>Applications</th>
-                        <th className="w-24 min-w-24">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {applications?.map((application, idx) => (
-                        <tr
-                          key={idx}
-                          className={idx % 2 === 1 ? 'bg-gray-200' : ''}
-                        >
-                          <td>
-                            <CompanyLink {...application.company} />
-                          </td>
-                          <td>
-                            <JobLink {...application.job} />
-                          </td>
-                          <td>
-                            <div className="flex justify-center px-2">
-                              {new Date(
-                                application.created_at
-                              ).toLocaleDateString()}
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-2">
-                              <Status {...application} />
-                            </div>
-                          </td>
-                          <td>
-                            <JobApplications
-                              jobId={application.job_id}
-                              jobInterviewProcess={
-                                application.interview_process
-                              }
-                              doRefetch={doRefetch === application.id}
-                            />
-                          </td>
-                          <td>
-                            <div className="flex pl-4 text-blue-400 gap-2">
-                              <ApplicationResume
-                                resumePath={application.resumePath}
-                                setIsDownloading={setIsDownloading}
-                                setError={setError}
-                              />
-                              <Link
-                                to="/jobvana/applications/$id"
-                                params={{ id: application.id.toString() }}
-                              >
-                                <FaEye />
-                              </Link>
-                              {application.status === 'submitted' && (
-                                <FaX
-                                  className="cursor-pointer"
-                                  onClick={() => onWithdraw(application.id)}
-                                />
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {(total ?? 0) >= 0 && (
-                    <PageNav
-                      page={page}
-                      total={total}
-                      onSetPage={(page, debounce) => {
-                        setPage(page);
-                        setDebouncePage(debounce);
-                      }}
-                      isLoading={isPlaceholderData || isPending}
-                      type={(() => {
-                        switch (searchFilters.status) {
-                          case 'all':
-                            return 'applications';
-                          default:
-                            return (searchFilters.status +
-                              ' ' +
-                              'applications') as NavType;
-                        }
-                      })()}
-                      borderBottom={false}
-                    />
-                  )}
-                </div>
-                <div className="border-[0.5px] border-blue-400 rounded-lg p-2 mt-4">
-                  <div className="flex justify-center font-bold">Notes</div>
-                  <div className="-mx-2 my-4 border-b-[0.5px] border-blue-300" />
-                  <div className="flex flex-row text-sm gap-2">
-                    <div className="content-center">Applications</div>
-                    <div className="content-center">=</div>
-                    <div>
-                      <div className="border-b-[0.5px]">
-                        Number of submitted or accepted applications for job
-                      </div>
-                      <div className="border-t-[0.5px] flex justify-center">
-                        Job pipeline size
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-row gap-1 text-sm">
-                    <div className="text-blue-400 content-center">
-                      <FaArrowUpRightFromSquare />
-                    </div>
-                    = open resume for application in new tab
-                  </div>
-                  <div className="flex flex-row gap-1 text-sm">
-                    <div className="text-blue-400 content-center">
-                      <FaEye />
-                    </div>
-                    = view application details
-                  </div>
-                  <div className="flex flex-row gap-1 text-sm">
-                    <div className="text-blue-400 content-center">
-                      <FaX />
-                    </div>
-                    = withdraw application
-                  </div>
-                </div>
-              </div>
-            </div> */}
-          </>
+          {applicationId ? (
+            <ApplicationDetails id={applicationId} />
+          ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </>

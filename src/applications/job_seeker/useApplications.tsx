@@ -5,92 +5,72 @@ import {
 } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
-import type { InterviewProcess } from '../../companies/company/utils';
 import supabase from '../../db/supabase';
-import type {
-  ApplicationStatus,
-  Application as DbApplication,
-  Company as DbCompany,
-  Job as DbJob,
-  JobSeeker as DbJobSeeker,
-  Params
-} from '../../types';
+import type { ApplicationStatus, Params } from '../../types';
 
 export type SearchFilters = {
-  jobSeekerId: number;
   status: ApplicationStatus | 'all';
 };
 
-export type Company = Pick<DbCompany, 'id' | 'name'>;
-export type Job = Pick<DbJob, 'id' | 'title'>;
-export type JobSeeker = Pick<
-  DbJobSeeker,
-  'first_name' | 'last_name' | 'user_id'
->;
-
-export type Application = Pick<
-  DbApplication,
-  'id' | 'job_id' | 'created_at' | 'status' | 'updated_at'
-> & {
-  job: Job;
-  company: Company;
-  jobSeeker: JobSeeker;
+export type ApplicationSummary = {
+  id: number;
+  jobTitle: string;
+  companyName: string;
+  lastUpdated: string;
   status: ApplicationStatus;
-  resumePath: string;
-  interview_process: InterviewProcess | null;
 };
 
 export type Applications = {
-  applications: Array<Application> | undefined;
+  applications: Array<ApplicationSummary> | undefined;
   isPending: boolean;
   isPlaceholderData: boolean;
-  error?: Error;
   total: number | undefined;
+  error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
 
 export type ApplicationsParams = Params<SearchFilters>;
 
-type QueryKey = {
-  page: number;
-} & SearchFilters;
+// type QueryKey = {
+//   jobSeekerId: number;
+//   params: ApplicationsParams;
+// };
 
-const useApplications = (params: ApplicationsParams): Applications => {
-  const queryKey: QueryKey = useMemo(
-    () => ({
-      page: params.paging.page,
-      ...params.filters
-    }),
-    [params.filters, params.paging.page]
-  );
+const useApplications = (
+  jobSeekerId: number,
+  params: ApplicationsParams
+): Applications => {
+  // const queryKey: QueryKey = useMemo(
+  //   () => ({
+  //     jobSeekerId,
+  //     params
+  //   }),
+  //   [jobSeekerId, params]
+  // );
+  // console.log(queryKey);
+
+  const {
+    paging: { page, pageSize },
+    filters
+  } = params;
 
   const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
-    queryKey: ['applications', queryKey],
+    queryKey: ['applications', jobSeekerId, params],
     queryFn: async () => {
       let q = supabase
         .from('applications')
         .select(
-          `id, job_id, created_at, status, updated_at,
-            jobs!inner(
-              id,
-              title,
-              companies!inner(id, name),
-              interview_process
-            ),
-            job_seekers!inner(first_name, last_name, user_id),
-            application_resumes!inner(resume_path)`,
+          `id, created_at, status, updated_at,
+            jobs!inner(title, companies!inner(name))`,
           { count: 'exact' }
         )
-        .filter('job_seeker_id', 'eq', params.filters.jobSeekerId);
+        .filter('job_seeker_id', 'eq', jobSeekerId);
 
-      if (params.filters.status !== 'all') {
-        q = q.eq('status', params.filters.status);
+      if (filters.status !== 'all') {
+        q = q.eq('status', filters.status);
       }
       const { error, data, count } = await q
-        .range(
-          (params.paging.page - 1) * params.paging.pageSize,
-          params.paging.page * params.paging.pageSize - 1
-        )
+        .range((page - 1) * pageSize, page * pageSize - 1)
         .order('updated_at', { ascending: false });
 
       // console.log(data);
@@ -102,19 +82,16 @@ const useApplications = (params: ApplicationsParams): Applications => {
     placeholderData: keepPreviousData
   });
 
-  const applications: Array<Application> | undefined = useMemo(() => {
+  const applications: Array<ApplicationSummary> | undefined = useMemo(() => {
     if (!data?.applications) {
       return undefined;
     }
 
     return data.applications.map((applicationData) => ({
-      ..._.omit(applicationData, 'jobs'),
-      job: _.pick(applicationData.jobs, 'id', 'title'),
-      company: _.pick(applicationData.jobs.companies, 'id', 'name'),
-      jobSeeker: applicationData.job_seekers,
-      resumePath: applicationData.application_resumes.resume_path,
-      interview_process: applicationData.jobs
-        .interview_process as InterviewProcess
+      ..._.pick(applicationData, 'id', 'status'),
+      jobTitle: applicationData.jobs.title,
+      companyName: applicationData.jobs.companies.name,
+      lastUpdated: applicationData.updated_at ?? applicationData.created_at
     }));
   }, [data]);
 
@@ -122,8 +99,8 @@ const useApplications = (params: ApplicationsParams): Applications => {
     applications,
     isPending,
     isPlaceholderData,
-    error: error ?? undefined,
     total: data?.count ?? undefined,
+    error: error ?? undefined,
     refetch
   };
 };

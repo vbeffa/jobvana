@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { FaBuilding } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersDisplay from '../../containers/FiltersDisplay';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
@@ -44,7 +45,7 @@ const Jobs = () => {
     [debouncedPage]
   );
 
-  const { jobs, isPlaceholderData, isPending, openJobCount, error } = useJobs({
+  const { jobs, isPending, isPlaceholderData, openJobCount, error } = useJobs({
     paging,
     filters: searchFilters
   });
@@ -95,8 +96,8 @@ const Jobs = () => {
   ]);
 
   return (
-    <div className="mx-0">
-      {error && <JobvanaError error={error} />}
+    <>
+      {error && <JobvanaError prefix="Error loading jobs!" error={error} />}
       <FiltersDisplay
         activeFilters={
           <ActiveFilters
@@ -152,33 +153,38 @@ const Jobs = () => {
             type="jobs"
           />
           <SummaryCardsContainer hasFilters={true}>
-            {jobs?.map((job, idx) => (
-              <SummaryCard
-                key={job.id}
-                selected={selectedJobId === job.id}
-                onClick={() => {
-                  setSelectedJobId(job.id);
-                  setJobNav({
-                    ...jobNav,
-                    jobId: job.id
-                  });
-                }}
-                title={job.title}
-                text={
-                  <>
-                    <div className="flex justify-between pr-1">
-                      <span className="truncate">{job.companyName}</span>
-                      <span>{formatDate(new Date(job.updated_at))}</span>
-                    </div>
-                    <div>
-                      {formatCurrency(job.minSalary)} -{' '}
-                      {formatCurrency(job.maxSalary)}
-                    </div>
-                  </>
-                }
-                borderBottom={idx < jobs.length - 1}
-              />
-            ))}
+            {jobs?.map((job, idx) => {
+              return (
+                <SummaryCard
+                  key={job.id}
+                  selected={selectedJobId === job.id}
+                  onClick={() => {
+                    setSelectedJobId(job.id);
+                    setJobNav({
+                      ...jobNav,
+                      jobId: job.id
+                    });
+                  }}
+                  title={job.title}
+                  text={
+                    <>
+                      <div className="flex justify-between pr-1">
+                        <div className="flex flex-row gap-1 items-center truncate">
+                          <FaBuilding />
+                          {job.companyName}
+                        </div>
+                        <span>{formatDate(new Date(job.updated_at))}</span>
+                      </div>
+                      <div>
+                        {formatCurrency(job.minSalary)} -{' '}
+                        {formatCurrency(job.maxSalary)}
+                      </div>
+                    </>
+                  }
+                  borderBottom={idx < jobs.length - 1}
+                />
+              );
+            })}
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
@@ -187,7 +193,7 @@ const Jobs = () => {
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </div>
+    </>
   );
 };
 

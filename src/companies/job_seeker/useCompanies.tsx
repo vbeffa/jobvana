@@ -28,30 +28,29 @@ export type CompanySummary = {
 
 export type Companies = {
   companies: Array<CompanySummary> | undefined;
-  error?: Error;
   isPending: boolean;
   isPlaceholderData: boolean;
   companyCount: number | undefined;
+  error?: Error;
 };
 
 export type CompaniesParams = Params<SearchFilters>;
 
-type QueryKey = {
-  page: number;
-} & SearchFilters;
+// type QueryKey = {
+//   page: number;
+// } & SearchFilters;
 
 const useCompanies = (params: CompaniesParams): Companies => {
-  const queryKey: QueryKey = useMemo(
-    () => ({
-      page: params.paging.page,
-      ...params.filters
-    }),
-    [params.filters, params.paging.page]
-  );
+  // const queryKey: CompaniesParams = useMemo(() => params, [params]);
   // console.log(queryKey);
 
+  const {
+    paging: { page, pageSize },
+    filters
+  } = params;
+
   const { data, isPlaceholderData, isPending, error } = useQuery({
-    queryKey: ['companies', queryKey],
+    queryKey: ['companies', params],
     queryFn: async () => {
       let q = supabase
         .from('companies')
@@ -62,7 +61,6 @@ const useCompanies = (params: CompaniesParams): Companies => {
           { count: 'exact' }
         )
         .filter('company_addresses.type', 'eq', 'headquarters');
-      const { filters } = params;
       if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
@@ -77,10 +75,7 @@ const useCompanies = (params: CompaniesParams): Companies => {
       }
 
       const { data, error, count } = await q
-        .range(
-          (params.paging.page - 1) * params.paging.pageSize,
-          params.paging.page * params.paging.pageSize - 1
-        )
+        .range((page - 1) * pageSize, page * pageSize - 1)
         .order('name');
 
       // console.log(data);
@@ -105,10 +100,10 @@ const useCompanies = (params: CompaniesParams): Companies => {
 
   return {
     companies,
-    error: error ?? undefined,
-    isPlaceholderData,
     isPending,
-    companyCount
+    isPlaceholderData,
+    companyCount,
+    error: error ?? undefined
   };
 };
 

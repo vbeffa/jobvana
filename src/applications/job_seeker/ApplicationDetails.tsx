@@ -138,18 +138,23 @@ const ApplicationDetails = ({ id }: { id: number }) => {
     [jobSeeker?.user_id, refetch]
   );
 
+  if (error) {
+    return <JobvanaError error={Error('foo')} />;
+  }
+
+  if (isPending) {
+    return <Modal type="loading" />;
+  }
+
   if (!application || !jobSeeker) {
     return null;
   }
 
   return (
     <>
-      {isDownloading ? <Modal type="downloading" /> : null}
-      {isPending ? <Modal type="loading" /> : null}
       {isPlaceholderData ? <Modal type="loading" /> : null}
+      {isDownloading ? <Modal type="downloading" /> : null}
       {isUpdating ? <Modal type="updating" /> : null}
-      {error ? <JobvanaError error={error} /> : null}
-      {/* <h1>Application Details</h1> */}
       <Section
         title={
           <div className="flex justify-between">

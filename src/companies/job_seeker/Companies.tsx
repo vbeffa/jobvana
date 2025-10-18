@@ -38,14 +38,16 @@ const Companies = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>(
     INITIAL_SEARCH_FILTERS
   );
-  const [companyId, setCompanyId] = useState<number | null>(null);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
+    null
+  );
 
   const paging: CompaniesParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
     [debouncedPage]
   );
 
-  const { companies, error, isPending, isPlaceholderData, companyCount } =
+  const { companies, isPending, isPlaceholderData, companyCount, error } =
     useCompanies({ paging, filters: searchFilters });
 
   useEffect(() => {
@@ -61,9 +63,9 @@ const Companies = () => {
       companyNav.companyId &&
       companies?.find((company) => company.id === companyNav.companyId)
     ) {
-      setCompanyId(companyNav.companyId);
+      setSelectedCompanyId(companyNav.companyId);
     } else {
-      setCompanyId(companies?.[0]?.id ?? null);
+      setSelectedCompanyId(companies?.[0]?.id ?? null);
     }
   }, [companies, companyNav.companyId]);
 
@@ -71,7 +73,7 @@ const Companies = () => {
     navigate({
       search: {
         page: debouncedPage,
-        company_id: companyId ?? undefined,
+        company_id: selectedCompanyId ?? undefined,
         name: searchFilters.name || undefined,
         industry_id: searchFilters.industryId,
         min_size: searchFilters.minSize,
@@ -79,7 +81,7 @@ const Companies = () => {
       }
     });
   }, [
-    companyId,
+    selectedCompanyId,
     debouncedPage,
     navigate,
     searchFilters.industryId,
@@ -89,8 +91,10 @@ const Companies = () => {
   ]);
 
   return (
-    <div className="mx-0">
-      {error && <JobvanaError error={error} />}
+    <>
+      {error && (
+        <JobvanaError prefix="Error loading companies!" error={error} />
+      )}
       <FiltersDisplay
         activeFilters={
           <ActiveFilters
@@ -102,7 +106,7 @@ const Companies = () => {
         setShowFilters={setShowFilters}
         reset={() => {
           setPage(1);
-          setCompanyId(null);
+          setSelectedCompanyId(null);
           setSearchFilters(INITIAL_SEARCH_FILTERS);
           setCompanySearchFilters(INITIAL_SEARCH_FILTERS);
           setCompanyNav({
@@ -118,7 +122,7 @@ const Companies = () => {
           setShowFilters={setShowFilters}
           onChange={(filters) => {
             setPage(1);
-            setCompanyId(null);
+            setSelectedCompanyId(null);
             setSearchFilters(filters);
             setCompanySearchFilters(filters);
             setCompanyNav({
@@ -135,7 +139,7 @@ const Companies = () => {
             total={companyCount}
             onSetPage={(page, debounce) => {
               setPage(page);
-              setCompanyId(null);
+              setSelectedCompanyId(null);
               setDebouncePage(debounce);
               setCompanyNav({
                 page,
@@ -151,9 +155,9 @@ const Companies = () => {
               return (
                 <SummaryCard
                   key={company.id}
-                  selected={companyId === company.id}
+                  selected={selectedCompanyId === company.id}
                   onClick={() => {
-                    setCompanyId(company.id);
+                    setSelectedCompanyId(company.id);
                     // context.companyId = company.id;
                     setCompanyNav({
                       ...companyNav,
@@ -178,10 +182,12 @@ const Companies = () => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          {companyId ? <CompanyDetails id={companyId} /> : undefined}
+          {selectedCompanyId ? (
+            <CompanyDetails id={selectedCompanyId} />
+          ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </div>
+    </>
   );
 };
 

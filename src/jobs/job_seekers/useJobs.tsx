@@ -45,32 +45,30 @@ export type JobSummary = {
 
 export type Jobs = {
   jobs: Array<JobSummary> | undefined;
-  error?: Error;
-  isPlaceholderData: boolean;
   isPending: boolean;
+  isPlaceholderData: boolean;
   openJobCount: number | undefined;
+  error?: Error;
 };
 
 export type JobsParams = Params<SearchFilters>;
 
-type QueryKey = {
-  page: number;
-} & SearchFilters;
+// type QueryKey = {
+//   params: JobsParams;
+// };
 
 const useJobs = (params: JobsParams): Jobs => {
-  const queryKey: QueryKey = useMemo(
-    () => ({
-      page: params.paging.page,
-      ...params.filters
-    }),
-    [params.filters, params.paging.page]
-  );
+  // const queryKey: JobsParams = useMemo(() => params, [params]);
   // console.log(queryKey);
 
-  const { data, isPlaceholderData, isPending, error } = useQuery({
-    queryKey: ['jobs', queryKey],
+  const {
+    paging: { page, pageSize },
+    filters
+  } = params;
+
+  const { data, isPending, isPlaceholderData, error } = useQuery({
+    queryKey: ['jobs', params],
     queryFn: async () => {
-      const { filters } = params;
       let q = supabase
         .from('jobs')
         .select(
@@ -132,10 +130,7 @@ const useJobs = (params: JobsParams): Jobs => {
       }
 
       const { error, data, count } = await q
-        .range(
-          (params.paging.page - 1) * params.paging.pageSize,
-          params.paging.page * params.paging.pageSize - 1
-        )
+        .range((page - 1) * pageSize, page * pageSize - 1)
         .order('updated_at', { ascending: false });
 
       // console.log(data);
@@ -166,10 +161,10 @@ const useJobs = (params: JobsParams): Jobs => {
 
   return {
     jobs,
-    error: error ?? undefined,
-    isPlaceholderData,
     isPending,
-    openJobCount
+    isPlaceholderData,
+    openJobCount,
+    error: error ?? undefined
   };
 };
 

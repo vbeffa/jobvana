@@ -18,7 +18,7 @@ const StatusSelect = ({
   onChange: (status: ApplicationStatus | 'all') => void;
 }) => {
   return (
-    <div className="flex flex-row gap-2">
+    <>
       <Label htmlFor="application_status" label="Status" />
       <Select
         id="application_status"
@@ -40,7 +40,7 @@ const StatusSelect = ({
           ))}
         </>
       </Select>
-    </div>
+    </>
   );
 };
 

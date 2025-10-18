@@ -6,6 +6,7 @@ import type { SearchFilters as CompanyJobSearchFilters } from './jobs/company/us
 import type { SearchFilters as JobSeekerJobSearchFilters } from './jobs/job_seekers/useJobs';
 import type { SearchFilters as SkillSearchFilters } from './skills/useSkills';
 
+export type Paging = { page: number; pageSize: number };
 export type Params<
   SearchFilters extends
     | CompanySearchFilters
@@ -14,10 +15,7 @@ export type Params<
     | CompanyJobSearchFilters
     | JobSeekerApplicationSearchFilters
 > = {
-  paging: {
-    page: number;
-    pageSize: number;
-  };
+  paging: Paging;
   filters: SearchFilters;
 };
 

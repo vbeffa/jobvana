@@ -1,5 +1,6 @@
 import { type JSX } from 'react';
 import Button from '../controls/Button';
+import FiltersContainer from './FiltersContainer';
 
 export const FILTERS_HEIGHT_PX = 61; // 1px for border
 export const FILTERS_MARGIN_BOTTOM_PX = 4 * 4;
@@ -19,37 +20,29 @@ const FiltersDisplay = ({
   resetDisabled: boolean;
 }) => {
   return (
-    <div className="flex justify-center h-[60px] mb-4">
-      <div className={`border-[0.5px] border-blue-300 rounded-lg w-[85%] flex`}>
-        <div className="w-full flex">
-          <div className="flex w-fit border-r-[0.5px] h-full border-blue-300 justify-start px-2">
-            <div className="content-center">Filters:</div>
+    <FiltersContainer>
+      <div className="w-full flex overflow-auto justify-start px-2">
+        <div className="content-center">{activeFilters}</div>
+      </div>
+      <div className="flex justify-end pr-2">
+        <div className="border-l-[0.5px] border-blue-300 pl-2 flex flex-row gap-2">
+          <div className="content-center">
+            <Button
+              label="Reset"
+              disabled={resetDisabled || showFilters}
+              onClick={reset}
+            />
           </div>
-          <div className="w-full flex overflow-auto justify-start px-2">
-            <div className="content-center">{activeFilters}</div>
-          </div>
-          <div className="flex justify-end pr-2">
-            <div className="border-l-[0.5px] border-blue-300 pl-2 flex flex-row gap-2">
-              <div className="content-center">
-                <Button
-                  label="Reset"
-                  disabled={resetDisabled || showFilters}
-                  onClick={reset}
-                />
-              </div>
-              <div className="content-center">
-                <Button
-                  label="Edit"
-                  disabled={showFilters}
-                  onClick={() => setShowFilters(true)}
-                />
-              </div>
-            </div>
+          <div className="content-center">
+            <Button
+              label="Edit"
+              disabled={showFilters}
+              onClick={() => setShowFilters(true)}
+            />
           </div>
         </div>
       </div>
-      {/* {showFilters && <>{children}</>} */}
-    </div>
+    </FiltersContainer>
   );
 };
 
