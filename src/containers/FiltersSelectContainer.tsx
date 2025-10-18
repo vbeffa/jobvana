@@ -1,0 +1,15 @@
+import type { JSX } from 'react';
+
+const FiltersSelectContainer = ({
+  children
+}: {
+  children: Array<JSX.Element>;
+}) => {
+  return (
+    <div className="absolute border-[0.5px] border-blue-400 rounded-lg w-[80%] h-[600px] left-[10%] top-[182px] opacity-95 bg-white px-2 z-10">
+      {children}
+    </div>
+  );
+};
+
+export default FiltersSelectContainer;

@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
-import useApplications from '../../applications/job_seeker/useApplications';
+import useApplicationForJob from '../../applications/job_seeker/useApplicationForJob';
 import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import type { JobSeeker } from '../../Context';
@@ -15,6 +15,7 @@ import SkillsList from '../../skills/SkillsList';
 import JobRoles from '../JobRoles';
 import Salary from './Salary';
 import useJob from './useJob';
+import { apply } from './utils';
 
 const JobDetails = ({
   id,
@@ -31,12 +32,9 @@ const JobDetails = ({
     refetch: refetchJob
   } = useJob(id);
   const { resumes } = useResumes(jobSeeker.user_id);
-  const {
-    applications,
-    apply,
-    refetch: refetchApplications
-  } = useApplications({
-    jobSeekerId: jobSeeker.id
+  const { application, refetch: refetchApplication } = useApplicationForJob({
+    jobSeekerId: jobSeeker.id,
+    jobId: id
   });
   const [isApplying, setIsApplying] = useState(false);
   const [applyError, setApplyError] = useState<Error>();
@@ -64,7 +62,7 @@ const JobDetails = ({
       setApplyError(undefined);
       try {
         await apply(id, jobSeeker, activeResume.name);
-        Promise.all([refetchJob(), refetchApplications()]); // don't await refetches so the alert displays immediately
+        Promise.all([refetchJob(), refetchApplication()]); // don't await refetches so the alert displays immediately
         alert('Application sent!');
       } catch (err) {
         console.log(err);
@@ -73,12 +71,7 @@ const JobDetails = ({
         setIsApplying(false);
       }
     }
-  }, [apply, id, job, jobSeeker, refetchApplications, refetchJob, resumes]);
-
-  const application = useMemo(
-    () => applications?.find((app) => app.job_id === id),
-    [applications, id]
-  );
+  }, [id, job, jobSeeker, refetchApplication, refetchJob, resumes]);
 
   // TODO remove once interviewProcess is not nullable
   const noInterviewProcess = useMemo(
@@ -133,7 +126,7 @@ const JobDetails = ({
                 {pipelineLimitReached && (
                   <>Company pipeline size limit reached</>
                 )}
-                {!resumes?.length && (
+                {resumes?.length === 0 && (
                   <>Please upload a resume to apply for this job</>
                 )}
               </div>

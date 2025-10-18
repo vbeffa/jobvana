@@ -176,7 +176,7 @@ const InterviewTable = ({
     <>
       {isUpdating && <Modal type="updating" />}
       {error && <JobvanaError error={error} />}
-      <table className="w-fit">
+      <table className="w-full">
         <thead>
           <tr>
             <th>Round</th>

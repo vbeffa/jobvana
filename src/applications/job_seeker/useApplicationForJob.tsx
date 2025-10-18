@@ -1,33 +1,37 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
 import type { Application } from '../../types';
 
 export type ApplicationForJob = {
-  application: Pick<Application, 'created_at'> | undefined;
+  application: Pick<Application, 'id' | 'created_at'> | undefined;
   isPending: boolean;
   error?: Error;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 // TODO use in JobDetails
 const useApplicationForJob = ({
-  jobSeekerId
+  jobSeekerId,
+  jobId
 }: {
   jobSeekerId: number;
+  jobId: number;
 }): ApplicationForJob => {
   const queryKey = useMemo(
-    () => ['applications', { jobSeekerId }],
-    [jobSeekerId]
+    () => ['applications', { jobSeekerId, jobId }],
+    [jobId, jobSeekerId]
   );
 
-  const { data, isPending, error } = useQuery({
+  const { data, isPending, error, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
-        .select(`created_at`)
+        .select(`id, created_at`)
         .filter('job_seeker_id', 'eq', jobSeekerId)
-        .in('status', ['submitted', 'accepted']);
+        .filter('job_id', 'eq', jobId);
+      // .in('status', ['submitted', 'accepted']);
       // console.log(data);
       return data;
     }
@@ -36,7 +40,8 @@ const useApplicationForJob = ({
   return {
     application: data?.[0],
     isPending,
-    error: error ?? undefined
+    error: error ?? undefined,
+    refetch
   };
 };
 

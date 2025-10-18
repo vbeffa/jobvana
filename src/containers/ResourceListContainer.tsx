@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 
 const ResourceListContainer = ({
   children,
-  width = 'w-[30%]'
+  width = 'w-[25%]'
 }: {
   children: JSX.Element | Array<JSX.Element>;
   width?: string;

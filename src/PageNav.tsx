@@ -5,7 +5,7 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 export const PAGE_NAV_HEIGHT = 16;
 export const PAGE_NAV_HEIGHT_PX = 4 * PAGE_NAV_HEIGHT;
 
-export type NavType = 'jobs' | 'companies' | 'skills';
+export type NavType = 'jobs' | 'companies' | 'skills' | 'applications';
 
 export type PageNavProps = {
   page: number;
@@ -72,7 +72,7 @@ const PageNav = ({
                 min={1}
                 max={numPages}
                 disabled={isLoading || disabled}
-                className="pagenav border-[.05rem] h-6 w-fit max-w-10 text-center
+                className="pagenav border-[.05rem] h-6 w-10 max-w-10 text-center
                      border-gray-400 rounded
                      disabled:bg-gray-50"
                 value={total === 0 ? 0 : page}
@@ -121,7 +121,8 @@ const PageNav = ({
           <div className="content-center text-xs font-bold">
             {!isLoading && (
               <>
-                {total} {type}
+                {total}{' '}
+                {total !== 1 ? type : type.substring(0, type.length - 1)}
               </>
             )}
             {isLoading && <>Loading...</>}

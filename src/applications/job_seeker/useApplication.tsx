@@ -1,4 +1,8 @@
-import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryObserverResult
+} from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
@@ -19,7 +23,7 @@ export type Application = Pick<
   'id' | 'created_at' | 'status' | 'updated_at'
 > & {
   job: Job;
-  company: Pick<DbCompany, 'name'>;
+  company: Pick<DbCompany, 'id' | 'name'>;
   jobSeeker: JobSeeker;
   status: ApplicationStatus;
   resumePath: string;
@@ -29,6 +33,7 @@ export type Application = Pick<
 export type ApplicationH = {
   application: Application | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
@@ -36,6 +41,7 @@ export type ApplicationH = {
 const useApplication = ({ id }: { id: number }): ApplicationH => {
   const {
     data: applicationData,
+    isPlaceholderData,
     isPending,
     error,
     refetch
@@ -50,7 +56,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
               id,
               title,
               interview_process,
-              companies!inner(name)
+              companies!inner(id, name)
             ),
             job_seekers!inner(first_name, last_name),
             application_resumes!inner(resume_path)`
@@ -58,7 +64,8 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
         .filter('id', 'eq', id);
       // console.log(data);
       return data;
-    }
+    },
+    placeholderData: keepPreviousData
   });
 
   const application: Application | undefined = useMemo(
@@ -66,9 +73,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
       applicationData?.map((applicationData) => ({
         ..._.omit(applicationData, 'jobs'),
         job: _.pick(applicationData.jobs, 'id', 'title'),
-        company: {
-          name: applicationData.jobs.companies.name
-        },
+        company: applicationData.jobs.companies,
         jobSeeker: applicationData.job_seekers,
         resumePath: applicationData.application_resumes.resume_path,
         interviewProcess: applicationData.jobs
@@ -79,6 +84,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
 
   return {
     application,
+    isPlaceholderData,
     isPending,
     error: error ?? undefined,
     refetch

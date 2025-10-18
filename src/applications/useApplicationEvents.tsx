@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../db/supabase';
 import type { ApplicationEvent as DbApplicationEvent } from '../types';
@@ -9,7 +9,9 @@ export type ApplicationEvent = Pick<DbApplicationEvent, 'created_at' | 'event'>;
 export type ApplicationEvents = {
   events: Array<ApplicationEvent> | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
   error?: Error;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 const useApplicationEvents = ({
@@ -22,7 +24,7 @@ const useApplicationEvents = ({
     [applicationId]
   );
 
-  const { data, isPending, error } = useQuery({
+  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
       const { data } = await supabase
@@ -39,7 +41,9 @@ const useApplicationEvents = ({
   return {
     events,
     isPending,
-    error: error ?? undefined
+    isPlaceholderData,
+    error: error ?? undefined,
+    refetch
   };
 };
 

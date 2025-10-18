@@ -18,6 +18,7 @@ export type Interview = Pick<DbInterview, 'id' | 'application_id'> & {
 export type InterviewH = {
   interview: Interview | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
@@ -32,7 +33,7 @@ const useInterview = ({
     [applicationId]
   );
 
-  const { data, isPending, error, refetch } = useQuery({
+  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
       const { data } = await supabase
@@ -62,6 +63,7 @@ const useInterview = ({
   return {
     interview,
     isPending,
+    isPlaceholderData,
     error: error ?? undefined,
     refetch
   };

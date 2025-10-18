@@ -15,6 +15,7 @@ export type InterviewRoundEvent = Pick<
 export type InterviewRoundEvents = {
   events: Array<InterviewRoundEvent> | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
@@ -29,7 +30,7 @@ const useInterviewRoundEvents = ({
     [interviewId]
   );
 
-  const { data, isPending, error, refetch } = useQuery({
+  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
       if (!interviewId) {
@@ -56,6 +57,7 @@ const useInterviewRoundEvents = ({
   return {
     events,
     isPending,
+    isPlaceholderData,
     error: error ?? undefined,
     refetch
   };

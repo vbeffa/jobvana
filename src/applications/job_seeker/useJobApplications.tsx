@@ -3,11 +3,13 @@ import supabase from '../../db/supabase';
 
 export type JobApplications = {
   total: number | undefined;
+  isPending: boolean;
+  error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
 
 const useJobApplications = ({ jobId }: { jobId: number }): JobApplications => {
-  const { data, refetch } = useQuery({
+  const { data, isPending, error, refetch } = useQuery({
     queryKey: ['applications', { jobId }],
     queryFn: async () => {
       const { data } = await supabase
@@ -22,6 +24,8 @@ const useJobApplications = ({ jobId }: { jobId: number }): JobApplications => {
 
   return {
     total: data?.[0].count ?? undefined,
+    isPending,
+    error: error ?? undefined,
     refetch
   };
 };

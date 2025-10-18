@@ -44,13 +44,14 @@ const InterviewRoundEventsTable = ({
   };
 
   return (
-    <table className="w-fit">
+    <table className="w-full">
       <thead>
         <tr>
           <th>Round</th>
           <th>Date</th>
           <th>Event</th>
           <th>User</th>
+          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
@@ -73,6 +74,9 @@ const InterviewRoundEventsTable = ({
               <div className="px-2">
                 {interviewRoundEventUser(event.user_id)}
               </div>
+            </td>
+            <td className="w-[35%]">
+              <div className="px-2">TODO</div>
             </td>
           </tr>
         ))}

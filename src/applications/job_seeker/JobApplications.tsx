@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
+import JobvanaError from '../../JobvanaError';
 import useJobApplications from './useJobApplications';
 
 export type JobApplicationParams = {
@@ -13,7 +14,7 @@ const JobApplications = ({
   jobInterviewProcess,
   doRefetch
 }: JobApplicationParams) => {
-  const { total, refetch } = useJobApplications({ jobId });
+  const { total, isPending, error, refetch } = useJobApplications({ jobId });
 
   useEffect(() => {
     if (doRefetch) {
@@ -27,8 +28,13 @@ const JobApplications = ({
   );
 
   return (
-    <div className="flex justify-center">
-      {total} / {capacity ?? 0}
+    <div className="relative">
+      {error && <JobvanaError error={error} />}
+      {!error && (
+        <>
+          {isPending ? '..' : total} / {capacity ?? 0}
+        </>
+      )}
     </div>
   );
 };

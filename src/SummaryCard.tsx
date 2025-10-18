@@ -36,7 +36,7 @@ const SummaryCard = ({
       } ${selected ? 'bg-gray-200' : ''} ${disabled ? 'bg-gray-50' : 'cursor-pointer'}`}
       onClick={() => !disabled && onClick()}
     >
-      <div className="text-blue-500">{title}</div>
+      <div className="text-blue-500 pr-[2px] truncate">{title}</div>
       <div className="text-sm">{text}</div>
     </div>
   );

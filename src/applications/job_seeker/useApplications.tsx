@@ -1,4 +1,8 @@
-import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryObserverResult
+} from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
@@ -8,10 +12,14 @@ import type {
   Application as DbApplication,
   Company as DbCompany,
   Job as DbJob,
-  JobSeeker as DbJobSeeker
+  JobSeeker as DbJobSeeker,
+  Params
 } from '../../types';
-import { descDateComparator } from '../../utils';
-// import { fetchApplications, mapper } from './utils';
+
+export type SearchFilters = {
+  jobSeekerId: number;
+  status: ApplicationStatus | 'all';
+};
 
 export type Company = Pick<DbCompany, 'id' | 'name'>;
 export type Job = Pick<DbJob, 'id' | 'title'>;
@@ -35,34 +43,31 @@ export type Application = Pick<
 export type Applications = {
   applications: Array<Application> | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
   error?: Error;
+  total: number | undefined;
   refetch: () => Promise<QueryObserverResult>;
-  apply: (
-    jobId: number,
-    jobSeeker: JobSeeker,
-    resumeName: string
-  ) => Promise<void>;
-  updateStatus: (
-    applicationId: number,
-    status: 'withdrawn',
-    userId: string
-  ) => Promise<void>;
 };
 
-const useApplications = ({
-  jobSeekerId
-}: {
-  jobSeekerId: number;
-}): Applications => {
-  const {
-    data: applicationsData,
-    isPending,
-    error,
-    refetch
-  } = useQuery({
-    queryKey: ['applications', { jobSeekerId }],
+export type ApplicationsParams = Params<SearchFilters>;
+
+type QueryKey = {
+  page: number;
+} & SearchFilters;
+
+const useApplications = (params: ApplicationsParams): Applications => {
+  const queryKey: QueryKey = useMemo(
+    () => ({
+      page: params.paging.page,
+      ...params.filters
+    }),
+    [params.filters, params.paging.page]
+  );
+
+  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
+    queryKey: ['applications', queryKey],
     queryFn: async () => {
-      const { data } = await supabase
+      let q = supabase
         .from('applications')
         .select(
           `id, job_id, created_at, status, updated_at,
@@ -73,123 +78,53 @@ const useApplications = ({
               interview_process
             ),
             job_seekers!inner(first_name, last_name, user_id),
-            application_resumes!inner(resume_path)`
+            application_resumes!inner(resume_path)`,
+          { count: 'exact' }
         )
-        .filter('job_seeker_id', 'eq', jobSeekerId);
+        .filter('job_seeker_id', 'eq', params.filters.jobSeekerId);
+
+      if (params.filters.status !== 'all') {
+        q = q.eq('status', params.filters.status);
+      }
+      const { error, data, count } = await q
+        .range(
+          (params.paging.page - 1) * params.paging.pageSize,
+          params.paging.page * params.paging.pageSize - 1
+        )
+        .order('updated_at', { ascending: false });
+
       // console.log(data);
-      return data;
-    }
+      if (error) {
+        console.log(error);
+      }
+      return { applications: data, error, count };
+    },
+    placeholderData: keepPreviousData
   });
 
-  const applications: Array<Application> | undefined = useMemo(
-    () =>
-      applicationsData?.sort(descDateComparator).map((applicationData) => ({
-        ..._.omit(applicationData, 'jobs'),
-        job: _.pick(applicationData.jobs, 'id', 'title'),
-        company: _.pick(applicationData.jobs.companies, 'id', 'name'),
-        jobSeeker: applicationData.job_seekers,
-        resumePath: applicationData.application_resumes.resume_path,
-        interview_process: applicationData.jobs
-          .interview_process as InterviewProcess
-      })),
-    [applicationsData]
-  );
-
-  const apply = async (
-    jobId: number,
-    jobSeeker: JobSeeker,
-    resumeName: string
-  ) => {
-    const fromFile = `${jobSeeker.user_id}/${resumeName}`;
-    const toFile = `${jobId}/${jobSeeker.user_id}.pdf`;
-
-    // TODO add a transaction for this
-    const { data: appData, error: appErr } = await supabase
-      .from('applications')
-      .insert({
-        job_id: jobId,
-        job_seeker_id: jobSeekerId,
-        status: 'submitted'
-      })
-      .select();
-    if (appErr) {
-      console.log(appErr);
-      throw appErr;
-    }
-    console.log(appData);
-    const id = appData[0].id;
-
-    const { error: appEventsErr } = await supabase
-      .from('application_events')
-      .insert({
-        application_id: id,
-        user_id: jobSeeker.user_id,
-        event: 'submitted'
-      });
-    if (appEventsErr) {
-      console.log(appEventsErr);
-      throw appEventsErr;
+  const applications: Array<Application> | undefined = useMemo(() => {
+    if (!data?.applications) {
+      return undefined;
     }
 
-    const { data: storageData, error: storageErr } = await supabase.storage
-      .from('resumes')
-      .copy(fromFile, toFile, {
-        destinationBucket: 'applications'
-      });
-    if (storageErr) {
-      console.log(storageErr);
-      throw storageErr;
-    }
-    console.log(storageData);
-
-    const { error: appResumesErr } = await supabase
-      .from('application_resumes')
-      .insert({ application_id: id, resume_path: toFile });
-    if (appResumesErr) {
-      console.log(appResumesErr);
-      throw appResumesErr;
-    }
-  };
-
-  const updateStatus = async (
-    applicationId: number,
-    status: 'withdrawn',
-    userId: string
-  ) => {
-    // TODO add a transaction for this
-    const { error: appErr } = await supabase
-      .from('applications')
-      .update({
-        status,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', applicationId);
-
-    if (appErr) {
-      console.log(appErr);
-      throw appErr;
-    }
-
-    const { error: appEventsErr } = await supabase
-      .from('application_events')
-      .insert({
-        application_id: applicationId,
-        user_id: userId,
-        event: status
-      });
-    if (appEventsErr) {
-      console.log(appEventsErr);
-      throw appEventsErr;
-    }
-  };
+    return data.applications.map((applicationData) => ({
+      ..._.omit(applicationData, 'jobs'),
+      job: _.pick(applicationData.jobs, 'id', 'title'),
+      company: _.pick(applicationData.jobs.companies, 'id', 'name'),
+      jobSeeker: applicationData.job_seekers,
+      resumePath: applicationData.application_resumes.resume_path,
+      interview_process: applicationData.jobs
+        .interview_process as InterviewProcess
+    }));
+  }, [data]);
 
   return {
     applications,
     isPending,
+    isPlaceholderData,
     error: error ?? undefined,
-    refetch,
-    apply,
-    updateStatus
+    total: data?.count ?? undefined,
+    refetch
   };
 };
 

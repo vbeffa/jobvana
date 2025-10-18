@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { useMemo, useState } from 'react';
 import IndustrySelect from '../../companies/IndustrySelect';
 import CompanySizeFilters from '../../companies/job_seeker/CompanySizeFilters';
+import FiltersSelectContainer from '../../containers/FiltersSelectContainer';
 import Button from '../../controls/Button';
 import Filter from '../../inputs/Filter';
 import Label from '../../inputs/Label';
@@ -31,7 +32,7 @@ const JobFilters = ({
   );
 
   return (
-    <div className="absolute border-[0.5px] border-blue-400 rounded-lg w-[80%] h-[600px] left-[10%] top-[156px] bg-white px-2 z-10">
+    <FiltersSelectContainer>
       <div className="px-2 py-4 w-full flex flex-row gap-x-4">
         <div className="grid grid-cols-[37%_63%] w-[500px] gap-y-2">
           <Label htmlFor="company_filter" label="Company Name" />
@@ -194,7 +195,7 @@ const JobFilters = ({
           }}
         />
       </div>
-    </div>
+    </FiltersSelectContainer>
   );
 };
 

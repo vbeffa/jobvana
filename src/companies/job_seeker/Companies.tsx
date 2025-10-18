@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import FiltersContainer from '../../containers/FiltersContainer';
+import FiltersDisplay from '../../containers/FiltersDisplay';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
@@ -91,7 +91,7 @@ const Companies = () => {
   return (
     <div className="mx-0">
       {error && <JobvanaError error={error} />}
-      <FiltersContainer
+      <FiltersDisplay
         activeFilters={
           <ActiveFilters
             filters={searchFilters}

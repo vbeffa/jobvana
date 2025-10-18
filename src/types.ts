@@ -1,3 +1,4 @@
+import type { SearchFilters as JobSeekerApplicationSearchFilters } from './applications/job_seeker/useApplications';
 import type { InterviewProcess } from './companies/company/utils';
 import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import type { Database } from './db/types';
@@ -11,6 +12,7 @@ export type Params<
     | JobSeekerJobSearchFilters
     | SkillSearchFilters
     | CompanyJobSearchFilters
+    | JobSeekerApplicationSearchFilters
 > = {
   paging: {
     page: number;
