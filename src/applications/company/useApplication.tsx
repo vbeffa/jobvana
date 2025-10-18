@@ -27,6 +27,7 @@ export type Application = Pick<
 export type ApplicationH = {
   application: Application | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
@@ -35,6 +36,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
   const {
     data: applicationData,
     isPending,
+    isPlaceholderData,
     error,
     refetch
   } = useQuery({
@@ -74,6 +76,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
   return {
     application,
     isPending,
+    isPlaceholderData,
     error: error ?? undefined,
     refetch
   };

@@ -1,140 +1,90 @@
-import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
-import type {
-  ApplicationStatus,
-  Application as DbApplication,
-  Job as DbJob,
-  JobSeeker as DbJobSeeker
-} from '../../types';
-import { descDateComparator } from '../../utils';
+import type { ApplicationStatus, Params } from '../../types';
 
-export type Job = Pick<DbJob, 'id' | 'title'>;
-export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
+export type SearchFilters = {
+  status: ApplicationStatus | 'all';
+};
 
-export type Application = Pick<
-  DbApplication,
-  'id' | 'created_at' | 'status' | 'updated_at'
-> & {
-  job: Job;
-  jobSeeker: JobSeeker;
+export type ApplicationSummary = {
+  id: number;
+  jobTitle: string;
+  jobSeekerName: string;
+  applied: string;
   status: ApplicationStatus;
-  resumePath: string;
+  lastUpdated: string;
 };
 
 export type Applications = {
-  applications: Array<Application> | undefined;
+  applications: Array<ApplicationSummary> | undefined;
   isPending: boolean;
+  isPlaceholderData: boolean;
+  total: number | undefined;
   error?: Error;
-  refetch: () => Promise<QueryObserverResult>;
-  updateStatus: (
-    applicationId: number,
-    status: 'accepted' | 'declined',
-    userId: string
-  ) => Promise<void>;
 };
 
-const useApplications = ({
-  companyId
-}: {
-  companyId: number;
-}): Applications => {
+export type ApplicationsParams = Params<SearchFilters>;
+
+const useApplications = (
+  companyId: number,
+  params: ApplicationsParams
+): Applications => {
   const {
-    data: applicationsData,
-    isPending,
-    error,
-    refetch
-  } = useQuery({
-    queryKey: ['applications', { companyId }],
+    paging: { page, pageSize },
+    filters
+  } = params;
+
+  const { data, isPending, isPlaceholderData, error } = useQuery({
+    queryKey: ['applications', companyId, params],
     queryFn: async () => {
-      const { data } = await supabase
+      let q = supabase
         .from('applications')
         .select(
           `id, created_at, status, updated_at,
-          jobs!inner(id, title, companies(id)),
-          job_seekers!inner(first_name, last_name),
-          application_resumes!inner(resume_path)`
+          jobs!inner(title, companies!inner(id)),
+          job_seekers!inner(first_name, last_name)`,
+          { count: 'exact' }
         )
         .filter('jobs.companies.id', 'eq', companyId);
+
+      if (filters.status !== 'all') {
+        q = q.eq('status', filters.status);
+      }
+
+      const { error, data, count } = await q
+        .range((page - 1) * pageSize, page * pageSize - 1)
+        .order('updated_at', { ascending: false });
+
       // console.log(data);
-      return data;
+      if (error) {
+        console.log(error);
+      }
+      return { applications: data, error, count };
     }
   });
 
-  const applications: Array<Application> | undefined = useMemo(
-    () =>
-      applicationsData?.sort(descDateComparator).map((applicationData) => ({
-        ..._.omit(applicationData, 'jobs'),
-        job: _.pick(applicationData.jobs, 'id', 'title'),
-        jobSeeker: applicationData.job_seekers,
-        resumePath: applicationData.application_resumes.resume_path
-      })),
-    [applicationsData]
-  );
-
-  const updateStatus = async (
-    applicationId: number,
-    status: 'accepted' | 'declined',
-    userId: string
-  ) => {
-    // TODO add a transaction for this
-    const { error: appErr } = await supabase
-      .from('applications')
-      .update({
-        status,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', applicationId);
-
-    if (appErr) {
-      console.log(appErr);
-      throw appErr;
+  const applications: Array<ApplicationSummary> | undefined = useMemo(() => {
+    if (!data?.applications) {
+      return undefined;
     }
 
-    const { error: appEventsErr } = await supabase
-      .from('application_events')
-      .insert({
-        application_id: applicationId,
-        user_id: userId,
-        event: status
-      });
-    if (appEventsErr) {
-      console.log(appEventsErr);
-      throw appEventsErr;
-    }
-
-    if (status === 'accepted') {
-      const { data: interviewsData, error: interviewsErr } = await supabase
-        .from('interviews')
-        .insert({
-          application_id: applicationId
-        })
-        .select();
-      if (interviewsErr) {
-        console.log(interviewsErr);
-        throw interviewsErr;
-      }
-
-      const { error: interviewRoundsErr } = await supabase
-        .from('interview_rounds')
-        .insert({
-          interview_id: interviewsData[0].id,
-          round: 1
-        });
-      if (interviewRoundsErr) {
-        console.log(interviewRoundsErr);
-        throw interviewRoundsErr;
-      }
-    }
-  };
+    return data.applications.map((applicationData) => ({
+      ..._.pick(applicationData, 'id', 'status'),
+      jobTitle: applicationData.jobs.title,
+      jobSeekerName: `${applicationData.job_seekers.first_name} ${applicationData.job_seekers.last_name}`,
+      applied: applicationData.created_at,
+      lastUpdated: applicationData.updated_at ?? applicationData.created_at
+    }));
+  }, [data]);
 
   return {
     applications,
     isPending,
-    error: error ?? undefined,
-    refetch,
-    updateStatus
+    isPlaceholderData,
+    total: data?.count ?? undefined,
+    error: error ?? undefined
   };
 };
 

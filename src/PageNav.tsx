@@ -94,7 +94,7 @@ const PageNav = ({
               />
             </div>
             <div className="content-center">of</div>
-            <div className="content-center mr-1">{numPages}</div>
+            <div className="content-center mr-1">{numPages ?? 1}</div>
             <div className={navButtonStyles(page === numPages)}>
               <FaAngleRight
                 onClick={() => {

@@ -1,8 +1,4 @@
-import {
-  keepPreviousData,
-  useQuery,
-  type QueryObserverResult
-} from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
@@ -26,35 +22,20 @@ export type Applications = {
   isPlaceholderData: boolean;
   total: number | undefined;
   error?: Error;
-  refetch: () => Promise<QueryObserverResult>;
 };
 
 export type ApplicationsParams = Params<SearchFilters>;
-
-// type QueryKey = {
-//   jobSeekerId: number;
-//   params: ApplicationsParams;
-// };
 
 const useApplications = (
   jobSeekerId: number,
   params: ApplicationsParams
 ): Applications => {
-  // const queryKey: QueryKey = useMemo(
-  //   () => ({
-  //     jobSeekerId,
-  //     params
-  //   }),
-  //   [jobSeekerId, params]
-  // );
-  // console.log(queryKey);
-
   const {
     paging: { page, pageSize },
     filters
   } = params;
 
-  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
+  const { data, isPending, isPlaceholderData, error } = useQuery({
     queryKey: ['applications', jobSeekerId, params],
     queryFn: async () => {
       let q = supabase
@@ -69,6 +50,7 @@ const useApplications = (
       if (filters.status !== 'all') {
         q = q.eq('status', filters.status);
       }
+
       const { error, data, count } = await q
         .range((page - 1) * pageSize, page * pageSize - 1)
         .order('updated_at', { ascending: false });
@@ -100,8 +82,7 @@ const useApplications = (
     isPending,
     isPlaceholderData,
     total: data?.count ?? undefined,
-    error: error ?? undefined,
-    refetch
+    error: error ?? undefined
   };
 };
 

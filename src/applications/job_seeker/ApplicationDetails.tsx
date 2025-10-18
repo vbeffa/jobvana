@@ -127,19 +127,17 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       try {
         setIsUpdating(true);
         await updateStatus(applicationId, 'withdrawn', jobSeeker.user_id);
-        // setDoRefetch(applicationId);
         refetch(); // don't await refetch so the alert displays immediately
         alert('Application withdrawn.');
       } finally {
         setIsUpdating(false);
-        // setDoRefetch(0);
       }
     },
     [jobSeeker?.user_id, refetch]
   );
 
   if (error) {
-    return <JobvanaError error={Error('foo')} />;
+    return <JobvanaError error={error} />;
   }
 
   if (isPending) {
@@ -172,6 +170,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               <CompanyLink {...application.company} />
             </div>
             <div className="flex flex-row">
+              {/* min-w to keep job title from overflowing into left div */}
               <div className="min-w-22">Job:</div>
               <div className="truncate pr-2">
                 <JobLink {...application.job} />

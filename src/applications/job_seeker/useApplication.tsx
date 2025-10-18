@@ -41,8 +41,8 @@ export type ApplicationH = {
 const useApplication = ({ id }: { id: number }): ApplicationH => {
   const {
     data: applicationData,
-    isPlaceholderData,
     isPending,
+    isPlaceholderData,
     error,
     refetch
   } = useQuery({
@@ -71,7 +71,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
   const application: Application | undefined = useMemo(
     () =>
       applicationData?.map((applicationData) => ({
-        ..._.omit(applicationData, 'jobs'),
+        ..._.pick(applicationData, 'id', 'created_at', 'status', 'updated_at'),
         job: _.pick(applicationData.jobs, 'id', 'title'),
         company: applicationData.jobs.companies,
         jobSeeker: applicationData.job_seekers,
@@ -84,8 +84,8 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
 
   return {
     application,
-    isPlaceholderData,
     isPending,
+    isPlaceholderData,
     error: error ?? undefined,
     refetch
   };
