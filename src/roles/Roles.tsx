@@ -21,7 +21,7 @@ const Roles = () => {
     <div className="mx-4">
       {error && <JobvanaError error={error} />}
       <h1>Roles</h1>
-      <ResourcesContainer hasTitle={true}>
+      <ResourcesContainer bannerType="title">
         <ResourceListContainer>
           <SummaryCardsContainer>
             {roles?.map((role, idx) => {

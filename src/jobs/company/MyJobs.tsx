@@ -62,11 +62,11 @@ const MyJobs = ({ company }: { company: Company }) => {
   );
 
   return (
-    <div className="mx-0">
+    <>
       {isPending && <Modal type="loading" />}
       {error && <JobvanaError error={error} />}
       <div className="w-full flex justify-center pb-2">
-        <div className="w-[80%] flex justify-end">
+        <div className="w-[85%] flex justify-end">
           <StatusSelect
             status={searchFilters.status}
             onChange={(status) => {
@@ -78,7 +78,7 @@ const MyJobs = ({ company }: { company: Company }) => {
           />
         </div>
       </div>
-      <ResourcesContainer hasStatus={true}>
+      <ResourcesContainer bannerType="status">
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -92,7 +92,7 @@ const MyJobs = ({ company }: { company: Company }) => {
             isLoading={isPlaceholderData || isPending}
             type="jobs"
           />
-          <SummaryCardsContainer hasStatus={true}>
+          <SummaryCardsContainer bannerType="status">
             {jobs
               ?.map((job, idx) => (
                 <SummaryCard
@@ -168,7 +168,7 @@ const MyJobs = ({ company }: { company: Company }) => {
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </div>
+    </>
   );
 };
 

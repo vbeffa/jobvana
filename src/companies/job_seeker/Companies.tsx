@@ -132,7 +132,7 @@ const Companies = () => {
           }}
         />
       )}
-      <ResourcesContainer hasFilters={true}>
+      <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -149,7 +149,7 @@ const Companies = () => {
             isLoading={isPlaceholderData || isPending}
             type="companies"
           />
-          <SummaryCardsContainer hasFilters={true}>
+          <SummaryCardsContainer bannerType="filters">
             {companies?.map((company, idx) => {
               const hq = company.headquarters;
               return (

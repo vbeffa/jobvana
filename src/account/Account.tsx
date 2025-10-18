@@ -27,9 +27,9 @@ const Account = () => {
   }
 
   return (
-    <div className="mx-4">
+    <>
       <h1>Account Details</h1>
-      <ResourcesContainer hasTitle={true}>
+      <ResourcesContainer bannerType="title">
         <ResourceListContainer>
           <SummaryCardsContainer>
             {jobSeeker ? (
@@ -119,7 +119,7 @@ const Account = () => {
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </div>
+    </>
   );
 };
 

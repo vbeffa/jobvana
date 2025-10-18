@@ -32,7 +32,7 @@ const SkillCategories = () => {
         />
       </div>
       {view === 'list' && (
-        <ResourcesContainer hasTitle={true}>
+        <ResourcesContainer bannerType="title">
           <ResourceListContainer>
             <SummaryCardsContainer>
               {skillCategories?.map((skillCategory, idx) => {

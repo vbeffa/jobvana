@@ -52,7 +52,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
         <JobvanaError prefix="Error loading applications!" error={error} />
       )}
       <FiltersContainer>
-        <div className="flex flex-row gap-2 items-center justify-end w-full p-2">
+        <div className="flex items-center justify-end w-full p-2">
           <StatusSelect
             status={searchFilters.status}
             onChange={(status) => {
@@ -64,7 +64,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
           />
         </div>
       </FiltersContainer>
-      <ResourcesContainer hasFilters={true}>
+      <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -76,7 +76,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             isLoading={isPlaceholderData || isPending}
             type="applications"
           />
-          <SummaryCardsContainer hasFilters={true}>
+          <SummaryCardsContainer bannerType="filters">
             {applications?.map((application, idx) => {
               return (
                 <SummaryCard

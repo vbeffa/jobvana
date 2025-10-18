@@ -44,10 +44,11 @@ const MyCompany = ({ company }: { company: Company }) => {
   );
 
   return (
-    <div className="mx-0">
-      <ResourcesContainer>
+    <>
+      <h1>My Company</h1>
+      <ResourcesContainer bannerType="title">
         <ResourceListContainer>
-          <SummaryCardsContainer>
+          <SummaryCardsContainer bannerType="title">
             <SummaryCard
               key={1}
               selected={card === 'overview'}
@@ -99,7 +100,7 @@ const MyCompany = ({ company }: { company: Company }) => {
           {currComponent}
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </div>
+    </>
   );
 };
 
