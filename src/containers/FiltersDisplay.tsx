@@ -2,10 +2,6 @@ import { type JSX } from 'react';
 import Button from '../controls/Button';
 import FiltersContainer from './FiltersContainer';
 
-export const FILTERS_HEIGHT_PX = 61; // 1px for border
-export const FILTERS_MARGIN_BOTTOM_PX = 4 * 4;
-export const FILTERS_TOTAL_HEIGHT_PX = 77; // FILTERS_HEIGHT_PX + FILTERS_MARGIN_BOTTOM_PX;
-
 const FiltersDisplay = ({
   activeFilters,
   showFilters,
