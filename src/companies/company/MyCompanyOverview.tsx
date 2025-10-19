@@ -58,7 +58,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
         <EditDeleteIcons
           isEditing={isEditing}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          bgColor="--color-blue-200"
+          bgColor="--color-blue-300"
           top="top-1.25"
           onEdit={() => {
             setError(undefined);

@@ -1,12 +1,13 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
-import { FaPaperPlane } from 'react-icons/fa6';
+import { FaSave } from 'react-icons/fa';
+import { FaPaperPlane, FaRocket, FaTrashCan } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
 import useApplicationForJob from '../../applications/job_seeker/useApplicationForJob';
 import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import type { JobSeeker } from '../../Context';
-import Button from '../../controls/Button';
 import useResumes from '../../job_seekers/useResumes';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
@@ -86,12 +87,25 @@ const JobDetails = ({
     [job]
   );
 
+  const applyDisabled = useMemo(
+    () =>
+      noInterviewProcess ||
+      pipelineLimitReached ||
+      !resumes?.length ||
+      isApplying,
+    [isApplying, noInterviewProcess, pipelineLimitReached, resumes?.length]
+  );
+
   if (error) {
     return <JobvanaError error={error} />;
   }
 
   if (isPending) {
-    return <Modal type="loading" />;
+    return (
+      <div className="relative top-10">
+        <Modal type="loading" />
+      </div>
+    );
   }
 
   if (!job) {
@@ -100,49 +114,49 @@ const JobDetails = ({
 
   return (
     <>
-      {isPlaceholderData && <Modal type="loading" />}
-      {isApplying && <Modal type="applying" />}
-      {applyError && <JobvanaError error={applyError} />}
-      <Section
-        title={
-          <div className="flex justify-between">
-            <div>{job.title}</div>
-            <div>{new Date(job.created_at).toLocaleDateString()}</div>
+      <div className="relative top-10">
+        {isPlaceholderData && <Modal type="loading" />}
+        {isApplying && <Modal type="applying" />}
+        {applyError && <JobvanaError error={applyError} />}
+      </div>
+      <ActionMenuContainer>
+        <div className="flex flex-row gap-2 items-center text-sm">
+          Posted:
+          <div className="flex flex-row gap-1 items-center">
+            <FaRocket />
+            {new Date(job.created_at).toLocaleDateString()}
           </div>
-        }
-      >
-        <div className="flex flex-row gap-x-2">
-          <CompanyLink {...job.company} />
-          <Salary {...job} />
-        </div>
-        <div className="text-sm">
-          {job.address ? `${job.address.city}, ${job.address.state}` : 'Remote'}
-        </div>
-        <div className="absolute right-0 top-7">
-          {application === null && (
-            <div className="flex flex-row gap-2">
-              <div className="text-sm text-gray-400 content-center">
-                {noInterviewProcess && <>No interview process</>}
-                {pipelineLimitReached && (
-                  <>Company pipeline size limit reached</>
-                )}
-                {resumes?.length === 0 && (
-                  <>Please upload a resume to apply for this job</>
-                )}
-              </div>
-              <Button
-                label="Apply"
-                disabled={
-                  noInterviewProcess ||
-                  pipelineLimitReached ||
-                  !resumes?.length ||
-                  isApplying
-                }
-                onClick={onApply}
-              />
-            </div>
+          {job.interviewProcess && (
+            <>
+              <div className="h-fit py-2 border-r-[1px]" />
+              Pipeline: {job.activeApplicationCount} /{' '}
+              {job.interviewProcess.pipeline_size}
+            </>
           )}
-          {application && (
+        </div>
+        {application === null ? (
+          <div className="flex flex-row gap-2 items-center">
+            <div className="text-sm text-gray-400 content-center">
+              {noInterviewProcess && <>Company has no interview process</>}
+              {pipelineLimitReached && <>Company pipeline size limit reached</>}
+              {resumes?.length === 0 && (
+                <>Please upload a resume to apply for this job</>
+              )}
+            </div>
+            {!applyDisabled && (
+              <div className="flex flex-row gap-2 text-sm items-center">
+                <FaSave className="cursor-pointer hover:text-blue-400" />
+                <FaTrashCan className="cursor-pointer hover:text-blue-400" />
+                <FaPaperPlane
+                  className="cursor-pointer hover:text-blue-400"
+                  onClick={onApply}
+                />
+              </div>
+            )}
+          </div>
+        ) : undefined}
+        {application ? (
+          <div className="flex items-center">
             <Link
               to="/jobvana/applications/$id"
               params={{ id: application.id.toString() }}
@@ -154,29 +168,88 @@ const JobDetails = ({
                 {new Date(application.created_at).toLocaleDateString()}
               </div>
             </Link>
-          )}
-        </div>
-      </Section>
-      <Section title="Description">{job.description}</Section>
-      <Section title="Roles">
-        <JobRoles {...job} />
-      </Section>
-      <Section title="Skills">
-        <SkillsList skills={job.skills} />
-      </Section>
-      <Section title="Interview Process">
-        {job.interviewProcess ? (
-          <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
-            <InterviewProcessDisplay
-              interviewProcess={job.interviewProcess}
-              activeApplicationCount={job.activeApplicationCount}
-            />
           </div>
-        ) : null}
-      </Section>
-      <Section title="All Applications" isLast={true}>
-        <ApplicationsList statuses={job.applicationStatuses} />
-      </Section>
+        ) : undefined}
+      </ActionMenuContainer>
+      <div className="px-4 mt-2">
+        <Section
+          title={
+            <div className="flex justify-between">
+              <div>{job.title}</div>
+              {/* <div>{new Date(job.created_at).toLocaleDateString()}</div> */}
+              <div>ID: {job.id}</div>
+            </div>
+          }
+        >
+          <div className="flex flex-row gap-x-2">
+            <CompanyLink {...job.company} />
+            <Salary {...job} />
+          </div>
+          <div className="text-sm">
+            {job.address
+              ? `${job.address.city}, ${job.address.state}`
+              : 'Remote'}
+          </div>
+          {/* <div className="absolute right-0 top-7">
+            {application === null && (
+              <div className="flex flex-row gap-2">
+                <div className="text-sm text-gray-400 content-center">
+                  {noInterviewProcess && <>No interview process</>}
+                  {pipelineLimitReached && (
+                    <>Company pipeline size limit reached</>
+                  )}
+                  {resumes?.length === 0 && (
+                    <>Please upload a resume to apply for this job</>
+                  )}
+                </div>
+                <Button
+                  label="Apply"
+                  disabled={
+                    noInterviewProcess ||
+                    pipelineLimitReached ||
+                    !resumes?.length ||
+                    isApplying
+                  }
+                  onClick={onApply}
+                />
+              </div>
+            )}
+            {application && (
+              <Link
+                to="/jobvana/applications/$id"
+                params={{ id: application.id.toString() }}
+              >
+                <div className="flex flex-row gap-1 text-sm">
+                  <div className="content-center">
+                    <FaPaperPlane />
+                  </div>
+                  {new Date(application.created_at).toLocaleDateString()}
+                </div>
+              </Link>
+            )}
+          </div> */}
+        </Section>
+        <Section title="Description">{job.description}</Section>
+        <Section title="Roles">
+          <JobRoles {...job} />
+        </Section>
+        <Section title="Skills">
+          <SkillsList skills={job.skills} />
+        </Section>
+        <Section title="Interview Process">
+          {job.interviewProcess ? (
+            <div className="border-[0.5px] border-blue-300 rounded-lg mt-2 px-4 py-4">
+              <InterviewProcessDisplay
+                interviewProcess={job.interviewProcess}
+                activeApplicationCount={job.activeApplicationCount}
+              />
+            </div>
+          ) : null}
+        </Section>
+        <Section title="All Applications" isLast={true}>
+          <ApplicationsList statuses={job.applicationStatuses} />
+        </Section>
+      </div>
     </>
   );
 };

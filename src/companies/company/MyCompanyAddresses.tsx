@@ -25,9 +25,9 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
     <div>
       <ActionMenuContainer justify="justify-end">
         {!newAddress ? (
-          <div className="text-blue-400 pt-1.5 flex justify-start">
+          <div className="pt-1.5 flex justify-start">
             <FaPlus
-              className="cursor-pointer"
+              className="text-blue-500 cursor-pointer hover:text-blue-400"
               onClick={() => setNewAddress(true)}
             />
           </div>

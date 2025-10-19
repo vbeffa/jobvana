@@ -8,8 +8,9 @@ const ActionMenuContainer = ({
   justify?: 'justify-between' | 'justify-end';
 }) => {
   return (
-    <div className="w-full bg-blue-200">
-      <div className={`relative pl-4 mr-4 h-7 flex flex-row gap-2 ${justify}`}>
+    <div className="sticky top-0 z-999 bg-blue-300 text-blue-500">
+      {/* need relative for EditDeleteIcons */}
+      <div className={`relative mx-4 h-7 flex flex-row gap-2 ${justify}`}>
         {children}
       </div>
     </div>

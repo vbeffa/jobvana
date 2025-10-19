@@ -3,7 +3,12 @@ import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
-import type { Job, Params } from '../../types';
+import type {
+  Application as DbApplication,
+  JobSalaryType,
+  JobType,
+  Params
+} from '../../types';
 
 export const MAX_TITLE_LENGTH = 100;
 export const MIN_SALARY = 10000;
@@ -21,18 +26,20 @@ export type CreatedRange =
 export type SearchFilters = {
   company?: string;
   // companyId?: number;
-  jobType: Job['type'] | 0;
+  jobType: JobType | 0;
   title?: string;
   minSize: number;
   maxSize: number;
   industryId?: number;
   roleId?: number;
-  salaryType: Job['salary_type'];
+  salaryType: JobSalaryType;
   minSalary: number;
   maxSalary: number;
   skillIds?: Array<number>;
   created: CreatedRange;
 };
+
+export type Application = Pick<DbApplication, 'created_at'>;
 
 export type JobSummary = {
   id: number;
@@ -41,6 +48,7 @@ export type JobSummary = {
   updated_at: string;
   minSalary: number;
   maxSalary: number;
+  application?: Application;
 };
 
 export type Jobs = {
@@ -74,7 +82,8 @@ const useJobs = (params: JobsParams): Jobs => {
         .select(
           `id, title, updated_at, salary_low, salary_high,
           companies!inner(name),
-          job_roles!inner(roles!inner()), job_skills!inner(skills!inner(id))`,
+          job_roles!inner(roles!inner()), job_skills!inner(skills!inner(id)),
+          applications(created_at)`,
           { count: 'exact' }
         )
         .filter('status', 'eq', 'open')
@@ -152,7 +161,8 @@ const useJobs = (params: JobsParams): Jobs => {
         ..._.pick(jobData, 'id', 'title', 'updated_at'),
         companyName: jobData.companies.name,
         minSalary: jobData.salary_low,
-        maxSalary: jobData.salary_high
+        maxSalary: jobData.salary_high,
+        application: jobData.applications[0]
       };
     });
   }, [data]);

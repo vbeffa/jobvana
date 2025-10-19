@@ -20,7 +20,7 @@ const EditDeleteIcons = ({
   onCancel: () => void;
   onDelete?: () => void;
   onSave: () => Promise<void>;
-  bgColor?: '--color-white' | '--color-gray-100' | '--color-blue-200';
+  bgColor?: '--color-white' | '--color-gray-100' | '--color-blue-300';
   top?: string;
 }) => {
   return (

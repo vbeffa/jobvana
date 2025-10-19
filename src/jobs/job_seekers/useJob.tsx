@@ -29,9 +29,17 @@ export type FullJob = Job & {
   activeApplicationCount: number;
 };
 
-export type Job = Omit<
+export type Job = Pick<
   DbJob,
-  'id' | 'company_id' | 'status' | 'company_address_id' | 'interview_process'
+  | 'id'
+  | 'created_at'
+  | 'updated_at'
+  | 'type'
+  | 'title'
+  | 'description'
+  | 'salary_type'
+  | 'salary_low'
+  | 'salary_high'
 > & {
   interviewProcess: InterviewProcess | null;
 };
@@ -56,7 +64,7 @@ const useJob = (id: number): JobH => {
       const { data, error } = await supabase
         .from('jobs')
         .select(
-          `created_at, updated_at, type, description, salary_type, salary_low, salary_high, title, interview_process,
+          `id, created_at, updated_at, type, title, description, salary_type, salary_low, salary_high, interview_process,
           company_addresses(*),
           companies!inner(id, name, interview_process),
           job_roles(role_id, percent, role_level),
@@ -77,13 +85,18 @@ const useJob = (id: number): JobH => {
     }
     const job = data.job;
     return {
-      ..._.omit(
+      ..._.pick(
         job,
         'id',
-        'company_id',
-        'status',
-        'company_address_id',
-        'interview_process'
+        'created_at',
+        'updated_at',
+        'type',
+        'title',
+        'description',
+        'salary_type',
+        'salary_low',
+        'salary_high',
+        'skills'
       ),
       company: {
         id: job.companies.id,

@@ -37,7 +37,7 @@ const SummaryCard = ({
       onClick={() => !disabled && onClick()}
     >
       <div className="text-blue-500 pr-[2px] truncate">{title}</div>
-      <div className="text-sm">{text}</div>
+      <div className="text-sm pr-[2px] truncate">{text}</div>
     </div>
   );
 };

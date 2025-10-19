@@ -85,18 +85,18 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         {isUpdating ? <Modal type="updating" /> : null}
       </div>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
+        <div className="flex flex-row gap-1 items-center text-sm">
           Status:
           <Status {...application} />
         </div>
         {application.status === 'submitted' ? (
           <div className="flex flex-row gap-1 items-center">
             <FaCheck
-              className="text-blue-400 cursor-pointer"
+              className="cursor-pointer hover:text-blue-400"
               onClick={() => onUpdateStatus(application.id, 'accepted')}
             />
             <FaX
-              className="text-blue-400 cursor-pointer"
+              className="cursor-pointer hover:text-blue-400"
               onClick={() => onUpdateStatus(application.id, 'declined')}
             />
           </div>

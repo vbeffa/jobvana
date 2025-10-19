@@ -83,14 +83,14 @@ const MyCompanyInterviewProcess = ({
     <div>
       <ActionMenuContainer>
         {isEditing ? (
-          <div className="text-sm text-blue-400 content-center">
+          <div className="text-sm content-center">
             Saving will also update the interview process for unpublished jobs
           </div>
         ) : undefined}
         <EditDeleteIcons
           isEditing={isEditing}
           disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          bgColor="--color-blue-200"
+          bgColor="--color-blue-300"
           top="top-1.25"
           onEdit={() => {
             setError(undefined);

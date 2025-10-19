@@ -88,7 +88,7 @@ const MyCompany = ({ company }: { company: Company }) => {
                   <div className="content-center">
                     <FaChessKnight />
                   </div>
-                  Interview Process
+                  <span className="truncate">Interview Process</span>
                 </div>
               }
               text={`${numRounds} round${numRounds !== 1 ? 's' : ''}, ${pipelineSize} job seeker${pipelineSize > 1 ? 's' : ''}`}

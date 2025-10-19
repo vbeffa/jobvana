@@ -44,7 +44,9 @@ export type InterviewRound =
 export type InterviewRoundStatus =
   Database['public']['Enums']['interview_round_status'];
 export type Job = Database['public']['Tables']['jobs']['Row'];
+export type JobSalaryType = Job['salary_type'];
 export type JobStatus = Job['status'];
+export type JobType = Job['type'];
 export type JobRole = Database['public']['Tables']['job_roles']['Row'];
 export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'];
 export type JobSeekerSkill =

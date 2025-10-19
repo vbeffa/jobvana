@@ -324,7 +324,7 @@ const MyJob = ({
   return (
     <div>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
+        <div className="flex flex-row gap-1 items-center text-sm">
           Status:
           {job.status === 'draft' &&
             (isNew ? <FaPencil /> : <FaDraftingCompass />)}
@@ -337,7 +337,7 @@ const MyJob = ({
             {!isEditing && (
               <div className="content-center pr-12">
                 <div
-                  className=" text-blue-400 cursor-pointer"
+                  className="cursor-pointer"
                   onClick={() => {
                     if (confirm('Are you sure you want to publish this job?')) {
                       onSave('open');
@@ -352,7 +352,7 @@ const MyJob = ({
               type="job"
               isEditing={isEditing}
               disabled={saveDisabled}
-              bgColor="--color-blue-200"
+              bgColor="--color-blue-300"
               top="top-1.25"
               onEdit={() => {
                 setError(undefined);
@@ -379,7 +379,7 @@ const MyJob = ({
         {job.status === 'open' ? (
           <>
             {isFrozen && activeApplications ? (
-              <div className="text-blue-400 text-sm content-center">
+              <div className="text-sm content-center">
                 {activeApplications} active application
                 {activeApplications > 1 ? 's' : ''}
               </div>
@@ -387,7 +387,7 @@ const MyJob = ({
             {!isFrozen && (
               <div className="flex flex-row gap-1 items-center">
                 <div
-                  className="text-blue-400 cursor-pointer"
+                  className="cursor-pointer hover:text-blue-400"
                   onClick={() => {
                     if (
                       confirm(
@@ -401,7 +401,7 @@ const MyJob = ({
                   <FaUndo className="text-sm" />
                 </div>
                 <div
-                  className="text-xl text-blue-400 cursor-pointer"
+                  className="text-xl cursor-pointer hover:text-blue-400"
                   onClick={() => {
                     if (confirm('Are you sure you want to archive this job?')) {
                       onSave('closed');
@@ -417,7 +417,7 @@ const MyJob = ({
         {job.status === 'closed' ? (
           <div className="content-center">
             <div
-              className="text-xl text-blue-400 cursor-pointer"
+              className="text-xl cursor-pointer"
               onClick={() => {
                 if (confirm('Are you sure you want to reopen this job?')) {
                   onSave('open');

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { FaBuilding } from 'react-icons/fa6';
+import { FaBuilding, FaPaperPlane } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersDisplay from '../../containers/FiltersDisplay';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
@@ -168,12 +168,21 @@ const Jobs = () => {
                   title={job.title}
                   text={
                     <>
-                      <div className="flex justify-between pr-1">
-                        <div className="flex flex-row gap-1 items-center truncate">
+                      <div className="flex justify-between items-center pr-1">
+                        <div className="flex flex-row gap-1 items-center truncate pr-1">
                           <FaBuilding />
-                          {job.companyName}
+                          <div className="truncate">{job.companyName}</div>
                         </div>
-                        <span>{formatDate(new Date(job.updated_at))}</span>
+                        <div className="flex flex-row items-center gap-1">
+                          {job.application && (
+                            <>
+                              <FaPaperPlane />
+                              {formatDate(new Date(job.application.created_at))}
+                            </>
+                          )}
+                          {!job.application &&
+                            formatDate(new Date(job.updated_at))}
+                        </div>
                       </div>
                       <div>
                         {formatCurrency(job.minSalary)} -{' '}
@@ -187,7 +196,7 @@ const Jobs = () => {
             })}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           {selectedJobId && jobSeeker ? (
             <JobDetails id={selectedJobId} jobSeeker={jobSeeker} />
           ) : undefined}

@@ -14,7 +14,7 @@ const SummaryCardsContainer = ({
       case 'title':
         return 'h-[calc(100dvh-232px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + TITLE_TOTAL_HEIGHT_PX + PAGE_NAV_HEIGHT_PX = 80 + 16 + 72 + 64
       case 'filters':
-        return 'h-[calc(100dvh-229px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX + PAGE_NAV_HEIGHT_PX = 80 + 16 + 69 + 64
+        return 'h-[calc(100dvh-232px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + FILTERS_TOTAL_HEIGHT_PX + PAGE_NAV_HEIGHT_PX = 80 + 16 + 72 + 64
       case 'status':
         return 'h-[calc(100dvh-200px)]'; // HEADER_TOTAL_HEIGHT_PX + PAGE_MARGIN_BOTTOM_PX + STATUS_SELECT_TOTAL_HEIGHT_PX + PAGE_NAV_HEIGHT_PX = 80 + 16 + 40 + 64
       case 'none':
