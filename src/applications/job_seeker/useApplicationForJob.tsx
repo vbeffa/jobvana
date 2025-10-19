@@ -4,13 +4,12 @@ import supabase from '../../db/supabase';
 import type { Application } from '../../types';
 
 export type ApplicationForJob = {
-  application: Pick<Application, 'id' | 'created_at'> | undefined;
+  application: Pick<Application, 'id' | 'created_at'> | undefined | null;
   isPending: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
 };
 
-// TODO use in JobDetails
 const useApplicationForJob = ({
   jobSeekerId,
   jobId
@@ -33,12 +32,12 @@ const useApplicationForJob = ({
         .filter('job_id', 'eq', jobId);
       // .in('status', ['submitted', 'accepted']);
       // console.log(data);
-      return data;
+      return data?.[0] ?? null;
     }
   });
 
   return {
-    application: data?.[0],
+    application: data,
     isPending,
     error: error ?? undefined,
     refetch

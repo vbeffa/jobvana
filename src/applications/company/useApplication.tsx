@@ -76,7 +76,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
             application_events!inner(created_at, event),
             interviews(id, application_id,
               interview_rounds!inner(round, job_seeker_response, company_response,
-                interview_round_events!inner(created_at, user_id, event)
+                interview_round_events(created_at, user_id, event)
               )
             ),
             application_resumes!inner(resume_path)`

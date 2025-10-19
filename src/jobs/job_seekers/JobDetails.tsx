@@ -119,7 +119,7 @@ const JobDetails = ({
           {job.address ? `${job.address.city}, ${job.address.state}` : 'Remote'}
         </div>
         <div className="absolute right-0 top-7">
-          {!application && (
+          {application === null && (
             <div className="flex flex-row gap-2">
               <div className="text-sm text-gray-400 content-center">
                 {noInterviewProcess && <>No interview process</>}

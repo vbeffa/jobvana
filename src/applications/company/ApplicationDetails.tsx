@@ -98,7 +98,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         <Section
           title={
             <div className="flex justify-between">
-              <div>Application</div>
+              <div>Application ID: {application.id}</div>
               <div>
                 <Status {...application} />
               </div>
