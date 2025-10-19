@@ -11,8 +11,10 @@ const Definitions = () => {
       <Hr />
       <h2>Jobs</h2>
       <p>
-        <Link to="/jobvana/jobs">Jobs</Link> have titles which are free-form
-        (defined by the company).
+        <Link to="/jobvana/jobs" search={{ job_type: 'any' }}>
+          Jobs
+        </Link>{' '}
+        have titles which are free-form (defined by the company).
       </p>
       <Hr />
       <p>

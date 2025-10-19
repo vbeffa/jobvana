@@ -39,6 +39,7 @@ const JobFilters = ({
           <Filter
             id="company_filter"
             width="w-54"
+            maxLength={25}
             placeholder="Filter by company"
             value={newFilters.company}
             onChange={(company) => {
@@ -85,12 +86,25 @@ const JobFilters = ({
           <Filter
             id="job_title_filter"
             width="w-54"
+            maxLength={50}
             placeholder="Enter keywords"
             value={newFilters.title}
             onChange={(title) => {
               setNewFilters({ ...newFilters, title });
             }}
             onClear={() => setNewFilters({ ...newFilters, title: '' })}
+          />
+          <Label htmlFor="description" label="Description" />
+          <Filter
+            id="description"
+            width="w-54"
+            maxLength={50}
+            placeholder="Enter keywords"
+            value={newFilters.description}
+            onChange={(description) => {
+              setNewFilters({ ...newFilters, description });
+            }}
+            onClear={() => setNewFilters({ ...newFilters, description: '' })}
           />
           <Label htmlFor="role" label="Role" />
           <RoleSelect

@@ -72,8 +72,12 @@ const Jobs = () => {
         page: debouncedPage,
         job_id: selectedJobId ?? undefined,
         company: searchFilters.company || undefined,
-        job_type: searchFilters.jobType || undefined,
+        job_type: searchFilters.jobType,
         title: searchFilters.title || undefined,
+        description: searchFilters.description || undefined,
+        min_size: searchFilters.minSize || undefined,
+        max_size: searchFilters.maxSize || undefined,
+        industry_id: searchFilters.industryId || undefined,
         role_id: searchFilters.roleId,
         min_salary: searchFilters.minSalary,
         max_salary: searchFilters.maxSalary,
@@ -81,19 +85,7 @@ const Jobs = () => {
         created: searchFilters.created
       }
     });
-  }, [
-    debouncedPage,
-    selectedJobId,
-    navigate,
-    searchFilters.company,
-    searchFilters.created,
-    searchFilters.jobType,
-    searchFilters.maxSalary,
-    searchFilters.minSalary,
-    searchFilters.roleId,
-    searchFilters.skillIds,
-    searchFilters.title
-  ]);
+  }, [debouncedPage, selectedJobId, navigate, searchFilters]);
 
   return (
     <>

@@ -26,8 +26,9 @@ export type CreatedRange =
 export type SearchFilters = {
   company?: string;
   // companyId?: number;
-  jobType: JobType | 0;
+  jobType: JobType | 'any';
   title?: string;
+  description?: string;
   minSize: number;
   maxSize: number;
   industryId?: number;
@@ -92,7 +93,7 @@ const useJobs = (params: JobsParams): Jobs => {
       if (filters.company) {
         q = q.ilike('companies.name', `%${filters.company}%`);
       }
-      if (filters.jobType) {
+      if (filters.jobType !== 'any') {
         q = q.filter('type', 'eq', filters.jobType);
       }
       // if (filters.companyId) {
@@ -100,6 +101,9 @@ const useJobs = (params: JobsParams): Jobs => {
       // }
       if (filters.title) {
         q = q.ilike('title', `%${filters.title}%`);
+      }
+      if (filters.description) {
+        q = q.ilike('description', `%${filters.description}%`);
       }
       if (filters.minSize) {
         q = q.filter('companies.num_employees', 'gte', filters.minSize);

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useMemo } from 'react';
 import Select from '../../inputs/Select';
-import type { Job } from '../../types';
+import type { JobSalaryType } from '../../types';
 import { formatCurrency } from '../../utils';
 import { maxJobSalary, minJobSalary } from '../utils';
 
@@ -12,7 +12,7 @@ const SalarySelect = ({
   width,
   onChange
 }: {
-  type: Job['salary_type'];
+  type: JobSalaryType;
   id: string;
   value?: number;
   width?: string;

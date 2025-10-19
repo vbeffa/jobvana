@@ -3,7 +3,7 @@ import {
   MAX_COMPANY_SIZE,
   MIN_COMPANY_SIZE
 } from '../companies/job_seeker/useCompanies';
-import type { Job } from '../types';
+import type { JobSalaryType, JobType } from '../types';
 import {
   MAX_HOURLY_RATE,
   MAX_SALARY,
@@ -15,8 +15,9 @@ import {
 
 export const INITIAL_SEARCH_FILTERS: SearchFilters = {
   company: '',
-  jobType: 0,
+  jobType: 'any',
   title: '',
+  description: '',
   minSize: MIN_COMPANY_SIZE,
   maxSize: MAX_COMPANY_SIZE,
   industryId: 0,
@@ -28,9 +29,11 @@ export const INITIAL_SEARCH_FILTERS: SearchFilters = {
   skillIds: []
 };
 
-export const jobTypeToString = (type: Job['type'], capitalize = true) => {
+export const jobTypeToString = (type: JobType | 'any', capitalize = true) => {
   const jobType = (() => {
     switch (type) {
+      case 'any':
+        return 'Any';
       case 'full_time':
         return 'full time';
       case 'part_time':
@@ -44,10 +47,10 @@ export const jobTypeToString = (type: Job['type'], capitalize = true) => {
   return capitalize ? _.capitalize(jobType) : jobType;
 };
 
-export const minJobSalary = (salaryType: Job['salary_type']) =>
+export const minJobSalary = (salaryType: JobSalaryType) =>
   salaryType === 'annual' ? MIN_SALARY : MIN_HOURLY_RATE;
 
-export const maxJobSalary = (salaryType: Job['salary_type']) =>
+export const maxJobSalary = (salaryType: JobSalaryType) =>
   salaryType === 'annual' ? MAX_SALARY : MAX_HOURLY_RATE;
 
 export const createdRangeToString = (created: CreatedRange) => {

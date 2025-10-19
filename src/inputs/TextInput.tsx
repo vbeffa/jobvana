@@ -58,7 +58,7 @@ const TextInput = ({
           disabled={disabled}
           autoComplete={autoComplete}
           className={`p-1 ${width} ${
-            maxLength && showEye
+            maxLength && (showEye || showClear)
               ? 'pr-18'
               : maxLength
                 ? 'pr-14'
@@ -70,14 +70,14 @@ const TextInput = ({
         />
         {showLength && maxLength && value !== undefined && (
           <div
-            className={`absolute text-gray-500 top-[0.525rem] ${showEye && value ? 'right-7' : 'right-2'} text-xs`}
+            className={`absolute text-gray-500 top-[0.525rem] ${(showEye || showClear) && value ? 'right-7' : 'right-2'} text-xs`}
           >
             {value.length} / {maxLength}
           </div>
         )}
         {showClear && onClear && (
           <div
-            className={`absolute right-[0.45rem] ${size === 'sm' ? 'text-sm top-[0.3rem]' : 'top-[0.525rem]'} text-gray-400 cursor-pointer`}
+            className={`absolute right-[0.45rem] ${size === 'sm' ? 'text-sm top-[0.3rem]' : 'top-[0.525rem]'} text-gray-400 hover:text-gray-300 cursor-pointer`}
             onClick={() => {
               onClear();
               document.getElementById(id)?.focus();

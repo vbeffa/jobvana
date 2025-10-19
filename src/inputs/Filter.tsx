@@ -4,6 +4,7 @@ const Filter = ({
   id,
   label,
   width,
+  maxLength,
   placeholder,
   value,
   onChange,
@@ -12,6 +13,7 @@ const Filter = ({
   id: string;
   label?: string;
   width?: string;
+  maxLength?: number;
   placeholder: string;
   value?: string;
   onChange: (value: string) => void;
@@ -23,6 +25,7 @@ const Filter = ({
       type="text"
       label={label}
       width={width}
+      maxLength={maxLength}
       placeholder={placeholder}
       value={value}
       onChange={onChange}

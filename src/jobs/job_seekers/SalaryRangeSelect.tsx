@@ -1,4 +1,4 @@
-import type { Job } from '../../types';
+import type { JobSalaryType } from '../../types';
 import SalarySelect from './SalarySelect';
 
 const SalaryRangeSelect = ({
@@ -9,7 +9,7 @@ const SalaryRangeSelect = ({
   onChangeLow,
   onChangeHigh
 }: {
-  type: Job['salary_type'];
+  type: JobSalaryType;
   low: number;
   high: number;
   width?: string;

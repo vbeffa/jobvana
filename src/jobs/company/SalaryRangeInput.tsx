@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import NumberInput from '../../inputs/NumberInput';
-import type { Job } from '../../types';
+import type { JobSalaryType } from '../../types';
 import { maxJobSalary, minJobSalary } from '../utils';
 
 const SalaryRangeInput = ({
@@ -10,7 +10,7 @@ const SalaryRangeInput = ({
   onChangeLow,
   onChangeHigh
 }: {
-  type: Job['salary_type'];
+  type: JobSalaryType;
   low: number;
   high: number;
   onChangeLow: (minSalary: number | null) => void;

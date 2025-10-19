@@ -43,10 +43,10 @@ const ActiveFilters = ({
     [filters.roleId, findRole]
   );
 
-  const jobType = useMemo(
-    () => (filters.jobType ? jobTypeToString(filters.jobType) : undefined),
-    [filters.jobType]
-  );
+  // const jobType = useMemo(
+  //   () => (filters.jobType ? jobTypeToString(filters.jobType) : undefined),
+  //   [filters.jobType]
+  // );
 
   return (
     <div className="flex gap-2 whitespace-nowrap">
@@ -118,6 +118,23 @@ const ActiveFilters = ({
           </PillContainer>
         </div>
       )}
+      {filters.description && (
+        <div className="flex flex-row gap-2">
+          <div className="content-center">Description:</div>
+          <PillContainer
+            onDelete={() => {
+              const updatedFilters = {
+                ...filters,
+                description: INITIAL_SEARCH_FILTERS.description
+              };
+              setFilters(updatedFilters);
+              setJobSearchFilters(updatedFilters);
+            }}
+          >
+            {filters.description}
+          </PillContainer>
+        </div>
+      )}
       {role && (
         <div className="flex flex-row gap-2">
           <div className="content-center">Role:</div>
@@ -135,7 +152,7 @@ const ActiveFilters = ({
           </PillContainer>
         </div>
       )}
-      {jobType && (
+      {filters.jobType !== 'any' && (
         <div className="flex flex-row gap-2">
           <div className="content-center">Job Type:</div>
           <PillContainer
@@ -148,7 +165,7 @@ const ActiveFilters = ({
               setJobSearchFilters(updatedFilters);
             }}
           >
-            {jobType}
+            {jobTypeToString(filters.jobType)}
           </PillContainer>
         </div>
       )}
