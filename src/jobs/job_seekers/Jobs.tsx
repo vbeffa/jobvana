@@ -149,7 +149,7 @@ const Jobs = () => {
                 jobId: undefined
               });
             }}
-            isLoading={isPlaceholderData || isPending}
+            isLoading={isPending || isPlaceholderData}
             type="jobs"
           />
           <SummaryCardsContainer bannerType="filters">

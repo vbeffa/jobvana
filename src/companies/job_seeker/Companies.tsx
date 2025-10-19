@@ -146,7 +146,7 @@ const Companies = () => {
                 companyId: undefined
               });
             }}
-            isLoading={isPlaceholderData || isPending}
+            isLoading={isPending || isPlaceholderData}
             type="companies"
           />
           <SummaryCardsContainer bannerType="filters">

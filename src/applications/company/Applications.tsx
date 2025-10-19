@@ -72,7 +72,7 @@ const Applications = ({ companyId }: { companyId: number }) => {
               setPage(page);
               setDebouncePage(debounce);
             }}
-            isLoading={isPlaceholderData || isPending}
+            isLoading={isPending || isPlaceholderData}
             type="applications"
           />
           <SummaryCardsContainer bannerType="filters">

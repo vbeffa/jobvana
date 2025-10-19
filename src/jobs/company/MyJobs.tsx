@@ -7,7 +7,6 @@ import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import type { Company } from '../../Context';
 import Button from '../../controls/Button';
 import JobvanaError from '../../JobvanaError';
-import Modal from '../../Modal';
 import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
 import { formatCurrency, formatDate } from '../../utils';
@@ -63,7 +62,6 @@ const MyJobs = ({ company }: { company: Company }) => {
 
   return (
     <>
-      {isPending && <Modal type="loading" />}
       {error && <JobvanaError error={error} />}
       <div className="w-full flex justify-center pb-2">
         <div className="w-[85%] flex justify-end">
@@ -89,7 +87,7 @@ const MyJobs = ({ company }: { company: Company }) => {
               setSelectedJobId(null);
               setDebouncePage(debounce);
             }}
-            isLoading={isPlaceholderData || isPending}
+            isLoading={isPending || isPlaceholderData}
             type="jobs"
           />
           <SummaryCardsContainer bannerType="status">

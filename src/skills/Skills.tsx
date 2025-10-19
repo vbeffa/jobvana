@@ -78,7 +78,7 @@ const Skills = () => {
               setSkillId(null);
               setDebouncePage(debounce);
             }}
-            isLoading={isPlaceholderData || isPending}
+            isLoading={isPending || isPlaceholderData}
             type="skills"
           />
           <SummaryCardsContainer bannerType="filters">
