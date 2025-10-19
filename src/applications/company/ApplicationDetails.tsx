@@ -66,7 +66,11 @@ const ApplicationDetails = ({ id }: { id: number }) => {
   }
 
   if (isPending) {
-    return <Modal type="loading" />;
+    return (
+      <div className="relative top-10">
+        <Modal type="loading" />
+      </div>
+    );
   }
 
   if (!application || !company?.user_id) {
@@ -80,7 +84,11 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         {isDownloading ? <Modal type="downloading" /> : null}
         {isUpdating ? <Modal type="updating" /> : null}
       </div>
-      <ActionMenuContainer justify="justify-end">
+      <ActionMenuContainer>
+        <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
+          Status:
+          <Status {...application} />
+        </div>
         {application.status === 'submitted' ? (
           <div className="flex flex-row gap-1 items-center">
             <FaCheck
@@ -95,16 +103,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         ) : undefined}
       </ActionMenuContainer>
       <div className="px-4 mt-2">
-        <Section
-          title={
-            <div className="flex justify-between">
-              <div>Application ID: {application.id}</div>
-              <div>
-                <Status {...application} />
-              </div>
-            </div>
-          }
-        >
+        <Section title={`Application ID: ${application.id}`}>
           <div className="flex flex-row">
             <div className="w-[60%]">
               <div className="flex flex-row">
