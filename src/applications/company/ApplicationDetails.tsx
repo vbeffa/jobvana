@@ -11,9 +11,6 @@ import InterviewRoundEventsTable from '../InterviewRoundEventsTable';
 import InterviewTable from '../InterviewTable';
 import JobApplications from '../job_seeker/JobApplications';
 import Status from '../Status';
-import useApplicationEvents from '../useApplicationEvents';
-import useInterview from '../useInterview';
-import useInterviewRoundEvents from '../useInterviewRoundEvents';
 import { updateStatus } from '../utils';
 import useApplication from './useApplication';
 
@@ -24,19 +21,8 @@ const ApplicationDetails = ({ id }: { id: number }) => {
     isPending,
     isPlaceholderData,
     error: applicationError,
-    refetch: refetchApplication
+    refetch
   } = useApplication({ id });
-  const { events: applicationEvents, refetch: refetchApplicationEvents } =
-    useApplicationEvents({
-      applicationId: id
-    });
-  const { interview, refetch: refetchInterview } = useInterview({
-    applicationId: id
-  });
-  const { events: interviewRoundEvents, refetch: refetchInterviewRoundEvents } =
-    useInterviewRoundEvents({
-      interviewId: interview?.id
-    });
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -46,20 +32,6 @@ const ApplicationDetails = ({ id }: { id: number }) => {
     () => applicationError ?? resumeError,
     [applicationError, resumeError]
   );
-
-  const refetch = useCallback(() => {
-    Promise.all([
-      refetchApplication(),
-      refetchApplicationEvents(),
-      refetchInterview(),
-      refetchInterviewRoundEvents()
-    ]);
-  }, [
-    refetchApplication,
-    refetchApplicationEvents,
-    refetchInterview,
-    refetchInterviewRoundEvents
-  ]);
 
   const onUpdateStatus = useCallback(
     async (applicationId: number, status: 'accepted' | 'declined') => {
@@ -121,8 +93,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               <div className="w-24">Job Seeker:</div>
               <div className="flex flex-row items-center">
                 <FaPerson />
-                {application.jobSeeker.first_name}{' '}
-                {application.jobSeeker.last_name}
+                {application.jobSeeker.name}
               </div>
             </div>
             <div className="flex flex-row">
@@ -155,18 +126,20 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               />
             </div>
             <div className="flex flex-row items-center">
-              <div className="w-26">Actions:</div>
               {application.status === 'submitted' && (
-                <div className="flex flex-row gap-1">
-                  <FaCheck
-                    className="text-blue-400 cursor-pointer"
-                    onClick={() => onUpdateStatus(application.id, 'accepted')}
-                  />
-                  <FaX
-                    className="text-blue-400 cursor-pointer"
-                    onClick={() => onUpdateStatus(application.id, 'declined')}
-                  />
-                </div>
+                <>
+                  <div className="w-26">Actions:</div>
+                  <div className="flex flex-row gap-1">
+                    <FaCheck
+                      className="text-blue-400 cursor-pointer"
+                      onClick={() => onUpdateStatus(application.id, 'accepted')}
+                    />
+                    <FaX
+                      className="text-blue-400 cursor-pointer"
+                      onClick={() => onUpdateStatus(application.id, 'declined')}
+                    />
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -174,30 +147,32 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </Section>
 
       <Section title="Interview Rounds">
-        {application.interviewProcess && interview ? (
-          <div className="flex flex-col gap-2">
+        {application.interview ? (
+          <div className="flex flex-col gap-2 pt-1">
             <InterviewTable
               interviewProcess={application.interviewProcess}
-              interview={interview}
+              interview={application.interview}
               userType="company"
               userId={company.user_id}
               onUpdate={() => {
-                refetchApplication();
-                refetchInterview();
-                refetchInterviewRoundEvents();
+                refetch();
               }}
             />
-            {interviewRoundEvents?.length ? (
-              <div>
-                <h2>History</h2>
-                <InterviewRoundEventsTable
-                  events={interviewRoundEvents}
-                  userId={company.user_id}
-                  jobSeeker={application.jobSeeker}
-                  company={company}
-                />
-              </div>
-            ) : null}
+            <div>
+              <h2>History</h2>
+              {application.interview.events.length ? (
+                <div className="pt-1">
+                  <InterviewRoundEventsTable
+                    events={application.interview.events}
+                    userId={company.user_id}
+                    jobSeekerName={application.jobSeeker.name}
+                    company={company}
+                  />
+                </div>
+              ) : (
+                'No events yet.'
+              )}
+            </div>
           </div>
         ) : application.status === 'submitted' ? (
           'Pending until you accept the application.'
@@ -207,15 +182,17 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </Section>
 
       <Section title="Application History" isLast={true}>
-        {applicationEvents?.length ? (
-          <ApplicationEventsTable
-            events={applicationEvents}
-            jobSeeker={application.jobSeeker}
-            company={company}
-          />
-        ) : (
-          'No events'
-        )}
+        <div className="pt-1">
+          {application.events.length ? (
+            <ApplicationEventsTable
+              events={application.events}
+              jobSeekerName={application.jobSeeker.name}
+              company={company}
+            />
+          ) : (
+            'No events'
+          )}
+        </div>
       </Section>
     </>
   );

@@ -2,17 +2,17 @@ import { FaBuilding, FaUser } from 'react-icons/fa6';
 import { getUserType } from '../auth/utils';
 import Status from './Status';
 import type { InterviewRoundEvent } from './useInterviewRoundEvents';
-import { type Company, type JobSeeker } from './utils';
+import { type Company } from './utils';
 
 const InterviewRoundEventsTable = ({
   events,
   userId,
-  jobSeeker,
+  jobSeekerName,
   company
 }: {
   events: Array<InterviewRoundEvent>;
   userId: string;
-  jobSeeker: JobSeeker;
+  jobSeekerName: string;
   company: Company;
 }) => {
   const userType = getUserType();
@@ -36,7 +36,7 @@ const InterviewRoundEventsTable = ({
         {eventUser === 'job_seeker' && (
           <>
             <FaUser />
-            {jobSeeker.first_name} {jobSeeker.last_name}
+            {jobSeekerName}
           </>
         )}
       </div>

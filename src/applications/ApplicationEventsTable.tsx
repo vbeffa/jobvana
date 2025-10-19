@@ -1,14 +1,14 @@
 import Status from './Status';
 import type { ApplicationEvent } from './useApplicationEvents';
-import { applicationEventUser, type Company, type JobSeeker } from './utils';
+import { applicationEventUser, type Company } from './utils';
 
 const ApplicationEventsTable = ({
   events,
-  jobSeeker,
+  jobSeekerName,
   company
 }: {
   events: Array<ApplicationEvent>;
-  jobSeeker: JobSeeker;
+  jobSeekerName: string;
   company: Company;
 }) => {
   return (
@@ -35,7 +35,7 @@ const ApplicationEventsTable = ({
             </td>
             <td>
               <div className="px-2">
-                {applicationEventUser(event.event, jobSeeker, company)}
+                {applicationEventUser(event.event, jobSeekerName, company)}
               </div>
             </td>
           </tr>

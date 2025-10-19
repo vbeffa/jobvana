@@ -11,9 +11,6 @@ import ApplicationResume from '../ApplicationResume';
 import InterviewRoundEventsTable from '../InterviewRoundEventsTable';
 import InterviewTable from '../InterviewTable';
 import Status from '../Status';
-import useApplicationEvents from '../useApplicationEvents';
-import useInterview from '../useInterview';
-import useInterviewRoundEvents from '../useInterviewRoundEvents';
 import { updateStatus } from '../utils';
 import JobApplications from './JobApplications';
 import useApplication from './useApplication';
@@ -22,92 +19,20 @@ const ApplicationDetails = ({ id }: { id: number }) => {
   const { jobSeeker } = useContext(JobSeekerContext);
   const {
     application,
-    isPending: isApplicationPending,
-    isPlaceholderData: isApplicationPlaceholderData,
+    isPending,
+    isPlaceholderData,
     error: applicationError,
-    refetch: refetchApplication
+    refetch
   } = useApplication({ id });
-  const {
-    events: applicationEvents,
-    isPending: isApplicationEventsPending,
-    isPlaceholderData: isApplicationEventsPlaceholderData,
-    error: applicationEventsError,
-    refetch: refetchApplicationEvents
-  } = useApplicationEvents({
-    applicationId: id
-  });
-  const {
-    interview,
-    isPending: isInterviewPending,
-    isPlaceholderData: isInterviewPlaceholderData,
-    error: interviewError,
-    refetch: refetchInterview
-  } = useInterview({
-    applicationId: id
-  });
-  const {
-    events: interviewRoundEvents,
-    isPending: isInterviewRoundEventsPending,
-    isPlaceholderData: isInterviewRoundEventsPlaceholderData,
-    refetch: refetchInterviewRoundEvents
-  } = useInterviewRoundEvents({
-    interviewId: interview?.id
-  });
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [resumeError, setResumeError] = useState<Error>();
 
-  const isPending = useMemo(
-    () =>
-      isApplicationPending ||
-      isApplicationEventsPending ||
-      isInterviewPending ||
-      isInterviewRoundEventsPending,
-    [
-      isApplicationEventsPending,
-      isApplicationPending,
-      isInterviewPending,
-      isInterviewRoundEventsPending
-    ]
-  );
-
-  const isPlaceholderData = useMemo(
-    () =>
-      isApplicationPlaceholderData ||
-      isApplicationEventsPlaceholderData ||
-      isInterviewPlaceholderData ||
-      isInterviewRoundEventsPlaceholderData,
-    [
-      isApplicationEventsPlaceholderData,
-      isApplicationPlaceholderData,
-      isInterviewPlaceholderData,
-      isInterviewRoundEventsPlaceholderData
-    ]
-  );
-
   const error = useMemo(
-    () =>
-      applicationError ??
-      applicationEventsError ??
-      interviewError ??
-      resumeError,
-    [applicationError, applicationEventsError, interviewError, resumeError]
+    () => applicationError ?? resumeError,
+    [applicationError, resumeError]
   );
-
-  const refetch = useCallback(() => {
-    Promise.all([
-      refetchApplication(),
-      refetchApplicationEvents(),
-      refetchInterview(),
-      refetchInterviewRoundEvents()
-    ]);
-  }, [
-    refetchApplication,
-    refetchApplicationEvents,
-    refetchInterview,
-    refetchInterviewRoundEvents
-  ]);
 
   const onWithdraw = useCallback(
     async (applicationId: number) => {
@@ -156,7 +81,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       <Section
         title={
           <div className="flex justify-between">
-            <div>Application</div>
+            <div>Application ID: {application.id}</div>
             <div>
               <Status {...application} />
             </div>
@@ -199,12 +124,14 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               />
             </div>
             <div className="flex flex-row items-center">
-              <div className="w-26">Actions:</div>
-              {application.status !== 'withdrawn' && (
-                <FaX
-                  className="text-blue-400 cursor-pointer"
-                  onClick={() => onWithdraw(application.id)}
-                />
+              {application.status === 'submitted' && (
+                <>
+                  <div className="w-26">Actions:</div>
+                  <FaX
+                    className="text-blue-400 cursor-pointer"
+                    onClick={() => onWithdraw(application.id)}
+                  />
+                </>
               )}
             </div>
           </div>
@@ -212,30 +139,32 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </Section>
 
       <Section title="Interview Rounds">
-        {application.interviewProcess && interview ? (
-          <div className="flex flex-col gap-2">
+        {application.interview ? (
+          <div className="flex flex-col gap-2 pt-1">
             <InterviewTable
               interviewProcess={application.interviewProcess}
-              interview={interview}
+              interview={application.interview}
               userType="job_seeker"
               userId={jobSeeker.user_id}
               onUpdate={() => {
-                refetchApplication();
-                refetchInterview();
-                refetchInterviewRoundEvents();
+                refetch();
               }}
             />
-            {interviewRoundEvents?.length ? (
-              <div>
-                <h2>History</h2>
-                <InterviewRoundEventsTable
-                  events={interviewRoundEvents}
-                  userId={jobSeeker.user_id}
-                  jobSeeker={application.jobSeeker}
-                  company={application.company}
-                />
-              </div>
-            ) : null}
+            <div>
+              <h2>History</h2>
+              {application.interview.events.length ? (
+                <div className="pt-1">
+                  <InterviewRoundEventsTable
+                    events={application.interview.events}
+                    userId={jobSeeker.user_id}
+                    jobSeekerName={application.jobSeeker.name}
+                    company={application.company}
+                  />
+                </div>
+              ) : (
+                'No events'
+              )}
+            </div>
           </div>
         ) : application.status === 'submitted' ? (
           'Pending until the company accepts the application.'
@@ -245,15 +174,17 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </Section>
 
       <Section title="Application History" isLast={true}>
-        {applicationEvents?.length ? (
-          <ApplicationEventsTable
-            events={applicationEvents}
-            jobSeeker={application.jobSeeker}
-            company={application.company}
-          />
-        ) : (
-          'No events'
-        )}
+        <div className="pt-1">
+          {application.events.length ? (
+            <ApplicationEventsTable
+              events={application.events}
+              jobSeekerName={application.jobSeeker.name}
+              company={application.company}
+            />
+          ) : (
+            'No events'
+          )}
+        </div>
       </Section>
     </>
   );

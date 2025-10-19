@@ -12,16 +12,14 @@ import supabase from '../db/supabase';
 import type {
   ApplicationStatus,
   Company as DbCompany,
-  JobSeeker as DbJobSeeker,
   InterviewRoundStatus
 } from '../types';
 
-export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
 export type Company = Pick<DbCompany, 'name'>;
 
 const applicationEventUser = (
   event: ApplicationStatus,
-  jobSeeker: JobSeeker,
+  jobSeekerName: string,
   company: Company
 ) => {
   switch (event) {
@@ -30,7 +28,7 @@ const applicationEventUser = (
       return (
         <div className="flex flex-row items-center gap-1">
           <FaUser />
-          {jobSeeker.first_name} {jobSeeker.last_name}
+          {jobSeekerName}
         </div>
       );
     case 'accepted':

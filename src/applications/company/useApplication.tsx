@@ -1,4 +1,8 @@
-import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryObserverResult
+} from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import type { InterviewProcess } from '../../companies/company/utils';
@@ -6,12 +10,33 @@ import supabase from '../../db/supabase';
 import type {
   ApplicationStatus,
   Application as DbApplication,
-  Job as DbJob,
-  JobSeeker as DbJobSeeker
+  ApplicationEvent as DbApplicationEvent,
+  Interview as DbInterview,
+  InterviewRound as DbInterviewRound,
+  InterviewRoundEvent as DbInterviewRoundEvent,
+  Job as DbJob
 } from '../../types';
 
 export type Job = Pick<DbJob, 'id' | 'title'>;
-export type JobSeeker = Pick<DbJobSeeker, 'first_name' | 'last_name'>;
+export type JobSeeker = {
+  id: number;
+  name: string;
+};
+export type ApplicationEvent = Pick<DbApplicationEvent, 'created_at' | 'event'>;
+export type Interview = Pick<DbInterview, 'id' | 'application_id'> & {
+  rounds: Array<InterviewRound>;
+  events: Array<InterviewRoundEvent>; // bring events up to interview level to avoid additional mapping in ApplicationDetails
+};
+export type InterviewRound = Pick<
+  DbInterviewRound,
+  'round' | 'job_seeker_response' | 'company_response'
+> & {};
+export type InterviewRoundEvent = Pick<
+  DbInterviewRoundEvent,
+  'created_at' | 'user_id' | 'event'
+> & {
+  round: number;
+};
 
 export type Application = Pick<
   DbApplication,
@@ -20,8 +45,10 @@ export type Application = Pick<
   job: Job;
   jobSeeker: JobSeeker;
   status: ApplicationStatus;
+  events: Array<ApplicationEvent>;
+  interview?: Interview;
   resumePath: string;
-  interviewProcess: InterviewProcess | null;
+  interviewProcess: InterviewProcess;
 };
 
 export type ApplicationH = {
@@ -33,45 +60,69 @@ export type ApplicationH = {
 };
 
 const useApplication = ({ id }: { id: number }): ApplicationH => {
-  const {
-    data: applicationData,
-    isPending,
-    isPlaceholderData,
-    error,
-    refetch
-  } = useQuery({
+  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey: ['applications', { id }],
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
         .select(
           `id, created_at, status, updated_at,
-            jobs(
+            jobs!inner(
               id,
               title,
               interview_process
             ),
-            job_seekers!inner(first_name, last_name),
+            job_seekers!inner(id, first_name, last_name),
+            application_events!inner(created_at, event),
+            interviews(id, application_id,
+              interview_rounds!inner(round, job_seeker_response, company_response,
+                interview_round_events!inner(created_at, user_id, event)
+              )
+            ),
             application_resumes!inner(resume_path)`
         )
         .filter('id', 'eq', id);
       // console.log(data);
-      return data;
-    }
+      return data?.[0];
+    },
+    placeholderData: keepPreviousData
   });
 
-  const application: Application | undefined = useMemo(
-    () =>
-      applicationData?.map((applicationData) => ({
-        ..._.omit(applicationData, 'jobs'),
-        job: _.pick(applicationData.jobs, 'id', 'title'),
-        jobSeeker: applicationData.job_seekers,
-        resumePath: applicationData.application_resumes.resume_path,
-        interviewProcess: applicationData.jobs
-          .interview_process as InterviewProcess
-      }))[0],
-    [applicationData]
-  );
+  const application: Application | undefined = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+
+    const application: Application = {
+      ..._.pick(data, 'id', 'created_at', 'status', 'updated_at'),
+      job: _.pick(data.jobs, 'id', 'title'),
+      jobSeeker: {
+        id: data.job_seekers.id,
+        name: `${data.job_seekers.first_name} ${data.job_seekers.last_name}`
+      },
+      events: data.application_events,
+      resumePath: data.application_resumes.resume_path,
+      interviewProcess: data.jobs.interview_process as InterviewProcess
+    };
+
+    if (data.interviews) {
+      application.interview = {
+        ..._.pick(data.interviews, 'id', 'application_id'),
+        rounds: data.interviews.interview_rounds.map((round) => ({
+          ..._.pick(round, 'round', 'job_seeker_response', 'company_response')
+        })),
+        events: data.interviews.interview_rounds.flatMap((round) =>
+          round.interview_round_events.map((event) => ({
+            ...event,
+            round: round.round
+          }))
+        )
+      };
+    }
+
+    // console.log(application);
+    return application;
+  }, [data]);
 
   return {
     application,
