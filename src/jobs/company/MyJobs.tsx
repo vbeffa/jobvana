@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import FiltersContainer from '../../containers/FiltersContainer';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
@@ -63,8 +64,8 @@ const MyJobs = ({ company }: { company: Company }) => {
   return (
     <>
       {error && <JobvanaError error={error} />}
-      <div className="w-full flex justify-center pb-2">
-        <div className="w-[85%] flex justify-end">
+      <FiltersContainer>
+        <div className="flex items-center justify-end w-full p-2">
           <StatusSelect
             status={searchFilters.status}
             onChange={(status) => {
@@ -75,8 +76,8 @@ const MyJobs = ({ company }: { company: Company }) => {
             }}
           />
         </div>
-      </div>
-      <ResourcesContainer bannerType="status">
+      </FiltersContainer>
+      <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
             page={page}
@@ -90,7 +91,7 @@ const MyJobs = ({ company }: { company: Company }) => {
             isLoading={isPending || isPlaceholderData}
             type="jobs"
           />
-          <SummaryCardsContainer bannerType="status">
+          <SummaryCardsContainer bannerType="filters">
             {jobs
               ?.map((job, idx) => (
                 <SummaryCard

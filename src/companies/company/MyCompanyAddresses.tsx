@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import MyCompanyAddress from './MyCompanyAddress';
@@ -21,19 +22,17 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   }
 
   return (
-    <div className="h-full">
-      <div className="w-full bg-blue-200">
-        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-end">
-          {!newAddress && (
-            <div className="text-blue-400 pt-1.5 flex justify-start">
-              <FaPlus
-                className="cursor-pointer"
-                onClick={() => setNewAddress(true)}
-              />
-            </div>
-          )}
-        </div>
-      </div>
+    <div>
+      <ActionMenuContainer justify="justify-end">
+        {!newAddress ? (
+          <div className="text-blue-400 pt-1.5 flex justify-start">
+            <FaPlus
+              className="cursor-pointer"
+              onClick={() => setNewAddress(true)}
+            />
+          </div>
+        ) : undefined}
+      </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}
       <div className="px-4 pt-4 grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">

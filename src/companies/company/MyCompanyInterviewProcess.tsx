@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import { CompanyContext, type Company } from '../../Context';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
@@ -79,39 +80,37 @@ const MyCompanyInterviewProcess = ({
   }, [company, editInterviewProcess, setCompany]);
 
   return (
-    <div className="h-full">
-      <div className="w-full bg-blue-200">
-        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-between">
-          {isEditing && (
-            <div className="text-sm text-blue-400 content-center">
-              Saving will also update the interview process for unpublished jobs
-            </div>
-          )}
-          <EditDeleteIcons
-            isEditing={isEditing}
-            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-            bgColor="--color-blue-200"
-            top="top-1.25"
-            onEdit={() => {
-              setError(undefined);
-              setEditInterviewProcess(
-                (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-              );
-              setIsEditing(true);
-            }}
-            onCancel={() => {
-              setEditInterviewProcess(
-                (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-              );
-              setIsEditing(false);
-            }}
-            onSave={async () => {
-              setIsEditing(false);
-              await updateInterviewProcess();
-            }}
-          />
-        </div>
-      </div>
+    <div>
+      <ActionMenuContainer>
+        {isEditing ? (
+          <div className="text-sm text-blue-400 content-center">
+            Saving will also update the interview process for unpublished jobs
+          </div>
+        ) : undefined}
+        <EditDeleteIcons
+          isEditing={isEditing}
+          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+          bgColor="--color-blue-200"
+          top="top-1.25"
+          onEdit={() => {
+            setError(undefined);
+            setEditInterviewProcess(
+              (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
+            );
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditInterviewProcess(
+              (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
+            );
+            setIsEditing(false);
+          }}
+          onSave={async () => {
+            setIsEditing(false);
+            await updateInterviewProcess();
+          }}
+        />
+      </ActionMenuContainer>
       <div className="px-4 mt-4 relative">
         {error && <JobvanaError error={error} />}
         {isSubmitting && <Modal type="updating" />}

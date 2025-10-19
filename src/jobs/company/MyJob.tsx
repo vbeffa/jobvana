@@ -5,6 +5,7 @@ import { FaCaretDown, FaCaretRight, FaPencil, FaRocket } from 'react-icons/fa6';
 import { MdArchive, MdCheckCircleOutline, MdUnarchive } from 'react-icons/md';
 import useApplicationsForJob from '../../applications/company/useApplicationsForJob';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import Hr from '../../Hr';
@@ -322,118 +323,112 @@ const MyJob = ({
 
   return (
     <div>
-      <div className="w-full bg-blue-200">
-        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-between">
-          <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
-            Status:
-            {job.status === 'draft' &&
-              (isNew ? <FaPencil /> : <FaDraftingCompass />)}
-            {job.status === 'open' && <MdCheckCircleOutline />}
-            {job.status === 'closed' && <FaArchive />}
-            {statusString}
-          </div>
-          {job.status === 'draft' && (
-            <>
-              {!isEditing && (
-                <div className="content-center pr-12">
-                  <div
-                    className=" text-blue-400 cursor-pointer"
-                    onClick={() => {
-                      if (
-                        confirm('Are you sure you want to publish this job?')
-                      ) {
-                        onSave('open');
-                      }
-                    }}
-                  >
-                    <FaRocket />
-                  </div>
+      <ActionMenuContainer>
+        <div className="flex flex-row gap-1 items-center text-blue-400 text-sm">
+          Status:
+          {job.status === 'draft' &&
+            (isNew ? <FaPencil /> : <FaDraftingCompass />)}
+          {job.status === 'open' && <MdCheckCircleOutline />}
+          {job.status === 'closed' && <FaArchive />}
+          {statusString}
+        </div>
+        {job.status === 'draft' ? (
+          <>
+            {!isEditing && (
+              <div className="content-center pr-12">
+                <div
+                  className=" text-blue-400 cursor-pointer"
+                  onClick={() => {
+                    if (confirm('Are you sure you want to publish this job?')) {
+                      onSave('open');
+                    }
+                  }}
+                >
+                  <FaRocket />
                 </div>
-              )}
-              <EditDeleteIcons
-                type="job"
-                isEditing={isEditing}
-                disabled={saveDisabled}
-                bgColor="--color-blue-200"
-                top="top-1.25"
-                onEdit={() => {
-                  setError(undefined);
+              </div>
+            )}
+            <EditDeleteIcons
+              type="job"
+              isEditing={isEditing}
+              disabled={saveDisabled}
+              bgColor="--color-blue-200"
+              top="top-1.25"
+              onEdit={() => {
+                setError(undefined);
+                setEditJob(job);
+                setEditJobRoles(job.job_roles);
+                setEditJobSkills(job.job_skills);
+                setIsEditing(true);
+              }}
+              onCancel={() => {
+                if (isNew) {
+                  onCancelNewJob();
+                } else {
                   setEditJob(job);
                   setEditJobRoles(job.job_roles);
                   setEditJobSkills(job.job_skills);
-                  setIsEditing(true);
-                }}
-                onCancel={() => {
-                  if (isNew) {
-                    onCancelNewJob();
-                  } else {
-                    setEditJob(job);
-                    setEditJobRoles(job.job_roles);
-                    setEditJobSkills(job.job_skills);
-                    setIsEditing(false);
-                  }
-                }}
-                onDelete={!isNew ? onDelete : undefined}
-                onSave={() => onSave()}
-              />
-            </>
-          )}
-          {job.status === 'open' && (
-            <>
-              {isFrozen && activeApplications ? (
-                <div className="text-blue-400 text-sm content-center">
-                  {activeApplications} active application
-                  {activeApplications > 1 ? 's' : ''}
-                </div>
-              ) : null}
-              {!isFrozen && (
-                <div className="flex flex-row gap-1 items-center">
-                  <div
-                    className="text-blue-400 cursor-pointer"
-                    onClick={() => {
-                      if (
-                        confirm(
-                          'Are you sure you want to move this job back to draft?'
-                        )
-                      ) {
-                        onSave('draft');
-                      }
-                    }}
-                  >
-                    <FaUndo />
-                  </div>
-                  <div
-                    className="text-xl text-blue-400 cursor-pointer"
-                    onClick={() => {
-                      if (
-                        confirm('Are you sure you want to archive this job?')
-                      ) {
-                        onSave('closed');
-                      }
-                    }}
-                  >
-                    <MdArchive />
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-          {job.status === 'closed' && (
-            <div className="content-center">
-              <div
-                className="text-xl text-blue-400 cursor-pointer"
-                onClick={() => {
-                  if (confirm('Are you sure you want to reopen this job?')) {
-                    onSave('open');
-                  }
-                }}
-              >
-                <MdUnarchive />
+                  setIsEditing(false);
+                }
+              }}
+              onDelete={!isNew ? onDelete : undefined}
+              onSave={() => onSave()}
+            />
+          </>
+        ) : undefined}
+        {job.status === 'open' ? (
+          <>
+            {isFrozen && activeApplications ? (
+              <div className="text-blue-400 text-sm content-center">
+                {activeApplications} active application
+                {activeApplications > 1 ? 's' : ''}
               </div>
+            ) : null}
+            {!isFrozen && (
+              <div className="flex flex-row gap-1 items-center">
+                <div
+                  className="text-blue-400 cursor-pointer"
+                  onClick={() => {
+                    if (
+                      confirm(
+                        'Are you sure you want to move this job back to draft?'
+                      )
+                    ) {
+                      onSave('draft');
+                    }
+                  }}
+                >
+                  <FaUndo className="text-sm" />
+                </div>
+                <div
+                  className="text-xl text-blue-400 cursor-pointer"
+                  onClick={() => {
+                    if (confirm('Are you sure you want to archive this job?')) {
+                      onSave('closed');
+                    }
+                  }}
+                >
+                  <MdArchive />
+                </div>
+              </div>
+            )}
+          </>
+        ) : undefined}
+        {job.status === 'closed' ? (
+          <div className="content-center">
+            <div
+              className="text-xl text-blue-400 cursor-pointer"
+              onClick={() => {
+                if (confirm('Are you sure you want to reopen this job?')) {
+                  onSave('open');
+                }
+              }}
+            >
+              <MdUnarchive />
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        ) : undefined}
+      </ActionMenuContainer>
       <div className="px-4 mt-2 relative">
         {error && <JobvanaError error={error} />}
         {/* <EditDeleteButtons
