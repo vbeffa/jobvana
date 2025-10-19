@@ -145,8 +145,14 @@ const JobDetails = ({
             </div>
             {!applyDisabled && (
               <div className="flex flex-row gap-2 text-sm items-center">
-                <FaSave className="cursor-pointer hover:text-blue-400" />
-                <FaTrashCan className="cursor-pointer hover:text-blue-400" />
+                <FaSave
+                  className="cursor-pointer hover:text-blue-400"
+                  onClick={() => alert('TODO: Save Job')}
+                />
+                <FaTrashCan
+                  className="cursor-pointer hover:text-blue-400"
+                  onClick={() => alert('TODO: Hide Job')}
+                />
                 <FaPaperPlane
                   className="cursor-pointer hover:text-blue-400"
                   onClick={onApply}
