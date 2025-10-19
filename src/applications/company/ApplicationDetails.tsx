@@ -1,5 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { FaCheck, FaPerson, FaX } from 'react-icons/fa6';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import { CompanyContext } from '../../Context';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
@@ -74,126 +75,127 @@ const ApplicationDetails = ({ id }: { id: number }) => {
 
   return (
     <>
-      {isPlaceholderData ? <Modal type="loading" /> : null}
-      {isDownloading ? <Modal type="downloading" /> : null}
-      {isUpdating ? <Modal type="updating" /> : null}
-      <Section
-        title={
-          <div className="flex justify-between">
-            <div>Application</div>
-            <div>
-              <Status {...application} />
-            </div>
+      <div className="relative top-10">
+        {isPlaceholderData ? <Modal type="loading" /> : null}
+        {isDownloading ? <Modal type="downloading" /> : null}
+        {isUpdating ? <Modal type="updating" /> : null}
+      </div>
+      <ActionMenuContainer justify="justify-end">
+        {application.status === 'submitted' ? (
+          <div className="flex flex-row gap-1 items-center">
+            <FaCheck
+              className="text-blue-400 cursor-pointer"
+              onClick={() => onUpdateStatus(application.id, 'accepted')}
+            />
+            <FaX
+              className="text-blue-400 cursor-pointer"
+              onClick={() => onUpdateStatus(application.id, 'declined')}
+            />
           </div>
-        }
-      >
-        <div className="flex flex-row">
-          <div className="w-[60%]">
-            <div className="flex flex-row">
-              <div className="w-24">Job Seeker:</div>
+        ) : undefined}
+      </ActionMenuContainer>
+      <div className="px-4 mt-2">
+        <Section
+          title={
+            <div className="flex justify-between">
+              <div>Application</div>
+              <div>
+                <Status {...application} />
+              </div>
+            </div>
+          }
+        >
+          <div className="flex flex-row">
+            <div className="w-[60%]">
+              <div className="flex flex-row">
+                <div className="w-24">Job Seeker:</div>
+                <div className="flex flex-row items-center">
+                  <FaPerson />
+                  {application.jobSeeker.name}
+                </div>
+              </div>
+              <div className="flex flex-row">
+                {/* min-w to keep job title from overflowing into left div */}
+                <div className="min-w-24">Job:</div>
+                <div className="truncate pr-2">
+                  <JobLink {...application.job} />
+                </div>
+              </div>
+              <div className="flex flex-row">
+                <div className="w-24">Submitted:</div>
+                {new Date(application.created_at).toLocaleDateString()}
+              </div>
+            </div>
+            <div className="w-[40%]">
+              <div className="flex flex-row">
+                <div className="w-26">Applications:</div>
+                <JobApplications
+                  jobId={application.job.id}
+                  jobInterviewProcess={application.interviewProcess}
+                  doRefetch={false}
+                />
+              </div>
               <div className="flex flex-row items-center">
-                <FaPerson />
-                {application.jobSeeker.name}
+                <div className="w-26">Resume:</div>
+                <ApplicationResume
+                  resumePath={application.resumePath}
+                  setIsDownloading={setIsDownloading}
+                  setError={setResumeError}
+                />
               </div>
-            </div>
-            <div className="flex flex-row">
-              {/* min-w to keep job title from overflowing into left div */}
-              <div className="min-w-24">Job:</div>
-              <div className="truncate pr-2">
-                <JobLink {...application.job} />
-              </div>
-            </div>
-            <div className="flex flex-row">
-              <div className="w-24">Submitted:</div>
-              {new Date(application.created_at).toLocaleDateString()}
             </div>
           </div>
-          <div className="w-[40%]">
-            <div className="flex flex-row">
-              <div className="w-26">Applications:</div>
-              <JobApplications
-                jobId={application.job.id}
-                jobInterviewProcess={application.interviewProcess}
-                doRefetch={false}
+        </Section>
+
+        <Section title="Interview Rounds">
+          {application.interview ? (
+            <div className="flex flex-col gap-2 pt-1">
+              <InterviewTable
+                interviewProcess={application.interviewProcess}
+                interview={application.interview}
+                userType="company"
+                userId={company.user_id}
+                onUpdate={() => {
+                  refetch();
+                }}
               />
-            </div>
-            <div className="flex flex-row items-center">
-              <div className="w-26">Resume:</div>
-              <ApplicationResume
-                resumePath={application.resumePath}
-                setIsDownloading={setIsDownloading}
-                setError={setResumeError}
-              />
-            </div>
-            <div className="flex flex-row items-center">
-              {application.status === 'submitted' && (
-                <>
-                  <div className="w-26">Actions:</div>
-                  <div className="flex flex-row gap-1">
-                    <FaCheck
-                      className="text-blue-400 cursor-pointer"
-                      onClick={() => onUpdateStatus(application.id, 'accepted')}
-                    />
-                    <FaX
-                      className="text-blue-400 cursor-pointer"
-                      onClick={() => onUpdateStatus(application.id, 'declined')}
+              <div>
+                <h2>History</h2>
+                {application.interview.events.length ? (
+                  <div className="pt-1">
+                    <InterviewRoundEventsTable
+                      events={application.interview.events}
+                      userId={company.user_id}
+                      jobSeekerName={application.jobSeeker.name}
+                      company={company}
                     />
                   </div>
-                </>
-              )}
+                ) : (
+                  'No events yet.'
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      </Section>
-
-      <Section title="Interview Rounds">
-        {application.interview ? (
-          <div className="flex flex-col gap-2 pt-1">
-            <InterviewTable
-              interviewProcess={application.interviewProcess}
-              interview={application.interview}
-              userType="company"
-              userId={company.user_id}
-              onUpdate={() => {
-                refetch();
-              }}
-            />
-            <div>
-              <h2>History</h2>
-              {application.interview.events.length ? (
-                <div className="pt-1">
-                  <InterviewRoundEventsTable
-                    events={application.interview.events}
-                    userId={company.user_id}
-                    jobSeekerName={application.jobSeeker.name}
-                    company={company}
-                  />
-                </div>
-              ) : (
-                'No events yet.'
-              )}
-            </div>
-          </div>
-        ) : application.status === 'submitted' ? (
-          'Pending until you accept the application.'
-        ) : (
-          `Application is ${application.status}`
-        )}
-      </Section>
-
-      <Section title="Application History" isLast={true}>
-        <div className="pt-1">
-          {application.events.length ? (
-            <ApplicationEventsTable
-              events={application.events}
-              jobSeekerName={application.jobSeeker.name}
-              company={company}
-            />
+          ) : application.status === 'submitted' ? (
+            'Pending until you accept the application.'
           ) : (
-            'No events'
+            `Application is ${application.status}`
           )}
-        </div>
-      </Section>
+        </Section>
+
+        <Section title="Application History" isLast={true}>
+          <div className="pt-1">
+            {application.events.length ? (
+              <ApplicationEventsTable
+                events={application.events}
+                jobSeekerName={application.jobSeeker.name}
+                company={company}
+              />
+            ) : (
+              'No events'
+            )}
+          </div>
+        </Section>
+      </div>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import { CompanyContext, type Company } from '../../Context';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
@@ -53,29 +54,27 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
 
   return (
     <div className="h-full">
-      <div className="w-full bg-blue-200">
-        <div className="relative pl-4 mr-4 h-7 flex flex-row gap-2 justify-end">
-          <EditDeleteIcons
-            isEditing={isEditing}
-            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-            bgColor="--color-blue-200"
-            top="top-1.25"
-            onEdit={() => {
-              setError(undefined);
-              setEditCompany(company);
-              setIsEditing(true);
-            }}
-            onCancel={() => {
-              setEditCompany(company);
-              setIsEditing(false);
-            }}
-            onSave={async () => {
-              setIsEditing(false);
-              await updateCompany();
-            }}
-          />
-        </div>
-      </div>
+      <ActionMenuContainer justify="justify-end">
+        <EditDeleteIcons
+          isEditing={isEditing}
+          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+          bgColor="--color-blue-200"
+          top="top-1.25"
+          onEdit={() => {
+            setError(undefined);
+            setEditCompany(company);
+            setIsEditing(true);
+          }}
+          onCancel={() => {
+            setEditCompany(company);
+            setIsEditing(false);
+          }}
+          onSave={async () => {
+            setIsEditing(false);
+            await updateCompany();
+          }}
+        />
+      </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {isSubmitting && <Modal type="updating" />}
       <div className="px-4 pt-4 relative grid grid-cols-[20%_80%] gap-y-2">

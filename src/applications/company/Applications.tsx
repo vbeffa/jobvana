@@ -103,7 +103,7 @@ const Applications = ({ companyId }: { companyId: number }) => {
             })}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           {applicationId ? (
             <ApplicationDetails id={applicationId} />
           ) : undefined}
