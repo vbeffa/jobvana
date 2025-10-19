@@ -104,7 +104,7 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
             })}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           {applicationId ? (
             <ApplicationDetails id={applicationId} />
           ) : undefined}
