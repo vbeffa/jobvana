@@ -8,6 +8,7 @@ import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import type { JobSeeker } from '../../Context';
+import Button from '../../controls/Button';
 import useResumes from '../../job_seekers/useResumes';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
@@ -153,10 +154,10 @@ const JobDetails = ({
                   className="cursor-pointer hover:text-blue-400"
                   onClick={() => alert('TODO: Hide Job')}
                 />
-                <FaPaperPlane
+                {/* <FaPaperPlane
                   className="cursor-pointer hover:text-blue-400"
                   onClick={onApply}
-                />
+                /> */}
               </div>
             )}
           </div>
@@ -196,7 +197,7 @@ const JobDetails = ({
               ? `${job.address.city}, ${job.address.state}`
               : 'Remote'}
           </div>
-          {/* <div className="absolute right-0 top-7">
+          <div className="absolute right-0 top-10">
             {application === null && (
               <div className="flex flex-row gap-2">
                 <div className="text-sm text-gray-400 content-center">
@@ -220,7 +221,7 @@ const JobDetails = ({
                 />
               </div>
             )}
-            {application && (
+            {/* {application && (
               <Link
                 to="/jobvana/applications/$id"
                 params={{ id: application.id.toString() }}
@@ -232,8 +233,8 @@ const JobDetails = ({
                   {new Date(application.created_at).toLocaleDateString()}
                 </div>
               </Link>
-            )}
-          </div> */}
+            )} */}
+          </div>
         </Section>
         <Section title="Description">{job.description}</Section>
         <Section title="Roles">
