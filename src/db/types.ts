@@ -558,19 +558,19 @@ export type Database = {
       }
       roles: {
         Row: {
-          description: string | null
+          description: string
           id: number
           name: string
           reference: string | null
         }
         Insert: {
-          description?: string | null
+          description: string
           id?: number
           name: string
           reference?: string | null
         }
         Update: {
-          description?: string | null
+          description?: string
           id?: number
           name?: string
           reference?: string | null

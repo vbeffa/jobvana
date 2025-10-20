@@ -31,11 +31,7 @@ const Roles = () => {
                   selected={roleId === role.id}
                   onClick={() => setRoleId(role.id)}
                   title={role.name}
-                  text={
-                    <>
-                      <div>{role.name}</div>
-                    </>
-                  }
+                  text={role.description}
                   borderBottom={idx < roles.length - 1}
                 />
               );
