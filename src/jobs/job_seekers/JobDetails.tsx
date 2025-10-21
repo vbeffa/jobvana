@@ -32,7 +32,7 @@ const JobDetails = ({
 }: {
   id: number;
   jobSeeker: JobSeeker;
-  onHideJob: () => void;
+  onHideJob?: () => void;
 }) => {
   const {
     job,
@@ -100,7 +100,9 @@ const JobDetails = ({
     setHideError(undefined);
     try {
       await hide(id, jobSeeker.id);
-      onHideJob();
+      if (onHideJob) {
+        onHideJob();
+      }
       alert('Job hidden.');
     } catch (err) {
       console.log(err);
