@@ -99,17 +99,17 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: 'applications_job_id_fkey'
+            columns: ['job_id']
+            isOneToOne: false
+            referencedRelation: 'jobs'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'applications_job_seeker_id_fkey'
             columns: ['job_seeker_id']
             isOneToOne: false
             referencedRelation: 'job_seekers'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'job_applications_job_id_fkey'
-            columns: ['job_id']
-            isOneToOne: false
-            referencedRelation: 'jobs'
             referencedColumns: ['id']
           },
         ]
