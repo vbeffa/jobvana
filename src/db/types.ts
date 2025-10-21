@@ -232,6 +232,36 @@ export type Database = {
           },
         ]
       }
+      hidden_jobs: {
+        Row: {
+          job_id: number
+          job_seeker_id: number
+        }
+        Insert: {
+          job_id: number
+          job_seeker_id: number
+        }
+        Update: {
+          job_id?: number
+          job_seeker_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'hidden_jobs_job_id_fkey'
+            columns: ['job_id']
+            isOneToOne: false
+            referencedRelation: 'jobs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'hidden_jobs_job_seeker_id_fkey'
+            columns: ['job_seeker_id']
+            isOneToOne: false
+            referencedRelation: 'job_seekers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       industries: {
         Row: {
           id: number

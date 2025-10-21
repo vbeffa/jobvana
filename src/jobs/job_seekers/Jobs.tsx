@@ -45,10 +45,11 @@ const Jobs = () => {
     [debouncedPage]
   );
 
-  const { jobs, isPending, isPlaceholderData, openJobCount, error } = useJobs({
-    paging,
-    filters: searchFilters
-  });
+  const { jobs, isPending, isPlaceholderData, openJobCount, error, refetch } =
+    useJobs({
+      paging,
+      filters: searchFilters
+    });
 
   useEffect(() => {
     setPage(jobNav.page);
@@ -190,7 +191,11 @@ const Jobs = () => {
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
           {selectedJobId && jobSeeker ? (
-            <JobDetails id={selectedJobId} jobSeeker={jobSeeker} />
+            <JobDetails
+              id={selectedJobId}
+              jobSeeker={jobSeeker}
+              onHideJob={refetch}
+            />
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>

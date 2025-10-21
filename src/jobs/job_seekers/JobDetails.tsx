@@ -1,7 +1,13 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import { FaSave } from 'react-icons/fa';
-import { FaPaperPlane, FaRocket, FaTrashCan } from 'react-icons/fa6';
+import {
+  FaEyeSlash,
+  FaGripLines,
+  FaPaperPlane,
+  FaRocket,
+  FaWrench
+} from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
 import useApplicationForJob from '../../applications/job_seeker/useApplicationForJob';
 import CompanyLink from '../../companies/CompanyLink';
@@ -17,18 +23,20 @@ import SkillsList from '../../skills/SkillsList';
 import JobRoles from '../JobRoles';
 import Salary from './Salary';
 import useJob from './useJob';
-import { apply } from './utils';
+import { apply, hide } from './utils';
 
 const JobDetails = ({
   id,
-  jobSeeker
+  jobSeeker,
+  onHideJob
 }: {
   id: number;
   jobSeeker: JobSeeker;
+  onHideJob: () => void;
 }) => {
   const {
     job,
-    error,
+    error: jobError,
     isPlaceholderData,
     isPending,
     refetch: refetchJob
@@ -40,6 +48,8 @@ const JobDetails = ({
   });
   const [isApplying, setIsApplying] = useState(false);
   const [applyError, setApplyError] = useState<Error>();
+  const [isHiding, setIsHiding] = useState(false);
+  const [hideError, setHideError] = useState<Error>();
 
   const onApply = useCallback(async () => {
     if (!job) {
@@ -56,24 +66,49 @@ const JobDetails = ({
     }
 
     if (
-      confirm(
+      !confirm(
         'Your resume will be sent to this company. If your application is accepted, you must commit to at least the first interview round. You may still withdraw your application if the company has not accepted your application, but you will not be able to reapply to this job. Proceed?'
       )
     ) {
-      setIsApplying(true);
-      setApplyError(undefined);
-      try {
-        await apply(id, jobSeeker, activeResume.name);
-        Promise.all([refetchJob(), refetchApplication()]); // don't await refetches so the alert displays immediately
-        alert('Application sent!');
-      } catch (err) {
-        console.log(err);
-        setApplyError(err as Error);
-      } finally {
-        setIsApplying(false);
-      }
+      return;
+    }
+
+    setIsApplying(true);
+    setApplyError(undefined);
+    try {
+      await apply(id, jobSeeker, activeResume.name);
+      Promise.all([refetchJob(), refetchApplication()]); // don't await refetches so the alert displays immediately
+      alert('Application sent!');
+    } catch (err) {
+      console.log(err);
+      setApplyError(err as Error);
+    } finally {
+      setIsApplying(false);
     }
   }, [id, job, jobSeeker, refetchApplication, refetchJob, resumes]);
+
+  const onHide = useCallback(async () => {
+    if (
+      !confirm(
+        'Are you sure you want to hide this job? You will still be able to find it under hidden jobs on your dashboard.'
+      )
+    ) {
+      return;
+    }
+
+    setIsHiding(true);
+    setHideError(undefined);
+    try {
+      await hide(id, jobSeeker.id);
+      onHideJob();
+      alert('Job hidden.');
+    } catch (err) {
+      console.log(err);
+      setHideError(err as Error);
+    } finally {
+      setIsHiding(false);
+    }
+  }, [id, jobSeeker.id, onHideJob]);
 
   // TODO remove once interviewProcess is not nullable
   const noInterviewProcess = useMemo(
@@ -97,8 +132,10 @@ const JobDetails = ({
     [isApplying, noInterviewProcess, pipelineLimitReached, resumes?.length]
   );
 
-  if (error) {
-    return <JobvanaError error={error} />;
+  const error = useMemo(() => applyError ?? hideError, [applyError, hideError]);
+
+  if (jobError) {
+    return <JobvanaError error={jobError} />;
   }
 
   if (isPending) {
@@ -118,18 +155,23 @@ const JobDetails = ({
       <div className="relative top-10">
         {isPlaceholderData && <Modal type="loading" />}
         {isApplying && <Modal type="applying" />}
-        {applyError && <JobvanaError error={applyError} />}
+        {isHiding && <Modal type="updating" />}
+        {error && <JobvanaError error={error} />}
       </div>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-2 items-center text-sm">
+        <div className="flex flex-row gap-1 items-center text-sm">
+          <FaWrench />
+          Job ID: {job.id}
+          <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+          <FaRocket />
           Posted:
-          <div className="flex flex-row gap-1 items-center">
-            <FaRocket />
+          <div className="flex flex-row gap-0 items-center">
             {new Date(job.created_at).toLocaleDateString()}
           </div>
           {job.interviewProcess && (
             <>
-              <div className="h-fit py-2 border-r-[1px]" />
+              <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+              <FaGripLines />
               Pipeline: {job.activeApplicationCount} /{' '}
               {job.interviewProcess.pipeline_size}
             </>
@@ -146,13 +188,13 @@ const JobDetails = ({
             </div>
             {!applyDisabled && (
               <div className="flex flex-row gap-2 text-sm items-center">
+                <FaEyeSlash
+                  className="cursor-pointer hover:text-blue-400"
+                  onClick={onHide}
+                />
                 <FaSave
                   className="cursor-pointer hover:text-blue-400"
                   onClick={() => alert('TODO: Save Job')}
-                />
-                <FaTrashCan
-                  className="cursor-pointer hover:text-blue-400"
-                  onClick={() => alert('TODO: Hide Job')}
                 />
                 {/* <FaPaperPlane
                   className="cursor-pointer hover:text-blue-400"
@@ -172,7 +214,7 @@ const JobDetails = ({
                 <div className="content-center">
                   <FaPaperPlane />
                 </div>
-                {new Date(application.created_at).toLocaleDateString()}
+                Applied {new Date(application.created_at).toLocaleDateString()}
               </div>
             </Link>
           </div>
@@ -184,7 +226,7 @@ const JobDetails = ({
             <div className="flex justify-between">
               <div>{job.title}</div>
               {/* <div>{new Date(job.created_at).toLocaleDateString()}</div> */}
-              <div>ID: {job.id}</div>
+              {/* <div>ID: {job.id}</div> */}
             </div>
           }
         >
@@ -211,12 +253,7 @@ const JobDetails = ({
                 </div>
                 <Button
                   label="Apply"
-                  disabled={
-                    noInterviewProcess ||
-                    pipelineLimitReached ||
-                    !resumes?.length ||
-                    isApplying
-                  }
+                  disabled={applyDisabled}
                   onClick={onApply}
                 />
               </div>

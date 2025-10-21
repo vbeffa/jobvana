@@ -1,4 +1,8 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryObserverResult
+} from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useMemo } from 'react';
@@ -58,6 +62,7 @@ export type Jobs = {
   isPlaceholderData: boolean;
   openJobCount: number | undefined;
   error?: Error;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 export type JobsParams = Params<SearchFilters>;
@@ -75,7 +80,7 @@ const useJobs = (params: JobsParams): Jobs => {
     filters
   } = params;
 
-  const { data, isPending, isPlaceholderData, error } = useQuery({
+  const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey: ['jobs', params],
     queryFn: async () => {
       let q = supabase
@@ -84,9 +89,12 @@ const useJobs = (params: JobsParams): Jobs => {
           `id, title, updated_at, salary_low, salary_high,
           companies!inner(name),
           job_roles!inner(roles!inner()), job_skills!inner(skills!inner(id)),
-          applications(created_at)`,
+          applications(created_at),
+          hidden_jobs()`,
           { count: 'exact' }
         )
+        .is('hidden_jobs', null)
+        // .filter('hidden_jobs.job_seeker_id', 'eq', jobSeekerId)
         .filter('status', 'eq', 'open')
         .filter('salary_type', 'eq', filters.salaryType);
 
@@ -161,13 +169,15 @@ const useJobs = (params: JobsParams): Jobs => {
     }
 
     return data.jobs.map((jobData) => {
-      return {
+      const jobSummary: JobSummary = {
         ..._.pick(jobData, 'id', 'title', 'updated_at'),
         companyName: jobData.companies.name,
         minSalary: jobData.salary_low,
         maxSalary: jobData.salary_high,
         application: jobData.applications[0]
       };
+
+      return jobSummary;
     });
   }, [data]);
 
@@ -178,7 +188,8 @@ const useJobs = (params: JobsParams): Jobs => {
     isPending,
     isPlaceholderData,
     openJobCount,
-    error: error ?? undefined
+    error: error ?? undefined,
+    refetch
   };
 };
 

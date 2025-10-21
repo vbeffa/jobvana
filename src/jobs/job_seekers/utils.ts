@@ -57,4 +57,15 @@ const apply = async (
   }
 };
 
-export { apply };
+const hide = async (jobId: number, jobSeekerId: number) => {
+  const { error } = await supabase.from('hidden_jobs').insert({
+    job_id: jobId,
+    job_seeker_id: jobSeekerId
+  });
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export { apply, hide };
