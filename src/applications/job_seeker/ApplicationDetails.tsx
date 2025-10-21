@@ -1,5 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { FaX } from 'react-icons/fa6';
+import { FaPaperPlane, FaX } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
 import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import { JobSeekerContext } from '../../Context';
@@ -87,6 +87,9 @@ const ApplicationDetails = ({ id }: { id: number }) => {
       </div>
       <ActionMenuContainer>
         <div className="flex flex-row gap-1 items-center text-sm">
+          <FaPaperPlane />
+          Application ID: {application.id}
+          <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
           Status:
           <Status {...application} />
         </div>
@@ -100,7 +103,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         ) : undefined}
       </ActionMenuContainer>
       <div className="px-4 mt-2">
-        <Section title={`Application ID: ${application.id}`}>
+        <Section title="Details">
           <div className="flex flex-row">
             <div className="w-[60%]">
               <div className="flex flex-row">
