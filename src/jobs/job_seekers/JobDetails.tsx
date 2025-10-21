@@ -235,10 +235,12 @@ const JobDetails = ({
               </div>
               {!applyDisabled && (
                 <div className="flex flex-row gap-2 text-sm items-center">
-                  <FaEyeSlash
-                    className="cursor-pointer hover:text-blue-400"
-                    onClick={onHide}
-                  />
+                  {!job.isSaved && (
+                    <FaEyeSlash
+                      className="cursor-pointer hover:text-blue-400"
+                      onClick={onHide}
+                    />
+                  )}
                   {job.isSaved ? (
                     <FaFloppyDisk
                       className="cursor-pointer font-bold text-blue-700 hover:text-blue-600"
