@@ -194,18 +194,18 @@ const ActiveFilters = ({
           </PillContainer>
         </div>
       )}
-      {filters.hideApplied && (
+      {filters.showApplied && (
         <PillContainer
           onDelete={() => {
             const updatedFilters = {
               ...filters,
-              hideApplied: INITIAL_SEARCH_FILTERS.hideApplied
+              showApplied: INITIAL_SEARCH_FILTERS.showApplied
             };
             setFilters(updatedFilters);
             setJobSearchFilters(updatedFilters);
           }}
         >
-          Hide Applied
+          Show Applied
         </PillContainer>
       )}
       {selectedSkills && (

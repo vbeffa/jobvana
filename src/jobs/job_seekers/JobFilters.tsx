@@ -183,17 +183,17 @@ const JobFilters = ({
           <div>Additional Filters:</div>
           <div className="flex flex-row gap-1">
             <input
-              id="hide_applied"
+              id="show_applied"
               type="checkbox"
-              checked={newFilters.hideApplied}
+              checked={newFilters.showApplied}
               onChange={() => {
                 setNewFilters({
                   ...newFilters,
-                  hideApplied: !newFilters.hideApplied
+                  showApplied: !newFilters.showApplied
                 });
               }}
             />
-            <label htmlFor="hide_applied">Hide applied</label>
+            <label htmlFor="show_applied">Show applied</label>
           </div>
           {/*
           <div />

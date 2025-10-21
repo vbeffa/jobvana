@@ -42,7 +42,7 @@ export type SearchFilters = {
   maxSalary: number;
   skillIds?: Array<number>;
   created: CreatedRange;
-  hideApplied: boolean;
+  showApplied: boolean;
 };
 
 export type Application = Pick<DbApplication, 'created_at'>;
@@ -149,7 +149,7 @@ const useJobs = (params: JobsParams): Jobs => {
         })().toISOString();
         q = q.filter('created_at', 'gte', createdAfter);
       }
-      if (filters.hideApplied) {
+      if (!filters.showApplied) {
         q = q.is('applications', null);
       }
       if (filters.skillIds && filters.skillIds.length > 0) {

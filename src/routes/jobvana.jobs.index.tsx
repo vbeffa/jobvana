@@ -32,7 +32,7 @@ export type JobSearch = {
   max_salary?: number;
   skill_ids?: string;
   created?: CreatedRange;
-  hide_applied?: boolean;
+  show_applied?: boolean;
 };
 
 const userType = getUserType();
@@ -56,7 +56,7 @@ export const Route = createFileRoute('/jobvana/jobs/')({
           max_salary: Number(search.max_salary) || MAX_SALARY,
           skill_ids: search.skill_ids as string,
           created: search.created_range as CreatedRange,
-          hide_applied: Boolean(search.hide_applied)
+          show_applied: Boolean(search.show_applied)
         }
       : undefined;
   },
