@@ -28,11 +28,13 @@ import { apply, hide } from './utils';
 const JobDetails = ({
   id,
   jobSeeker,
-  onHideJob
+  onHideJob,
+  showActionMenu = true
 }: {
   id: number;
   jobSeeker: JobSeeker;
   onHideJob?: () => void;
+  showActionMenu?: boolean;
 }) => {
   const {
     job,
@@ -160,69 +162,74 @@ const JobDetails = ({
         {isHiding && <Modal type="updating" />}
         {error && <JobvanaError error={error} />}
       </div>
-      <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-sm">
-          <FaWrench />
-          Job ID: {job.id}
-          <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
-          <FaRocket />
-          Posted:
-          <div className="flex flex-row gap-0 items-center">
-            {new Date(job.created_at).toLocaleDateString()}
-          </div>
-          {job.interviewProcess && (
-            <>
-              <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
-              <FaGripLines />
-              Pipeline: {job.activeApplicationCount} /{' '}
-              {job.interviewProcess.pipeline_size}
-            </>
-          )}
-        </div>
-        {application === null ? (
-          <div className="flex flex-row gap-2 items-center">
-            <div className="text-sm text-gray-400 content-center">
-              {noInterviewProcess && <>Company has no interview process</>}
-              {pipelineLimitReached && <>Company pipeline size limit reached</>}
-              {resumes?.length === 0 && (
-                <>Please upload a resume to apply for this job</>
-              )}
+      {showActionMenu && (
+        <ActionMenuContainer>
+          <div className="flex flex-row gap-1 items-center text-sm">
+            <FaWrench />
+            Job ID: {job.id}
+            <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+            <FaRocket />
+            Posted:
+            <div className="flex flex-row gap-0 items-center">
+              {new Date(job.created_at).toLocaleDateString()}
             </div>
-            {!applyDisabled && (
-              <div className="flex flex-row gap-2 text-sm items-center">
-                <FaEyeSlash
-                  className="cursor-pointer hover:text-blue-400"
-                  onClick={onHide}
-                />
-                <FaSave
-                  className="cursor-pointer hover:text-blue-400"
-                  onClick={() => alert('TODO: Save Job')}
-                />
-                {/* <FaPaperPlane
+            {job.interviewProcess && (
+              <>
+                <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+                <FaGripLines />
+                Pipeline: {job.activeApplicationCount} /{' '}
+                {job.interviewProcess.pipeline_size}
+              </>
+            )}
+          </div>
+          {application === null ? (
+            <div className="flex flex-row gap-2 items-center">
+              <div className="text-sm text-gray-400 content-center">
+                {noInterviewProcess && <>Company has no interview process</>}
+                {pipelineLimitReached && (
+                  <>Company pipeline size limit reached</>
+                )}
+                {resumes?.length === 0 && (
+                  <>Please upload a resume to apply for this job</>
+                )}
+              </div>
+              {!applyDisabled && (
+                <div className="flex flex-row gap-2 text-sm items-center">
+                  <FaEyeSlash
+                    className="cursor-pointer hover:text-blue-400"
+                    onClick={onHide}
+                  />
+                  <FaSave
+                    className="cursor-pointer hover:text-blue-400"
+                    onClick={() => alert('TODO: Save Job')}
+                  />
+                  {/* <FaPaperPlane
                   className="cursor-pointer hover:text-blue-400"
                   onClick={onApply}
                 /> */}
-              </div>
-            )}
-          </div>
-        ) : undefined}
-        {application ? (
-          <div className="flex items-center">
-            <Link
-              to="/jobvana/applications/$id"
-              params={{ id: application.id.toString() }}
-            >
-              <div className="flex flex-row gap-1 text-sm">
-                <div className="content-center">
-                  <FaPaperPlane />
                 </div>
-                Applied {new Date(application.created_at).toLocaleDateString()}
-              </div>
-            </Link>
-          </div>
-        ) : undefined}
-      </ActionMenuContainer>
-      <div className="px-4 mt-2">
+              )}
+            </div>
+          ) : undefined}
+          {application ? (
+            <div className="flex items-center">
+              <Link
+                to="/jobvana/applications/$id"
+                params={{ id: application.id.toString() }}
+              >
+                <div className="flex flex-row gap-1 text-sm">
+                  <div className="content-center">
+                    <FaPaperPlane />
+                  </div>
+                  Applied{' '}
+                  {new Date(application.created_at).toLocaleDateString()}
+                </div>
+              </Link>
+            </div>
+          ) : undefined}
+        </ActionMenuContainer>
+      )}
+      <div className={showActionMenu ? 'px-4 mt-2' : ''}>
         <Section
           title={
             <div className="flex justify-between">

@@ -16,11 +16,19 @@ const JobRoute = () => {
       <div className="border-[0.5px] border-blue-400 rounded-lg w-[75%] overflow-hidden">
         {userType === 'job_seeker' && jobSeeker && (
           <div className="px-4 pt-2">
-            <JobSeekerJobDetails id={id} jobSeeker={jobSeeker} />
+            <JobSeekerJobDetails
+              id={id}
+              jobSeeker={jobSeeker}
+              showActionMenu={false}
+            />
           </div>
         )}
         {userType === 'company' && company && (
-          <CompanyJobDetails company={company} jobId={id} />
+          <CompanyJobDetails
+            company={company}
+            jobId={id}
+            showActionMenu={false}
+          />
         )}
       </div>
     </div>
