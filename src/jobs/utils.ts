@@ -27,6 +27,7 @@ export const INITIAL_SEARCH_FILTERS: SearchFilters = {
   maxSalary: MAX_SALARY,
   created: 'all',
   showApplied: false,
+  hideSaved: false,
   skillIds: []
 };
 

@@ -195,18 +195,22 @@ const JobFilters = ({
             />
             <label htmlFor="show_applied">Show applied</label>
           </div>
-          {/*
           <div />
           <div className="flex flex-row gap-1">
             <input
               id="hide_saved"
               type="checkbox"
-              // checked={updateInterviewProcess}
-              // disabled={isNew}
-              // onChange={() => setUpdateInterviewProcess((update) => !update)}
+              checked={newFilters.hideSaved}
+              onChange={() => {
+                setNewFilters({
+                  ...newFilters,
+                  hideSaved: !newFilters.hideSaved
+                });
+              }}
             />
             <label htmlFor="hide_saved">Hide saved</label>
           </div>
+          {/*
           <div />
           <div className="flex flex-row gap-1">
             <input

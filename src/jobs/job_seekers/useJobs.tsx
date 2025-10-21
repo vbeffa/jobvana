@@ -43,6 +43,7 @@ export type SearchFilters = {
   skillIds?: Array<number>;
   created: CreatedRange;
   showApplied: boolean;
+  hideSaved: boolean;
 };
 
 export type Application = Pick<DbApplication, 'created_at'>;
@@ -151,6 +152,9 @@ const useJobs = (params: JobsParams): Jobs => {
       }
       if (!filters.showApplied) {
         q = q.is('applications', null);
+      }
+      if (filters.hideSaved) {
+        q = q.is('saved_jobs', null);
       }
       if (filters.skillIds && filters.skillIds.length > 0) {
         q = q.in('job_skills.skill_id', filters.skillIds);
