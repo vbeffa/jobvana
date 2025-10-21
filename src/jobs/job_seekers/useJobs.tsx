@@ -42,6 +42,7 @@ export type SearchFilters = {
   maxSalary: number;
   skillIds?: Array<number>;
   created: CreatedRange;
+  hideApplied: boolean;
 };
 
 export type Application = Pick<DbApplication, 'created_at'>;
@@ -131,9 +132,6 @@ const useJobs = (params: JobsParams): Jobs => {
       if (filters.maxSalary) {
         q = q.filter('salary_high', 'lte', filters.maxSalary);
       }
-      if (filters.skillIds && filters.skillIds.length > 0) {
-        q = q.in('job_skills.skill_id', filters.skillIds);
-      }
       if (filters.created !== 'all') {
         const createdAfter = (() => {
           switch (filters.created) {
@@ -149,10 +147,16 @@ const useJobs = (params: JobsParams): Jobs => {
         })().toISOString();
         q = q.filter('created_at', 'gte', createdAfter);
       }
+      if (filters.hideApplied) {
+        q = q.is('applications', null);
+      }
+      if (filters.skillIds && filters.skillIds.length > 0) {
+        q = q.in('job_skills.skill_id', filters.skillIds);
+      }
 
       const { error, data, count } = await q
-        .range((page - 1) * pageSize, page * pageSize - 1)
-        .order('updated_at', { ascending: false });
+        .order('updated_at', { ascending: false })
+        .range((page - 1) * pageSize, page * pageSize - 1);
 
       // console.log(data);
       if (error) {

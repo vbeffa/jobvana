@@ -83,7 +83,8 @@ const Jobs = () => {
         min_salary: searchFilters.minSalary,
         max_salary: searchFilters.maxSalary,
         skill_ids: `[${searchFilters.skillIds?.toString()}]`,
-        created: searchFilters.created
+        created: searchFilters.created,
+        hide_applied: searchFilters.hideApplied
       }
     });
   }, [debouncedPage, selectedJobId, navigate, searchFilters]);

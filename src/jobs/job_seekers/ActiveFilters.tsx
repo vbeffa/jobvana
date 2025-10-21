@@ -194,6 +194,20 @@ const ActiveFilters = ({
           </PillContainer>
         </div>
       )}
+      {filters.hideApplied && (
+        <PillContainer
+          onDelete={() => {
+            const updatedFilters = {
+              ...filters,
+              hideApplied: INITIAL_SEARCH_FILTERS.hideApplied
+            };
+            setFilters(updatedFilters);
+            setJobSearchFilters(updatedFilters);
+          }}
+        >
+          Hide Applied
+        </PillContainer>
+      )}
       {selectedSkills && (
         <div className="flex flex-row gap-2">
           <div className="content-center">Skills:</div>

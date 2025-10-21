@@ -34,7 +34,7 @@ const JobFilters = ({
   return (
     <FiltersSelectContainer>
       <div className="px-2 py-4 w-full flex flex-row gap-x-4">
-        <div className="grid grid-cols-[37%_63%] w-[500px] gap-y-2">
+        <div className="grid grid-cols-[39%_61%] w-[500px] gap-y-2">
           <Label htmlFor="company_filter" label="Company Name" />
           <Filter
             id="company_filter"
@@ -180,6 +180,44 @@ const JobFilters = ({
               setNewFilters({ ...newFilters, created });
             }}
           />
+          <div>Additional Filters:</div>
+          <div className="flex flex-row gap-1">
+            <input
+              id="hide_applied"
+              type="checkbox"
+              checked={newFilters.hideApplied}
+              onChange={() => {
+                setNewFilters({
+                  ...newFilters,
+                  hideApplied: !newFilters.hideApplied
+                });
+              }}
+            />
+            <label htmlFor="hide_applied">Hide applied</label>
+          </div>
+          {/*
+          <div />
+          <div className="flex flex-row gap-1">
+            <input
+              id="hide_saved"
+              type="checkbox"
+              // checked={updateInterviewProcess}
+              // disabled={isNew}
+              // onChange={() => setUpdateInterviewProcess((update) => !update)}
+            />
+            <label htmlFor="hide_saved">Hide saved</label>
+          </div>
+          <div />
+          <div className="flex flex-row gap-1">
+            <input
+              id="show_hidden"
+              type="checkbox"
+              // checked={updateInterviewProcess}
+              // disabled={isNew}
+              // onChange={() => setUpdateInterviewProcess((update) => !update)}
+            />
+            <label htmlFor="show_hidden">Show hidden</label>
+          </div> */}
         </div>
         <div className="grid grid-cols-1 w-full gap-y-2">
           <SkillsSelect
