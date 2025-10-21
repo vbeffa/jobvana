@@ -55,6 +55,7 @@ export type JobSummary = {
   minSalary: number;
   maxSalary: number;
   application?: Application;
+  isSaved: boolean;
 };
 
 export type Jobs = {
@@ -91,7 +92,8 @@ const useJobs = (params: JobsParams): Jobs => {
           companies!inner(name),
           job_roles!inner(roles!inner()), job_skills!inner(skills!inner(id)),
           applications(created_at),
-          hidden_jobs()`,
+          hidden_jobs(),
+          saved_jobs(*)`,
           { count: 'exact' }
         )
         .is('hidden_jobs', null)
@@ -178,7 +180,9 @@ const useJobs = (params: JobsParams): Jobs => {
         companyName: jobData.companies.name,
         minSalary: jobData.salary_low,
         maxSalary: jobData.salary_high,
-        application: jobData.applications[0]
+        application: jobData.applications[0],
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        isSaved: Boolean(jobData.saved_jobs?.[0])
       };
 
       return jobSummary;

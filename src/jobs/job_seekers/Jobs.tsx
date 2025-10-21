@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { FaBuilding, FaPaperPlane } from 'react-icons/fa6';
+import { FaBuilding, FaFloppyDisk, FaPaperPlane } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersDisplay from '../../containers/FiltersDisplay';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
@@ -178,9 +178,12 @@ const Jobs = () => {
                             formatDate(new Date(job.updated_at))}
                         </div>
                       </div>
-                      <div>
-                        {formatCurrency(job.minSalary)} -{' '}
-                        {formatCurrency(job.maxSalary)}
+                      <div className="flex justify-between items-center pr-1">
+                        <div>
+                          {formatCurrency(job.minSalary)} -{' '}
+                          {formatCurrency(job.maxSalary)}
+                        </div>
+                        <div>{job.isSaved && <FaFloppyDisk />}</div>
                       </div>
                     </>
                   }
@@ -195,7 +198,7 @@ const Jobs = () => {
             <JobDetails
               id={selectedJobId}
               jobSeeker={jobSeeker}
-              onHideJob={refetch}
+              onUpdateJob={refetch}
             />
           ) : undefined}
         </ResourceDetailsContainer>

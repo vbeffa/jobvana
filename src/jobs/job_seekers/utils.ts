@@ -68,4 +68,26 @@ const hide = async (jobId: number, jobSeekerId: number) => {
   }
 };
 
-export { apply, hide };
+const save = async (jobId: number, jobSeekerId: number) => {
+  const { error } = await supabase.from('saved_jobs').insert({
+    job_id: jobId,
+    job_seeker_id: jobSeekerId
+  });
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const unsave = async (jobId: number, jobSeekerId: number) => {
+  const { error } = await supabase.from('saved_jobs').delete().match({
+    job_id: jobId,
+    job_seeker_id: jobSeekerId
+  });
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export { apply, hide, save, unsave };

@@ -27,6 +27,7 @@ export type FullJob = Job & {
   skills: Array<Skill>;
   applicationStatuses: Array<Application['status']>;
   activeApplicationCount: number;
+  isSaved: boolean;
 };
 
 export type Job = Pick<
@@ -69,7 +70,8 @@ const useJob = (id: number): JobH => {
           companies!inner(id, name, interview_process),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
-          applications(status)`
+          applications(status),
+          saved_jobs(*)`
         )
         .filter('id', 'eq', id);
 
@@ -110,7 +112,9 @@ const useJob = (id: number): JobH => {
       interviewProcess: job.interview_process as InterviewProcess,
       activeApplicationCount: data.job.applications.filter((app) =>
         ['submitted', 'accepted'].includes(app.status)
-      ).length
+      ).length,
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      isSaved: Boolean(job.saved_jobs?.[0])
     };
   }, [data]);
 

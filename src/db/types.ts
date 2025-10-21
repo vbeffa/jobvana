@@ -607,6 +607,36 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_jobs: {
+        Row: {
+          job_id: number
+          job_seeker_id: number
+        }
+        Insert: {
+          job_id: number
+          job_seeker_id: number
+        }
+        Update: {
+          job_id?: number
+          job_seeker_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'saved_jobs_job_id_fkey'
+            columns: ['job_id']
+            isOneToOne: false
+            referencedRelation: 'jobs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'saved_jobs_job_seeker_id_fkey'
+            columns: ['job_seeker_id']
+            isOneToOne: false
+            referencedRelation: 'job_seekers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       skill_categories: {
         Row: {
           description: string | null

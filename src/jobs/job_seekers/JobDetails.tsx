@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
-import { FaSave } from 'react-icons/fa';
 import {
   FaEyeSlash,
+  FaFloppyDisk,
   FaGripLines,
   FaPaperPlane,
   FaRocket,
@@ -23,17 +23,17 @@ import SkillsList from '../../skills/SkillsList';
 import JobRoles from '../JobRoles';
 import Salary from './Salary';
 import useJob from './useJob';
-import { apply, hide } from './utils';
+import { apply, hide, save, unsave } from './utils';
 
 const JobDetails = ({
   id,
   jobSeeker,
-  onHideJob,
+  onUpdateJob,
   showActionMenu = true
 }: {
   id: number;
   jobSeeker: JobSeeker;
-  onHideJob?: () => void;
+  onUpdateJob?: () => void;
   showActionMenu?: boolean;
 }) => {
   const {
@@ -52,6 +52,8 @@ const JobDetails = ({
   const [applyError, setApplyError] = useState<Error>();
   const [isHiding, setIsHiding] = useState(false);
   const [hideError, setHideError] = useState<Error>();
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<Error>();
 
   const onApply = useCallback(async () => {
     if (!job) {
@@ -102,8 +104,8 @@ const JobDetails = ({
     setHideError(undefined);
     try {
       await hide(id, jobSeeker.id);
-      if (onHideJob) {
-        onHideJob();
+      if (onUpdateJob) {
+        onUpdateJob();
       }
       alert('Job hidden.');
     } catch (err) {
@@ -112,7 +114,41 @@ const JobDetails = ({
     } finally {
       setIsHiding(false);
     }
-  }, [id, jobSeeker.id, onHideJob]);
+  }, [id, jobSeeker.id, onUpdateJob]);
+
+  const onSave = useCallback(async () => {
+    setIsSaving(true);
+    setSaveError(undefined);
+    try {
+      await save(id, jobSeeker.id);
+      if (onUpdateJob) {
+        onUpdateJob();
+      }
+      refetchJob();
+    } catch (err) {
+      console.log(err);
+      setSaveError(err as Error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [id, jobSeeker.id, onUpdateJob, refetchJob]);
+
+  const onUnsave = useCallback(async () => {
+    setIsSaving(true);
+    setSaveError(undefined);
+    try {
+      await unsave(id, jobSeeker.id);
+      if (onUpdateJob) {
+        onUpdateJob();
+      }
+      refetchJob();
+    } catch (err) {
+      console.log(err);
+      setSaveError(err as Error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [id, jobSeeker.id, onUpdateJob, refetchJob]);
 
   // TODO remove once interviewProcess is not nullable
   const noInterviewProcess = useMemo(
@@ -136,7 +172,10 @@ const JobDetails = ({
     [isApplying, noInterviewProcess, pipelineLimitReached, resumes?.length]
   );
 
-  const error = useMemo(() => applyError ?? hideError, [applyError, hideError]);
+  const error = useMemo(
+    () => applyError ?? hideError ?? saveError,
+    [applyError, hideError, saveError]
+  );
 
   if (jobError) {
     return <JobvanaError error={jobError} />;
@@ -160,6 +199,7 @@ const JobDetails = ({
         {isPlaceholderData && <Modal type="loading" />}
         {isApplying && <Modal type="applying" />}
         {isHiding && <Modal type="updating" />}
+        {isSaving && <Modal type="updating" />}
         {error && <JobvanaError error={error} />}
       </div>
       {showActionMenu && (
@@ -199,10 +239,17 @@ const JobDetails = ({
                     className="cursor-pointer hover:text-blue-400"
                     onClick={onHide}
                   />
-                  <FaSave
-                    className="cursor-pointer hover:text-blue-400"
-                    onClick={() => alert('TODO: Save Job')}
-                  />
+                  {job.isSaved ? (
+                    <FaFloppyDisk
+                      className="cursor-pointer font-bold text-blue-700 hover:text-blue-600"
+                      onClick={onUnsave}
+                    />
+                  ) : (
+                    <FaFloppyDisk
+                      className="cursor-pointer hover:text-blue-400"
+                      onClick={onSave}
+                    />
+                  )}
                   {/* <FaPaperPlane
                   className="cursor-pointer hover:text-blue-400"
                   onClick={onApply}
