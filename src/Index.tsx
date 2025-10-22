@@ -3,6 +3,7 @@ import { useContext, useMemo } from 'react';
 import { getSession, getUserType } from './auth/utils';
 import CompanyOnboarding from './companies/company/Onboarding';
 import { CompanyContext, JobSeekerContext, JobvanaContext } from './Context';
+import Dashboard from './home/job_seekers/Dashboard';
 import JobSeekerOnboarding from './job_seekers/Onboarding';
 
 const Index = () => {
@@ -40,16 +41,19 @@ const Index = () => {
       {session && !loggingOut && (
         <>
           {!isCompanyOnboarding && !isJobSeekerOnboarding && (
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-center">
-                <h3>{greeting}</h3>
-              </div>
-              <div className="flex justify-center">
-                {resetPassword && (
-                  <Link to="/jobvana/account">Reset your password</Link>
-                )}
-              </div>
-            </div>
+            <>
+              {resetPassword && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-center">
+                    <h3>{greeting}</h3>
+                    <Link to="/jobvana/account">Reset your password</Link>
+                  </div>
+                </div>
+              )}
+              {!resetPassword && jobSeeker && (
+                <Dashboard jobSeeker={jobSeeker} />
+              )}
+            </>
           )}
           {isCompanyOnboarding && (
             <CompanyOnboarding userId={session.user.id} />

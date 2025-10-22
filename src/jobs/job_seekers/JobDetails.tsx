@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import {
-  FaEyeSlash,
+  FaEye,
   FaFloppyDisk,
   FaGripLines,
   FaPaperPlane,
@@ -236,10 +236,13 @@ const JobDetails = ({
               {!applyDisabled && (
                 <div className="flex flex-row gap-2 text-sm items-center">
                   {!job.isSaved && (
-                    <FaEyeSlash
-                      className="cursor-pointer hover:text-blue-400"
+                    <div
+                      className="flex flex-row gap-1 items-center cursor-pointer hover:text-blue-400"
                       onClick={onHide}
-                    />
+                    >
+                      <FaEye />
+                      Hide
+                    </div>
                   )}
                   {job.isSaved ? (
                     <FaFloppyDisk
