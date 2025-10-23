@@ -17,7 +17,7 @@ import type {
 } from '../../types';
 
 export type FullJob = Job & {
-  company: Pick<Company, 'id' | 'name'> & {
+  company: Pick<Company, 'id' | 'name' | 'user_id'> & {
     // techStack: Array<SkillVersion>;
     interviewProcess: InterviewProcess | null;
     // totalApplications: number; // total across all job seekers for all jobs for this company to verify pipeline limit
@@ -67,7 +67,7 @@ const useJob = (id: number): JobH => {
         .select(
           `id, created_at, updated_at, type, title, description, salary_type, salary_low, salary_high, interview_process,
           company_addresses(*),
-          companies!inner(id, name, interview_process),
+          companies!inner(id, name, interview_process, user_id),
           job_roles(role_id, percent, role_level),
           skills(id, name, skill_category_id, abbreviation),
           applications(status),
@@ -103,6 +103,7 @@ const useJob = (id: number): JobH => {
       company: {
         id: job.companies.id,
         name: job.companies.name,
+        user_id: job.companies.user_id,
         interviewProcess: job.companies
           .interview_process as InterviewProcess | null
       },

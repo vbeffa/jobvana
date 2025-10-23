@@ -71,7 +71,7 @@ const JobDetails = ({
 
     if (
       !confirm(
-        'Your resume will be sent to this company. If your application is accepted, you must commit to at least the first interview round. You may still withdraw your application if the company has not accepted your application, but you will not be able to reapply to this job. Proceed?'
+        'Your resume will be sent to this company. If your application is accepted, you must commit to at least the first interview round. You may still withdraw your application at any time, but you will not be able to reapply to this job. Proceed?'
       )
     ) {
       return;
@@ -80,7 +80,12 @@ const JobDetails = ({
     setIsApplying(true);
     setApplyError(undefined);
     try {
-      await apply(id, jobSeeker, activeResume.name);
+      await apply(
+        id,
+        job.company.user_id as string, // TODO remove typecast when user_id is not nullable
+        jobSeeker,
+        activeResume.name
+      );
       Promise.all([refetchJob(), refetchApplication()]); // don't await refetches so the alert displays immediately
       alert('Application sent!');
     } catch (err) {

@@ -3,6 +3,7 @@ import type { JobSeeker } from '../../types';
 
 const apply = async (
   jobId: number,
+  companyId: string,
   jobSeeker: Pick<JobSeeker, 'id' | 'user_id'>,
   resumeName: string
 ) => {
@@ -33,6 +34,18 @@ const apply = async (
       event: 'submitted'
     });
   if (appEventsErr) {
+    console.log(appEventsErr);
+    throw appEventsErr;
+  }
+
+  const { error: appNotificationsErr } = await supabase
+    .from('application_notifications')
+    .insert({
+      application_id: id,
+      target_user_id: companyId,
+      type: 'submitted'
+    });
+  if (appNotificationsErr) {
     console.log(appEventsErr);
     throw appEventsErr;
   }
