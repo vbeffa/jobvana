@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import Modal from '../../Modal';
 import PageNav from '../../PageNav';
 import type { Paging } from '../../types';
 import MyJobsTable from './MarkedJobsTable';
@@ -65,6 +66,8 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
       <div className="h-full">
         {jobsTab === 'saved' && (
           <div className="pt-4 h-full">
+            {isSavedJobsPending && <Modal type="loading" />}
+            {isSavedJobsPlaceholderData && <Modal type="loading" />}
             {savedJobs?.length ? (
               <div className="h-full flex flex-col justify-between">
                 <MyJobsTable
@@ -84,13 +87,15 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
                   borderBottom={false}
                 />
               </div>
-            ) : (
+            ) : !isSavedJobsPending ? (
               <>No saved jobs</>
-            )}
+            ) : null}
           </div>
         )}
         {jobsTab === 'hidden' && (
           <div className="pt-4 h-full">
+            {isHiddenJobsPending && <Modal type="loading" />}
+            {isHiddenJobsPlaceholderData && <Modal type="loading" />}
             {hiddenJobs?.length ? (
               <div className="h-full flex flex-col justify-between">
                 <MyJobsTable
@@ -110,9 +115,9 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
                   borderBottom={false}
                 />
               </div>
-            ) : (
+            ) : !isHiddenJobsPending ? (
               <>No hidden jobs</>
-            )}
+            ) : null}
           </div>
         )}
       </div>
