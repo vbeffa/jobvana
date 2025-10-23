@@ -36,7 +36,7 @@ const About = () => {
               selected={card === 'definitions'}
               onClick={() => setCard('definitions')}
               title="Definitions"
-              text="Jobs, roles, skills"
+              text="Jobs, roles, skills, applications, interviews"
               borderBottom={true}
             />
           </SummaryCardsContainer>
