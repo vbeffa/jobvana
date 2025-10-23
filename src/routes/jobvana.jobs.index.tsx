@@ -20,7 +20,7 @@ export type JobSearch = {
   job_id?: number;
 
   company?: string;
-  job_type: JobType | 'any';
+  job_type?: JobType | 'any';
   title?: string;
   description?: string;
   min_size?: number;
@@ -45,7 +45,7 @@ export const Route = createFileRoute('/jobvana/jobs/')({
           page: Number(search.page) || 1,
           job_id: Number(search.job_id) || undefined,
           company: search.company as string,
-          job_type: search.job_type as JobType,
+          job_type: (search.job_type ?? 'any') as JobType,
           title: search.title as string,
           description: search.description as string,
           min_size: Number(search.min_size) || MIN_COMPANY_SIZE,

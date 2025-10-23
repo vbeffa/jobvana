@@ -90,8 +90,8 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           <FaPaperPlane />
           Application ID: {application.id}
           <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
-          Status:
-          <Status {...application} />
+          Interview Status:
+          <Status status={application.interviewStatus} />
         </div>
         {application.status === 'submitted' ? (
           <div className="flex items-center">

@@ -37,6 +37,12 @@ export type CompanyTechStack =
   Database['public']['Tables']['company_tech_stacks']['Row'];
 export type Industry = Database['public']['Tables']['industries']['Row'];
 export type Interview = Database['public']['Tables']['interviews']['Row'];
+// this is a derived status and is not stored in the interviews table
+export type InterviewStatus =
+  | 'pending'
+  | 'in_process'
+  | 'declined'
+  | 'completed';
 export type InterviewRoundEvent =
   Database['public']['Tables']['interview_round_events']['Row'];
 export type InterviewRound =

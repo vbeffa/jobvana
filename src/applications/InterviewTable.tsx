@@ -36,6 +36,7 @@ const InterviewTable = ({
       status: InterviewRoundStatus
     ) => {
       let roundCompleted = false;
+      let allRoundsCompleted = false;
       const { data, error } = await supabase
         .from('interview_rounds')
         .update(
@@ -67,19 +68,22 @@ const InterviewTable = ({
 
       if (
         interviewRound.company_response === 'accepted' &&
-        interviewRound.job_seeker_response === 'accepted' &&
-        interviewRound.round < interviewProcess.rounds.length
+        interviewRound.job_seeker_response === 'accepted'
       ) {
         roundCompleted = true;
-        const { error: interviewRoundsErr } = await supabase
-          .from('interview_rounds')
-          .insert({
-            interview_id: interview.id,
-            round: interviewRound.round + 1
-          });
-        if (interviewRoundsErr) {
-          console.log(interviewRoundsErr);
-          throw interviewRoundsErr;
+        if (interviewRound.round < interviewProcess.rounds.length) {
+          const { error: interviewRoundsErr } = await supabase
+            .from('interview_rounds')
+            .insert({
+              interview_id: interview.id,
+              round: interviewRound.round + 1
+            });
+          if (interviewRoundsErr) {
+            console.log(interviewRoundsErr);
+            throw interviewRoundsErr;
+          }
+        } else {
+          allRoundsCompleted = true;
         }
       } else if (status === 'declined') {
         const appStatus = userType === 'company' ? 'declined' : 'withdrawn';
@@ -107,7 +111,7 @@ const InterviewTable = ({
         }
       }
 
-      return roundCompleted;
+      return [roundCompleted, allRoundsCompleted];
     },
     [
       interview.application_id,
@@ -128,13 +132,15 @@ const InterviewTable = ({
 
       setIsUpdating(true);
       try {
-        const roundCompleted = await updateRound(
+        const [roundCompleted, allRoundsCompleted] = await updateRound(
           interview.id,
           round,
           'accepted'
         );
         onUpdate();
-        if (roundCompleted) {
+        if (allRoundsCompleted) {
+          alert('Interview process complete!');
+        } else if (roundCompleted) {
           alert('Round completed; on to the next round!');
         } else {
           alert('Interview round marked as accepted.');
@@ -152,7 +158,7 @@ const InterviewTable = ({
     async (round: number) => {
       if (
         !confirm(
-          'Are you sure you want to withdraw from the interview process?'
+          'Are you sure you want to decline this round? The application will also be marked as declined.'
         )
       ) {
         return;
@@ -161,8 +167,9 @@ const InterviewTable = ({
       setIsUpdating(true);
       try {
         await updateRound(interview.id, round, 'declined');
+        // TODO refresh the applications list as well
         onUpdate();
-        alert('Interview round marked as declined.');
+        alert('Interview round and application marked as declined.');
       } catch (err) {
         setError(err as Error);
       } finally {

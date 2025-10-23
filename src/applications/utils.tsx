@@ -1,9 +1,13 @@
+import { FaArchive, FaDraftingCompass } from 'react-icons/fa';
 import {
   FaBuilding,
-  FaCircleCheck,
+  FaCheck,
+  FaCheckDouble,
   FaNewspaper,
   FaPaperPlane,
+  FaRegCircleCheck,
   FaRegCircleXmark,
+  FaSpinner,
   FaUser
 } from 'react-icons/fa6';
 import { MdOutlinePending } from 'react-icons/md';
@@ -12,7 +16,9 @@ import supabase from '../db/supabase';
 import type {
   ApplicationStatus,
   Company as DbCompany,
-  InterviewRoundStatus
+  InterviewRoundStatus,
+  InterviewStatus,
+  JobStatus
 } from '../types';
 
 export type Company = Pick<DbCompany, 'name'>;
@@ -43,21 +49,37 @@ const applicationEventUser = (
 };
 
 const getIcon = (
-  status: ApplicationStatus | InterviewRoundStatus | 'created'
+  status:
+    | JobStatus
+    | ApplicationStatus
+    | InterviewStatus
+    | InterviewRoundStatus
+    | 'created'
 ) => {
   switch (status) {
+    case 'draft':
+      return <FaDraftingCompass />;
+    case 'open':
+      return <FaRegCircleCheck />;
+    case 'closed':
+      return <FaArchive />;
     case 'created':
       return <FaNewspaper />;
     case 'submitted':
       return <FaPaperPlane />;
     case 'accepted':
-      return <FaCircleCheck />;
+      return <FaCheck />;
+    case 'completed':
+    case 'filled':
+      return <FaCheckDouble />;
     case 'withdrawn':
-      return <PiHandWithdraw />;
+      return <PiHandWithdraw className="text-lg" />;
     case 'declined':
       return <FaRegCircleXmark />;
     case 'pending':
       return <MdOutlinePending />;
+    case 'in_process':
+      return <FaSpinner />;
   }
 };
 

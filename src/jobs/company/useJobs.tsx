@@ -16,6 +16,7 @@ export type SearchFilters = {
 export type JobSummary = {
   id: number;
   title: string;
+  status: JobStatus;
   updated_at: string;
   minSalary: number;
   maxSalary: number;
@@ -50,7 +51,7 @@ const useJobs = (params: JobsParams): Jobs => {
     queryFn: async () => {
       let q = supabase
         .from('jobs')
-        .select('id, title, updated_at, salary_low, salary_high', {
+        .select('id, title, status, updated_at, salary_low, salary_high', {
           count: 'exact'
         })
         .filter('company_id', 'eq', params.filters.companyId);
@@ -81,7 +82,7 @@ const useJobs = (params: JobsParams): Jobs => {
       return undefined;
     }
     return data.jobs.map((jobData) => ({
-      ..._.pick(jobData, 'id', 'title', 'updated_at'),
+      ..._.pick(jobData, 'id', 'title', 'status', 'updated_at'),
       minSalary: jobData.salary_low,
       maxSalary: jobData.salary_high
     }));

@@ -14,7 +14,8 @@ import type {
   Interview as DbInterview,
   InterviewRound as DbInterviewRound,
   InterviewRoundEvent as DbInterviewRoundEvent,
-  Job as DbJob
+  Job as DbJob,
+  InterviewStatus
 } from '../../types';
 
 export type Job = Pick<DbJob, 'id' | 'title'>;
@@ -45,6 +46,7 @@ export type Application = Pick<
   job: Job;
   jobSeeker: JobSeeker;
   status: ApplicationStatus;
+  interviewStatus: InterviewStatus;
   events: Array<ApplicationEvent>;
   interview?: Interview;
   resumePath: string;
@@ -93,20 +95,9 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
       return undefined;
     }
 
-    const application: Application = {
-      ..._.pick(data, 'id', 'created_at', 'status', 'updated_at'),
-      job: _.pick(data.jobs, 'id', 'title'),
-      jobSeeker: {
-        id: data.job_seekers.id,
-        name: `${data.job_seekers.first_name} ${data.job_seekers.last_name}`
-      },
-      events: data.application_events,
-      resumePath: data.application_resumes.resume_path,
-      interviewProcess: data.jobs.interview_process as InterviewProcess
-    };
-
+    let interview: Interview | undefined;
     if (data.interviews) {
-      application.interview = {
+      interview = {
         ..._.pick(data.interviews, 'id', 'application_id'),
         rounds: data.interviews.interview_rounds.map((round) => ({
           ..._.pick(round, 'round', 'job_seeker_response', 'company_response')
@@ -118,6 +109,34 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
           }))
         )
       };
+    }
+
+    let interviewStatus: InterviewStatus;
+    if (!interview?.events.length) {
+      interviewStatus = 'pending';
+    } else if (interview.events.some((event) => event.event === 'declined')) {
+      interviewStatus = 'declined';
+    } else if (interview.events.length < interview.rounds.length * 2) {
+      interviewStatus = 'in_process';
+    } else {
+      interviewStatus = 'completed';
+    }
+
+    const application: Application = {
+      ..._.pick(data, 'id', 'created_at', 'status', 'updated_at'),
+      job: _.pick(data.jobs, 'id', 'title'),
+      jobSeeker: {
+        id: data.job_seekers.id,
+        name: `${data.job_seekers.first_name} ${data.job_seekers.last_name}`
+      },
+      events: data.application_events,
+      resumePath: data.application_resumes.resume_path,
+      interviewProcess: data.jobs.interview_process as InterviewProcess,
+      interviewStatus
+    };
+
+    if (interview) {
+      application.interview = interview;
     }
 
     // console.log(application);

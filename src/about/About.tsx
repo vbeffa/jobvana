@@ -43,9 +43,9 @@ const About = () => {
         </ResourceListContainer>
         <ResourceDetailsContainer>
           <>
-            {card === 'definitions' && <Definitions />}
             {card === 'about' && <>About</>}
             {card === 'contact' && <>Contact Us</>}
+            {card === 'definitions' && <Definitions />}
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>

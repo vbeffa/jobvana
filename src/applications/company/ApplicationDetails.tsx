@@ -89,8 +89,8 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           <FaPaperPlane />
           Application ID: {application.id}
           <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
-          Status:
-          <Status {...application} />
+          Interview Status:
+          <Status status={application.interviewStatus} />
         </div>
         {application.status === 'submitted' ? (
           <div className="flex flex-row gap-1 items-center">
@@ -161,6 +161,12 @@ const ApplicationDetails = ({ id }: { id: number }) => {
                   refetch();
                 }}
               />
+              {application.interviewStatus === 'completed' && (
+                <>
+                  Application process is complete! If the job seeker has been
+                  hired, please update the job's status to filled.
+                </>
+              )}
               <div>
                 <h2>History</h2>
                 {application.interview.events.length ? (

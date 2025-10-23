@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import { getIcon } from '../../applications/utils';
 import FiltersContainer from '../../containers/FiltersContainer';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
@@ -109,9 +110,12 @@ const MyJobs = ({ company }: { company: Company }) => {
                           Last updated {formatDate(new Date(job.updated_at))}
                         </span>
                       </div>
-                      <div>
-                        {formatCurrency(job.minSalary)} -{' '}
-                        {formatCurrency(job.maxSalary)}
+                      <div className="flex justify-between items-center pr-1">
+                        <div>
+                          {formatCurrency(job.minSalary)} -{' '}
+                          {formatCurrency(job.maxSalary)}
+                        </div>
+                        <div>{getIcon(job.status)}</div>
                       </div>
                     </>
                   }
