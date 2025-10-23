@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { FaEyeSlash, FaFloppyDisk, FaInbox, FaWrench } from 'react-icons/fa6';
+import {
+  FaEyeSlash,
+  FaFlag,
+  FaFloppyDisk,
+  FaInbox,
+  FaMagnifyingGlass,
+  FaWrench
+} from 'react-icons/fa6';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
@@ -10,7 +17,9 @@ import MyJobs from './MyJobs';
 import useMarkedJobs from './useMarkedJobs';
 
 const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
-  const [card, setCard] = useState<'inbox' | 'my_jobs'>('my_jobs');
+  const [card, setCard] = useState<'inbox' | 'saved_searches' | 'my_jobs'>(
+    'inbox'
+  );
 
   const { count: savedJobsCount } = useMarkedJobs(jobSeeker.id, 'saved', {
     page: 1,
@@ -39,11 +48,34 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
                   Inbox
                 </div>
               }
-              text="Alerts & Notifications"
+              text={
+                <div className="flex flex-row gap-1 items-center">
+                  <FaFlag /> Alerts & Notifications
+                </div>
+              }
               borderBottom={true}
             />
             <SummaryCard
               key={2}
+              selected={card === 'saved_searches'}
+              onClick={() => setCard('saved_searches')}
+              title={
+                <div className="flex flex-row gap-1">
+                  <div className="content-center">
+                    <FaMagnifyingGlass />
+                  </div>
+                  Saved Searches
+                </div>
+              }
+              text={
+                <div className="flex flex-row gap-1 items-center">
+                  3 saved searches
+                </div>
+              }
+              borderBottom={true}
+            />
+            <SummaryCard
+              key={3}
               selected={card === 'my_jobs'}
               onClick={() => setCard('my_jobs')}
               title={
@@ -73,6 +105,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         <ResourceDetailsContainer>
           <>
             {card === 'inbox' && <>Inbox</>}
+            {card === 'saved_searches' && <>Saved Searches</>}
             {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
           </>
         </ResourceDetailsContainer>
