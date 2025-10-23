@@ -46,6 +46,38 @@ export type Database = {
           },
         ]
       }
+      application_notifications: {
+        Row: {
+          application_id: number
+          created_at: string
+          id: number
+          target_user_id: string | null
+          type: Database['public']['Enums']['application_status']
+        }
+        Insert: {
+          application_id: number
+          created_at?: string
+          id?: number
+          target_user_id?: string | null
+          type: Database['public']['Enums']['application_status']
+        }
+        Update: {
+          application_id?: number
+          created_at?: string
+          id?: number
+          target_user_id?: string | null
+          type?: Database['public']['Enums']['application_status']
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_notifications_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       application_resumes: {
         Row: {
           application_id: number
@@ -804,14 +836,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_company: {
-        Args: { _user_id: string }
-        Returns: boolean
-      }
-      is_job_seeker: {
-        Args: { _user_id: string }
-        Returns: boolean
-      }
+      is_company: { Args: { _user_id: string }; Returns: boolean }
+      is_job_seeker: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       address_type: 'headquarters' | 'office'
