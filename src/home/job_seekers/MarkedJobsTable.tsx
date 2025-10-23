@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-import { FaSave } from 'react-icons/fa';
-import { FaEyeSlash } from 'react-icons/fa6';
+import { FaEyeSlash, FaX } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
 import { unhide, unsave } from '../../jobs/job_seekers/utils';
 import JobLink from '../../jobs/JobLink';
@@ -55,11 +54,12 @@ const MarkedJobsTable = ({
     <>
       {isUpdating && <Modal type="updating" />}
       {updateError && <JobvanaError error={updateError} />}
-      <table className="w-fit">
+      <table className="w-full">
         <thead>
           <tr>
             <th>Company</th>
             <th>Title</th>
+            <th>Posted</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -77,20 +77,17 @@ const MarkedJobsTable = ({
                 </div>
               </td>
               <td>
+                <div className="flex justify-center">
+                  {new Date(job.created_at).toLocaleDateString()}
+                </div>
+              </td>
+              <td>
                 <div
-                  className="flex flex-row items-center gap-1 px-2 text-blue-500 hover:text-blue-400 cursor-pointer"
+                  className="flex flex-row items-center gap-1 justify-center text-blue-500 hover:text-blue-400 cursor-pointer"
                   onClick={() => onClick(job.id)}
                 >
-                  {type === 'saved' && (
-                    <>
-                      <FaSave /> Remove
-                    </>
-                  )}
-                  {type === 'hidden' && (
-                    <>
-                      <FaEyeSlash /> Unhide
-                    </>
-                  )}
+                  {type === 'saved' && <FaX />}
+                  {type === 'hidden' && <FaEyeSlash />}
                 </div>
               </td>
             </tr>

@@ -1,27 +1,25 @@
 import { useState } from 'react';
-import { FaEyeSlash, FaFloppyDisk, FaInbox } from 'react-icons/fa6';
+import { FaEyeSlash, FaFloppyDisk, FaInbox, FaWrench } from 'react-icons/fa6';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import { type JobSeeker } from '../../Context';
-import Section from '../../Section';
 import SummaryCard from '../../SummaryCard';
-import MarkedJobsTable from './MarkedJobsTable';
+import MyJobs from './MyJobs';
 import useMarkedJobs from './useMarkedJobs';
 
 const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
-  const [card, setCard] = useState<'inbox' | 'marked_jobs'>('marked_jobs');
-  const {
-    jobs: hiddenJobs,
-    count: hiddenJobsCount,
-    refetch: refetchHiddenJobs
-  } = useMarkedJobs(jobSeeker.id, 'hidden');
-  const {
-    jobs: savedJobs,
-    count: savedJobsCount,
-    refetch: refetchSavedJobs
-  } = useMarkedJobs(jobSeeker.id, 'saved');
+  const [card, setCard] = useState<'inbox' | 'my_jobs'>('my_jobs');
+
+  const { count: savedJobsCount } = useMarkedJobs(jobSeeker.id, 'saved', {
+    page: 1,
+    pageSize: 10
+  });
+  const { count: hiddenJobsCount } = useMarkedJobs(jobSeeker.id, 'hidden', {
+    page: 1,
+    pageSize: 10
+  });
 
   return (
     <>
@@ -30,7 +28,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         <ResourceListContainer>
           <SummaryCardsContainer>
             <SummaryCard
-              key={4}
+              key={1}
               selected={card === 'inbox'}
               onClick={() => setCard('inbox')}
               title={
@@ -45,15 +43,15 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               borderBottom={true}
             />
             <SummaryCard
-              key={3}
-              selected={card === 'marked_jobs'}
-              onClick={() => setCard('marked_jobs')}
+              key={2}
+              selected={card === 'my_jobs'}
+              onClick={() => setCard('my_jobs')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
-                    <FaEyeSlash />
+                    <FaWrench />
                   </div>
-                  Marked Jobs
+                  My Jobs
                 </div>
               }
               text={
@@ -75,34 +73,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         <ResourceDetailsContainer>
           <>
             {card === 'inbox' && <>Inbox</>}
-            {card === 'marked_jobs' && (
-              <div className="flex flex-col justify-center">
-                <Section title="Saved Jobs">
-                  {savedJobs?.length ? (
-                    <MarkedJobsTable
-                      jobSeekerId={jobSeeker.id}
-                      jobs={savedJobs}
-                      type="saved"
-                      onAction={refetchSavedJobs}
-                    />
-                  ) : (
-                    'No saved jobs'
-                  )}
-                </Section>
-                <Section title="Hidden Jobs" isLast={true}>
-                  {hiddenJobs?.length ? (
-                    <MarkedJobsTable
-                      jobSeekerId={jobSeeker.id}
-                      jobs={hiddenJobs}
-                      type="hidden"
-                      onAction={refetchHiddenJobs}
-                    />
-                  ) : (
-                    'No hidden jobs'
-                  )}
-                </Section>
-              </div>
-            )}
+            {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
           </>
         </ResourceDetailsContainer>
       </ResourcesContainer>

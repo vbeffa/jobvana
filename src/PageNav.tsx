@@ -5,7 +5,13 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 export const PAGE_NAV_HEIGHT = 16;
 export const PAGE_NAV_HEIGHT_PX = 4 * PAGE_NAV_HEIGHT;
 
-export type NavType = 'jobs' | 'companies' | 'skills' | 'applications';
+export type NavType =
+  | 'jobs'
+  | 'companies'
+  | 'skills'
+  | 'applications'
+  | 'saved jobs'
+  | 'hidden jobs';
 
 export type PageNavProps = {
   page: number;
