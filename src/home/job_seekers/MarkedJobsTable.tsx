@@ -93,7 +93,12 @@ const MarkedJobsTable = ({
               </td>
               <td>
                 <div className="flex flex-row items-center gap-1 justify-center text-blue-500">
-                  {type === 'saved' && <FaX onClick={() => onClick(job.id)} />}
+                  {type === 'saved' && (
+                    <FaX
+                      className="hover:text-blue-400 cursor-pointer"
+                      onClick={() => onClick(job.id)}
+                    />
+                  )}
                   {type === 'hidden' && (
                     <>
                       <FaEye

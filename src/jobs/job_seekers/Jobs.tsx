@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { FaBuilding, FaFloppyDisk, FaPaperPlane } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersDisplay from '../../containers/FiltersDisplay';
@@ -89,6 +89,46 @@ const Jobs = () => {
       }
     });
   }, [debouncedPage, selectedJobId, navigate, searchFilters]);
+
+  const onUpdateJob = useCallback(
+    (action: 'hide' | 'save' | 'unsave') => {
+      if (!openJobCount) {
+        return;
+      }
+      const decrementPage =
+        openJobCount % paging.pageSize === 1 &&
+        page === Math.ceil(openJobCount / paging.pageSize);
+      switch (action) {
+        case 'hide': {
+          if (decrementPage) {
+            setPage(page - 1);
+            setJobNav({
+              page: page - 1,
+              jobId: undefined
+            });
+          }
+          break;
+        }
+        case 'save':
+          if (searchFilters.hideSaved && decrementPage) {
+            setPage(page - 1);
+            setJobNav({
+              page: page - 1,
+              jobId: undefined
+            });
+          }
+      }
+      refetch();
+    },
+    [
+      openJobCount,
+      page,
+      paging.pageSize,
+      refetch,
+      searchFilters.hideSaved,
+      setJobNav
+    ]
+  );
 
   return (
     <>
@@ -199,7 +239,7 @@ const Jobs = () => {
             <JobDetails
               id={selectedJobId}
               jobSeeker={jobSeeker}
-              onUpdateJob={refetch}
+              onUpdateJob={onUpdateJob}
             />
           ) : undefined}
         </ResourceDetailsContainer>

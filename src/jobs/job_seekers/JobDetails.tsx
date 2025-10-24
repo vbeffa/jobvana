@@ -34,7 +34,7 @@ const JobDetails = ({
 }: {
   id: number;
   jobSeeker: JobSeeker;
-  onUpdateJob?: () => void;
+  onUpdateJob?: (action: 'hide' | 'save' | 'unsave') => void;
   showActionMenu?: boolean;
 }) => {
   const {
@@ -121,7 +121,7 @@ const JobDetails = ({
       try {
         await hide(id, jobSeeker.id, permanent);
         if (onUpdateJob) {
-          onUpdateJob();
+          onUpdateJob('hide');
         }
         alert(!permanent ? 'Job hidden.' : 'Job deleted.');
       } catch (err) {
@@ -140,7 +140,7 @@ const JobDetails = ({
     try {
       await save(id, jobSeeker.id);
       if (onUpdateJob) {
-        onUpdateJob();
+        onUpdateJob('save');
       }
       refetchJob();
     } catch (err) {
@@ -157,7 +157,7 @@ const JobDetails = ({
     try {
       await unsave(id, jobSeeker.id);
       if (onUpdateJob) {
-        onUpdateJob();
+        onUpdateJob('unsave');
       }
       refetchJob();
     } catch (err) {
