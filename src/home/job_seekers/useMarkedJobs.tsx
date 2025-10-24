@@ -35,7 +35,7 @@ const useMarkedJobs = (
     queryKey: ['marked_jobs', jobSeekerId, type, paging],
     queryFn: async () => {
       const { page, pageSize } = paging;
-      const { data, count, error } = await supabase
+      let q = supabase
         .from(type === 'saved' ? 'saved_jobs' : 'hidden_jobs')
         .select(
           'jobs!inner(id, title, created_at, company_id, companies!inner(name))',
@@ -46,11 +46,15 @@ const useMarkedJobs = (
         .filter('job_seeker_id', 'eq', jobSeekerId)
         .range((page - 1) * pageSize, page * pageSize - 1);
 
-      // console.log(data);
+      if (type === 'hidden') {
+        q = q.not('is_permanent', 'is', true);
+      }
+      const { data, count, error } = await q;
+
       if (error) {
         console.log(error);
       }
-      return { error, data, count };
+      return { data, count, error };
     },
     placeholderData: keepPreviousData
   });

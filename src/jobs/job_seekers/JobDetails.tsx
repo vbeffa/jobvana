@@ -1,11 +1,12 @@
 import { Link } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import {
-  FaEye,
+  FaEyeSlash,
   FaFloppyDisk,
   FaGripLines,
   FaPaperPlane,
   FaRocket,
+  FaTrash,
   FaWrench
 } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
@@ -96,30 +97,42 @@ const JobDetails = ({
     }
   }, [id, job, jobSeeker, refetchApplication, refetchJob, resumes]);
 
-  const onHide = useCallback(async () => {
-    if (
-      !confirm(
-        'Are you sure you want to hide this job? You will still be able to find it under hidden jobs on your dashboard.'
-      )
-    ) {
-      return;
-    }
-
-    setIsHiding(true);
-    setHideError(undefined);
-    try {
-      await hide(id, jobSeeker.id);
-      if (onUpdateJob) {
-        onUpdateJob();
+  const onHide = useCallback(
+    async (permanent: boolean) => {
+      if (
+        !permanent &&
+        !confirm(
+          'Are you sure you want to hide this job? You will still be able to find it under hidden jobs on your dashboard.'
+        )
+      ) {
+        return;
       }
-      alert('Job hidden.');
-    } catch (err) {
-      console.log(err);
-      setHideError(err as Error);
-    } finally {
-      setIsHiding(false);
-    }
-  }, [id, jobSeeker.id, onUpdateJob]);
+      if (
+        permanent &&
+        !confirm(
+          'Are you sure you wish to permanently delete this job? You will no longer be able to find it in searches.'
+        )
+      ) {
+        return;
+      }
+
+      setIsHiding(true);
+      setHideError(undefined);
+      try {
+        await hide(id, jobSeeker.id, permanent);
+        if (onUpdateJob) {
+          onUpdateJob();
+        }
+        alert(!permanent ? 'Job hidden.' : 'Job deleted.');
+      } catch (err) {
+        console.log(err);
+        setHideError(err as Error);
+      } finally {
+        setIsHiding(false);
+      }
+    },
+    [id, jobSeeker.id, onUpdateJob]
+  );
 
   const onSave = useCallback(async () => {
     setIsSaving(true);
@@ -239,14 +252,17 @@ const JobDetails = ({
                 )}
               </div>
               {!applyDisabled && (
-                <div className="flex flex-row gap-2 text-sm items-center">
+                <div className="flex flex-row gap-1 text-sm items-center">
                   {!job.isSaved && (
-                    <div
-                      className="flex flex-row gap-1 items-center cursor-pointer hover:text-blue-400"
-                      onClick={onHide}
-                    >
-                      <FaEye />
-                      Hide
+                    <div className="flex flex-row gap-1 items-center">
+                      <FaEyeSlash
+                        className="hover:text-blue-400 cursor-pointer"
+                        onClick={() => onHide(false)}
+                      />
+                      <FaTrash
+                        className="hover:text-blue-400 cursor-pointer"
+                        onClick={() => onHide(true)}
+                      />
                     </div>
                   )}
                   {job.isSaved ? (

@@ -70,10 +70,15 @@ const apply = async (
   }
 };
 
-const hide = async (jobId: number, jobSeekerId: number) => {
+const hide = async (
+  jobId: number,
+  jobSeekerId: number,
+  permanent?: boolean
+) => {
   const { error } = await supabase.from('hidden_jobs').insert({
     job_id: jobId,
-    job_seeker_id: jobSeekerId
+    job_seeker_id: jobSeekerId,
+    deleted: permanent
   });
   if (error) {
     console.log(error);
@@ -86,6 +91,20 @@ const unhide = async (jobId: number, jobSeekerId: number) => {
     job_id: jobId,
     job_seeker_id: jobSeekerId
   });
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const permanentlyHide = async (jobId: number, jobSeekerId: number) => {
+  const { error } = await supabase
+    .from('hidden_jobs')
+    .update({ is_permanent: true })
+    .match({
+      job_id: jobId,
+      job_seeker_id: jobSeekerId
+    });
   if (error) {
     console.log(error);
     throw error;
@@ -114,4 +133,4 @@ const unsave = async (jobId: number, jobSeekerId: number) => {
   }
 };
 
-export { apply, hide, save, unhide, unsave };
+export { apply, hide, permanentlyHide, save, unhide, unsave };

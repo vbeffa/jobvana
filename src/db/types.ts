@@ -266,14 +266,17 @@ export type Database = {
       }
       hidden_jobs: {
         Row: {
+          is_permanent: boolean | null
           job_id: number
           job_seeker_id: number
         }
         Insert: {
+          is_permanent?: boolean | null
           job_id: number
           job_seeker_id: number
         }
         Update: {
+          is_permanent?: boolean | null
           job_id?: number
           job_seeker_id?: number
         }

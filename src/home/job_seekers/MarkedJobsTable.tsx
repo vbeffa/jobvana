@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import { FaEyeSlash, FaX } from 'react-icons/fa6';
+import { FaEye, FaTrash, FaX } from 'react-icons/fa6';
 import CompanyLink from '../../companies/CompanyLink';
-import { unhide, unsave } from '../../jobs/job_seekers/utils';
+import { permanentlyHide, unhide, unsave } from '../../jobs/job_seekers/utils';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
@@ -22,11 +22,19 @@ const MarkedJobsTable = ({
   const [updateError, setUpdateError] = useState<Error>();
 
   const onClick = useCallback(
-    async (id: number) => {
+    async (id: number, action?: 'delete') => {
       if (
         type === 'saved' &&
         !confirm(
           'Are you sure you want to remove this saved job? You will need to find it again on the Jobs page.'
+        )
+      ) {
+        return;
+      }
+      if (
+        action &&
+        !confirm(
+          'Are you sure you wish to permanently delete this job? You will no longer be able to find it in searches or view it in this table.'
         )
       ) {
         return;
@@ -37,9 +45,11 @@ const MarkedJobsTable = ({
       try {
         await (type === 'saved'
           ? unsave(id, jobSeekerId)
-          : unhide(id, jobSeekerId));
+          : action === 'delete'
+            ? permanentlyHide(id, jobSeekerId)
+            : unhide(id, jobSeekerId));
         onAction();
-        alert('Job hidden.');
+        alert(type === 'saved' ? 'Job unsaved.' : 'Job unhidden.');
       } catch (err) {
         console.log(err);
         setUpdateError(err as Error);
@@ -51,7 +61,7 @@ const MarkedJobsTable = ({
   );
 
   return (
-    <>
+    <div>
       {isUpdating && <Modal type="updating" />}
       {updateError && <JobvanaError error={updateError} />}
       <table className="w-full">
@@ -82,19 +92,27 @@ const MarkedJobsTable = ({
                 </div>
               </td>
               <td>
-                <div
-                  className="flex flex-row items-center gap-1 justify-center text-blue-500 hover:text-blue-400 cursor-pointer"
-                  onClick={() => onClick(job.id)}
-                >
-                  {type === 'saved' && <FaX />}
-                  {type === 'hidden' && <FaEyeSlash />}
+                <div className="flex flex-row items-center gap-1 justify-center text-blue-500">
+                  {type === 'saved' && <FaX onClick={() => onClick(job.id)} />}
+                  {type === 'hidden' && (
+                    <>
+                      <FaEye
+                        className="hover:text-blue-400 cursor-pointer"
+                        onClick={() => onClick(job.id)}
+                      />
+                      <FaTrash
+                        className="hover:text-blue-400 cursor-pointer"
+                        onClick={() => onClick(job.id, 'delete')}
+                      />
+                    </>
+                  )}
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 
