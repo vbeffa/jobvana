@@ -6,7 +6,7 @@ const SummaryCardsContainer = ({
   children,
   bannerType = 'none'
 }: {
-  children?: Array<JSX.Element>;
+  children?: JSX.Element | Array<JSX.Element>;
   bannerType?: 'title' | 'filters' | 'status' | 'none';
 }) => {
   const height = (() => {

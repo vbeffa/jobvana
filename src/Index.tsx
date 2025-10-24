@@ -3,7 +3,8 @@ import { useContext, useMemo } from 'react';
 import { getSession, getUserType } from './auth/utils';
 import CompanyOnboarding from './companies/company/Onboarding';
 import { CompanyContext, JobSeekerContext, JobvanaContext } from './Context';
-import Dashboard from './home/job_seekers/Dashboard';
+import CompanyDashboard from './home/companies/Dashboard';
+import JobSeekerDashboard from './home/job_seekers/Dashboard';
 import JobSeekerOnboarding from './job_seekers/Onboarding';
 
 const Index = () => {
@@ -50,8 +51,11 @@ const Index = () => {
                   </div>
                 </div>
               )}
-              {!resetPassword && jobSeeker && (
-                <Dashboard jobSeeker={jobSeeker} />
+              {!resetPassword && (
+                <>
+                  {jobSeeker && <JobSeekerDashboard jobSeeker={jobSeeker} />}
+                  {company && <CompanyDashboard company={company} />}
+                </>
               )}
             </>
           )}
