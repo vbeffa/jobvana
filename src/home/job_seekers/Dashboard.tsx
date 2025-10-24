@@ -69,7 +69,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               }
               text={
                 <div className="flex flex-row gap-1 items-center">
-                  3 saved searches
+                  TODO saved searches
                 </div>
               }
               borderBottom={true}
