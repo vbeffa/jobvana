@@ -28,12 +28,14 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
 
   const {
     jobs: savedJobs,
+    count: savedJobsCount,
     isPending: isSavedJobsPending,
     isPlaceholderData: isSavedJobsPlaceholderData,
     refetch: refetchSavedJobs
   } = useMarkedJobs(jobSeekerId, 'saved', savedJobsPaging);
   const {
     jobs: hiddenJobs,
+    count: hiddenJobsCount,
     isPending: isHiddenJobsPending,
     isPlaceholderData: isHiddenJobsPlaceholderData,
     refetch: refetchHiddenJobs
@@ -78,7 +80,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
                 />
                 <PageNav
                   page={savedJobsPage}
-                  total={11}
+                  total={savedJobsCount}
                   onSetPage={(page) => {
                     setSavedJobsPage(page);
                   }}
@@ -106,7 +108,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
                 />
                 <PageNav
                   page={hiddenJobsPage}
-                  total={11}
+                  total={hiddenJobsCount}
                   onSetPage={(page) => {
                     setHiddenJobsPage(page);
                   }}
