@@ -78,7 +78,7 @@ const hide = async (
   const { error } = await supabase.from('hidden_jobs').insert({
     job_id: jobId,
     job_seeker_id: jobSeekerId,
-    deleted: permanent
+    is_permanent: permanent
   });
   if (error) {
     console.log(error);
