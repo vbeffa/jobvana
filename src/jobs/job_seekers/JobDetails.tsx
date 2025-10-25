@@ -81,12 +81,7 @@ const JobDetails = ({
     setIsApplying(true);
     setApplyError(undefined);
     try {
-      await apply(
-        id,
-        job.company.user_id as string, // TODO remove typecast when user_id is not nullable
-        jobSeeker,
-        activeResume.name
-      );
+      await apply(id, jobSeeker, activeResume.name);
       Promise.all([refetchJob(), refetchApplication()]); // don't await refetches so the alert displays immediately
       alert('Application sent!');
     } catch (err) {

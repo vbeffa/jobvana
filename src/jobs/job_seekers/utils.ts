@@ -1,9 +1,9 @@
 import supabase from '../../db/supabase';
+import { addCompanyApplicationNotification } from '../../notifications/utils';
 import type { JobSeeker } from '../../types';
 
 const apply = async (
   jobId: number,
-  companyId: string,
   jobSeeker: Pick<JobSeeker, 'id' | 'user_id'>,
   resumeName: string
 ) => {
@@ -38,17 +38,7 @@ const apply = async (
     throw appEventsErr;
   }
 
-  const { error: appNotificationsErr } = await supabase
-    .from('application_notifications')
-    .insert({
-      application_id: id,
-      target_user_id: companyId,
-      type: 'submitted'
-    });
-  if (appNotificationsErr) {
-    console.log(appEventsErr);
-    throw appEventsErr;
-  }
+  await addCompanyApplicationNotification(id, 'submitted');
 
   const { data: storageData, error: storageErr } = await supabase.storage
     .from('resumes')

@@ -11,7 +11,9 @@ export type NavType =
   | 'skills'
   | 'applications'
   | 'saved jobs'
-  | 'hidden jobs';
+  | 'hidden jobs'
+  | 'current notifications'
+  | 'archived notifications';
 
 export type PageNavProps = {
   page: number;

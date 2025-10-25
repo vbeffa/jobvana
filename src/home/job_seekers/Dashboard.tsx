@@ -12,8 +12,10 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import { type JobSeeker } from '../../Context';
+import useApplicationNotifications from '../../notifications/job_seekers/useApplicationNotifications';
 import SummaryCard from '../../SummaryCard';
 import MyJobs from './MyJobs';
+import Notifications from './Notifications';
 import useMarkedJobs from './useMarkedJobs';
 
 const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
@@ -21,14 +23,25 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
     'inbox'
   );
 
-  const { count: savedJobsCount } = useMarkedJobs(jobSeeker.id, 'saved', {
+  const paging = {
     page: 1,
     pageSize: 10
-  });
-  const { count: hiddenJobsCount } = useMarkedJobs(jobSeeker.id, 'hidden', {
-    page: 1,
-    pageSize: 10
-  });
+  };
+
+  const {
+    count: unreadNotificationsCount,
+    refetch: refetchUnreadNotificationsCount
+  } = useApplicationNotifications('unread', paging);
+  const { count: savedJobsCount } = useMarkedJobs(
+    jobSeeker.id,
+    'saved',
+    paging
+  );
+  const { count: hiddenJobsCount } = useMarkedJobs(
+    jobSeeker.id,
+    'hidden',
+    paging
+  );
 
   return (
     <>
@@ -50,7 +63,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               }
               text={
                 <div className="flex flex-row gap-1 items-center">
-                  <FaFlag /> Alerts & Notifications
+                  <FaFlag /> {unreadNotificationsCount ?? 0} unread
                 </div>
               }
               borderBottom={true}
@@ -104,7 +117,9 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer>
           <>
-            {card === 'inbox' && <>Inbox</>}
+            {card === 'inbox' && (
+              <Notifications onUpdate={refetchUnreadNotificationsCount} />
+            )}
             {card === 'saved_searches' && <>Saved Searches</>}
             {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
           </>

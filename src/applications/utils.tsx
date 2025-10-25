@@ -13,6 +13,10 @@ import {
 import { MdOutlinePending } from 'react-icons/md';
 import { PiHandWithdraw } from 'react-icons/pi';
 import supabase from '../db/supabase';
+import {
+  addCompanyApplicationNotification,
+  addJobSeekerApplicationNotification
+} from '../notifications/utils';
 import type {
   ApplicationStatus,
   Company as DbCompany,
@@ -136,6 +140,12 @@ const updateStatus = async (
       console.log(interviewRoundsErr);
       throw interviewRoundsErr;
     }
+
+    await addJobSeekerApplicationNotification(applicationId, 'accepted');
+  } else if (status === 'declined') {
+    await addJobSeekerApplicationNotification(applicationId, 'declined');
+  } else {
+    await addCompanyApplicationNotification(applicationId, 'withdrawn');
   }
 };
 

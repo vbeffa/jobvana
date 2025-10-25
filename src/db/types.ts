@@ -46,38 +46,6 @@ export type Database = {
           },
         ]
       }
-      application_notifications: {
-        Row: {
-          application_id: number
-          created_at: string
-          id: number
-          target_user_id: string | null
-          type: Database['public']['Enums']['application_status']
-        }
-        Insert: {
-          application_id: number
-          created_at?: string
-          id?: number
-          target_user_id?: string | null
-          type: Database['public']['Enums']['application_status']
-        }
-        Update: {
-          application_id?: number
-          created_at?: string
-          id?: number
-          target_user_id?: string | null
-          type?: Database['public']['Enums']['application_status']
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'application_notifications_application_id_fkey'
-            columns: ['application_id']
-            isOneToOne: false
-            referencedRelation: 'applications'
-            referencedColumns: ['id']
-          },
-        ]
-      }
       application_resumes: {
         Row: {
           application_id: number
@@ -230,6 +198,38 @@ export type Database = {
             columns: ['company_id']
             isOneToOne: false
             referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      company_application_notifications: {
+        Row: {
+          application_id: number
+          created_at: string
+          id: number
+          status: Database['public']['Enums']['notification_status']
+          type: Database['public']['Enums']['company_application_notification']
+        }
+        Insert: {
+          application_id: number
+          created_at?: string
+          id?: number
+          status?: Database['public']['Enums']['notification_status']
+          type: Database['public']['Enums']['company_application_notification']
+        }
+        Update: {
+          application_id?: number
+          created_at?: string
+          id?: number
+          status?: Database['public']['Enums']['notification_status']
+          type?: Database['public']['Enums']['company_application_notification']
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_application_notifications_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
             referencedColumns: ['id']
           },
         ]
@@ -437,6 +437,38 @@ export type Database = {
             columns: ['role_id']
             isOneToOne: false
             referencedRelation: 'roles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      job_seeker_application_notifications: {
+        Row: {
+          application_id: number
+          created_at: string
+          id: number
+          status: Database['public']['Enums']['notification_status']
+          type: Database['public']['Enums']['job_seeker_application_notification']
+        }
+        Insert: {
+          application_id: number
+          created_at?: string
+          id?: number
+          status?: Database['public']['Enums']['notification_status']
+          type: Database['public']['Enums']['job_seeker_application_notification']
+        }
+        Update: {
+          application_id?: number
+          created_at?: string
+          id?: number
+          status?: Database['public']['Enums']['notification_status']
+          type?: Database['public']['Enums']['job_seeker_application_notification']
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'job_seeker_application_notifications_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
             referencedColumns: ['id']
           },
         ]
@@ -845,10 +877,13 @@ export type Database = {
     Enums: {
       address_type: 'headquarters' | 'office'
       application_status: 'submitted' | 'accepted' | 'declined' | 'withdrawn'
+      company_application_notification: 'submitted' | 'withdrawn'
       interview_round_status: 'pending' | 'accepted' | 'declined'
       job_salary_type: 'annual' | 'hourly'
+      job_seeker_application_notification: 'accepted' | 'declined'
       job_status: 'open' | 'filled' | 'closed' | 'draft'
       job_type: 'full_time' | 'part_time' | 'contract' | 'internship'
+      notification_status: 'unread' | 'read' | 'archived'
       user_type: 'company' | 'job_seeker'
     }
     CompositeTypes: {
@@ -979,10 +1014,13 @@ export const Constants = {
     Enums: {
       address_type: ['headquarters', 'office'],
       application_status: ['submitted', 'accepted', 'declined', 'withdrawn'],
+      company_application_notification: ['submitted', 'withdrawn'],
       interview_round_status: ['pending', 'accepted', 'declined'],
       job_salary_type: ['annual', 'hourly'],
+      job_seeker_application_notification: ['accepted', 'declined'],
       job_status: ['open', 'filled', 'closed', 'draft'],
       job_type: ['full_time', 'part_time', 'contract', 'internship'],
+      notification_status: ['unread', 'read', 'archived'],
       user_type: ['company', 'job_seeker'],
     },
   },

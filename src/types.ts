@@ -33,6 +33,8 @@ export type Company = Omit<
 };
 export type CompanyAddress =
   Database['public']['Tables']['company_addresses']['Row'];
+export type CompanyApplicationNotification =
+  Database['public']['Tables']['company_application_notifications']['Row'];
 export type CompanyTechStack =
   Database['public']['Tables']['company_tech_stacks']['Row'];
 export type Industry = Database['public']['Tables']['industries']['Row'];
@@ -55,11 +57,15 @@ export type JobStatus = Job['status'];
 export type JobType = Job['type'];
 export type JobRole = Database['public']['Tables']['job_roles']['Row'];
 export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'];
+export type JobSeekerApplicationNotification =
+  Database['public']['Tables']['job_seeker_application_notifications']['Row'];
 export type JobSeekerSkill =
   Database['public']['Tables']['job_seeker_skills']['Row'];
 export type JobSkill = Database['public']['Tables']['job_skills']['Row'];
 export type JobSkillVersion =
   Database['public']['Tables']['job_skill_versions']['Row'];
+export type NotificationStatus =
+  Database['public']['Enums']['notification_status'];
 export type Role = Database['public']['Tables']['roles']['Row'];
 export type Skill = Database['public']['Tables']['skills']['Row'];
 export type SkillRelation =
