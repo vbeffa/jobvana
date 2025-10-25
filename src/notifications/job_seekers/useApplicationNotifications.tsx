@@ -15,7 +15,7 @@ import type {
 
 export type ApplicationNotification = Pick<
   DbJobSeekerApplicationNotification,
-  'id' | 'created_at' | 'type' | 'status'
+  'id' | 'created_at' | 'application_id' | 'type' | 'status'
 > & {
   company: Pick<DbCompany, 'id' | 'name'>;
   job: Pick<DbJob, 'id' | 'title'>;
@@ -48,7 +48,7 @@ const useApplicationNotifications = (
       let q = supabase
         .from('job_seeker_application_notifications')
         .select(
-          `id, created_at, type, status,
+          `id, created_at, application_id, type, status,
           applications!inner(
             jobs!inner(id, title,
               companies!inner(id, name)
@@ -85,7 +85,14 @@ const useApplicationNotifications = (
   const notifications: Array<ApplicationNotification> | undefined =
     useMemo(() => {
       return notificationsData?.data?.map((notificationData) => ({
-        ..._.pick(notificationData, 'id', 'created_at', 'type', 'status'),
+        ..._.pick(
+          notificationData,
+          'id',
+          'created_at',
+          'application_id',
+          'type',
+          'status'
+        ),
         company: notificationData.applications.jobs.companies,
         job: _.pick(notificationData.applications.jobs, 'id', 'title')
       }));

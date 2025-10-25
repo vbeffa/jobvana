@@ -2,9 +2,9 @@ import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { FaEnvelope, FaEnvelopeOpen } from 'react-icons/fa6';
 import { MdArchive, MdUnarchive } from 'react-icons/md';
+import ApplicationLink from '../../applications/ApplicationLink';
 import Status from '../../applications/Status';
 import CompanyLink from '../../companies/CompanyLink';
-import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import type { ApplicationNotification } from '../../notifications/job_seekers/useApplicationNotifications';
@@ -124,11 +124,11 @@ const NotificationsTable = ({
                 />
               </div>
             </th>
-            <th className="w-[15%]">Date</th>
-            <th>Company</th>
-            <th>Job</th>
-            <th className="w-[18%]">Notification</th>
-            <th className="w-[12%]">Actions</th>
+            <th className="w-[10%]">Date</th>
+            <th className="w-[20%]">Company</th>
+            <th className="min-w-[25%]">Application</th>
+            <th className="w-[12%]">Status</th>
+            <th className="w-[10%]">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -177,7 +177,10 @@ const NotificationsTable = ({
               </td>
               <td>
                 <div className="px-2">
-                  <JobLink {...notification.job} />
+                  <ApplicationLink
+                    applicationId={notification.application_id}
+                    jobTitle={notification.job.title}
+                  />
                 </div>
               </td>
               <td>

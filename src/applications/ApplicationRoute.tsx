@@ -8,10 +8,12 @@ const ApplicationRoute = () => {
   const userType = getUserType();
 
   return (
-    <>
-      {userType === 'job_seeker' && <JobSeekerApplicationDetails id={id} />}
-      {userType === 'company' && <CompanyApplicationDetails id={id} />}
-    </>
+    <div className="flex justify-center mb-4">
+      <div className="border-[0.5px] border-blue-400 rounded-lg w-[75%] overflow-hidden">
+        {userType === 'job_seeker' && <JobSeekerApplicationDetails id={id} />}
+        {userType === 'company' && <CompanyApplicationDetails id={id} />}
+      </div>
+    </div>
   );
 };
 
