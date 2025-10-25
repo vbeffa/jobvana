@@ -29,13 +29,11 @@ import { apply, hide, save, unsave } from './utils';
 const JobDetails = ({
   id,
   jobSeeker,
-  onUpdateJob,
-  showActionMenu = true
+  onUpdateJob
 }: {
   id: number;
   jobSeeker: JobSeeker;
   onUpdateJob?: (action: 'hide' | 'save' | 'unsave') => void;
-  showActionMenu?: boolean;
 }) => {
   const {
     job,
@@ -215,89 +213,85 @@ const JobDetails = ({
         {isSaving && <Modal type="updating" />}
         {error && <JobvanaError error={error} />}
       </div>
-      {showActionMenu && (
-        <ActionMenuContainer>
-          <div className="flex flex-row gap-1 items-center text-sm">
-            <FaWrench />
-            Job ID: {job.id}
-            <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
-            <FaRocket />
-            Posted:
-            <div className="flex flex-row gap-0 items-center">
-              {new Date(job.created_at).toLocaleDateString()}
-            </div>
-            {job.interviewProcess && (
-              <>
-                <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
-                <FaGripLines />
-                Pipeline: {job.activeApplicationCount} /{' '}
-                {job.interviewProcess.pipeline_size}
-              </>
-            )}
+      <ActionMenuContainer>
+        <div className="flex flex-row gap-1 items-center text-sm">
+          <FaWrench />
+          Job ID: {job.id}
+          <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+          <FaRocket />
+          Posted:
+          <div className="flex flex-row gap-0 items-center">
+            {new Date(job.created_at).toLocaleDateString()}
           </div>
-          {application === null ? (
-            <div className="flex flex-row gap-2 items-center">
-              <div className="text-sm text-gray-400 content-center">
-                {noInterviewProcess && <>Company has no interview process</>}
-                {pipelineLimitReached && (
-                  <>Company pipeline size limit reached</>
-                )}
-                {resumes?.length === 0 && (
-                  <>Please upload a resume to apply for this job</>
-                )}
-              </div>
-              {!applyDisabled && (
-                <div className="flex flex-row gap-1 text-sm items-center">
-                  {!job.isSaved && (
-                    <div className="flex flex-row gap-1 items-center">
-                      <FaEyeSlash
-                        className="hover:text-blue-400 cursor-pointer"
-                        onClick={() => onHide(false)}
-                      />
-                      <FaTrash
-                        className="hover:text-blue-400 cursor-pointer"
-                        onClick={() => onHide(true)}
-                      />
-                    </div>
-                  )}
-                  {job.isSaved ? (
-                    <FaFloppyDisk
-                      className="cursor-pointer font-bold text-blue-700 hover:text-blue-600"
-                      onClick={onUnsave}
+          {job.interviewProcess && (
+            <>
+              <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+              <FaGripLines />
+              Pipeline: {job.activeApplicationCount} /{' '}
+              {job.interviewProcess.pipeline_size}
+            </>
+          )}
+        </div>
+        {application === null ? (
+          <div className="flex flex-row gap-2 items-center">
+            <div className="text-sm text-gray-400 content-center">
+              {noInterviewProcess && <>Company has no interview process</>}
+              {pipelineLimitReached && <>Company pipeline size limit reached</>}
+              {resumes?.length === 0 && (
+                <>Please upload a resume to apply for this job</>
+              )}
+            </div>
+            {!applyDisabled && (
+              <div className="flex flex-row gap-1 text-sm items-center">
+                {!job.isSaved && (
+                  <div className="flex flex-row gap-1 items-center">
+                    <FaEyeSlash
+                      className="hover:text-blue-400 cursor-pointer"
+                      onClick={() => onHide(false)}
                     />
-                  ) : (
-                    <FaFloppyDisk
-                      className="cursor-pointer hover:text-blue-400"
-                      onClick={onSave}
+                    <FaTrash
+                      className="hover:text-blue-400 cursor-pointer"
+                      onClick={() => onHide(true)}
                     />
-                  )}
-                  {/* <FaPaperPlane
+                  </div>
+                )}
+                {job.isSaved ? (
+                  <FaFloppyDisk
+                    className="cursor-pointer font-bold text-blue-700 hover:text-blue-600"
+                    onClick={onUnsave}
+                  />
+                ) : (
+                  <FaFloppyDisk
+                    className="cursor-pointer hover:text-blue-400"
+                    onClick={onSave}
+                  />
+                )}
+                {/* <FaPaperPlane
                   className="cursor-pointer hover:text-blue-400"
                   onClick={onApply}
                 /> */}
+              </div>
+            )}
+          </div>
+        ) : undefined}
+        {application ? (
+          <div className="flex items-center">
+            <Link
+              to="/jobvana/applications/$id"
+              params={{ id: application.id.toString() }}
+            >
+              <div className="flex flex-row gap-1 text-sm">
+                <div className="content-center">
+                  <FaPaperPlane />
                 </div>
-              )}
-            </div>
-          ) : undefined}
-          {application ? (
-            <div className="flex items-center">
-              <Link
-                to="/jobvana/applications/$id"
-                params={{ id: application.id.toString() }}
-              >
-                <div className="flex flex-row gap-1 text-sm">
-                  <div className="content-center">
-                    <FaPaperPlane />
-                  </div>
-                  Applied{' '}
-                  {new Date(application.created_at).toLocaleDateString()}
-                </div>
-              </Link>
-            </div>
-          ) : undefined}
-        </ActionMenuContainer>
-      )}
-      <div className={showActionMenu ? 'px-4 mt-2' : ''}>
+                Applied {new Date(application.created_at).toLocaleDateString()}
+              </div>
+            </Link>
+          </div>
+        ) : undefined}
+      </ActionMenuContainer>
+
+      <div className="px-4 mt-2">
         <Section
           title={
             <div className="flex justify-between">

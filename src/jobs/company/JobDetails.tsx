@@ -10,14 +10,12 @@ const JobDetails = ({
   company,
   jobId,
   isNew = false,
-  showActionMenu = true,
   onFinishUpdate,
   onCancelNewJob
 }: {
   company: Company;
   jobId: number;
   isNew?: boolean;
-  showActionMenu?: boolean;
   onFinishUpdate?: () => Promise<void>;
   onCancelNewJob?: () => void;
 }) => {
@@ -75,7 +73,6 @@ const JobDetails = ({
         job={myJob}
         isNew={isNew}
         addresses={addresses ?? []}
-        showActionMenu={showActionMenu}
         onStartUpdate={() => {
           setUpdating(true);
         }}
