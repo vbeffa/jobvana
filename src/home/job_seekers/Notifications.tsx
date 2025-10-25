@@ -5,7 +5,13 @@ import PageNav from '../../PageNav';
 import type { Paging } from '../../types';
 import NotificationsTable from './NotificationsTable';
 
-const Notifications = ({ onUpdate }: { onUpdate: () => void }) => {
+const Notifications = ({
+  jobSeekerId,
+  onUpdate
+}: {
+  jobSeekerId: number;
+  onUpdate: () => void;
+}) => {
   const [notificationsTab, setNotificationsTab] = useState<
     'current' | 'archived'
   >('current');
@@ -34,7 +40,11 @@ const Notifications = ({ onUpdate }: { onUpdate: () => void }) => {
     isPending: isCurrentNotificationsPending,
     isPlaceholderData: isCurrentNotificationsPlaceholderData,
     refetch: refetchCurrentNotifications
-  } = useApplicationNotifications('current', currentNotificationsPaging);
+  } = useApplicationNotifications(
+    jobSeekerId,
+    'current',
+    currentNotificationsPaging
+  );
 
   const {
     notifications: archivedNotifications,
@@ -42,7 +52,11 @@ const Notifications = ({ onUpdate }: { onUpdate: () => void }) => {
     isPending: isArchivedNotificationsPending,
     isPlaceholderData: isArchivedNotificationsPlaceholderData,
     refetch: refetchArchivedNotifications
-  } = useApplicationNotifications('archived', archivedNotificationsPaging);
+  } = useApplicationNotifications(
+    jobSeekerId,
+    'archived',
+    archivedNotificationsPaging
+  );
 
   return (
     <div className="flex flex-col h-full">

@@ -31,6 +31,7 @@ export type ApplicationNotifications = {
 };
 
 const useApplicationNotifications = (
+  jobSeekerId: number,
   status: 'unread' | 'current' | 'archived',
   paging: Paging
 ): ApplicationNotifications => {
@@ -41,20 +42,23 @@ const useApplicationNotifications = (
     error,
     refetch
   } = useQuery({
-    queryKey: ['notifications', status, paging],
+    queryKey: ['notifications', jobSeekerId, status, paging],
     queryFn: async () => {
       const { page, pageSize } = paging;
-      let q = supabase.from('job_seeker_application_notifications').select(
-        `id, created_at, type, status,
+      let q = supabase
+        .from('job_seeker_application_notifications')
+        .select(
+          `id, created_at, type, status,
           applications!inner(
             jobs!inner(id, title,
               companies!inner(id, name)
             )
           )`,
-        {
-          count: 'exact'
-        }
-      );
+          {
+            count: 'exact'
+          }
+        )
+        .filter('applications.job_seeker_id', 'eq', jobSeekerId);
 
       if (status === 'current') {
         q = q.not('status', 'eq', 'archived');

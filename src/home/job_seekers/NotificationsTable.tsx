@@ -28,9 +28,6 @@ const NotificationsTable = ({
   );
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
-  // console.log('notifications:', notifications);
-  // console.log('selected:', selected);
-  console.log(allSelected);
 
   useEffect(() => {
     if (allSelected) {

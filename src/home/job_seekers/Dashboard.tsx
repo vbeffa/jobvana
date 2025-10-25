@@ -25,13 +25,13 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
 
   const paging = {
     page: 1,
-    pageSize: 10
+    pageSize: 1
   };
 
   const {
     count: unreadNotificationsCount,
     refetch: refetchUnreadNotificationsCount
-  } = useApplicationNotifications('unread', paging);
+  } = useApplicationNotifications(jobSeeker.id, 'unread', paging);
   const { count: savedJobsCount } = useMarkedJobs(
     jobSeeker.id,
     'saved',
@@ -118,7 +118,10 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         <ResourceDetailsContainer>
           <>
             {card === 'inbox' && (
-              <Notifications onUpdate={refetchUnreadNotificationsCount} />
+              <Notifications
+                jobSeekerId={jobSeeker.id}
+                onUpdate={refetchUnreadNotificationsCount}
+              />
             )}
             {card === 'saved_searches' && <>Saved Searches</>}
             {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
