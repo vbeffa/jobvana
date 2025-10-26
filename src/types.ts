@@ -7,6 +7,16 @@ import type { SearchFilters as CompanyJobSearchFilters } from './jobs/company/us
 import type { SearchFilters as JobSeekerJobSearchFilters } from './jobs/job_seekers/useJobs';
 import type { SearchFilters as SkillSearchFilters } from './skills/useSkills';
 
+export const PAGES = [
+  'home',
+  'jobs',
+  'companies',
+  'applications',
+  'account',
+  'about'
+] as const;
+export type CurrPage = (typeof PAGES)[number];
+
 export type Paging = { page: number; pageSize: number };
 export type Params<
   SearchFilters extends

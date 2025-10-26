@@ -1,3 +1,5 @@
+import { PAGES, type CurrPage } from './types';
+
 export type CreatedAt = {
   created_at: string;
 };
@@ -29,4 +31,16 @@ const formatCurrency = currencyFormatter.format;
 
 const formatDate = dateFormatter.format;
 
-export { dateComparator, descDateComparator, formatCurrency, formatDate };
+// see https://stackoverflow.com/a/69701931
+const isValidPage = (page: string): page is CurrPage => {
+  const s: readonly string[] = PAGES; // okay
+  return s.includes(page); // okay
+};
+
+export {
+  dateComparator,
+  descDateComparator,
+  formatCurrency,
+  formatDate,
+  isValidPage
+};

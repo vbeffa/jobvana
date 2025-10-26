@@ -3,7 +3,11 @@ import { type SearchFilters as CompanySearchFilters } from './companies/job_seek
 import { INITIAL_SEARCH_FILTERS as INITIAL_COMPANY_SEARCH_FILTERS } from './companies/utils';
 import { type SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
 import { INITIAL_SEARCH_FILTERS as INITIAL_JOB_SEARCH_FILTERS } from './jobs/utils';
-import type { Company as DbCompany, JobSeeker as DbJobSeeker } from './types';
+import type {
+  CurrPage,
+  Company as DbCompany,
+  JobSeeker as DbJobSeeker
+} from './types';
 
 export type UserType = 'company' | 'job_seeker';
 
@@ -18,13 +22,6 @@ export type CompanyContextProps = {
 export type JobSeekerContextProps = {
   jobSeeker?: JobSeeker | null;
   setJobSeeker: (jobSeeker: JobSeeker) => void;
-  // companiesContext: CompanySearchFilters & {
-  //   page: number;
-  //   companyId?: number;
-  // };
-  // setCompaniesContext: (
-  //   companiesContext: JobSeekerContextProps['companiesContext']
-  // ) => void;
   companySearchFilters: CompanySearchFilters;
   setCompanySearchFilters: Dispatch<SetStateAction<CompanySearchFilters>>;
   companyNav: {
@@ -32,11 +29,6 @@ export type JobSeekerContextProps = {
     companyId?: number;
   };
   setCompanyNav: Dispatch<SetStateAction<JobSeekerContextProps['companyNav']>>;
-  // jobsContext: JobSearchFilters & {
-  //   page: number;
-  //   jobId?: number;
-  // };
-  // setJobsContext: (jobsContext: JobSeekerContextProps['jobsContext']) => void;
   jobSearchFilters: JobSearchFilters;
   setJobSearchFilters: Dispatch<SetStateAction<JobSearchFilters>>;
   jobNav: {
@@ -47,8 +39,8 @@ export type JobSeekerContextProps = {
 };
 
 export type JobvanaContextProps = {
-  currPage: string;
-  setCurrPage: (page: string) => void;
+  currPage: CurrPage;
+  setCurrPage: (page: CurrPage) => void;
   loggedIn?: boolean;
   loggingOut?: boolean;
   logout: () => Promise<void>;

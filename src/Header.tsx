@@ -11,6 +11,8 @@ import {
 } from 'react-icons/fa6';
 import { getUserType } from './auth/utils';
 import { CompanyContext, JobSeekerContext, JobvanaContext } from './Context';
+import { type CurrPage } from './types';
+import { isValidPage } from './utils';
 
 export const HEADER_HEIGHT = 16;
 export const HEADER_MARGIN_BOTTOM = 4;
@@ -29,7 +31,13 @@ const Header = () => {
     if (trimmed.includes('/')) {
       trimmed = trimmed.substring(0, trimmed.indexOf('/'));
     }
-    setCurrPage(trimmed || 'home');
+    if (trimmed === '') {
+      trimmed = 'home';
+    }
+    if (!isValidPage(trimmed)) {
+      return;
+    }
+    setCurrPage(trimmed);
   }, [location.pathname, setCurrPage]);
 
   // for single resources (e.g. job details), we want to both underline the header item ('Jobs') and link to all resources (jobs)
@@ -48,7 +56,7 @@ const Header = () => {
     icon,
     onClick
   }: {
-    page: string;
+    page?: CurrPage;
     to: LinkProps['to'];
     params?: LinkProps['params'];
     title: string;
@@ -154,7 +162,6 @@ const Header = () => {
             icon: <FaBook />
           })}
           {linkHeaderItem({
-            page: '',
             to: '/jobvana',
             title: 'Log out',
             icon: <FaArrowRightToBracket />,
