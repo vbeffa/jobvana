@@ -193,13 +193,13 @@ const NotificationsTable = ({
                   {notification.status !== 'archived' && (
                     <>
                       {notification.status === 'unread' && (
-                        <FaEnvelope
+                        <FaEnvelopeOpen
                           className="hover:text-blue-400 cursor-pointer"
                           onClick={() => onMarkRead(notification.id)}
                         />
                       )}
                       {notification.status === 'read' && (
-                        <FaEnvelopeOpen
+                        <FaEnvelope
                           className="hover:text-blue-400 cursor-pointer"
                           onClick={() => onMarkUnread(notification.id)}
                         />
