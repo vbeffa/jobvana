@@ -52,7 +52,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
             }
           }}
         >
-          Saved Jobs ({savedJobsCount ?? '..'})
+          Saved ({savedJobsCount ?? '..'})
         </div>
         <div
           className={`${jobsTab === 'hidden' ? 'border-b-[4px]' : ''} cursor-pointer`}
@@ -62,7 +62,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
             }
           }}
         >
-          Hidden Jobs ({hiddenJobsCount ?? '..'})
+          Hidden ({hiddenJobsCount ?? '..'})
         </div>
       </div>
       <div className="h-full">

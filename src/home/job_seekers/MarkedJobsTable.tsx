@@ -70,7 +70,7 @@ const MarkedJobsTable = ({
             <th>Company</th>
             <th>Title</th>
             <th>Posted</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>

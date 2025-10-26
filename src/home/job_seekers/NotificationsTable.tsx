@@ -115,6 +115,9 @@ const NotificationsTable = ({
       {isUpdating && <Modal type="updating" />}
       {updateError && <JobvanaError error={updateError} />}
       <div className="w-full border-[0.5px] border-blue-400 rounded-lg flex justify-end mb-1">
+        <div className="text-sm text-gray-400 content-center pr-2">
+          Select notifications to perform bulk actions
+        </div>
         <div
           className={`w-20 border-l-[0.5px] border-blue-400 py-1 flex justify-center flex-row gap-1 items-center ${noneSelected ? 'text-gray-500' : 'text-blue-500'}`}
         >
