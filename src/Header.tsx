@@ -1,5 +1,5 @@
 import { Link, useLocation, type LinkProps } from '@tanstack/react-router';
-import { useContext, useEffect, type JSX } from 'react';
+import { useContext, useEffect, useMemo, type JSX } from 'react';
 import {
   FaArrowRightToBracket,
   FaBook,
@@ -32,12 +32,48 @@ const Header = () => {
     setCurrPage(trimmed || 'home');
   }, [location.pathname, setCurrPage]);
 
+  // for single resources (e.g. job details), we want to both underline the header item ('Jobs') and link to all resources (jobs)
+  const isSingleResource = useMemo(
+    () => location.pathname.substring(9).includes('/'),
+    [location.pathname]
+  );
+
   const userType = getUserType();
 
-  const activeHeaderItem = (title: string, icon?: JSX.Element) => {
-    return (
+  const linkHeaderItem = ({
+    page,
+    to,
+    params,
+    title,
+    icon,
+    onClick
+  }: {
+    page: string;
+    to: LinkProps['to'];
+    params?: LinkProps['params'];
+    title: string;
+    icon?: JSX.Element;
+    onClick?: () => void;
+  }) => {
+    const underlineStyling =
+      'border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center';
+
+    return page !== currPage || (page === currPage && isSingleResource) ? (
+      <Link to={to} params={params} onClick={onClick}>
+        <div
+          className={
+            page === currPage && isSingleResource ? underlineStyling : ''
+          }
+        >
+          <div className="flex flex-row gap-1">
+            {icon && <div className="content-center">{icon}</div>}
+            {title}
+          </div>
+        </div>
+      </Link>
+    ) : (
       <div>
-        <div className="border-b-3 border-b-blue-600 pt-[3px] h-16 w-full content-center">
+        <div className={underlineStyling}>
           <div className="flex flex-row gap-1">
             {icon && <div className="content-center">{icon}</div>}
             {title}
@@ -47,109 +83,78 @@ const Header = () => {
     );
   };
 
-  const linkHeaderItem = ({
-    to,
-    params,
-    title,
-    icon,
-    onClick
-  }: {
-    to: LinkProps['to'];
-    params?: LinkProps['params'];
-    title: string;
-    icon?: JSX.Element;
-    onClick?: () => void;
-  }) => {
-    return (
-      <Link to={to} params={params} onClick={onClick}>
-        <div className="flex flex-row gap-1">
-          {icon && <div className="content-center">{icon}</div>}
-          {title}
-        </div>
-      </Link>
-    );
-  };
-
   return (
     <div
       className={`bg-blue-300 w-[100%] overflow-auto whitespace-nowrap h-${HEADER_HEIGHT} items-center justify-center mb-${HEADER_MARGIN_BOTTOM} top-0 left-0 sticky z-999 flex gap-[2%]`}
     >
-      {currPage !== 'home' &&
-        linkHeaderItem({ to: '/jobvana', title: 'Home', icon: <FaHouse /> })}
-      {currPage === 'home' && activeHeaderItem('Home', <FaHouse />)}
+      {linkHeaderItem({
+        page: 'home',
+        to: '/jobvana',
+        title: 'Home',
+        icon: <FaHouse />
+      })}
       {loggedIn && (
         <>
           {userType === 'company' && company !== null && (
             <>
-              {currPage !== 'companies' &&
-                linkHeaderItem({
-                  to: company ? '/jobvana/companies/$id' : '.',
-                  params: company ? { id: company.id.toString() } : undefined,
-                  title: 'My Company',
-                  icon: <FaBuilding />
-                })}
-              {currPage === 'companies' &&
-                activeHeaderItem('My Company', <FaBuilding />)}
-              {currPage !== 'jobs' &&
-                linkHeaderItem({
-                  to: '/jobvana/jobs',
-                  title: 'My Jobs',
-                  icon: <FaWrench />
-                })}
-              {currPage === 'jobs' && activeHeaderItem('My Jobs', <FaWrench />)}
-              {currPage !== 'applications' &&
-                linkHeaderItem({
-                  to: '/jobvana/applications',
-                  title: 'Job Applications',
-                  icon: <FaPaperPlane />
-                })}
-              {currPage === 'applications' &&
-                activeHeaderItem('Job Applications', <FaPaperPlane />)}
+              {linkHeaderItem({
+                page: 'companies',
+                to: company ? '/jobvana/companies/$id' : '.',
+                params: company ? { id: company.id.toString() } : undefined,
+                title: 'My Company',
+                icon: <FaBuilding />
+              })}
+              {linkHeaderItem({
+                page: 'jobs',
+                to: '/jobvana/jobs',
+                title: 'My Jobs',
+                icon: <FaWrench />
+              })}
+              {linkHeaderItem({
+                page: 'applications',
+                to: '/jobvana/applications',
+                title: 'Job Applications',
+                icon: <FaPaperPlane />
+              })}
             </>
           )}
           {userType === 'job_seeker' && jobSeeker !== null && (
             <>
-              {currPage !== 'jobs' &&
-                linkHeaderItem({
-                  to: '/jobvana/jobs',
-                  title: 'Jobs',
-                  icon: <FaWrench />
-                })}
-              {currPage === 'jobs' && activeHeaderItem('Jobs', <FaWrench />)}
-              {currPage !== 'companies' &&
-                linkHeaderItem({
-                  to: '/jobvana/companies',
-                  title: 'Companies',
-                  icon: <FaBuilding />
-                })}
-              {currPage === 'companies' &&
-                activeHeaderItem('Companies', <FaBuilding />)}
-              {currPage !== 'applications' &&
-                linkHeaderItem({
-                  to: '/jobvana/applications',
-                  title: 'My Applications',
-                  icon: <FaPaperPlane />
-                })}
-              {currPage === 'applications' &&
-                activeHeaderItem('My Applications', <FaPaperPlane />)}
+              {linkHeaderItem({
+                page: 'jobs',
+                to: '/jobvana/jobs',
+                title: 'Jobs',
+                icon: <FaWrench />
+              })}
+              {linkHeaderItem({
+                page: 'companies',
+                to: '/jobvana/companies',
+                title: 'Companies',
+                icon: <FaBuilding />
+              })}
+              {linkHeaderItem({
+                page: 'applications',
+                to: '/jobvana/applications',
+                title: 'My Applications',
+                icon: <FaPaperPlane />
+              })}
             </>
           )}
-          {currPage !== 'account' &&
-            linkHeaderItem({
-              to: '/jobvana/account',
-              title: 'Account',
-              icon: <FaUser />
-            })}
-          {currPage === 'account' && activeHeaderItem('Account', <FaUser />)}
-
-          {currPage !== 'about' &&
-            linkHeaderItem({
-              to: '/jobvana/about',
-              title: 'About',
-              icon: <FaBook />
-            })}
-          {currPage === 'about' && activeHeaderItem('About', <FaBook />)}
           {linkHeaderItem({
+            page: 'account',
+            to: '/jobvana/account',
+            title: 'Account',
+            icon: <FaUser />
+          })}
+
+          {linkHeaderItem({
+            page: 'about',
+            to: '/jobvana/about',
+            title: 'About',
+            icon: <FaBook />
+          })}
+          {linkHeaderItem({
+            page: '',
             to: '/jobvana',
             title: 'Log out',
             icon: <FaArrowRightToBracket />,
