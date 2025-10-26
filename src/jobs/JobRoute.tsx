@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
+import ResourceContainer from '../containers/ResourceContainer';
 import { CompanyContext, JobSeekerContext } from '../Context';
 import { Route } from '../routes/jobvana.jobs.$id';
 import CompanyJobDetails from './company/JobDetails';
@@ -12,16 +13,14 @@ const JobRoute = () => {
   const { company } = useContext(CompanyContext);
 
   return (
-    <div className="flex justify-center mb-4">
-      <div className="border-[0.5px] border-blue-400 rounded-lg w-[75%] overflow-hidden">
-        {userType === 'job_seeker' && jobSeeker && (
-          <JobSeekerJobDetails id={id} jobSeeker={jobSeeker} />
-        )}
-        {userType === 'company' && company && (
-          <CompanyJobDetails company={company} jobId={id} />
-        )}
-      </div>
-    </div>
+    <ResourceContainer>
+      {userType === 'job_seeker' && jobSeeker && (
+        <JobSeekerJobDetails id={id} jobSeeker={jobSeeker} />
+      )}
+      {userType === 'company' && company && (
+        <CompanyJobDetails company={company} jobId={id} />
+      )}
+    </ResourceContainer>
   );
 };
 

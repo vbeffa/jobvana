@@ -1,3 +1,4 @@
+import ResourceContainer from '../containers/ResourceContainer';
 import { Route } from '../routes/jobvana.skill_categories.$id.index';
 import SkillCategoryDetails from './SkillCategoryDetails';
 
@@ -5,9 +6,9 @@ const SkillCategoryRoute = () => {
   const { skillCategoryId } = Route.useLoaderData();
 
   return (
-    <div className="mx-4 flex flex-col gap-2">
+    <ResourceContainer>
       <SkillCategoryDetails id={skillCategoryId} />
-    </div>
+    </ResourceContainer>
   );
 };
 

@@ -181,7 +181,7 @@ const Companies = () => {
             })}
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           {selectedCompanyId ? (
             <CompanyDetails id={selectedCompanyId} />
           ) : undefined}

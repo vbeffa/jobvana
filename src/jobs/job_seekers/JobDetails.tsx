@@ -290,7 +290,6 @@ const JobDetails = ({
           </div>
         ) : undefined}
       </ActionMenuContainer>
-
       <div className="px-4 mt-2">
         <Section
           title={

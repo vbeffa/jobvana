@@ -10,7 +10,7 @@ const RoleDetails = ({ id }: { id: number }) => {
   }
 
   return (
-    <>
+    <div className="px-4 mt-2">
       <Section title={role.name}>{role.description}</Section>
       <Section title="Reference" isLast={true}>
         {role.reference && (
@@ -19,7 +19,7 @@ const RoleDetails = ({ id }: { id: number }) => {
           </Link>
         )}
       </Section>
-    </>
+    </div>
   );
 };
 

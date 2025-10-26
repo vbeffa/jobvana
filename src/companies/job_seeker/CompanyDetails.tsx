@@ -27,7 +27,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
   const hq = findHeadquarters(company);
 
   return (
-    <>
+    <div className="px-4 mt-2">
       {isPlaceholderData && <Modal type="loading" />}
       <Section title={company.name}>
         <div className="flex flex-row gap-1">
@@ -84,7 +84,7 @@ const CompanyDetails = ({ id }: { id?: number }) => {
           </div>
         ) : null}
       </Section>
-    </>
+    </div>
   );
 };
 

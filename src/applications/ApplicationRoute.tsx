@@ -1,4 +1,5 @@
 import { getUserType } from '../auth/utils';
+import ResourceContainer from '../containers/ResourceContainer';
 import { Route } from '../routes/jobvana.applications.$id';
 import CompanyApplicationDetails from './company/ApplicationDetails';
 import JobSeekerApplicationDetails from './job_seeker/ApplicationDetails';
@@ -8,12 +9,10 @@ const ApplicationRoute = () => {
   const userType = getUserType();
 
   return (
-    <div className="flex justify-center mb-4">
-      <div className="border-[0.5px] border-blue-400 rounded-lg w-[75%] overflow-hidden">
-        {userType === 'job_seeker' && <JobSeekerApplicationDetails id={id} />}
-        {userType === 'company' && <CompanyApplicationDetails id={id} />}
-      </div>
-    </div>
+    <ResourceContainer>
+      {userType === 'job_seeker' && <JobSeekerApplicationDetails id={id} />}
+      {userType === 'company' && <CompanyApplicationDetails id={id} />}
+    </ResourceContainer>
   );
 };
 

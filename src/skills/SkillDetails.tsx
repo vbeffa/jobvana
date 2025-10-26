@@ -25,7 +25,7 @@ const SkillDetails = ({ id }: { id: number }) => {
   // const jobs = jobsForSkill(skill.id);
 
   return (
-    <>
+    <div className="px-4 mt-2">
       {isPlaceholderData && <Modal type="loading" />}
       <Section
         title={
@@ -66,7 +66,7 @@ const SkillDetails = ({ id }: { id: number }) => {
           </a>
         )}
       </Section>
-    </>
+    </div>
   );
 };
 

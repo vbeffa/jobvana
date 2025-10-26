@@ -1,3 +1,4 @@
+import ResourceContainer from '../containers/ResourceContainer';
 import { Route } from '../routes/jobvana.roles.$id';
 import RoleDetails from './RoleDetails';
 
@@ -5,9 +6,9 @@ const RoleRoute = () => {
   const { id } = Route.useLoaderData();
 
   return (
-    <div className="mx-4 flex flex-col gap-2">
+    <ResourceContainer>
       <RoleDetails id={id} />
-    </div>
+    </ResourceContainer>
   );
 };
 

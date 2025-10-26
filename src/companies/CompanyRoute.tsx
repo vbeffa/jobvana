@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { getUserType } from '../auth/utils';
+import ResourceContainer from '../containers/ResourceContainer';
 import { CompanyContext } from '../Context';
 import { Route } from '../routes/jobvana.companies.$id';
 import MyCompany from './company/MyCompany';
@@ -19,13 +20,9 @@ const CompanyRoute = () => {
     <>
       {userType === 'company' && company && <MyCompany company={company} />}
       {userType === 'job_seeker' && (
-        <div className="flex justify-center mb-4">
-          <div className="border-[0.5px] border-blue-400 rounded-lg overflow-hidden w-[75%]">
-            <div className="px-4 pt-2">
-              <CompanyDetails id={id} />
-            </div>
-          </div>
-        </div>
+        <ResourceContainer>
+          <CompanyDetails id={id} />
+        </ResourceContainer>
       )}
     </>
   );

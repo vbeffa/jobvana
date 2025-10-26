@@ -26,7 +26,7 @@ const SkillVersionDetails = ({
   // const jobs = jobsForSkill(skillVersion.skill_id);
 
   return (
-    <>
+    <div className="px-4 mt-2">
       {error && <JobvanaError error={error} />}
       {error2 && <JobvanaError error={error2} />}
       <h2>
@@ -53,7 +53,7 @@ const SkillVersionDetails = ({
           </a>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
