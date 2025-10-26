@@ -15,7 +15,7 @@ const ResourceContainer = ({
   return (
     <div className="flex justify-center mb-4">
       <div
-        className={`border-[0.5px] border-blue-300 ${height} rounded-lg w-[85%] overflow-scroll`}
+        className={`border-[0.5px] border-blue-300 ${height} rounded-lg w-[85%] overflow-hidden`}
       >
         {children}
       </div>

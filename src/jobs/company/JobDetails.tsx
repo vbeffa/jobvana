@@ -64,7 +64,7 @@ const JobDetails = ({
   }
 
   return (
-    <div>
+    <>
       <div className="relative top-10">
         {isPlaceholderData && !isNew && <Modal type="loading" />}
         {updating && <Modal type={isNew ? 'saving' : 'updating'} />}
@@ -85,7 +85,7 @@ const JobDetails = ({
         }}
         onCancelNewJob={() => onCancelNewJob && onCancelNewJob()}
       />
-    </div>
+    </>
   );
 };
 

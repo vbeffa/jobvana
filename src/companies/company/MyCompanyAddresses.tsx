@@ -22,7 +22,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   }
 
   return (
-    <div>
+    <>
       <ActionMenuContainer justify="justify-end">
         {!newAddress ? (
           <div className="pt-1.5 flex justify-start">
@@ -35,36 +35,38 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}
-      <div className="px-4 pt-4 grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
-        {addresses.map((address, idx) => (
-          <div key={idx}>
-            <MyCompanyAddress
-              address={address}
-              idx={idx}
+      <div className="h-full px-4 pb-8 pt-4 overflow-auto ">
+        <div className="grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
+          {addresses.map((address, idx) => (
+            <div key={idx}>
+              <MyCompanyAddress
+                address={address}
+                idx={idx}
+                setError={setError}
+                onUpdate={async () => {
+                  setUpdating(true);
+                  await refetch();
+                  setUpdating(false);
+                }}
+              />
+            </div>
+          ))}
+          {newAddress && (
+            <MyCompanyNewAddress
+              companyId={companyId}
               setError={setError}
-              onUpdate={async () => {
+              onCreate={async () => {
+                setNewAddress(false);
                 setUpdating(true);
                 await refetch();
                 setUpdating(false);
               }}
+              onCancel={() => setNewAddress(false)}
             />
-          </div>
-        ))}
-        {newAddress && (
-          <MyCompanyNewAddress
-            companyId={companyId}
-            setError={setError}
-            onCreate={async () => {
-              setNewAddress(false);
-              setUpdating(true);
-              await refetch();
-              setUpdating(false);
-            }}
-            onCancel={() => setNewAddress(false)}
-          />
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

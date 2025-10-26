@@ -290,7 +290,7 @@ const JobDetails = ({
           </div>
         ) : undefined}
       </ActionMenuContainer>
-      <div className="px-4 mt-2">
+      <div className="h-full px-4 pb-2 pt-2 overflow-auto">
         <Section
           title={
             <div className="flex justify-between">

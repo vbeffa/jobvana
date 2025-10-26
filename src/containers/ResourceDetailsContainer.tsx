@@ -9,7 +9,7 @@ const ResourceDetailsContainer = ({
   children,
   padding = 'px-4 pt-4'
 }: ResourceDetailsContainerProps) => {
-  return <div className={`${padding} w-full overflow-auto`}>{children}</div>;
+  return <div className={`${padding} w-full overflow-hidden`}>{children}</div>;
 };
 
 export default ResourceDetailsContainer;

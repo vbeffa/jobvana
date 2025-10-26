@@ -102,7 +102,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           </div>
         ) : undefined}
       </ActionMenuContainer>
-      <div className="px-4 mt-2">
+      <div className="h-full px-4 pb-6 pt-2 overflow-auto">
         <Section title="Details">
           <div className="flex flex-row">
             <div className="w-[60%]">

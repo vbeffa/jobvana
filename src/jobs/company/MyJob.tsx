@@ -101,9 +101,6 @@ const MyJob = ({
       if (toUpdate.company_address_id === -1) {
         toUpdate.company_address_id = null;
       }
-      // if (updateInterviewProcess) {
-      //   toUpdate.interview_process = company.interview_process;
-      // }
       if (status) {
         toUpdate.status = status;
       }
@@ -328,7 +325,7 @@ const MyJob = ({
   }, [isNew, job.status]);
 
   return (
-    <div>
+    <>
       <ActionMenuContainer>
         <div className="flex flex-row gap-1 items-center text-sm">
           <FaWrench />
@@ -437,39 +434,11 @@ const MyJob = ({
           </div>
         ) : undefined}
       </ActionMenuContainer>
-      <div className="px-4 mt-2 relative">
+      <div className="h-full px-4 pb-8 pt-2 overflow-auto">
         {error && <JobvanaError error={error} />}
-        {/* <EditDeleteButtons
-          type="job"
-          isEditing={isEditing}
-          disabled={saveDisabled}
-          onEdit={() => {
-            setError(undefined);
-            setEditJob(job);
-            setEditJobRoles(job.job_roles);
-            setEditJobSkills(job.job_skills);
-            setIsEditing(true);
-          }}
-          onCancel={() => {
-            if (isNew) {
-              onCancelNewJob();
-            } else {
-              setEditJob(job);
-              setEditJobRoles(job.job_roles);
-              setEditJobSkills(job.job_skills);
-              setIsEditing(false);
-            }
-          }}
-          onDelete={!isNew ? onDelete : undefined}
-          onSave={onSave}
-        /> */}
         <MyJobMain
           job={editJob}
-          // isNew={isNew}
-          // isDraft={job.status === 'draft'}
           setJob={setEditJob}
-          // updateInterviewProcess={updateInterviewProcess}
-          // setUpdateInterviewProcess={setUpdateInterviewProcess}
           addresses={addresses}
           isEditing={isEditing}
         />
@@ -517,7 +486,7 @@ const MyJob = ({
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

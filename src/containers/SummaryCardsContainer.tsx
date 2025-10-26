@@ -2,6 +2,7 @@ import { type JSX } from 'react';
 
 // see comments in ResourcesContainer.tsx
 
+// TODO add property for no page nav
 const SummaryCardsContainer = ({
   children,
   bannerType = 'none'

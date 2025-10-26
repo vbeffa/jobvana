@@ -16,25 +16,12 @@ import { type ToUpdate } from './utils';
 
 export type MyJobMainProps = {
   job: ToUpdate;
-  // isNew: boolean;
-  // isDraft: boolean;
   setJob: React.Dispatch<React.SetStateAction<Job>>;
-  // updateInterviewProcess: boolean;
-  // setUpdateInterviewProcess: React.Dispatch<React.SetStateAction<boolean>>;
   addresses: Array<CompanyAddress>;
   isEditing: boolean;
 };
 
-const MyJobMain = ({
-  job,
-  // isNew,
-  // isDraft,
-  setJob,
-  // updateInterviewProcess,
-  // setUpdateInterviewProcess,
-  addresses,
-  isEditing
-}: MyJobMainProps) => {
+const MyJobMain = ({ job, setJob, addresses, isEditing }: MyJobMainProps) => {
   const minSalary = useMemo(
     () => minJobSalary(job.salary_type),
     [job.salary_type]
@@ -66,14 +53,6 @@ const MyJobMain = ({
           <div>Type</div>
           <div className="flex flex-row">
             <div className="w-[40%]">{jobTypeToString(job.type)}</div>
-            {/* <div className="w-[20%]">Status:</div>
-            <div className="flex flex-row gap-1">
-              <div className="content-center">
-                {job.status === 'draft' && <MdOutlineUnpublished />}
-                {job.status === 'open' && <MdCheckCircleOutline />}
-              </div>
-              {capitalize(job.status)}
-            </div> */}
           </div>
           <div>Salary Type:</div>
           <div className="flex flex-row">
@@ -186,23 +165,6 @@ const MyJobMain = ({
               }));
             }}
           />
-          {/* <div className="flex flex-row gap-1 col-start-2">
-            <div className="">
-              <input
-                id="update_interview_process"
-                type="checkbox"
-                checked={updateInterviewProcess}
-                disabled={isNew}
-                onChange={() => setUpdateInterviewProcess((update) => !update)}
-              />
-            </div>
-            <label htmlFor="update_interview_process">
-              Update interview process{' '}
-              <span className="text-sm">
-                (not available once an application has been submitted)
-              </span>
-            </label>
-          </div> */}
         </>
       )}
     </div>

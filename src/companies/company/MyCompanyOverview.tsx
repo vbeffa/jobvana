@@ -53,7 +53,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   }, [company.id, editCompany, setCompany, setError]);
 
   return (
-    <div className="h-full">
+    <>
       <ActionMenuContainer justify="justify-end">
         <EditDeleteIcons
           isEditing={isEditing}
@@ -77,16 +77,18 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {isSubmitting && <Modal type="updating" />}
-      <div className="px-4 pt-4 relative grid grid-cols-[20%_80%] gap-y-2">
-        {!isEditing && <CompanyOverviewDisplay company={editCompany} />}
-        {isEditing && (
-          <MyCompanyOverviewEdit
-            company={editCompany}
-            setCompany={setEditCompany}
-          />
-        )}
+      <div className="h-full px-4 pb-8 pt-2 overflow-auto ">
+        <div className="relative grid grid-cols-[20%_80%] gap-y-2">
+          {!isEditing && <CompanyOverviewDisplay company={editCompany} />}
+          {isEditing && (
+            <MyCompanyOverviewEdit
+              company={editCompany}
+              setCompany={setEditCompany}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

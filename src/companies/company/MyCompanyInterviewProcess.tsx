@@ -80,7 +80,7 @@ const MyCompanyInterviewProcess = ({
   }, [company, editInterviewProcess, setCompany]);
 
   return (
-    <div>
+    <>
       <ActionMenuContainer>
         {isEditing ? (
           <div className="text-sm content-center">
@@ -111,35 +111,9 @@ const MyCompanyInterviewProcess = ({
           }}
         />
       </ActionMenuContainer>
-      <div className="px-4 mt-4 relative">
+      <div className="h-full px-4 pb-10 pt-4 overflow-auto ">
         {error && <JobvanaError error={error} />}
         {isSubmitting && <Modal type="updating" />}
-        {/* <div className="grid grid-cols-[15%_75%] gap-y-2 relative">
-          <EditDeleteButtons
-            isEditing={isEditing}
-            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-            onEdit={() => {
-              setError(undefined);
-              setEditInterviewProcess(
-                (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-              );
-              setIsEditing(true);
-            }}
-            onCancel={() => {
-              setEditInterviewProcess(
-                (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-              );
-              setIsEditing(false);
-            }}
-            onSave={async () => {
-              if (!confirm('')) {
-                return;
-              }
-              setIsEditing(false);
-              await updateInterviewProcess();
-            }}
-          />
-        </div> */}
         {!isEditing && (
           <InterviewProcessDisplay interviewProcess={editInterviewProcess} />
         )}
@@ -150,7 +124,7 @@ const MyCompanyInterviewProcess = ({
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
 
