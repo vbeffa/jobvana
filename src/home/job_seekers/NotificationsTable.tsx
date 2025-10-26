@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaEnvelope, FaEnvelopeOpen } from 'react-icons/fa6';
 import { MdArchive, MdUnarchive } from 'react-icons/md';
 import ApplicationLink from '../../applications/ApplicationLink';
@@ -17,10 +17,12 @@ import {
 
 const NotificationsTable = ({
   notifications,
-  onUpdate
+  onUpdate,
+  type
 }: {
   notifications: Array<ApplicationNotification>;
   onUpdate: () => void;
+  type: 'current' | 'archived';
 }) => {
   const [allSelected, setAllSelected] = useState(false);
   const [selected, setSelected] = useState<Map<number, boolean>>(
@@ -103,10 +105,40 @@ const NotificationsTable = ({
     [onUpdate]
   );
 
+  const noneSelected = useMemo(
+    () => Array.from(selected.values()).every((selected) => !selected),
+    [selected]
+  );
+
   return (
     <div>
       {isUpdating && <Modal type="updating" />}
       {updateError && <JobvanaError error={updateError} />}
+      <div className="w-full border-[0.5px] border-blue-400 rounded-lg flex justify-end mb-1">
+        <div
+          className={`w-20 border-l-[0.5px] border-blue-400 py-1 flex justify-center flex-row gap-1 items-center ${noneSelected ? 'text-gray-500' : 'text-blue-500'}`}
+        >
+          {type !== 'archived' && (
+            <>
+              <FaEnvelope
+                className={
+                  noneSelected ? '' : `hover:text-blue-400 cursor-pointer`
+                }
+              />
+              <MdArchive
+                className={`text-xl ${noneSelected ? '' : 'hover:text-blue-400 cursor-pointer'}`}
+              />
+            </>
+          )}
+          {type === 'archived' && (
+            <>
+              <MdUnarchive
+                className={`text-xl ${noneSelected ? '' : 'hover:text-blue-400 cursor-pointer'}`}
+              />
+            </>
+          )}
+        </div>
+      </div>
       <table className="w-full">
         <thead>
           <tr>
@@ -128,7 +160,7 @@ const NotificationsTable = ({
             <th className="w-[20%]">Company</th>
             <th className="min-w-[25%]">Application</th>
             <th className="w-[12%]">Status</th>
-            <th className="w-[10%]">Actions</th>
+            <th className="w-20">Actions</th>
           </tr>
         </thead>
         <tbody>

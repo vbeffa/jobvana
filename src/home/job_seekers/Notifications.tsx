@@ -96,6 +96,7 @@ const Notifications = ({
                     refetchCurrentNotifications();
                     refetchArchivedNotifications();
                   }}
+                  type="current"
                 />
                 <PageNav
                   page={currentNotificationsPage}
@@ -129,6 +130,7 @@ const Notifications = ({
                     refetchCurrentNotifications();
                     refetchArchivedNotifications();
                   }}
+                  type="archived"
                 />
                 <PageNav
                   page={archivedNotificationsPage}
