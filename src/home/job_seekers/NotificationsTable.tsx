@@ -36,8 +36,8 @@ const NotificationsTable = ({
   }, [allSelected, notifications]);
 
   const onMarkRead = useCallback(
-    async (notificationId: number) => {
-      setIsUpdating(true);
+    async (notificationId: number, showUpdating = true) => {
+      setIsUpdating(showUpdating);
       setUpdateError(undefined);
       try {
         await markJobSeekerApplicationNotificationRead(notificationId);
@@ -172,19 +172,35 @@ const NotificationsTable = ({
               </td>
               <td>
                 <div className="px-2">
-                  <CompanyLink {...notification.company} />{' '}
+                  <div
+                    onClick={() => {
+                      if (notification.status === 'unread') {
+                        onMarkRead(notification.id, false);
+                      }
+                    }}
+                  >
+                    <CompanyLink {...notification.company} />
+                  </div>
                 </div>
               </td>
               <td>
                 <div className="px-2">
-                  <ApplicationLink
-                    applicationId={notification.application_id}
-                    jobTitle={notification.job.title}
-                  />
+                  <div
+                    onClick={() => {
+                      if (notification.status === 'unread') {
+                        onMarkRead(notification.id, false);
+                      }
+                    }}
+                  >
+                    <ApplicationLink
+                      applicationId={notification.application_id}
+                      jobTitle={notification.job.title}
+                    />
+                  </div>
                 </div>
               </td>
               <td>
-                <div className="flex justify-center">
+                <div className="px-2 flex justify-center">
                   <Status status={notification.type} />
                 </div>
               </td>
