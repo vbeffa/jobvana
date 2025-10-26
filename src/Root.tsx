@@ -22,12 +22,10 @@ import supabase from './db/supabase';
 import Header from './Header';
 import { findJobSeeker } from './job_seekers/utils';
 import type { SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
+import type { CurrPage } from './types';
 
 const Root = () => {
-  const [currPage, setCurrPage] = useState('home');
-  // const [companiesContext, setCompaniesContext] = useState<
-  //   JobSeekerContextProps['companiesContext']
-  // >(defaultJobSeekerContext.companiesContext);
+  const [currPage, setCurrPage] = useState<CurrPage>('home');
   const [companySearchFilters, setCompanySearchFilters] =
     useState<CompanySearchFilters>(
       defaultJobSeekerContext.companySearchFilters
@@ -35,9 +33,6 @@ const Root = () => {
   const [companyNav, setCompanyNav] = useState<
     JobSeekerContextProps['companyNav']
   >(defaultJobSeekerContext.companyNav);
-  // const [jobsContext, setJobsContext] = useState<
-  //   JobSeekerContextProps['jobsContext']
-  // >(defaultJobSeekerContext.jobsContext);
   const [jobSearchFilters, setJobSearchFilters] = useState<JobSearchFilters>(
     defaultJobSeekerContext.jobSearchFilters
   );
