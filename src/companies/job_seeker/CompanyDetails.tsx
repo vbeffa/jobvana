@@ -1,4 +1,8 @@
-import { FaArrowUpRightFromSquare, FaBuilding } from 'react-icons/fa6';
+import {
+  FaArrowUpRightFromSquare,
+  FaBuilding,
+  FaLocationDot
+} from 'react-icons/fa6';
 import {
   ActionMenuContainer,
   LeftSide
@@ -55,7 +59,8 @@ const CompanyDetails = ({ id }: { id?: number }) => {
             {company.num_employees} employee{company.num_employees > 1 && 's'}
           </div>
           {hq && (
-            <div className="pt-1">
+            <div className="flex flex-row gap-1 items-center pt-1">
+              <FaLocationDot />
               {hq.city}, {hq.state}
             </div>
           )}

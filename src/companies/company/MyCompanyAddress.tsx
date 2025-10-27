@@ -1,8 +1,13 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FaArrowUpRightFromSquare, FaPhone } from 'react-icons/fa6';
+import {
+  FaArrowUpRightFromSquare,
+  FaLocationDot,
+  FaPhone
+} from 'react-icons/fa6';
 import {
   ActionMenuContainer,
+  LeftSide,
   RightSide
 } from '../../containers/ActionMenuContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
@@ -59,6 +64,37 @@ const MyCompanyAddress = ({
     }
   }, [editAddress, onUpdate, setError]);
 
+  const setHeadquarters = useCallback(async () => {
+    console.log('-');
+    setIsSubmitting(true);
+    setError(undefined);
+    try {
+      const { error } = await supabase
+        .from('company_addresses')
+        .update({ type: 'office' })
+        .filter('company_id', 'eq', address.company_id);
+      if (error) {
+        console.log(error);
+        setError(error);
+        return;
+      }
+
+      const { error: error2 } = await supabase
+        .from('company_addresses')
+        .update({ type: 'headquarters' })
+        .eq('id', address.id);
+      if (error2) {
+        console.log(error2);
+        setError(error2);
+        return;
+      }
+
+      onUpdate();
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [address.company_id, address.id, onUpdate, setError]);
+
   const deleteAddress = useCallback(async () => {
     setIsSubmitting(true);
     setError(undefined);
@@ -81,15 +117,31 @@ const MyCompanyAddress = ({
 
   return (
     <MyCompanyAddressContainer>
-      <ActionMenuContainer justify="justify-end">
+      <ActionMenuContainer>
+        <LeftSide>
+          {address.type === 'headquarters' && (
+            <>
+              <FaLocationDot />
+              Headquarters
+            </>
+          )}
+        </LeftSide>
         <RightSide>
           {!isEditing && (
-            <a
-              target="_blank"
-              href={`https://www.google.com/maps/place/${address.street} ${address.city} ${address.state} ${address.zip}`}
-            >
-              <FaArrowUpRightFromSquare className="top-[9px]" />
-            </a>
+            <>
+              {address.type !== 'headquarters' && (
+                <FaLocationDot
+                  className="hover:text-blue-400 cursor-pointer"
+                  onClick={setHeadquarters}
+                />
+              )}
+              <a
+                target="_blank"
+                href={`https://www.google.com/maps/place/${address.street} ${address.city} ${address.state} ${address.zip}`}
+              >
+                <FaArrowUpRightFromSquare className="top-[9px]" />
+              </a>
+            </>
           )}
           <EditDeleteIcons
             type="address"

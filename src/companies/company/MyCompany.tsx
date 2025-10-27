@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { FaAddressBook, FaBuilding, FaChessKnight } from 'react-icons/fa6';
+import { FaBuilding, FaChessKnight, FaLocationArrow } from 'react-icons/fa6';
 import { type Company } from '../../Context';
 import SummaryCard from '../../SummaryCard';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
@@ -71,7 +71,7 @@ const MyCompany = ({ company }: { company: Company }) => {
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
-                    <FaAddressBook />
+                    <FaLocationArrow />
                   </div>
                   Locations
                 </div>
