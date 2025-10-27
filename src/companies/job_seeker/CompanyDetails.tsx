@@ -17,7 +17,11 @@ const CompanyDetails = ({ id }: { id?: number }) => {
   }
 
   if (isPending) {
-    return <Modal type="loading" />;
+    return (
+      <div className="relative top-10">
+        <Modal type="loading" />
+      </div>
+    );
   }
 
   if (!company) {
