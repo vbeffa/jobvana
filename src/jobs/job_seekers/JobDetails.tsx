@@ -13,7 +13,12 @@ import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
 import useApplicationForJob from '../../applications/job_seeker/useApplicationForJob';
 import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  Divider,
+  LeftSide,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import type { JobSeeker } from '../../Context';
 import Button from '../../controls/Button';
 import useResumes from '../../job_seekers/useResumes';
@@ -214,10 +219,10 @@ const JobDetails = ({
         {error && <JobvanaError error={error} />}
       </div>
       <ActionMenuContainer>
-        <div className="border flex flex-row gap-1 items-center text-sm">
+        <LeftSide>
           <FaWrench />
           Job ID: {job.id}
-          <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+          <Divider />
           <FaRocket />
           Posted:
           <div className="flex flex-row gap-0 items-center">
@@ -225,14 +230,14 @@ const JobDetails = ({
           </div>
           {job.interviewProcess && (
             <>
-              <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+              <Divider />
               <FaGripLines />
               Pipeline: {job.activeApplicationCount} /{' '}
               {job.interviewProcess.pipeline_size}
             </>
           )}
-        </div>
-        <div className="border flex flex-row gap-2 items-center">
+        </LeftSide>
+        <RightSide>
           {application === null && (
             <>
               <div className="text-sm text-gray-400 content-center">
@@ -245,7 +250,7 @@ const JobDetails = ({
                 )}
               </div>
               {!applyDisabled && (
-                <div className="border flex flex-row gap-2 items-center">
+                <>
                   {!job.isSaved && (
                     <>
                       <FaEyeSlash
@@ -269,7 +274,7 @@ const JobDetails = ({
                       onClick={onSave}
                     />
                   )}
-                </div>
+                </>
               )}
             </>
           )}
@@ -286,7 +291,7 @@ const JobDetails = ({
               </div>
             </Link>
           )}
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-6 pt-2 overflow-auto">
         <Section

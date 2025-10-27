@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
 import MyCompanyAddress from './MyCompanyAddress';
@@ -24,14 +27,14 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   return (
     <>
       <ActionMenuContainer justify="justify-end">
-        <div className="flex items-center">
+        <RightSide>
           {!newAddress && (
             <FaPlus
-              className="text-blue-500 cursor-pointer hover:text-blue-400"
+              className="cursor-pointer hover:text-blue-400"
               onClick={() => setNewAddress(true)}
             />
           )}
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}

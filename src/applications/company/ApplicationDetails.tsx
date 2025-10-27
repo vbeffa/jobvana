@@ -1,6 +1,11 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { FaCheck, FaPaperPlane, FaPerson, FaX } from 'react-icons/fa6';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  Divider,
+  LeftSide,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import { CompanyContext } from '../../Context';
 import JobLink from '../../jobs/JobLink';
 import JobvanaError from '../../JobvanaError';
@@ -85,14 +90,14 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         {isUpdating ? <Modal type="updating" /> : null}
       </div>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-sm">
+        <LeftSide>
           <FaPaperPlane />
           Application ID: {application.id}
-          <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
+          <Divider />
           Interview Status:
           <Status status={application.interviewStatus} />
-        </div>
-        <div className="flex flex-row gap-2 items-center">
+        </LeftSide>
+        <RightSide>
           {application.status === 'submitted' && (
             <>
               <FaCheck
@@ -105,7 +110,7 @@ const ApplicationDetails = ({ id }: { id: number }) => {
               />
             </>
           )}
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-6 pt-2 overflow-auto">
         <Section title="Details">

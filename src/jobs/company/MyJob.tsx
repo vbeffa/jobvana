@@ -11,7 +11,12 @@ import {
 import { MdArchive, MdCheckCircleOutline, MdUnarchive } from 'react-icons/md';
 import useApplicationsForJob from '../../applications/company/useApplicationsForJob';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  Divider,
+  LeftSide,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import Hr from '../../Hr';
@@ -327,17 +332,17 @@ const MyJob = ({
   return (
     <>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-sm">
+        <LeftSide>
           <FaWrench />
           Job ID: {job.id}
-          <div className="h-fit py-2 mx-1 border-r-[1.5px]" /> Status:
+          <Divider /> Status:
           {job.status === 'draft' &&
             (isNew ? <FaPencil /> : <FaDraftingCompass />)}
           {job.status === 'open' && <MdCheckCircleOutline />}
           {job.status === 'closed' && <FaArchive />}
           {statusString}
-        </div>
-        <div className="border flex flex-row gap-2 items-center">
+        </LeftSide>
+        <RightSide>
           {job.status === 'draft' && (
             <>
               {!isEditing && (
@@ -387,9 +392,9 @@ const MyJob = ({
                 </div>
               ) : null}
               {!isFrozen && (
-                <div className="flex flex-row gap-2 items-center">
-                  <div
-                    className="cursor-pointer hover:text-blue-400"
+                <>
+                  <FaUndo
+                    className="text-sm cursor-pointer hover:text-blue-400"
                     onClick={() => {
                       if (
                         confirm(
@@ -399,10 +404,8 @@ const MyJob = ({
                         onSave('draft');
                       }
                     }}
-                  >
-                    <FaUndo className="text-sm" />
-                  </div>
-                  <div
+                  />
+                  <MdArchive
                     className="text-xl cursor-pointer hover:text-blue-400"
                     onClick={() => {
                       if (
@@ -411,10 +414,8 @@ const MyJob = ({
                         onSave('closed');
                       }
                     }}
-                  >
-                    <MdArchive />
-                  </div>
-                </div>
+                  />
+                </>
               )}
             </>
           )}
@@ -430,7 +431,7 @@ const MyJob = ({
               <MdUnarchive />
             </div>
           )}
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-8 pt-2 overflow-auto">
         {error && <JobvanaError error={error} />}

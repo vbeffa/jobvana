@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  LeftSide,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import { CompanyContext, type Company } from '../../Context';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
@@ -81,15 +85,15 @@ const MyCompanyInterviewProcess = ({
 
   return (
     <>
-      <ActionMenuContainer
-        justify={isEditing ? 'justify-between' : 'justify-end'}
-      >
-        {isEditing && (
-          <div className="text-sm content-center">
-            Saving will also update the interview process for unpublished jobs
-          </div>
-        )}
-        <div className="flex items-center">
+      <ActionMenuContainer>
+        <LeftSide>
+          {isEditing && (
+            <>
+              Saving will also update the interview process for unpublished jobs
+            </>
+          )}
+        </LeftSide>
+        <RightSide>
           <EditDeleteIcons
             isEditing={isEditing}
             disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
@@ -111,7 +115,7 @@ const MyCompanyInterviewProcess = ({
               await updateInterviewProcess();
             }}
           />
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-10 pt-4 overflow-auto ">
         {error && <JobvanaError error={error} />}

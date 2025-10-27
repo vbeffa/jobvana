@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import { CompanyContext, type Company } from '../../Context';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
@@ -55,7 +58,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   return (
     <>
       <ActionMenuContainer justify="justify-end">
-        <div className="flex items-center">
+        <RightSide>
           <EditDeleteIcons
             isEditing={isEditing}
             disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
@@ -73,7 +76,7 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
               await updateCompany();
             }}
           />
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {isSubmitting && <Modal type="updating" />}

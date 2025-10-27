@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaPhone } from 'react-icons/fa6';
-import ActionMenuContainer from '../../containers/ActionMenuContainer';
+import {
+  ActionMenuContainer,
+  RightSide
+} from '../../containers/ActionMenuContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import type { CompanyAddress } from '../../types';
@@ -79,7 +82,7 @@ const MyCompanyAddress = ({
   return (
     <MyCompanyAddressContainer>
       <ActionMenuContainer justify="justify-end">
-        <div className="flex flex-row gap-2 items-center">
+        <RightSide>
           {!isEditing && (
             <a
               target="_blank"
@@ -110,7 +113,7 @@ const MyCompanyAddress = ({
               await updateAddress();
             }}
           />
-        </div>
+        </RightSide>
       </ActionMenuContainer>
       <div className="p-4">
         {!isEditing && (
