@@ -85,7 +85,7 @@ const ChangePassword = () => {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="px-4 pt-4 flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2">
         {!resetPassword && (
           <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
             <Label htmlFor="password" label="Current password" />

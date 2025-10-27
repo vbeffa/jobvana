@@ -15,7 +15,11 @@ const SkillDetails = ({ id }: { id: number }) => {
   }
 
   if (isPending) {
-    return <Modal type="loading" />;
+    return (
+      <div className="relative top-10">
+        <Modal type="loading" />
+      </div>
+    );
   }
 
   if (!skill) {
@@ -25,8 +29,10 @@ const SkillDetails = ({ id }: { id: number }) => {
   // const jobs = jobsForSkill(skill.id);
 
   return (
-    <div className="px-4 mt-2">
-      {isPlaceholderData && <Modal type="loading" />}
+    <>
+      <div className="relative top-10">
+        {isPlaceholderData && <Modal type="loading" />}
+      </div>
       <Section
         title={
           <>
@@ -66,7 +72,7 @@ const SkillDetails = ({ id }: { id: number }) => {
           </a>
         )}
       </Section>
-    </div>
+    </>
   );
 };
 

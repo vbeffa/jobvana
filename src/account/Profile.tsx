@@ -55,7 +55,7 @@ const Profile = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="px-4 pt-4 grid grid-cols-[25%_75%] w-[400px] gap-y-2">
+      <div className="grid grid-cols-[25%_75%] w-[400px] gap-y-2">
         <ProfileEdit
           jobSeeker={editJobSeeker}
           setJobSeeker={setEditJobSeeker}

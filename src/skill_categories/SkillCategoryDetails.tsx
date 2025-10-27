@@ -22,7 +22,7 @@ const SkillCategoryDetails = ({ id }: { id: number }) => {
   const childSkillCategories = findChildSkillCategories(skillCategory);
 
   return (
-    <div className="px-4 mt-2">
+    <>
       <Section title={skillCategory.name}>{skillCategory.description}</Section>
       <Section title="Parent Category">
         <div className="mt-2">
@@ -55,7 +55,7 @@ const SkillCategoryDetails = ({ id }: { id: number }) => {
           </a>
         )}
       </Section>
-    </div>
+    </>
   );
 };
 

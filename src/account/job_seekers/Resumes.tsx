@@ -169,7 +169,7 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       {isUploading && <Modal type="uploading" />}
       {isDeleting && <Modal type="deleting" />}
       <div className="h-full overflow-auto">
-        <div className="px-4 pt-4 flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <div className="flex justify-between">
             <div className="content-center">Your resumes:</div>
           </div>

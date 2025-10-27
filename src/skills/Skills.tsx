@@ -39,7 +39,7 @@ const Skills = () => {
   }, [skills]);
 
   return (
-    <div className="mx-0">
+    <>
       {error && <JobvanaError error={error} />}
       <FiltersDisplay
         activeFilters={
@@ -100,7 +100,7 @@ const Skills = () => {
           {skillId ? <SkillDetails id={skillId} /> : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
-    </div>
+    </>
   );
 };
 

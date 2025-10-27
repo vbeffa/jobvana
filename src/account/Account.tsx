@@ -104,7 +104,7 @@ const Account = () => {
             />
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer padding="">
+        <ResourceDetailsContainer>
           <>
             {card === 'account' && <ChangePassword />}
             {jobSeeker && (
