@@ -3,12 +3,12 @@ import { type JSX } from 'react';
 //        HEADER_TOTAL_HEIGHT_PX = 80
 //         PAGE_MARGIN_BOTTOM_PX = 16
 
+//    <h1> TITLE_TOTAL_HEIGHT_PX = 72
+// STATUS_SELECT_TOTAL_HEIGHT_PX = 40
+
 //             FILTERS_HEIGHT_PX = 55 + 1; // 1px for border
 //      FILTERS_MARGIN_BOTTOM_PX = 4 * 4;
 //       FILTERS_TOTAL_HEIGHT_PX = 72; // FILTERS_HEIGHT_PX + FILTERS_MARGIN_BOTTOM_PX;
-
-//    <h1> TITLE_TOTAL_HEIGHT_PX = 72
-// STATUS_SELECT_TOTAL_HEIGHT_PX = 40
 
 const ResourcesContainer = ({
   children,

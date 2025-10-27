@@ -48,7 +48,7 @@ const MyCompany = ({ company }: { company: Company }) => {
       <h1>My Company</h1>
       <ResourcesContainer bannerType="title">
         <ResourceListContainer>
-          <SummaryCardsContainer bannerType="title">
+          <SummaryCardsContainer bannerType="title" hasPageNav={false}>
             <SummaryCard
               key={1}
               selected={card === 'overview'}

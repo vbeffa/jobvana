@@ -14,7 +14,7 @@ const About = () => {
       <h1>Jobvana</h1>
       <ResourcesContainer bannerType="title">
         <ResourceListContainer>
-          <SummaryCardsContainer>
+          <SummaryCardsContainer bannerType="title" hasPageNav={false}>
             <SummaryCard
               key={1}
               selected={card === 'about'}

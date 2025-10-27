@@ -31,7 +31,7 @@ const Account = () => {
       <h1>Account Details</h1>
       <ResourcesContainer bannerType="title">
         <ResourceListContainer>
-          <SummaryCardsContainer>
+          <SummaryCardsContainer bannerType="title" hasPageNav={false}>
             {jobSeeker ? (
               <>
                 <SummaryCard
