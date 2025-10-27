@@ -15,12 +15,12 @@ const SaveCancelIcons = ({
     <IconContext.Provider
       value={{
         style: {
-          backgroundColor: 'var(--color-gray-100)'
+          backgroundColor: 'var(--color-blue-300)'
         }
       }}
     >
-      <div className="absolute right-0 top-2 flex flex-row gap-2">
-        <button className="text-blue-400 cursor-pointer" onClick={onCancel}>
+      <div className="flex flex-row gap-2">
+        <button className={ICON_STYLE} onClick={onCancel}>
           <FaX />
         </button>
 

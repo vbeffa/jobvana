@@ -24,14 +24,14 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
   return (
     <>
       <ActionMenuContainer justify="justify-end">
-        {!newAddress ? (
-          <div className="pt-1.5 flex justify-start">
+        <div className="flex items-center">
+          {!newAddress && (
             <FaPlus
               className="text-blue-500 cursor-pointer hover:text-blue-400"
               onClick={() => setNewAddress(true)}
             />
-          </div>
-        ) : undefined}
+          )}
+        </div>
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}

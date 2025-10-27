@@ -4,7 +4,12 @@ const ActionMenuContainer = ({
   children,
   justify = 'justify-between'
 }: {
-  children: JSX.Element | Array<JSX.Element | undefined> | undefined;
+  children:
+    | JSX.Element
+    | Array<JSX.Element | false | null | undefined>
+    | false
+    | null
+    | undefined;
   justify?: 'justify-between' | 'justify-end';
 }) => {
   return (
@@ -16,5 +21,20 @@ const ActionMenuContainer = ({
     </div>
   );
 };
+
+// const LeftSide = ({
+//   children
+// }: {
+//   children:
+//     | JSX.Element
+//     | Array<JSX.Element | false | null | undefined>
+//     | false
+//     | null
+//     | undefined;
+// }) => {
+//   return (
+//     <div className="flex flex-row gap-1 items-center text-sm">{children}</div>
+//   );
+// };
 
 export default ActionMenuContainer;

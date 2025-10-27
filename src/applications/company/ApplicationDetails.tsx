@@ -92,18 +92,20 @@ const ApplicationDetails = ({ id }: { id: number }) => {
           Interview Status:
           <Status status={application.interviewStatus} />
         </div>
-        {application.status === 'submitted' ? (
-          <div className="flex flex-row gap-1 items-center">
-            <FaCheck
-              className="cursor-pointer hover:text-blue-400"
-              onClick={() => onUpdateStatus(application.id, 'accepted')}
-            />
-            <FaX
-              className="cursor-pointer hover:text-blue-400"
-              onClick={() => onUpdateStatus(application.id, 'declined')}
-            />
-          </div>
-        ) : undefined}
+        <div className="flex flex-row gap-2 items-center">
+          {application.status === 'submitted' && (
+            <>
+              <FaCheck
+                className="cursor-pointer hover:text-blue-400"
+                onClick={() => onUpdateStatus(application.id, 'accepted')}
+              />
+              <FaX
+                className="cursor-pointer hover:text-blue-400"
+                onClick={() => onUpdateStatus(application.id, 'declined')}
+              />
+            </>
+          )}
+        </div>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-6 pt-2 overflow-auto">
         <Section title="Details">

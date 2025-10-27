@@ -6,7 +6,7 @@ const MyCompanyAddressContainer = ({
   children: Array<JSX.Element>;
 }) => {
   return (
-    <div className="bg-gray-100 p-4 border-[0.5px] border-gray-400 rounded-lg w-96 h-57">
+    <div className="bg-gray-100 border-[0.5px] border-gray-400 rounded-lg w-90 h-64 overflow-hidden">
       {children}
     </div>
   );

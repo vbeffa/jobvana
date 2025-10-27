@@ -83,7 +83,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               }
               text={
                 <div className="flex flex-row gap-1 items-center">
-                  TODO saved searches
+                  Coming soon
                 </div>
               }
               borderBottom={true}

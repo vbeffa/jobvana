@@ -86,21 +86,21 @@ const ApplicationDetails = ({ id }: { id: number }) => {
         {isUpdating ? <Modal type="updating" /> : null}
       </div>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-sm">
+        <div className="border flex flex-row gap-1 items-center text-sm">
           <FaPaperPlane />
           Application ID: {application.id}
           <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
           Interview Status:
           <Status status={application.interviewStatus} />
         </div>
-        {application.status === 'submitted' ? (
-          <div className="flex items-center">
+        <div className="border flex items-center">
+          {application.status === 'submitted' && (
             <FaX
               className="cursor-pointer hover:text-blue-400"
               onClick={() => onWithdraw(application.id)}
             />
-          </div>
-        ) : undefined}
+          )}
+        </div>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-6 pt-2 overflow-auto">
         <Section title="Details">

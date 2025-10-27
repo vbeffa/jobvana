@@ -9,9 +9,7 @@ const EditDeleteIcons = ({
   onEdit,
   onCancel,
   onDelete,
-  onSave,
-  bgColor = '--color-white',
-  top = 'top-2'
+  onSave
 }: {
   type?: 'address' | 'job';
   isEditing: boolean;
@@ -20,18 +18,16 @@ const EditDeleteIcons = ({
   onCancel: () => void;
   onDelete?: () => void;
   onSave: () => Promise<void>;
-  bgColor?: '--color-white' | '--color-gray-100' | '--color-blue-300';
-  top?: string;
 }) => {
   return (
     <IconContext.Provider
       value={{
         style: {
-          backgroundColor: `var(${bgColor})`
+          backgroundColor: `var(--color-blue-300)`
         }
       }}
     >
-      <div className={`absolute right-0 ${top} flex flex-row gap-2`}>
+      <div className="flex flex-row gap-2 items-center">
         {isEditing && (
           <>
             <button className={ICON_STYLE} onClick={onCancel}>

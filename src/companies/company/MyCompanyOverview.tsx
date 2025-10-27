@@ -55,25 +55,25 @@ const MyCompanyOverview = ({ company }: MyCompanyMainProps) => {
   return (
     <>
       <ActionMenuContainer justify="justify-end">
-        <EditDeleteIcons
-          isEditing={isEditing}
-          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          bgColor="--color-blue-300"
-          top="top-1.25"
-          onEdit={() => {
-            setError(undefined);
-            setEditCompany(company);
-            setIsEditing(true);
-          }}
-          onCancel={() => {
-            setEditCompany(company);
-            setIsEditing(false);
-          }}
-          onSave={async () => {
-            setIsEditing(false);
-            await updateCompany();
-          }}
-        />
+        <div className="flex items-center">
+          <EditDeleteIcons
+            isEditing={isEditing}
+            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+            onEdit={() => {
+              setError(undefined);
+              setEditCompany(company);
+              setIsEditing(true);
+            }}
+            onCancel={() => {
+              setEditCompany(company);
+              setIsEditing(false);
+            }}
+            onSave={async () => {
+              setIsEditing(false);
+              await updateCompany();
+            }}
+          />
+        </div>
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {isSubmitting && <Modal type="updating" />}

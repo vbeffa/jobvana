@@ -15,7 +15,7 @@ const MyCompanyEditAddress = <T extends ToInsert | CompanyAddress>({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <div className="w-[85%]">
+      <div className="w-full">
         <TextInput
           id={`street_${idx}`}
           value={address.street}
@@ -29,7 +29,7 @@ const MyCompanyEditAddress = <T extends ToInsert | CompanyAddress>({
           }
         />
       </div>
-      <div className="w-[85%]">
+      <div className="w-full">
         <TextInput
           id={`street_2_${idx}`}
           value={address.street_2 ?? ''}
@@ -43,8 +43,8 @@ const MyCompanyEditAddress = <T extends ToInsert | CompanyAddress>({
           }
         />
       </div>
-      <div className="w-[85%] flex flex-row gap-1">
-        <div className="w-[80%]">
+      <div className="w-full flex flex-row gap-1">
+        <div className="w-full">
           <TextInput
             id={`city_${idx}`}
             value={address.city}
@@ -72,7 +72,7 @@ const MyCompanyEditAddress = <T extends ToInsert | CompanyAddress>({
           />
         </div>
       </div>
-      <div className="w-[50%]">
+      <div className="w-[75%]">
         <TextInput
           id="zip_${idx}"
           value={address.zip}
@@ -86,7 +86,7 @@ const MyCompanyEditAddress = <T extends ToInsert | CompanyAddress>({
           }
         />
       </div>
-      <div className="w-[50%]">
+      <div className="w-[75%]">
         <TextInput
           id="phone_${idx}"
           value={address.phone ?? ''}

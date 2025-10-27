@@ -214,7 +214,7 @@ const JobDetails = ({
         {error && <JobvanaError error={error} />}
       </div>
       <ActionMenuContainer>
-        <div className="flex flex-row gap-1 items-center text-sm">
+        <div className="border flex flex-row gap-1 items-center text-sm">
           <FaWrench />
           Job ID: {job.id}
           <div className="h-fit py-2 mx-1 border-r-[1.5px]" />
@@ -232,50 +232,48 @@ const JobDetails = ({
             </>
           )}
         </div>
-        {application === null ? (
-          <div className="flex flex-row gap-2 items-center">
-            <div className="text-sm text-gray-400 content-center">
-              {noInterviewProcess && <>Company has no interview process</>}
-              {pipelineLimitReached && <>Company pipeline size limit reached</>}
-              {resumes?.length === 0 && (
-                <>Please upload a resume to apply for this job</>
-              )}
-            </div>
-            {!applyDisabled && (
-              <div className="flex flex-row gap-1 text-sm items-center">
-                {!job.isSaved && (
-                  <div className="flex flex-row gap-1 items-center">
-                    <FaEyeSlash
-                      className="hover:text-blue-400 cursor-pointer"
-                      onClick={() => onHide(false)}
-                    />
-                    <FaTrash
-                      className="hover:text-blue-400 cursor-pointer"
-                      onClick={() => onHide(true)}
-                    />
-                  </div>
+        <div className="border flex flex-row gap-2 items-center">
+          {application === null && (
+            <>
+              <div className="text-sm text-gray-400 content-center">
+                {noInterviewProcess && <>Company has no interview process</>}
+                {pipelineLimitReached && (
+                  <>Company pipeline size limit reached</>
                 )}
-                {job.isSaved ? (
-                  <FaFloppyDisk
-                    className="cursor-pointer font-bold text-blue-700 hover:text-blue-600"
-                    onClick={onUnsave}
-                  />
-                ) : (
-                  <FaFloppyDisk
-                    className="cursor-pointer hover:text-blue-400"
-                    onClick={onSave}
-                  />
+                {resumes?.length === 0 && (
+                  <>Please upload a resume to apply for this job</>
                 )}
-                {/* <FaPaperPlane
-                  className="cursor-pointer hover:text-blue-400"
-                  onClick={onApply}
-                /> */}
               </div>
-            )}
-          </div>
-        ) : undefined}
-        {application ? (
-          <div className="flex items-center">
+              {!applyDisabled && (
+                <div className="border flex flex-row gap-2 items-center">
+                  {!job.isSaved && (
+                    <>
+                      <FaEyeSlash
+                        className="hover:text-blue-400 cursor-pointer"
+                        onClick={() => onHide(false)}
+                      />
+                      <FaTrash
+                        className="hover:text-blue-400 cursor-pointer"
+                        onClick={() => onHide(true)}
+                      />
+                    </>
+                  )}
+                  {job.isSaved ? (
+                    <FaFloppyDisk
+                      className="cursor-pointer font-bold text-blue-600 hover:text-blue-500"
+                      onClick={onUnsave}
+                    />
+                  ) : (
+                    <FaFloppyDisk
+                      className="cursor-pointer hover:text-blue-400"
+                      onClick={onSave}
+                    />
+                  )}
+                </div>
+              )}
+            </>
+          )}
+          {application && (
             <Link
               to="/jobvana/applications/$id"
               params={{ id: application.id.toString() }}
@@ -287,8 +285,8 @@ const JobDetails = ({
                 Applied {new Date(application.created_at).toLocaleDateString()}
               </div>
             </Link>
-          </div>
-        ) : undefined}
+          )}
+        </div>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-6 pt-2 overflow-auto">
         <Section

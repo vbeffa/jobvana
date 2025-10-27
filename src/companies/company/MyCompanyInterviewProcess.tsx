@@ -81,35 +81,37 @@ const MyCompanyInterviewProcess = ({
 
   return (
     <>
-      <ActionMenuContainer>
-        {isEditing ? (
+      <ActionMenuContainer
+        justify={isEditing ? 'justify-between' : 'justify-end'}
+      >
+        {isEditing && (
           <div className="text-sm content-center">
             Saving will also update the interview process for unpublished jobs
           </div>
-        ) : undefined}
-        <EditDeleteIcons
-          isEditing={isEditing}
-          disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
-          bgColor="--color-blue-300"
-          top="top-1.25"
-          onEdit={() => {
-            setError(undefined);
-            setEditInterviewProcess(
-              (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-            );
-            setIsEditing(true);
-          }}
-          onCancel={() => {
-            setEditInterviewProcess(
-              (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
-            );
-            setIsEditing(false);
-          }}
-          onSave={async () => {
-            setIsEditing(false);
-            await updateInterviewProcess();
-          }}
-        />
+        )}
+        <div className="flex items-center">
+          <EditDeleteIcons
+            isEditing={isEditing}
+            disabled={isEditing && (!isDirty || !isValid || isSubmitting)}
+            onEdit={() => {
+              setError(undefined);
+              setEditInterviewProcess(
+                (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
+              );
+              setIsEditing(true);
+            }}
+            onCancel={() => {
+              setEditInterviewProcess(
+                (company.interview_process ?? EMPTY_PROCESS) as InterviewProcess
+              );
+              setIsEditing(false);
+            }}
+            onSave={async () => {
+              setIsEditing(false);
+              await updateInterviewProcess();
+            }}
+          />
+        </div>
       </ActionMenuContainer>
       <div className="h-full px-4 pb-10 pt-4 overflow-auto ">
         {error && <JobvanaError error={error} />}

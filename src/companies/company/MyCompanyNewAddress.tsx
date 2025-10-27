@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import SaveCancelIcons from '../../controls/SaveCancelIcons';
 import supabase from '../../db/supabase';
 import { isValidAddress } from '../utils';
@@ -62,18 +63,22 @@ const MyCompanyNewAddress = ({
 
   return (
     <MyCompanyAddressContainer>
-      <div className="relative">
-        <SaveCancelIcons
-          disabled={!isValidAddress(newAddress) || !isDirty || isSubmitting}
-          onCancel={onCancel}
-          onSave={createAddress}
+      <ActionMenuContainer justify="justify-end">
+        <div className="flex items-center">
+          <SaveCancelIcons
+            disabled={!isValidAddress(newAddress) || !isDirty || isSubmitting}
+            onCancel={onCancel}
+            onSave={createAddress}
+          />
+        </div>
+      </ActionMenuContainer>
+      <div className="p-4">
+        <MyCompanyEditAddress
+          idx="new"
+          address={newAddress}
+          setAddress={setNewAddress}
         />
       </div>
-      <MyCompanyEditAddress
-        idx="new"
-        address={newAddress}
-        setAddress={setNewAddress}
-      />
     </MyCompanyAddressContainer>
   );
 };

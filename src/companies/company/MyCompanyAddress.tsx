@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaArrowUpRightFromSquare, FaPhone } from 'react-icons/fa6';
+import ActionMenuContainer from '../../containers/ActionMenuContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
 import type { CompanyAddress } from '../../types';
@@ -77,39 +78,41 @@ const MyCompanyAddress = ({
 
   return (
     <MyCompanyAddressContainer>
-      <div className="relative">
-        <EditDeleteIcons
-          type="address"
-          isEditing={isEditing}
-          disabled={
-            isEditing && (!isDirty || !isValidAddress(address) || isSubmitting)
-          }
-          onEdit={() => {
-            setError(undefined);
-            setEditAddress(address);
-            setIsEditing(true);
-          }}
-          onCancel={() => {
-            setEditAddress(address);
-            setIsEditing(false);
-          }}
-          onDelete={deleteAddress}
-          onSave={async () => {
-            setIsEditing(false);
-            await updateAddress();
-          }}
-          bgColor="--color-gray-100"
-        />
-        {!isEditing && (
-          <a
-            target="_blank"
-            href={`https://www.google.com/maps/place/${address.street} ${address.city} ${address.state} ${address.zip}`}
-          >
-            <FaArrowUpRightFromSquare className="absolute right-12 top-[9px]" />
-          </a>
-        )}
-      </div>
-      <>
+      <ActionMenuContainer justify="justify-end">
+        <div className="flex flex-row gap-2 items-center">
+          {!isEditing && (
+            <a
+              target="_blank"
+              href={`https://www.google.com/maps/place/${address.street} ${address.city} ${address.state} ${address.zip}`}
+            >
+              <FaArrowUpRightFromSquare className="top-[9px]" />
+            </a>
+          )}
+          <EditDeleteIcons
+            type="address"
+            isEditing={isEditing}
+            disabled={
+              isEditing &&
+              (!isDirty || !isValidAddress(address) || isSubmitting)
+            }
+            onEdit={() => {
+              setError(undefined);
+              setEditAddress(address);
+              setIsEditing(true);
+            }}
+            onCancel={() => {
+              setEditAddress(address);
+              setIsEditing(false);
+            }}
+            onDelete={deleteAddress}
+            onSave={async () => {
+              setIsEditing(false);
+              await updateAddress();
+            }}
+          />
+        </div>
+      </ActionMenuContainer>
+      <div className="p-4">
         {!isEditing && (
           <div>
             <div>{editAddress.street}</div>
@@ -136,7 +139,7 @@ const MyCompanyAddress = ({
             setAddress={setEditAddress}
           />
         )}
-      </>
+      </div>
     </MyCompanyAddressContainer>
   );
 };
