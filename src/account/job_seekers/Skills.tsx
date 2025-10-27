@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { JobSeeker } from '../Context';
-import Button from '../controls/Button';
-import supabase from '../db/supabase';
-import SkillsSelect from '../jobs/SkillsSelect';
-import JobvanaError from '../JobvanaError';
-import useSkillsForJobSeeker from './useSkillsForJobSeeker';
+import type { JobSeeker } from '../../Context';
+import Button from '../../controls/Button';
+import supabase from '../../db/supabase';
+import useSkillsForJobSeeker from '../../job_seekers/useSkillsForJobSeeker';
+import SkillsSelect from '../../jobs/SkillsSelect';
+import JobvanaError from '../../JobvanaError';
 
-export type JobSeekerSkillsProps = {
+export type SkillsProps = {
   jobSeeker: JobSeeker;
   isOnboarding?: boolean;
 };
 
-const JobSeekerSkills = ({ jobSeeker }: JobSeekerSkillsProps) => {
+const Skills = ({ jobSeeker }: SkillsProps) => {
   const [editSkillIds, setEditSkillIds] = useState<Array<number> | undefined>();
   const { skills, refetch } = useSkillsForJobSeeker(jobSeeker.id);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -107,4 +107,4 @@ const JobSeekerSkills = ({ jobSeeker }: JobSeekerSkillsProps) => {
   );
 };
 
-export default JobSeekerSkills;
+export default Skills;

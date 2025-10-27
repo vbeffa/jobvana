@@ -7,11 +7,11 @@ import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
 import SummaryCardsContainer from '../containers/SummaryCardsContainer';
 import { JobSeekerContext } from '../Context';
-import JobSeekerSkills from '../job_seekers/JobSeekerSkills';
-import Resumes from '../job_seekers/Resumes';
 import useSkillsForJobSeeker from '../job_seekers/useSkillsForJobSeeker';
 import SummaryCard from '../SummaryCard';
 import ChangePassword from './ChangePassword';
+import JobSeekerResumes from './job_seekers/Resumes';
+import JobSeekerSkills from './job_seekers/Skills';
 import Profile from './Profile';
 
 const Account = () => {
@@ -111,7 +111,9 @@ const Account = () => {
               <>
                 {card === 'profile' && <Profile jobSeeker={jobSeeker} />}
                 {card === 'skills' && <JobSeekerSkills jobSeeker={jobSeeker} />}
-                {card === 'resumes' && <Resumes jobSeeker={jobSeeker} />}
+                {card === 'resumes' && (
+                  <JobSeekerResumes jobSeeker={jobSeeker} />
+                )}
               </>
             )}
           </>

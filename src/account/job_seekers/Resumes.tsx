@@ -2,12 +2,12 @@ import { StorageError } from '@supabase/storage-js';
 import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FaCheck, FaDownload, FaTrash } from 'react-icons/fa6';
-import { JobSeekerContext, type JobSeeker } from '../Context';
-import Button from '../controls/Button';
-import JobvanaError from '../JobvanaError';
-import Modal from '../Modal';
-import useJobSeeker from './useJobSeeker';
-import useResumes from './useResumes';
+import { JobSeekerContext, type JobSeeker } from '../../Context';
+import Button from '../../controls/Button';
+import useJobSeeker from '../../job_seekers/useJobSeeker';
+import useResumes from '../../job_seekers/useResumes';
+import JobvanaError from '../../JobvanaError';
+import Modal from '../../Modal';
 
 export type ResumeProps = {
   jobSeeker: JobSeeker;
