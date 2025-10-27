@@ -80,28 +80,30 @@ const JobSeekerSkills = ({ jobSeeker }: JobSeekerSkillsProps) => {
   }
 
   return (
-    <>
-      <SkillsSelect
-        selectedSkillIds={editSkillIds}
-        width="w-[75%]"
-        outerHeight="h-64"
-        innerHeight="max-h-63"
-        onChange={(skillIds) => {
-          setEditSkillIds(skillIds);
-        }}
-      />
-      <div className="w-[75%] flex justify-center mt-4">
-        <Button
-          label="Save"
-          disabled={!isDirty || isSubmitting}
-          onClick={doSave}
+    <div className="h-full overflow-auto">
+      <div className="px-4 pt-4">
+        <SkillsSelect
+          selectedSkillIds={editSkillIds}
+          width="w-[85%]"
+          outerHeight="h-64"
+          innerHeight="max-h-63"
+          onChange={(skillIds) => {
+            setEditSkillIds(skillIds);
+          }}
         />
+        <div className="w-[75%] flex justify-center mt-4">
+          <Button
+            label="Save"
+            disabled={!isDirty || isSubmitting}
+            onClick={doSave}
+          />
+        </div>
+        <div className="w-[75%] text-center mt-2">
+          {updateSuccess && <>Skills saved.</>}
+          {error && <JobvanaError error={error} />}
+        </div>
       </div>
-      <div className="w-[75%] text-center mt-2">
-        {updateSuccess && <>Skills saved.</>}
-        {error && <JobvanaError error={error} />}
-      </div>
-    </>
+    </div>
   );
 };
 

@@ -54,18 +54,23 @@ const Profile = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
   }, [editJobSeeker, setJobSeeker]);
 
   return (
-    <div className="grid grid-cols-[25%_75%] w-[400px] gap-y-2">
-      <ProfileEdit jobSeeker={editJobSeeker} setJobSeeker={setEditJobSeeker} />
-      <div className="text-center col-span-2 mt-2">
-        <Button
-          label="Update"
-          disabled={submitDisabled}
-          onClick={updateJobSeeker}
+    <div className="h-full overflow-auto">
+      <div className="px-4 pt-4 grid grid-cols-[25%_75%] w-[400px] gap-y-2">
+        <ProfileEdit
+          jobSeeker={editJobSeeker}
+          setJobSeeker={setEditJobSeeker}
         />
-      </div>
-      <div className="text-center col-span-2">
-        {updateSuccess && <>Profile updated.</>}
-        {error && <JobvanaError error={error} />}
+        <div className="text-center col-span-2 mt-2">
+          <Button
+            label="Update"
+            disabled={submitDisabled}
+            onClick={updateJobSeeker}
+          />
+        </div>
+        <div className="text-center col-span-2">
+          {updateSuccess && <>Profile updated.</>}
+          {error && <JobvanaError error={error} />}
+        </div>
       </div>
     </div>
   );

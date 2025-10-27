@@ -168,95 +168,101 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
       {isDownloading && <Modal type="downloading" />}
       {isUploading && <Modal type="uploading" />}
       {isDeleting && <Modal type="deleting" />}
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between">
-          <div className="content-center">Your resumes:</div>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th className="w-1/2">Name</th>
-              <th className="w-3/10">Modified</th>
-              <th className="w-1/5">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {resumes
-              ?.sort(
-                (r1, r2) =>
-                  new Date(r2.updated_at).getTime() -
-                  new Date(r1.updated_at).getTime()
-              )
-              .map((resume, idx) => (
-                <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
-                  <td>
-                    <div className="flex justify-between">
-                      {resume.name}
-                      {jobSeeker.active_resume_id === resume.id && (
-                        <div className="text-blue-400 content-center">
-                          <FaCheckCircle />
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="flex justify-center">
-                      {new Date(resume.updated_at).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="content-center">
-                    <div
-                      className={`flex ${resumes.length > 1 ? 'justify-end pr-[25%]' : 'justify-center'} text-blue-400 gap-2`}
-                    >
-                      {jobSeeker.active_resume_id !== resume.id && (
-                        <FaCheck
+      <div className="h-full overflow-auto">
+        <div className="px-4 pt-4 flex flex-col gap-2">
+          <div className="flex justify-between">
+            <div className="content-center">Your resumes:</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th className="w-1/2">Name</th>
+                <th className="w-3/10">Modified</th>
+                <th className="w-1/5">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {resumes
+                ?.sort(
+                  (r1, r2) =>
+                    new Date(r2.updated_at).getTime() -
+                    new Date(r1.updated_at).getTime()
+                )
+                .map((resume, idx) => (
+                  <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
+                    <td>
+                      <div className="flex justify-between">
+                        {resume.name}
+                        {jobSeeker.active_resume_id === resume.id && (
+                          <div className="text-blue-400 content-center">
+                            <FaCheckCircle />
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex justify-center">
+                        {new Date(resume.updated_at).toLocaleDateString()}
+                      </div>
+                    </td>
+                    <td className="content-center">
+                      <div
+                        className={`flex ${resumes.length > 1 ? 'justify-end pr-[25%]' : 'justify-center'} text-blue-400 gap-2`}
+                      >
+                        {jobSeeker.active_resume_id !== resume.id && (
+                          <FaCheck
+                            className="cursor-pointer"
+                            onClick={() => setActive({ name: resume.name })}
+                          />
+                        )}
+                        <FaDownload
                           className="cursor-pointer"
-                          onClick={() => setActive({ name: resume.name })}
+                          onClick={() => doDownload(resume.name)}
                         />
-                      )}
-                      <FaDownload
-                        className="cursor-pointer"
-                        onClick={() => doDownload(resume.name)}
-                      />
-                      <FaTrash
-                        className="cursor-pointer"
-                        onClick={() => doDelete(resume.name)}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        <div className="flex flex-row gap-2">
-          <input
-            id="file_input"
-            type="file"
-            ref={ref}
-            accept="application/pdf"
-            className="pl-1 text-sm border-[0.5px] border-blue-400 content-center"
-            onChange={handleFileChange}
-          />
-          <Button label="Upload" disabled={file === null} onClick={doUpload} />
-        </div>
-        <div className="flex flex-col">
-          Notes:
-          <div className="flex flex-row gap-1 text-sm">
-            <div className="text-blue-400 content-center">
-              <FaCheckCircle />
-            </div>
-            = active resume
+                        <FaTrash
+                          className="cursor-pointer"
+                          onClick={() => doDelete(resume.name)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+          <div className="flex flex-row gap-2">
+            <input
+              id="file_input"
+              type="file"
+              ref={ref}
+              accept="application/pdf"
+              className="pl-1 text-sm border-[0.5px] border-blue-400 content-center"
+              onChange={handleFileChange}
+            />
+            <Button
+              label="Upload"
+              disabled={file === null}
+              onClick={doUpload}
+            />
           </div>
-          <div className="flex flex-row gap-1 text-sm">
-            <div className="text-blue-400 content-center">
-              <FaCheck />
+          <div className="flex flex-col">
+            Notes:
+            <div className="flex flex-row gap-1 text-sm">
+              <div className="text-blue-400 content-center">
+                <FaCheckCircle />
+              </div>
+              = active resume
             </div>
-            = inactive resume; click to make active
+            <div className="flex flex-row gap-1 text-sm">
+              <div className="text-blue-400 content-center">
+                <FaCheck />
+              </div>
+              = inactive resume; click to make active
+            </div>
           </div>
-        </div>
-        <div className="text-center col-span-2">
-          {error && <JobvanaError error={error} />}
-          {storageError && <JobvanaError error={storageError} />}
+          <div className="text-center col-span-2">
+            {error && <JobvanaError error={error} />}
+            {storageError && <JobvanaError error={storageError} />}
+          </div>
         </div>
       </div>
     </>

@@ -84,69 +84,75 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {!resetPassword && (
+    <div className="h-full overflow-auto">
+      <div className="px-4 pt-4 flex flex-col gap-y-2">
+        {!resetPassword && (
+          <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
+            <Label htmlFor="password" label="Current password" />
+            <TextInput
+              id="password"
+              width="w-60"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              showEye={true}
+              onClickEye={() =>
+                setShowPassword((showPassword) => !showPassword)
+              }
+              autoComplete={'current-password'}
+              onChange={(password) => setPassword(password)}
+            />
+          </div>
+        )}
         <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
-          <Label htmlFor="password" label="Current password" />
+          <Label htmlFor="new_password" label="New password" />
           <TextInput
-            id="password"
+            id="new_password"
             width="w-60"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
+            type={showNewPassword ? 'text' : 'password'}
+            value={newPassword}
+            minLength={MIN_PASSWORD_LENGTH}
+            maxLength={MAX_PASSWORD_LENGTH}
             showEye={true}
-            onClickEye={() => setShowPassword((showPassword) => !showPassword)}
-            autoComplete={'current-password'}
-            onChange={(password) => setPassword(password)}
+            onClickEye={() =>
+              setShowNewPassword((showPassword) => !showPassword)
+            }
+            placeholder={`Min ${MIN_PASSWORD_LENGTH} characters`}
+            autoComplete={'new-password'}
+            onChange={(password) => setNewPassword(password)}
           />
         </div>
-      )}
-      <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
-        <Label htmlFor="new_password" label="New password" />
-        <TextInput
-          id="new_password"
-          width="w-60"
-          type={showNewPassword ? 'text' : 'password'}
-          value={newPassword}
-          minLength={MIN_PASSWORD_LENGTH}
-          maxLength={MAX_PASSWORD_LENGTH}
-          showEye={true}
-          onClickEye={() => setShowNewPassword((showPassword) => !showPassword)}
-          placeholder={`Min ${MIN_PASSWORD_LENGTH} characters`}
-          autoComplete={'new-password'}
-          onChange={(password) => setNewPassword(password)}
-        />
-      </div>
-      <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
-        <Label htmlFor="confirm_new_password" label="Confirm password" />
-        <TextInput
-          id="confirm_new_password"
-          width="w-60"
-          type={showConfirmPassword ? 'text' : 'password'}
-          value={confirmPassword}
-          minLength={MIN_PASSWORD_LENGTH}
-          maxLength={MAX_PASSWORD_LENGTH}
-          showEye={true}
-          onClickEye={() =>
-            setShowConfirmPassword((showPassword) => !showPassword)
-          }
-          placeholder={`Min ${MIN_PASSWORD_LENGTH} characters`}
-          autoComplete={'new-password'}
-          onChange={(password) => setConfirmPassword(password)}
-        />
-      </div>
-      <div className="grid-cols-2 w-[400px] mt-2">
-        <div className="flex justify-center w-full">
-          <Button
-            label="Submit"
-            disabled={submitDisabled}
-            onClick={changePassword}
+        <div className="grid grid-cols-[40%_60%] w-[400px] gap-2">
+          <Label htmlFor="confirm_new_password" label="Confirm password" />
+          <TextInput
+            id="confirm_new_password"
+            width="w-60"
+            type={showConfirmPassword ? 'text' : 'password'}
+            value={confirmPassword}
+            minLength={MIN_PASSWORD_LENGTH}
+            maxLength={MAX_PASSWORD_LENGTH}
+            showEye={true}
+            onClickEye={() =>
+              setShowConfirmPassword((showPassword) => !showPassword)
+            }
+            placeholder={`Min ${MIN_PASSWORD_LENGTH} characters`}
+            autoComplete={'new-password'}
+            onChange={(password) => setConfirmPassword(password)}
           />
         </div>
-      </div>
-      <div className="grid grid-cols-2 text-sm mt-2">
-        <div className="flex justify-center">
-          {changePasswordSuccess && <>Password successfully changed.</>}
-          {error && <JobvanaError error={error} />}
+        <div className="grid-cols-2 w-[400px] mt-2">
+          <div className="flex justify-center w-full">
+            <Button
+              label="Submit"
+              disabled={submitDisabled}
+              onClick={changePassword}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 text-sm mt-2">
+          <div className="flex justify-center">
+            {changePasswordSuccess && <>Password successfully changed.</>}
+            {error && <JobvanaError error={error} />}
+          </div>
         </div>
       </div>
     </div>
