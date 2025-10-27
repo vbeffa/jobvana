@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { FaLocationDot } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersDisplay from '../../containers/FiltersDisplay';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
@@ -23,8 +24,6 @@ import useCompanies, {
 const Companies = () => {
   const navigate = Route.useNavigate();
   const {
-    // companiesContext: context,
-    // setCompaniesContext: setContext,
     companySearchFilters,
     setCompanySearchFilters,
     companyNav,
@@ -169,7 +168,8 @@ const Companies = () => {
                     <>
                       <div>{company.industryName}</div>
                       {hq && (
-                        <div className="text-gray-500">
+                        <div className="flex flex-row gap-1 items-center text-gray-500">
+                          <FaLocationDot />
                           {hq.city}, {hq.state}
                         </div>
                       )}

@@ -298,8 +298,6 @@ const JobDetails = ({
           title={
             <div className="flex justify-between">
               <div>{job.title}</div>
-              {/* <div>{new Date(job.created_at).toLocaleDateString()}</div> */}
-              {/* <div>ID: {job.id}</div> */}
             </div>
           }
         >
