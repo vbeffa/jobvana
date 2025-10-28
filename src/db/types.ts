@@ -473,6 +473,38 @@ export type Database = {
           },
         ]
       }
+      job_seeker_saved_searches: {
+        Row: {
+          created_at: string
+          id: number
+          job_seeker_id: number
+          name: string
+          search_filters: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          job_seeker_id: number
+          name: string
+          search_filters: Json
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          job_seeker_id?: number
+          name?: string
+          search_filters?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'job_seeker_saved_searches_job_seeker_id_fkey'
+            columns: ['job_seeker_id']
+            isOneToOne: false
+            referencedRelation: 'job_seekers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       job_seeker_skills: {
         Row: {
           job_seeker_id: number

@@ -29,7 +29,6 @@ export type CreatedRange =
 
 export type SearchFilters = {
   company?: string;
-  // companyId?: number;
   jobType: JobType | 'any';
   title?: string;
   description?: string;
@@ -160,7 +159,7 @@ const useJobs = (params: JobsParams): Jobs => {
         q = q.in('job_skills.skill_id', filters.skillIds);
       }
 
-      const { error, data, count } = await q
+      const { data, count, error } = await q
         .order('updated_at', { ascending: false })
         .range((page - 1) * pageSize, page * pageSize - 1);
 

@@ -22,8 +22,6 @@ import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
 const Jobs = () => {
   const navigate = Route.useNavigate();
   const {
-    // jobsContext: context,
-    // setJobsContext: setContext,
     jobSearchFilters,
     setJobSearchFilters,
     jobNav,
@@ -154,10 +152,11 @@ const Jobs = () => {
         }}
         resetDisabled={_.isEqual(searchFilters, INITIAL_SEARCH_FILTERS)}
       />
-      {showFilters && (
+      {showFilters && jobSeeker && (
         <JobFilters
           filters={searchFilters}
           setShowFilters={setShowFilters}
+          jobSeekerId={jobSeeker.id}
           onChange={(filters) => {
             setPage(1);
             setSelectedJobId(null);

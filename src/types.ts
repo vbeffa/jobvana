@@ -69,6 +69,8 @@ export type JobRole = Database['public']['Tables']['job_roles']['Row'];
 export type JobSeeker = Database['public']['Tables']['job_seekers']['Row'];
 export type JobSeekerApplicationNotification =
   Database['public']['Tables']['job_seeker_application_notifications']['Row'];
+export type JobSeekerSavedSearch =
+  Database['public']['Tables']['job_seeker_saved_searches']['Row'];
 export type JobSeekerSkill =
   Database['public']['Tables']['job_seeker_skills']['Row'];
 export type JobSkill = Database['public']['Tables']['job_skills']['Row'];
