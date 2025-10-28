@@ -1,5 +1,6 @@
 import { FaBuilding, FaUser } from 'react-icons/fa6';
 import { getUserType } from '../auth/utils';
+import { descDateComparator } from '../utils';
 import Status from './Status';
 import type { InterviewRoundEvent } from './useInterviewRoundEvents';
 import { type Company } from './utils';
@@ -55,7 +56,7 @@ const InterviewRoundEventsTable = ({
         </tr>
       </thead>
       <tbody>
-        {events.map((event, idx) => (
+        {events.sort(descDateComparator).map((event, idx) => (
           <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
             <td>
               <div className="flex justify-center px-2">{event.round}</div>

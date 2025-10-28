@@ -1,3 +1,4 @@
+import { descDateComparator } from '../utils';
 import Status from './Status';
 import type { ApplicationEvent } from './useApplicationEvents';
 import { applicationEventUser, type Company } from './utils';
@@ -21,7 +22,7 @@ const ApplicationEventsTable = ({
         </tr>
       </thead>
       <tbody>
-        {events.map((event, idx) => (
+        {events.sort(descDateComparator).map((event, idx) => (
           <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
             <td>
               <div className="flex justify-center px-2">
