@@ -113,8 +113,10 @@ const InterviewTable = ({
 
   return (
     <>
-      {isUpdating && <Modal type="updating" />}
-      {error && <JobvanaError error={error} />}
+      <div className="relative top-10">
+        {isUpdating && <Modal type="updating" />}
+        {error && <JobvanaError error={error} />}
+      </div>
       <table className="w-full">
         <thead>
           <tr>
