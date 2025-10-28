@@ -195,7 +195,11 @@ const JobDetails = ({
   );
 
   if (jobError) {
-    return <JobvanaError error={jobError} />;
+    return (
+      <div className="relative top-10">
+        <JobvanaError error={jobError} />
+      </div>
+    );
   }
 
   if (isPending) {

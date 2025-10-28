@@ -130,7 +130,9 @@ const Jobs = () => {
 
   return (
     <>
-      {error && <JobvanaError prefix="Error loading jobs!" error={error} />}
+      <div className="relative top-15">
+        {error && <JobvanaError prefix="Error loading jobs" error={error} />}
+      </div>
       <FiltersDisplay
         activeFilters={
           <ActiveFilters

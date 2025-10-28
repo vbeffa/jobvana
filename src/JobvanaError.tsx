@@ -1,8 +1,24 @@
+import { useState } from 'react';
+import { FaX } from 'react-icons/fa6';
+
 const JobvanaError = ({ prefix, error }: { prefix?: string; error: Error }) => {
+  const [visible, setVisible] = useState(true);
   return (
-    <div className="pb-2 text-red-500 text-center font-bold">
-      {prefix && `${prefix}:`} {error.message}
-    </div>
+    visible && (
+      <div
+        className="z-999 absolute w-64 h-16 left-[calc(50%-128px)]
+                    bg-red-300 text-red-600 font-bold rounded-lg text-center content-center
+                    opacity-95"
+      >
+        Error! {prefix && `${prefix}:`} {error.message}
+        <div className="absolute top-2 right-2">
+          <FaX
+            className="hover:text-red-500 cursor-pointer"
+            onClick={() => setVisible(false)}
+          />
+        </div>
+      </div>
+    )
   );
 };
 

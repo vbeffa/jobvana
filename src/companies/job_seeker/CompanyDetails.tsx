@@ -20,6 +20,14 @@ import useCompany from './useCompany';
 const CompanyDetails = ({ id }: { id?: number }) => {
   const { company, isPending, isPlaceholderData, error } = useCompany(id);
 
+  if (error) {
+    return (
+      <div className="relative top-10">
+        <JobvanaError error={error} />
+      </div>
+    );
+  }
+
   if (isPending) {
     return (
       <div className="relative top-10">
@@ -38,7 +46,6 @@ const CompanyDetails = ({ id }: { id?: number }) => {
     <>
       <div className="relative top-10">
         {isPlaceholderData && <Modal type="loading" />}
-        {error && <JobvanaError error={error} />}
       </div>
       <ActionMenuContainer>
         <LeftSide>
