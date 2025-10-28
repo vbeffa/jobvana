@@ -3,10 +3,10 @@ import { useCallback, useMemo, useState } from 'react';
 import {
   FaEyeSlash,
   FaFloppyDisk,
-  FaGripLines,
   FaPaperPlane,
   FaRocket,
   FaTrash,
+  FaWater,
   FaWrench
 } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
@@ -215,7 +215,7 @@ const JobDetails = ({
         {isPlaceholderData && <Modal type="loading" />}
         {isApplying && <Modal type="applying" />}
         {isHiding && <Modal type="updating" />}
-        {isSaving && <Modal type="updating" />}
+        {isSaving && <Modal type="saving" />}
         {error && <JobvanaError error={error} />}
       </div>
       <ActionMenuContainer>
@@ -231,7 +231,7 @@ const JobDetails = ({
           {job.interviewProcess && (
             <>
               <Divider />
-              <FaGripLines />
+              <FaWater />
               Pipeline: {job.activeApplicationCount} /{' '}
               {job.interviewProcess.pipeline_size}
             </>
