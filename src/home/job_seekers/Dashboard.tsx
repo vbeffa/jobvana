@@ -63,8 +63,8 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               }
               text={
                 <div className="flex flex-row gap-1 items-center">
-                  <FaFlag /> {unreadNotificationsCount ?? 0} unread
-                  notifications
+                  <FaFlag /> {unreadNotificationsCount ?? 0} unread notification
+                  {unreadNotificationsCount !== 1 ? 's' : ''}
                 </div>
               }
               borderBottom={true}

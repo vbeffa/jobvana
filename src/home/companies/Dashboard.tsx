@@ -4,9 +4,21 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import { type Company } from '../../Context';
+import useApplicationNotifications from '../../notifications/companies/useApplicationNotifications';
 import SummaryCard from '../../SummaryCard';
+import Notifications from './Notifications';
 
 const Dashboard = ({ company }: { company: Company }) => {
+  const paging = {
+    page: 1,
+    pageSize: 1
+  };
+
+  const {
+    count: unreadNotificationsCount,
+    refetch: refetchUnreadNotificationsCount
+  } = useApplicationNotifications(company.id, 'unread', paging);
+
   return (
     <>
       <h1>Dashboard</h1>
@@ -27,7 +39,8 @@ const Dashboard = ({ company }: { company: Company }) => {
               }
               text={
                 <div className="flex flex-row gap-1 items-center">
-                  <FaFlag /> Alerts & Notifications
+                  <FaFlag /> {unreadNotificationsCount ?? 0} unread notification
+                  {unreadNotificationsCount !== 1 ? 's' : ''}
                 </div>
               }
               borderBottom={true}
@@ -35,7 +48,12 @@ const Dashboard = ({ company }: { company: Company }) => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer>
-          <>Welcome, {company.name}!</>
+          <>
+            <Notifications
+              companyId={company.id}
+              onUpdate={refetchUnreadNotificationsCount}
+            />
+          </>
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </>

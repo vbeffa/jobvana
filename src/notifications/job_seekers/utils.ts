@@ -1,5 +1,5 @@
-import supabase from '../db/supabase';
-import type { NotificationStatus } from '../types';
+import supabase from '../../db/supabase';
+import type { NotificationStatus } from '../../types';
 
 const addCompanyApplicationNotification = async (
   applicationId: number,
@@ -17,35 +17,19 @@ const addCompanyApplicationNotification = async (
   }
 };
 
-const addJobSeekerApplicationNotification = async (
-  applicationId: number,
-  type: 'accepted' | 'declined'
-) => {
-  const { error: appEventsErr } = await supabase
-    .from('job_seeker_application_notifications')
-    .insert({
-      application_id: applicationId,
-      type
-    });
-  if (appEventsErr) {
-    console.log(appEventsErr);
-    throw appEventsErr;
-  }
-};
-
 const updateJobSeekerApplicationNotificationStatus = async (
   notificationId: number,
   status: NotificationStatus
 ) => {
-  const { error: appEventsErr } = await supabase
+  const { error: appNotificationsErr } = await supabase
     .from('job_seeker_application_notifications')
     .update({
       status
     })
     .eq('id', notificationId);
-  if (appEventsErr) {
-    console.log(appEventsErr);
-    throw appEventsErr;
+  if (appNotificationsErr) {
+    console.log(appNotificationsErr);
+    throw appNotificationsErr;
   }
 };
 
@@ -67,7 +51,6 @@ const unarchiveJobSeekerApplicationNotification = async (
 
 export {
   addCompanyApplicationNotification,
-  addJobSeekerApplicationNotification,
   archiveJobSeekerApplicationNotification,
   markJobSeekerApplicationNotificationRead,
   markJobSeekerApplicationNotificationUnread,

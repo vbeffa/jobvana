@@ -1,5 +1,5 @@
 import supabase from '../../db/supabase';
-import { addCompanyApplicationNotification } from '../../notifications/utils';
+import { addCompanyApplicationNotification } from '../../notifications/job_seekers/utils';
 import type { JobSeeker } from '../../types';
 
 const apply = async (

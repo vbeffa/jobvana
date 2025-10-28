@@ -13,10 +13,8 @@ import {
 import { MdOutlinePending } from 'react-icons/md';
 import { PiHandWithdraw } from 'react-icons/pi';
 import supabase from '../db/supabase';
-import {
-  addCompanyApplicationNotification,
-  addJobSeekerApplicationNotification
-} from '../notifications/utils';
+import { addJobSeekerApplicationNotification } from '../notifications/companies/utils';
+import { addCompanyApplicationNotification } from '../notifications/job_seekers/utils';
 import type {
   ApplicationStatus,
   Company as DbCompany,

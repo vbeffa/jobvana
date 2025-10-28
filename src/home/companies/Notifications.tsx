@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
 import Modal from '../../Modal';
-import useApplicationNotifications from '../../notifications/job_seekers/useApplicationNotifications';
+import useApplicationNotifications from '../../notifications/companies/useApplicationNotifications';
 import PageNav from '../../PageNav';
 import type { Paging } from '../../types';
 import NotificationsTable from './NotificationsTable';
 
 const Notifications = ({
-  jobSeekerId,
+  companyId,
   onUpdate
 }: {
-  jobSeekerId: number;
+  companyId: number;
   onUpdate: () => void;
 }) => {
   const [notificationsTab, setNotificationsTab] = useState<
@@ -41,7 +41,7 @@ const Notifications = ({
     isPlaceholderData: isCurrentNotificationsPlaceholderData,
     refetch: refetchCurrentNotifications
   } = useApplicationNotifications(
-    jobSeekerId,
+    companyId,
     'current',
     currentNotificationsPaging
   );
@@ -53,7 +53,7 @@ const Notifications = ({
     isPlaceholderData: isArchivedNotificationsPlaceholderData,
     refetch: refetchArchivedNotifications
   } = useApplicationNotifications(
-    jobSeekerId,
+    companyId,
     'archived',
     archivedNotificationsPaging
   );

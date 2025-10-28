@@ -4,16 +4,15 @@ import { FaEnvelope, FaEnvelopeOpen } from 'react-icons/fa6';
 import { MdArchive, MdUnarchive } from 'react-icons/md';
 import ApplicationLink from '../../applications/ApplicationLink';
 import Status from '../../applications/Status';
-import CompanyLink from '../../companies/CompanyLink';
 import JobvanaError from '../../JobvanaError';
 import Modal from '../../Modal';
-import type { ApplicationNotification } from '../../notifications/job_seekers/useApplicationNotifications';
+import type { ApplicationNotification } from '../../notifications/companies/useApplicationNotifications';
 import {
-  archiveJobSeekerApplicationNotification,
-  markJobSeekerApplicationNotificationRead,
-  markJobSeekerApplicationNotificationUnread,
-  unarchiveJobSeekerApplicationNotification
-} from '../../notifications/job_seekers/utils';
+  archiveCompanyApplicationNotification,
+  markCompanyApplicationNotificationRead,
+  markCompanyApplicationNotificationUnread,
+  unarchiveCompanyApplicationNotification
+} from '../../notifications/companies/utils';
 
 const NotificationsTable = ({
   notifications,
@@ -42,7 +41,7 @@ const NotificationsTable = ({
       setIsUpdating(showUpdating);
       setUpdateError(undefined);
       try {
-        await markJobSeekerApplicationNotificationRead(notificationId);
+        await markCompanyApplicationNotificationRead(notificationId);
         onUpdate();
       } catch (err) {
         console.log(err);
@@ -59,7 +58,7 @@ const NotificationsTable = ({
       setIsUpdating(true);
       setUpdateError(undefined);
       try {
-        await markJobSeekerApplicationNotificationUnread(notificationId);
+        await markCompanyApplicationNotificationUnread(notificationId);
         onUpdate();
       } catch (err) {
         console.log(err);
@@ -76,7 +75,7 @@ const NotificationsTable = ({
       setIsUpdating(true);
       setUpdateError(undefined);
       try {
-        await archiveJobSeekerApplicationNotification(notificationId);
+        await archiveCompanyApplicationNotification(notificationId);
         onUpdate();
       } catch (err) {
         console.log(err);
@@ -93,7 +92,7 @@ const NotificationsTable = ({
       setIsUpdating(true);
       setUpdateError(undefined);
       try {
-        await unarchiveJobSeekerApplicationNotification(notificationId);
+        await unarchiveCompanyApplicationNotification(notificationId);
         onUpdate();
       } catch (err) {
         console.log(err);
@@ -160,7 +159,7 @@ const NotificationsTable = ({
               </div>
             </th>
             <th className="w-[10%]">Date</th>
-            <th className="w-[20%]">Company</th>
+            <th className="w-[20%]">Job Seeker</th>
             <th className="min-w-[25%]">Application</th>
             <th className="w-[12%]">Status</th>
             <th className="w-20">Actions</th>
@@ -214,7 +213,8 @@ const NotificationsTable = ({
                       }
                     }}
                   >
-                    <CompanyLink {...notification.company} />
+                    {notification.jobSeeker.first_name}{' '}
+                    {notification.jobSeeker.last_name}
                   </div>
                 </div>
               </td>
