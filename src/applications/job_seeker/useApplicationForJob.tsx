@@ -4,7 +4,10 @@ import supabase from '../../db/supabase';
 import type { Application } from '../../types';
 
 export type ApplicationForJob = {
-  application: Pick<Application, 'id' | 'created_at'> | undefined | null;
+  application:
+    | Pick<Application, 'id' | 'created_at' | 'status'>
+    | undefined
+    | null;
   isPending: boolean;
   error?: Error;
   refetch: () => Promise<QueryObserverResult>;
@@ -27,7 +30,7 @@ const useApplicationForJob = ({
     queryFn: async () => {
       const { data } = await supabase
         .from('applications')
-        .select(`id, created_at`)
+        .select('id, created_at, status')
         .filter('job_seeker_id', 'eq', jobSeekerId)
         .filter('job_id', 'eq', jobId);
       // .in('status', ['submitted', 'accepted']);

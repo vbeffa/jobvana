@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fa6';
 import ApplicationsList from '../../applications/job_seeker/ApplicationsList';
 import useApplicationForJob from '../../applications/job_seeker/useApplicationForJob';
+import Status from '../../applications/Status';
 import CompanyLink from '../../companies/CompanyLink';
 import InterviewProcessDisplay from '../../companies/InterviewProcessDisplay';
 import {
@@ -288,6 +289,8 @@ const JobDetails = ({
                   <FaPaperPlane />
                 </div>
                 Applied {new Date(application.created_at).toLocaleDateString()}
+                <Divider />
+                Status: <Status {...application} />
               </div>
             </Link>
           )}
