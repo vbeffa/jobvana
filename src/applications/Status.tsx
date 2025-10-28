@@ -1,4 +1,5 @@
 import { capitalize } from 'lodash';
+import { useMemo } from 'react';
 import type {
   ApplicationStatus,
   InterviewRoundStatus,
@@ -6,6 +7,7 @@ import type {
 } from '../types';
 import { getIcon } from './utils';
 
+// TODO split out Event component for application events
 const Status = ({
   status
 }: {
@@ -13,12 +15,26 @@ const Status = ({
     | ApplicationStatus
     | InterviewStatus
     | InterviewRoundStatus
-    | 'created';
+    | 'created'
+    | 'round_accepted'
+    | 'round_declined';
 }) => {
+  const statusText = useMemo(() => {
+    switch (status) {
+      case 'in_process':
+        return 'In Process';
+      case 'round_accepted':
+        return 'Round Accepted';
+      case 'round_declined':
+        return 'Round Declined';
+      default:
+        return capitalize(status);
+    }
+  }, [status]);
+
   return (
     <div className="flex flex-row items-center gap-1">
-      {getIcon(status)}{' '}
-      {capitalize(status === 'in_process' ? 'in process' : status)}
+      {getIcon(status)} {statusText}
     </div>
   );
 };

@@ -17,6 +17,7 @@ export type ApplicationNotification = Pick<
   DbJobSeekerApplicationNotification,
   'id' | 'created_at' | 'application_id' | 'type' | 'status'
 > & {
+  interviewRound?: number;
   company: Pick<DbCompany, 'id' | 'name'>;
   job: Pick<DbJob, 'id' | 'title'>;
 };
@@ -53,7 +54,8 @@ const useApplicationNotifications = (
             jobs!inner(id, title,
               companies!inner(id, name)
             )
-          )`,
+          ),
+          interview_rounds(round)`,
           {
             count: 'exact'
           }
@@ -93,6 +95,7 @@ const useApplicationNotifications = (
           'type',
           'status'
         ),
+        interviewRound: notificationData.interview_rounds?.round,
         company: notificationData.applications.jobs.companies,
         job: _.pick(notificationData.applications.jobs, 'id', 'title')
       }));

@@ -207,6 +207,7 @@ export type Database = {
           application_id: number
           created_at: string
           id: number
+          interview_round_id: number | null
           status: Database['public']['Enums']['notification_status']
           type: Database['public']['Enums']['company_application_notification']
         }
@@ -214,6 +215,7 @@ export type Database = {
           application_id: number
           created_at?: string
           id?: number
+          interview_round_id?: number | null
           status?: Database['public']['Enums']['notification_status']
           type: Database['public']['Enums']['company_application_notification']
         }
@@ -221,6 +223,7 @@ export type Database = {
           application_id?: number
           created_at?: string
           id?: number
+          interview_round_id?: number | null
           status?: Database['public']['Enums']['notification_status']
           type?: Database['public']['Enums']['company_application_notification']
         }
@@ -230,6 +233,13 @@ export type Database = {
             columns: ['application_id']
             isOneToOne: false
             referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_application_notifications_interview_round_id_fkey'
+            columns: ['interview_round_id']
+            isOneToOne: false
+            referencedRelation: 'interview_rounds'
             referencedColumns: ['id']
           },
         ]
@@ -446,6 +456,7 @@ export type Database = {
           application_id: number
           created_at: string
           id: number
+          interview_round_id: number | null
           status: Database['public']['Enums']['notification_status']
           type: Database['public']['Enums']['job_seeker_application_notification']
         }
@@ -453,6 +464,7 @@ export type Database = {
           application_id: number
           created_at?: string
           id?: number
+          interview_round_id?: number | null
           status?: Database['public']['Enums']['notification_status']
           type: Database['public']['Enums']['job_seeker_application_notification']
         }
@@ -460,6 +472,7 @@ export type Database = {
           application_id?: number
           created_at?: string
           id?: number
+          interview_round_id?: number | null
           status?: Database['public']['Enums']['notification_status']
           type?: Database['public']['Enums']['job_seeker_application_notification']
         }
@@ -469,6 +482,13 @@ export type Database = {
             columns: ['application_id']
             isOneToOne: false
             referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'job_seeker_application_notifications_interview_round_id_fkey'
+            columns: ['interview_round_id']
+            isOneToOne: false
+            referencedRelation: 'interview_rounds'
             referencedColumns: ['id']
           },
         ]
@@ -909,10 +929,18 @@ export type Database = {
     Enums: {
       address_type: 'headquarters' | 'office'
       application_status: 'submitted' | 'accepted' | 'declined' | 'withdrawn'
-      company_application_notification: 'submitted' | 'withdrawn'
+      company_application_notification:
+        | 'submitted'
+        | 'withdrawn'
+        | 'round_accepted'
+        | 'round_declined'
       interview_round_status: 'pending' | 'accepted' | 'declined'
       job_salary_type: 'annual' | 'hourly'
-      job_seeker_application_notification: 'accepted' | 'declined'
+      job_seeker_application_notification:
+        | 'accepted'
+        | 'declined'
+        | 'round_accepted'
+        | 'round_declined'
       job_status: 'open' | 'filled' | 'closed' | 'draft'
       job_type: 'full_time' | 'part_time' | 'contract' | 'internship'
       notification_status: 'unread' | 'read' | 'archived'
@@ -1046,10 +1074,20 @@ export const Constants = {
     Enums: {
       address_type: ['headquarters', 'office'],
       application_status: ['submitted', 'accepted', 'declined', 'withdrawn'],
-      company_application_notification: ['submitted', 'withdrawn'],
+      company_application_notification: [
+        'submitted',
+        'withdrawn',
+        'round_accepted',
+        'round_declined',
+      ],
       interview_round_status: ['pending', 'accepted', 'declined'],
       job_salary_type: ['annual', 'hourly'],
-      job_seeker_application_notification: ['accepted', 'declined'],
+      job_seeker_application_notification: [
+        'accepted',
+        'declined',
+        'round_accepted',
+        'round_declined',
+      ],
       job_status: ['open', 'filled', 'closed', 'draft'],
       job_type: ['full_time', 'part_time', 'contract', 'internship'],
       notification_status: ['unread', 'read', 'archived'],

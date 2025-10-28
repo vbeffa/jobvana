@@ -38,9 +38,12 @@ const apply = async (
     throw appEventsErr;
   }
 
-  await addCompanyApplicationNotification(id, 'submitted');
+  await addCompanyApplicationNotification({
+    applicationId: id,
+    type: 'submitted'
+  });
 
-  const { data: storageData, error: storageErr } = await supabase.storage
+  const { /* data: storageData, */ error: storageErr } = await supabase.storage
     .from('resumes')
     .copy(fromFile, toFile, {
       destinationBucket: 'applications'
@@ -49,7 +52,7 @@ const apply = async (
     console.log(storageErr);
     throw storageErr;
   }
-  console.log(storageData);
+  // console.log(storageData);
 
   const { error: appResumesErr } = await supabase
     .from('application_resumes')

@@ -161,7 +161,8 @@ const NotificationsTable = ({
             <th className="w-[10%]">Date</th>
             <th className="w-[20%]">Job Seeker</th>
             <th className="min-w-[25%]">Application</th>
-            <th className="w-[12%]">Status</th>
+            <th className="w-[10%]">Round</th>
+            <th className="w-[20%]">Event</th>
             <th className="w-20">Actions</th>
           </tr>
         </thead>
@@ -232,6 +233,11 @@ const NotificationsTable = ({
                       jobTitle={notification.job.title}
                     />
                   </div>
+                </div>
+              </td>
+              <td>
+                <div className="px-2 flex justify-center">
+                  {notification.interviewRound ?? '-'}
                 </div>
               </td>
               <td>

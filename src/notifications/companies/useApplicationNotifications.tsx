@@ -17,6 +17,7 @@ export type ApplicationNotification = Pick<
   DbCompanyApplicationNotification,
   'id' | 'created_at' | 'application_id' | 'type' | 'status'
 > & {
+  interviewRound?: number;
   jobSeeker: Pick<DbJobSeeker, 'id' | 'first_name' | 'last_name'>;
   job: Pick<DbJob, 'id' | 'title'>;
 };
@@ -45,19 +46,22 @@ const useApplicationNotifications = (
     queryKey: ['notifications', companyId, status, paging],
     queryFn: async () => {
       const { page, pageSize } = paging;
-      let q = supabase.from('company_application_notifications').select(
-        `id, created_at, application_id, type, status,
+      let q = supabase
+        .from('company_application_notifications')
+        .select(
+          `id, created_at, application_id, type, status,
           applications!inner(
             jobs!inner(id, title,
               companies!inner(id)
             ),
             job_seekers!inner(id, first_name, last_name)
-          )`,
-        {
-          count: 'exact'
-        }
-      );
-      // .filter('applications.jobs.company_id', 'eq', companyId);
+          ),
+          interview_rounds(round)`,
+          {
+            count: 'exact'
+          }
+        )
+        .filter('applications.jobs.company_id', 'eq', companyId);
 
       if (status === 'current') {
         q = q.not('status', 'eq', 'archived');
@@ -92,7 +96,7 @@ const useApplicationNotifications = (
           'type',
           'status'
         ),
-        company: notificationData.applications.jobs.companies,
+        interviewRound: notificationData.interview_rounds?.round,
         jobSeeker: notificationData.applications.job_seekers,
         job: _.pick(notificationData.applications.jobs, 'id', 'title')
       }));

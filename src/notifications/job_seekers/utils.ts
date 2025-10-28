@@ -1,14 +1,20 @@
 import supabase from '../../db/supabase';
 import type { NotificationStatus } from '../../types';
 
-const addCompanyApplicationNotification = async (
-  applicationId: number,
-  type: 'submitted' | 'withdrawn'
-) => {
+const addCompanyApplicationNotification = async ({
+  applicationId,
+  interviewRoundId,
+  type
+}: {
+  applicationId: number;
+  interviewRoundId?: number;
+  type: 'submitted' | 'withdrawn' | 'round_accepted' | 'round_declined';
+}) => {
   const { error: appEventsErr } = await supabase
     .from('company_application_notifications')
     .insert({
       application_id: applicationId,
+      interview_round_id: interviewRoundId,
       type
     });
   if (appEventsErr) {

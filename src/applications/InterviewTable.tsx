@@ -6,12 +6,11 @@ import {
 } from '../companies/company/utils';
 import InterviewProcessLocation from '../companies/InterviewProcessLocation';
 import type { UserType } from '../Context';
-import supabase from '../db/supabase';
 import JobvanaError from '../JobvanaError';
 import Modal from '../Modal';
-import type { InterviewRoundStatus } from '../types';
 import Status from './Status';
 import type { Interview } from './useInterview';
+import { updateRound } from './utils';
 
 const InterviewTable = ({
   interviewProcess,
@@ -29,99 +28,6 @@ const InterviewTable = ({
   const [isUpdating, setIsUpdating] = useState(false); // TODO move to ApplicationDetails
   const [error, setError] = useState<Error>();
 
-  const updateRound = useCallback(
-    async (
-      interviewId: number,
-      round: number,
-      status: InterviewRoundStatus
-    ) => {
-      let roundCompleted = false;
-      let allRoundsCompleted = false;
-      const { data, error } = await supabase
-        .from('interview_rounds')
-        .update(
-          userType === 'company'
-            ? { company_response: status }
-            : { job_seeker_response: status }
-        )
-        .filter('interview_id', 'eq', interviewId)
-        .filter('round', 'eq', round)
-        .select();
-
-      if (error) {
-        console.log(error);
-        throw error;
-      }
-      const interviewRound = data[0];
-
-      const { error: eventsError } = await supabase
-        .from('interview_round_events')
-        .insert({
-          interview_round_id: interviewRound.id,
-          user_id: userId,
-          event: status
-        });
-      if (eventsError) {
-        console.log(eventsError);
-        throw eventsError;
-      }
-
-      if (
-        interviewRound.company_response === 'accepted' &&
-        interviewRound.job_seeker_response === 'accepted'
-      ) {
-        roundCompleted = true;
-        if (interviewRound.round < interviewProcess.rounds.length) {
-          const { error: interviewRoundsErr } = await supabase
-            .from('interview_rounds')
-            .insert({
-              interview_id: interview.id,
-              round: interviewRound.round + 1
-            });
-          if (interviewRoundsErr) {
-            console.log(interviewRoundsErr);
-            throw interviewRoundsErr;
-          }
-        } else {
-          allRoundsCompleted = true;
-        }
-      } else if (status === 'declined') {
-        const appStatus = userType === 'company' ? 'declined' : 'withdrawn';
-        const { error: applicationsErr } = await supabase
-          .from('applications')
-          .update({
-            status: appStatus
-          })
-          .filter('id', 'eq', interview.application_id);
-        if (applicationsErr) {
-          console.log(applicationsErr);
-          throw applicationsErr;
-        }
-
-        const { error: appEventsErr } = await supabase
-          .from('application_events')
-          .insert({
-            application_id: interview.application_id,
-            user_id: userId,
-            event: appStatus
-          });
-        if (appEventsErr) {
-          console.log(appEventsErr);
-          throw appEventsErr;
-        }
-      }
-
-      return [roundCompleted, allRoundsCompleted];
-    },
-    [
-      interview.application_id,
-      interview.id,
-      interviewProcess.rounds.length,
-      userId,
-      userType
-    ]
-  );
-
   const accept = useCallback(
     async (round: number) => {
       if (
@@ -132,11 +38,15 @@ const InterviewTable = ({
 
       setIsUpdating(true);
       try {
-        const [roundCompleted, allRoundsCompleted] = await updateRound(
-          interview.id,
+        const [roundCompleted, allRoundsCompleted] = await updateRound({
+          applicationId: interview.application_id,
+          interviewId: interview.id,
           round,
-          'accepted'
-        );
+          numRounds: interviewProcess.rounds.length,
+          status: 'accepted',
+          userType,
+          userId
+        });
         onUpdate();
         if (allRoundsCompleted) {
           alert('Interview process complete!');
@@ -151,7 +61,14 @@ const InterviewTable = ({
         setIsUpdating(false);
       }
     },
-    [interview.id, onUpdate, setIsUpdating, updateRound]
+    [
+      interview.application_id,
+      interview.id,
+      interviewProcess.rounds.length,
+      onUpdate,
+      userId,
+      userType
+    ]
   );
 
   const decline = useCallback(
@@ -166,7 +83,15 @@ const InterviewTable = ({
 
       setIsUpdating(true);
       try {
-        await updateRound(interview.id, round, 'declined');
+        await updateRound({
+          applicationId: interview.application_id,
+          interviewId: interview.id,
+          round,
+          numRounds: interviewProcess.rounds.length,
+          status: 'declined',
+          userType,
+          userId
+        });
         // TODO refresh the applications list as well
         onUpdate();
         alert('Interview round and application marked as declined.');
@@ -176,7 +101,14 @@ const InterviewTable = ({
         setIsUpdating(false);
       }
     },
-    [interview.id, onUpdate, updateRound]
+    [
+      interview.application_id,
+      interview.id,
+      interviewProcess.rounds.length,
+      onUpdate,
+      userId,
+      userType
+    ]
   );
 
   return (
