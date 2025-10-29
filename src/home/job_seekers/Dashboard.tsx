@@ -120,8 +120,8 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
             />
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
-          <>
+        <ResourceDetailsContainer padding="">
+          <div className="h-full overflow-auto">
             {card === 'inbox' && (
               <Notifications
                 jobSeekerId={jobSeeker.id}
@@ -132,7 +132,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               <SavedSearchesTable jobSeekerId={jobSeeker.id} />
             )}
             {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
-          </>
+          </div>
         </ResourceDetailsContainer>
       </ResourcesContainer>
     </>

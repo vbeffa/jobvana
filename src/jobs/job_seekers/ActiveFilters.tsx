@@ -50,14 +50,18 @@ const ActiveFilters = ({
   //   [filters.jobType]
   // );
 
+  const divStyle = savedSearch
+    ? 'grid grid-cols-[39%_61%]'
+    : 'flex flex-row gap-2';
+
   return (
     <div
       className={
-        savedSearch ? 'flex flex-col gap-2' : 'flex gap-2 whitespace-nowrap'
+        savedSearch ? 'flex flex-col gap-1' : 'flex gap-2 whitespace-nowrap'
       }
     >
       {filters.company && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Company Name:</div>
           <PillContainer
             onDelete={
@@ -79,7 +83,7 @@ const ActiveFilters = ({
       )}
       {(filters.minSize > INITIAL_SEARCH_FILTERS.minSize ||
         filters.maxSize < INITIAL_SEARCH_FILTERS.maxSize) && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Size:</div>
           <PillContainer
             onDelete={
@@ -99,7 +103,7 @@ const ActiveFilters = ({
         </div>
       )}
       {industry && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Industry:</div>
           <PillContainer
             onDelete={
@@ -120,7 +124,7 @@ const ActiveFilters = ({
         </div>
       )}
       {filters.title && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Job Title:</div>
           <PillContainer
             onDelete={
@@ -141,7 +145,7 @@ const ActiveFilters = ({
         </div>
       )}
       {filters.description && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Description:</div>
           <PillContainer
             onDelete={
@@ -162,7 +166,7 @@ const ActiveFilters = ({
         </div>
       )}
       {role && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Role:</div>
           <PillContainer
             onDelete={
@@ -183,7 +187,7 @@ const ActiveFilters = ({
         </div>
       )}
       {filters.jobType !== 'any' && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Job Type:</div>
           <PillContainer
             onDelete={
@@ -203,16 +207,16 @@ const ActiveFilters = ({
           </PillContainer>
         </div>
       )}
-      <div className="flex flex-row gap-2">
+      <div className={divStyle}>
         <div className="content-center">Salary Type:</div>
         <PillContainer>{_.capitalize(filters.salaryType)}</PillContainer>
       </div>
-      <div className="flex flex-row gap-2">
+      <div className={divStyle}>
         <div className="content-center">Salary Range:</div>
         <PillContainer>{`${formatCurrency(filters.minSalary)} - ${formatCurrency(filters.maxSalary)}`}</PillContainer>
       </div>
       {filters.created !== 'all' && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Posted:</div>
           <PillContainer
             onDelete={
@@ -269,7 +273,7 @@ const ActiveFilters = ({
         </PillContainer>
       )}
       {selectedSkills && (
-        <div className="flex flex-row gap-2">
+        <div className={divStyle}>
           <div className="content-center">Skills:</div>
           {selectedSkills.map((skill) => (
             <div key={skill.id}>

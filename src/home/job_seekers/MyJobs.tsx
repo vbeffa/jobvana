@@ -42,7 +42,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
   } = useMarkedJobs(jobSeekerId, 'hidden', hiddenJobsPaging);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="px-4 pt-4 flex flex-col h-full">
       <div className="flex flex-row gap-4 w-fit">
         <div
           className={`${jobsTab === 'saved' ? 'border-b-4' : ''} cursor-pointer`}

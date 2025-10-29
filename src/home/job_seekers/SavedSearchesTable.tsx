@@ -67,7 +67,7 @@ const SavedSearchesTable = ({
   }
 
   return (
-    <div>
+    <div className="p-4">
       {isUpdating && <Modal type="updating" />}
       {updateError && <JobvanaError error={updateError} />}
       <table className="w-full">

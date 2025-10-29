@@ -47,7 +47,7 @@ const Dashboard = ({ company }: { company: Company }) => {
             />
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           <>
             <Notifications
               companyId={company.id}
