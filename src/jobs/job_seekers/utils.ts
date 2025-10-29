@@ -126,4 +126,23 @@ const unsave = async (jobId: number, jobSeekerId: number) => {
   }
 };
 
-export { apply, hide, permanentlyHide, save, unhide, unsave };
+const deleteSavedSearch = async (id: number) => {
+  const { error } = await supabase
+    .from('job_seeker_saved_searches')
+    .delete()
+    .eq('id', id);
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export {
+  apply,
+  deleteSavedSearch,
+  hide,
+  permanentlyHide,
+  save,
+  unhide,
+  unsave
+};

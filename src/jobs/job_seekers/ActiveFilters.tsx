@@ -15,10 +15,12 @@ import type { SearchFilters } from './useJobs';
 
 const ActiveFilters = ({
   filters,
-  setFilters
+  setFilters,
+  savedSearch
 }: {
   filters: SearchFilters;
-  setFilters: Dispatch<SetStateAction<SearchFilters>>;
+  setFilters?: Dispatch<SetStateAction<SearchFilters>>;
+  savedSearch?: boolean;
 }) => {
   const { setJobSearchFilters } = useContext(JobSeekerContext);
   const { findIndustry } = useIndustries();
@@ -49,19 +51,27 @@ const ActiveFilters = ({
   // );
 
   return (
-    <div className="flex gap-2 whitespace-nowrap">
+    <div
+      className={
+        savedSearch ? 'flex flex-col gap-2' : 'flex gap-2 whitespace-nowrap'
+      }
+    >
       {filters.company && (
         <div className="flex flex-row gap-2">
           <div className="content-center">Company Name:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                company: INITIAL_SEARCH_FILTERS.company
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      company: INITIAL_SEARCH_FILTERS.company
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {filters.company}
           </PillContainer>
@@ -72,15 +82,19 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Size:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                minSize: INITIAL_SEARCH_FILTERS.minSize,
-                maxSize: INITIAL_SEARCH_FILTERS.maxSize
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      minSize: INITIAL_SEARCH_FILTERS.minSize,
+                      maxSize: INITIAL_SEARCH_FILTERS.maxSize
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >{`${filters.minSize} - ${filters.maxSize}`}</PillContainer>
         </div>
       )}
@@ -88,14 +102,18 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Industry:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                industryId: INITIAL_SEARCH_FILTERS.industryId
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      industryId: INITIAL_SEARCH_FILTERS.industryId
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {industry.name}
           </PillContainer>
@@ -105,14 +123,18 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Job Title:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                title: INITIAL_SEARCH_FILTERS.title
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      title: INITIAL_SEARCH_FILTERS.title
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {filters.title}
           </PillContainer>
@@ -122,14 +144,18 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Description:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                description: INITIAL_SEARCH_FILTERS.description
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      description: INITIAL_SEARCH_FILTERS.description
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {filters.description}
           </PillContainer>
@@ -139,14 +165,18 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Role:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                roleId: INITIAL_SEARCH_FILTERS.roleId
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      roleId: INITIAL_SEARCH_FILTERS.roleId
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {role.name}
           </PillContainer>
@@ -156,14 +186,18 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Job Type:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                jobType: INITIAL_SEARCH_FILTERS.jobType
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      jobType: INITIAL_SEARCH_FILTERS.jobType
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {jobTypeToString(filters.jobType)}
           </PillContainer>
@@ -181,14 +215,18 @@ const ActiveFilters = ({
         <div className="flex flex-row gap-2">
           <div className="content-center">Posted:</div>
           <PillContainer
-            onDelete={() => {
-              const updatedFilters = {
-                ...filters,
-                created: INITIAL_SEARCH_FILTERS.created
-              };
-              setFilters(updatedFilters);
-              setJobSearchFilters(updatedFilters);
-            }}
+            onDelete={
+              setFilters
+                ? () => {
+                    const updatedFilters = {
+                      ...filters,
+                      created: INITIAL_SEARCH_FILTERS.created
+                    };
+                    setFilters(updatedFilters);
+                    setJobSearchFilters(updatedFilters);
+                  }
+                : undefined
+            }
           >
             {createdRangeToString(filters.created)}
           </PillContainer>
@@ -196,28 +234,36 @@ const ActiveFilters = ({
       )}
       {filters.showApplied && (
         <PillContainer
-          onDelete={() => {
-            const updatedFilters = {
-              ...filters,
-              showApplied: INITIAL_SEARCH_FILTERS.showApplied
-            };
-            setFilters(updatedFilters);
-            setJobSearchFilters(updatedFilters);
-          }}
+          onDelete={
+            setFilters
+              ? () => {
+                  const updatedFilters = {
+                    ...filters,
+                    showApplied: INITIAL_SEARCH_FILTERS.showApplied
+                  };
+                  setFilters(updatedFilters);
+                  setJobSearchFilters(updatedFilters);
+                }
+              : undefined
+          }
         >
           Show Applied
         </PillContainer>
       )}
       {filters.hideSaved && (
         <PillContainer
-          onDelete={() => {
-            const updatedFilters = {
-              ...filters,
-              hideSaved: INITIAL_SEARCH_FILTERS.hideSaved
-            };
-            setFilters(updatedFilters);
-            setJobSearchFilters(updatedFilters);
-          }}
+          onDelete={
+            setFilters
+              ? () => {
+                  const updatedFilters = {
+                    ...filters,
+                    hideSaved: INITIAL_SEARCH_FILTERS.hideSaved
+                  };
+                  setFilters(updatedFilters);
+                  setJobSearchFilters(updatedFilters);
+                }
+              : undefined
+          }
         >
           Hide Saved
         </PillContainer>

@@ -36,7 +36,6 @@ const JobFilters = ({
   const [saveError, setSaveError] = useState<Error>();
 
   const { savedSearches, error, refetch } = useSavedSearches(jobSeekerId);
-  console.log(savedSearches);
 
   const isDirty = useMemo(
     () => !_.isEqual(filters, newFilters),
@@ -45,23 +44,23 @@ const JobFilters = ({
 
   const saveSearch = useCallback(async () => {
     let existingSearch = savedSearches?.find((savedSearch) =>
-      _.isEqual(savedSearch.search_filters, newFilters)
+      _.isEqual(savedSearch.name, searchName)
     );
     if (existingSearch) {
       alert(
-        `These filters already exist under the saved search "${existingSearch.name}"`
+        `A saved search with the name "${existingSearch.name}" already exists.`
       );
       return;
     }
 
-    existingSearch = savedSearches?.find((savedSearch) =>
-      _.isEqual(savedSearch.name, searchName)
-    );
     let replaceSearch = false;
+    existingSearch = savedSearches?.find((savedSearch) =>
+      _.isEqual(savedSearch.searchFilters, newFilters)
+    );
     if (existingSearch) {
       if (
         !confirm(
-          `A saved search with the name "${existingSearch.name}" already exists. Replace?`
+          `These filters already exist under the saved search "${existingSearch.name}" - replace?`
         )
       ) {
         return;
@@ -85,19 +84,19 @@ const JobFilters = ({
           setSaveError(error);
           return;
         }
-      }
-
-      const { error } = await supabase
-        .from('job_seeker_saved_searches')
-        .insert({
-          job_seeker_id: jobSeekerId,
-          name: searchName,
-          search_filters: newFilters
-        });
-      if (error) {
-        console.log(error);
-        setSaveError(error);
-        return;
+      } else {
+        const { error } = await supabase
+          .from('job_seeker_saved_searches')
+          .insert({
+            job_seeker_id: jobSeekerId,
+            name: searchName,
+            search_filters: newFilters
+          });
+        if (error) {
+          console.log(error);
+          setSaveError(error);
+          return;
+        }
       }
 
       refetch();
@@ -111,10 +110,10 @@ const JobFilters = ({
   return (
     <FiltersSelectContainer>
       {error && (
-        <JobvanaError prefix="Error loading saved searches!" error={error} />
+        <JobvanaError prefix="Error loading saved searches" error={error} />
       )}
       {saveError && (
-        <JobvanaError prefix="Error saving search!" error={saveError} />
+        <JobvanaError prefix="Error saving search" error={saveError} />
       )}
       {isSaving && <Modal type="saving" />}
       <div className="h-full px-2 py-4 w-full flex flex-row gap-x-4">

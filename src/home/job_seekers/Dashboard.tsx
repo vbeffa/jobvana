@@ -12,10 +12,12 @@ import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
 import { type JobSeeker } from '../../Context';
+import useSavedSearches from '../../jobs/job_seekers/useSavedSearches';
 import useApplicationNotifications from '../../notifications/job_seekers/useApplicationNotifications';
 import SummaryCard from '../../SummaryCard';
 import MyJobs from './MyJobs';
 import Notifications from './Notifications';
+import SavedSearchesTable from './SavedSearchesTable';
 import useMarkedJobs from './useMarkedJobs';
 
 const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
@@ -32,6 +34,7 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
     count: unreadNotificationsCount,
     refetch: refetchUnreadNotificationsCount
   } = useApplicationNotifications(jobSeeker.id, 'unread', paging);
+  const { count: savedSearchesCount } = useSavedSearches(jobSeeker.id);
   const { count: savedJobsCount } = useMarkedJobs(
     jobSeeker.id,
     'saved',
@@ -83,7 +86,8 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
               }
               text={
                 <div className="flex flex-row gap-1 items-center">
-                  Coming soon
+                  {savedSearchesCount} saved search
+                  {savedSearchesCount !== 1 ? 'es' : ''}
                 </div>
               }
               borderBottom={true}
@@ -124,7 +128,9 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
                 onUpdate={refetchUnreadNotificationsCount}
               />
             )}
-            {card === 'saved_searches' && <>Saved Searches</>}
+            {card === 'saved_searches' && (
+              <SavedSearchesTable jobSeekerId={jobSeeker.id} />
+            )}
             {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
           </>
         </ResourceDetailsContainer>
