@@ -45,7 +45,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
     <div className="flex flex-col h-full">
       <div className="flex flex-row gap-4 w-fit">
         <div
-          className={`${jobsTab === 'saved' ? 'border-b-[4px]' : ''} cursor-pointer`}
+          className={`${jobsTab === 'saved' ? 'border-b-4' : ''} cursor-pointer`}
           onClick={() => {
             if (jobsTab !== 'saved') {
               setJobsTab('saved');
@@ -55,7 +55,7 @@ const MyJobs = ({ jobSeekerId }: { jobSeekerId: number }) => {
           Saved ({savedJobsCount ?? '..'})
         </div>
         <div
-          className={`${jobsTab === 'hidden' ? 'border-b-[4px]' : ''} cursor-pointer`}
+          className={`${jobsTab === 'hidden' ? 'border-b-4' : ''} cursor-pointer`}
           onClick={() => {
             if (jobsTab !== 'hidden') {
               setJobsTab('hidden');

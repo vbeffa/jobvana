@@ -10,7 +10,7 @@ const JobvanaError = ({ prefix, error }: { prefix?: string; error: Error }) => {
                     bg-red-300 text-red-600 font-bold rounded-lg text-center content-center
                     opacity-95"
       >
-        Error! {prefix && `${prefix}:`} {error.message}
+        {prefix && `${prefix}:`} {error.message}
         <div className="absolute top-2 right-2">
           <FaX
             className="hover:text-red-500 cursor-pointer"
