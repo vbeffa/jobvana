@@ -31,7 +31,8 @@ const useSavedSearches = (jobSeekerId: number): SavedSearches => {
         .select('id, created_at, name, search_filters', {
           count: 'exact'
         })
-        .filter('job_seeker_id', 'eq', jobSeekerId);
+        .filter('job_seeker_id', 'eq', jobSeekerId)
+        .order('name');
 
       if (error) {
         console.log(error);

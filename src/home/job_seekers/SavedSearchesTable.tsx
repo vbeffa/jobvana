@@ -73,10 +73,10 @@ const SavedSearchesTable = ({
       <table className="w-full">
         <thead>
           <tr>
-            <th>Date</th>
+            <th className="w-28">Date</th>
             <th>Name</th>
             <th>Filters</th>
-            <th>Actions</th>
+            <th className="w-24">Actions</th>
           </tr>
         </thead>
         <tbody>

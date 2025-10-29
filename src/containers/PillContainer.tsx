@@ -23,9 +23,9 @@ const PillContainer = ({
 
   return (
     <div
-      className={`border-[1px] border-blue-500 ${
+      className={`border border-blue-500 ${
         checked ? 'bg-blue-300' : 'bg-blue-200'
-      } w-fit flex gap-1 whitespace-nowrap cursor-default`}
+      } h-fit w-fit flex gap-1 whitespace-nowrap cursor-default`}
     >
       {tooltipMessage && (
         <div className="p-1 relative">

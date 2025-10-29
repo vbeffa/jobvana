@@ -51,7 +51,7 @@ const ActiveFilters = ({
   // );
 
   const divStyle = savedSearch
-    ? 'grid grid-cols-[39%_61%]'
+    ? 'flex h-fit grid grid-cols-[35%_65%]'
     : 'flex flex-row gap-2';
 
   return (
