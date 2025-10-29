@@ -116,7 +116,7 @@ const JobFilters = ({
         <JobvanaError prefix="Error saving search" error={saveError} />
       )}
       {isSaving && <Modal type="saving" />}
-      <div className="h-full px-2 py-4 w-full flex flex-row gap-x-4">
+      <div className="h-full px-2 pt-4 w-full flex flex-row gap-x-4">
         <div className="flex flex-col justify-between">
           <div className="grid grid-cols-[32%_68%] w-[480px] gap-y-2">
             <Label htmlFor="company_filter" label="Company Name" />
@@ -297,11 +297,11 @@ const JobFilters = ({
               <label htmlFor="hide_saved">Hide saved</label>
             </div>
           </div>
-          <div className="grid grid-cols-[32%_52%_16%] w-[480px]">
+          <div className="grid grid-cols-[32%_52%_16%] w-[480px] py-4">
             <Label htmlFor="save_search" label="Save this search" />
             <Filter
               id="save_search"
-              width="w-[calc(100%-2px)]"
+              width="w-[calc(100%-4px)]"
               maxLength={25}
               placeholder="Enter a name"
               value={searchName}
@@ -315,33 +315,37 @@ const JobFilters = ({
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 w-full gap-y-2">
-          <SkillsSelect
-            selectedSkillIds={newFilters.skillIds ?? []}
-            width="w-full"
-            outerHeight="h-88.75"
-            innerHeight="max-h-87.75"
-            onChange={(skillIds) => {
-              setNewFilters({ ...newFilters, skillIds: skillIds });
-            }}
-          />
+        <div className="flex flex-col w-full justify-between">
+          <div className="grid grid-cols-1 gap-y-2">
+            <SkillsSelect
+              selectedSkillIds={newFilters.skillIds ?? []}
+              width="w-full"
+              outerHeight="h-88.75"
+              innerHeight="max-h-87.75"
+              onChange={(skillIds) => {
+                setNewFilters({ ...newFilters, skillIds: skillIds });
+              }}
+            />
+          </div>
+          <div className="grid grid-cols-1 py-4">
+            <div className="flex flex-row justify-end gap-2">
+              <Button
+                label="Cancel"
+                onClick={() => {
+                  setShowFilters(false);
+                }}
+              />
+              <Button
+                label="Apply"
+                disabled={!isDirty}
+                onClick={() => {
+                  onChange(newFilters);
+                  setShowFilters(false);
+                }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="absolute bottom-4 right-4 flex flex-row gap-2">
-        <Button
-          label="Cancel"
-          onClick={() => {
-            setShowFilters(false);
-          }}
-        />
-        <Button
-          label="Apply"
-          disabled={!isDirty}
-          onClick={() => {
-            onChange(newFilters);
-            setShowFilters(false);
-          }}
-        />
       </div>
     </FiltersSelectContainer>
   );

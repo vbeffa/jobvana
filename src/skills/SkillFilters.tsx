@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
+import FiltersSelectContainer from '../containers/FiltersSelectContainer';
 import Button from '../controls/Button';
 import Filter from '../inputs/Filter';
 import SkillCategorySelect from '../skill_categories/SkillCategorySelect';
@@ -22,7 +23,7 @@ const SkillFilters = ({
   );
 
   return (
-    <div className="absolute border-[0.5px] border-blue-400 rounded-lg w-[80%] h-[600px] left-[10%] top-[156px] bg-white px-2 z-10">
+    <FiltersSelectContainer>
       <div className="p-2">
         <div className="flex flex-row gap-x-4">
           <div className="grid grid-cols-[25%_75%] w-86 gap-y-2">
@@ -69,7 +70,7 @@ const SkillFilters = ({
           }}
         />
       </div>
-    </div>
+    </FiltersSelectContainer>
   );
 };
 
