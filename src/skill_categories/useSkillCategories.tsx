@@ -26,7 +26,13 @@ const useSkillCategories = (): SkillCategories => {
     queryKey: ['skillCategories'],
     queryFn: async () => {
       const { data, error } = await supabase.from('skill_categories').select();
-      return { skillCategories: data, error };
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      return { skillCategories: data };
     }
   });
 

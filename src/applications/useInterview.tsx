@@ -36,13 +36,19 @@ const useInterview = ({
   const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('interviews')
         .select(
           `id, application_id,
           interview_rounds!inner(round, company_response, job_seeker_response)`
         )
         .filter('application_id', 'eq', applicationId);
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
       return data;
     }

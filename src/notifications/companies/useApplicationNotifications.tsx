@@ -76,18 +76,21 @@ const useApplicationNotifications = (
         .range((page - 1) * pageSize, page * pageSize - 1);
 
       const { data, count, error } = await q;
+
       if (error) {
         console.log(error);
+        throw error;
       }
+
       // console.log(data);
-      return { data, count, error };
+      return { data, count };
     },
     placeholderData: keepPreviousData
   });
 
   const notifications: Array<ApplicationNotification> | undefined =
     useMemo(() => {
-      return notificationsData?.data?.map((notificationData) => ({
+      return notificationsData?.data.map((notificationData) => ({
         ..._.pick(
           notificationData,
           'id',

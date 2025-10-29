@@ -18,17 +18,23 @@ const useCompanyAddresses = (companyId: number): CompanyAddresses => {
   } = useQuery({
     queryKey: ['addresses'],
     queryFn: async () => {
-      const { data, error, count } = await supabase
+      const { data, count, error } = await supabase
         .from('company_addresses')
         .select('*', { count: 'exact' })
         .filter('company_id', 'eq', companyId);
-      return { data, error, count };
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      return { data, count };
     }
   });
 
   const addresses = useMemo(
     () =>
-      addressesData?.data?.sort((address1, address2) =>
+      addressesData?.data.sort((address1, address2) =>
         address1.zip.localeCompare(address2.zip)
       ),
     [addressesData]

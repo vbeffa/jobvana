@@ -45,10 +45,13 @@ const useResumes = (userId: string | null): Resumes => {
       const { data, error } = await supabase.storage
         .from('resumes')
         .list(`${userId}`);
-      // console.log(data);
+
       if (error) {
         console.log(error);
+        throw error;
       }
+
+      // console.log(data);
       return { data, error };
     }
   });

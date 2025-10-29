@@ -108,18 +108,21 @@ const useJobsForSkill = (
         q = q.filter('created_at', 'gte', createdAfter);
       }
 
-      const { error, data, count } = await q
+      const { data, count, error } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
         .order('created_at', { ascending: false })
         .overrideTypes<Array<{ companies: Company }>>();
-      // console.log(data);
+
       if (error) {
-        console.log(JSON.stringify(error));
+        console.log(error);
+        throw error;
       }
-      return { error, data, count };
+
+      // console.log(data);
+      return { data, count };
     },
     placeholderData: keepPreviousData
   });

@@ -30,9 +30,14 @@ const useJob = (id: number): JobH => {
         .from('jobs')
         .select('*, job_roles(*), job_skills(*)')
         .filter('id', 'eq', id);
-      // console.log(data);
 
-      return { job: data?.[0], error };
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      // console.log(data);
+      return { job: data[0] };
     },
     placeholderData: keepPreviousData
   });

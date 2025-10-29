@@ -12,11 +12,17 @@ const useJobApplications = ({ jobId }: { jobId: number }): JobApplications => {
   const { data, isPending, error, refetch } = useQuery({
     queryKey: ['applications', { jobId }],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('applications')
         .select('count')
         .filter('job_id', 'eq', jobId)
         .in('status', ['submitted', 'accepted']);
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
       return data;
     }

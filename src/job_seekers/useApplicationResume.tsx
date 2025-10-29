@@ -39,10 +39,13 @@ const useApplicationResume = ({
       const { data, error } = await supabase.storage
         .from('applications')
         .info(resumePath);
-      // console.log(data);
+
       if (error) {
         console.log(error);
+        throw error;
       }
+
+      // console.log(data);
       return { data, error };
     }
   });

@@ -61,18 +61,20 @@ const useJobs = (params: JobsParams): Jobs => {
         q = q.filter('status', 'eq', filters.status);
       }
 
-      const { error, data, count } = await q
+      const { data, count, error } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
         .order('updated_at', { ascending: false });
 
-      // console.log(data);
       if (error) {
         console.log(error);
+        throw error;
       }
-      return { jobs: data, error, count };
+
+      // console.log(data);
+      return { jobs: data, count };
     },
     placeholderData: keepPreviousData
   });

@@ -13,7 +13,13 @@ const useIndustries = (): Industries => {
   const { isPending, data: industriesData } = useQuery({
     queryKey: ['industries'],
     queryFn: async () => {
-      const { data } = await supabase.from('industries').select();
+      const { data, error } = await supabase.from('industries').select();
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       return data;
     }
   });

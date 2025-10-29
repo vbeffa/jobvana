@@ -52,8 +52,13 @@ const useCompany = (id?: number): CompanyH => {
         .filter('id', 'eq', id)
         .filter('jobs.status', 'eq', 'open');
 
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return { company: data?.[0], error };
+      return { company: data[0], error };
     },
     placeholderData: keepPreviousData
   });

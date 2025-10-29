@@ -22,9 +22,14 @@ const useSavedSearches = (jobSeekerId: number): SavedSearches => {
         .from('job_seeker_saved_searches')
         .select('*')
         .filter('job_seeker_id', 'eq', jobSeekerId);
-      // console.log(data);
 
-      return { savedSearches: data, error };
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      // console.log(data);
+      return { savedSearches: data };
     },
     placeholderData: keepPreviousData
   });

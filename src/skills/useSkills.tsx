@@ -55,14 +55,20 @@ const useSkills = (params: SkillsParams): Skills => {
       if (filters.skillCategoryId) {
         q = q.filter('skill_category_id', 'eq', filters.skillCategoryId);
       }
-      const { data, error, count } = await q
+      const { data, count, error } = await q
         .range(
           (params.paging.page - 1) * params.paging.pageSize,
           params.paging.page * params.paging.pageSize - 1
         )
         .order('name');
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return { skills: data, error, count };
+      return { skills: data, count };
     }
   });
 

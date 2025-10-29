@@ -75,8 +75,13 @@ const useJob = (id: number): JobH => {
         )
         .filter('id', 'eq', id);
 
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return { job: data?.[0], error };
+      return { job: data[0] };
     },
     placeholderData: keepPreviousData
   });

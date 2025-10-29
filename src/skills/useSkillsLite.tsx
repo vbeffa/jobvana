@@ -12,7 +12,16 @@ const useSkillsLite = (): SkillsLite => {
   const { isPending, data: skillsData } = useQuery({
     queryKey: ['skillsLite'],
     queryFn: async () => {
-      const { data } = await supabase.from('skills').select().order('name');
+      const { data, error } = await supabase
+        .from('skills')
+        .select()
+        .order('name');
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       return data;
     }
   });

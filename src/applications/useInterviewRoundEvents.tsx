@@ -36,10 +36,16 @@ const useInterviewRoundEvents = ({
       if (!interviewId) {
         return null;
       }
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('interview_round_events')
         .select(`created_at, interview_rounds!inner(round), user_id, event`)
         .filter('interview_rounds.interview_id', 'eq', interviewId);
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
       return data;
     }

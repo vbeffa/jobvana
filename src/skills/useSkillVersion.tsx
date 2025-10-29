@@ -11,17 +11,23 @@ const useSkillVersion = ({ id }: { id: number }) => {
   } = useQuery({
     queryKey: ['skillVersion', id],
     queryFn: async () => {
-      const { error, data } = await supabase
+      const { data, error } = await supabase
         .from('skill_versions')
         .select('*')
         .filter('id', 'eq', id);
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return { error, data };
+      return { data };
     }
   });
 
   const skillVersion = useMemo(
-    () => skillVersionData?.data?.[0],
+    () => skillVersionData?.data[0],
     [skillVersionData?.data]
   );
 

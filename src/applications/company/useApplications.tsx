@@ -53,15 +53,17 @@ const useApplications = (
         q = q.eq('status', filters.status);
       }
 
-      const { error, data, count } = await q
+      const { data, count, error } = await q
         .range((page - 1) * pageSize, page * pageSize - 1)
         .order('updated_at', { ascending: false });
 
-      // console.log(data);
       if (error) {
         console.log(error);
+        throw error;
       }
-      return { applications: data, error, count };
+
+      // console.log(data);
+      return { applications: data, count };
     }
   });
 

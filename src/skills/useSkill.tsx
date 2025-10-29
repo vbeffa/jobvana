@@ -55,6 +55,11 @@ const useSkill = (id: number): SkillH => {
         )
         .filter('id', 'eq', id);
 
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       return { data, error };
     }
   });

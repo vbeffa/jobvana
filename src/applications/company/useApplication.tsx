@@ -65,7 +65,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
   const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey: ['applications', { id }],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('applications')
         .select(
           `id, created_at, status, updated_at,
@@ -84,8 +84,14 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
             application_resumes!inner(resume_path)`
         )
         .filter('id', 'eq', id);
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return data?.[0];
+      return data[0];
     },
     placeholderData: keepPreviousData
   });

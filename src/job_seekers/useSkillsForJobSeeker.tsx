@@ -25,20 +25,23 @@ const useSkillsForJobSeeker = (jobSeekerId: number): Skills => {
   } = useQuery({
     queryKey: ['job_seeker_skills', queryKey],
     queryFn: async () => {
-      const { error, data, count } = await supabase
+      const { data, count, error } = await supabase
         .from('job_seeker_skills')
         .select('*, skills(*)', { count: 'exact' })
         .filter('job_seeker_id', 'eq', jobSeekerId);
-      // console.log(data);
+
       if (error) {
         console.log(error);
+        throw error;
       }
+
+      // console.log(data);
       return { error, data, count };
     }
   });
 
   const skills: Array<Skill> | undefined = useMemo(() => {
-    return skillsData?.data?.map((skillData) => skillData.skills);
+    return skillsData?.data.map((skillData) => skillData.skills);
   }, [skillsData?.data]);
 
   return {

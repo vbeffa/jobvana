@@ -66,20 +66,21 @@ const useCompanies = (params: CompaniesParams): Companies => {
       }
       q = q.gte('num_employees', filters.minSize);
       q = q.lte('num_employees', filters.maxSize);
-      // q = q.contains(
-      //   `interview_process -> rounds`,
-      //   `[{ "type": "take_home" }]`
-      // );
       if (filters.industryId && filters.industryId > 0) {
         q = q.filter('industry_id', 'eq', filters.industryId);
       }
 
-      const { data, error, count } = await q
+      const { data, count, error } = await q
         .range((page - 1) * pageSize, page * pageSize - 1)
         .order('name');
 
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return { companies: data, error, count };
+      return { companies: data, count };
     },
     placeholderData: keepPreviousData
   });

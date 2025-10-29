@@ -163,11 +163,13 @@ const useJobs = (params: JobsParams): Jobs => {
         .order('updated_at', { ascending: false })
         .range((page - 1) * pageSize, page * pageSize - 1);
 
-      // console.log(data);
       if (error) {
         console.log(error);
+        throw error;
       }
-      return { jobs: data, error, count };
+
+      // console.log(data);
+      return { jobs: data, count };
     },
     placeholderData: keepPreviousData
   });

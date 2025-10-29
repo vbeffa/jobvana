@@ -53,14 +53,16 @@ const useMarkedJobs = (
 
       if (error) {
         console.log(error);
+        throw error;
       }
-      return { data, count, error };
+
+      return { data, count };
     },
     placeholderData: keepPreviousData
   });
 
   const jobs: Array<Job> | undefined = useMemo(() => {
-    return jobsData?.data?.map((jobData) => ({
+    return jobsData?.data.map((jobData) => ({
       id: jobData.jobs.id,
       title: jobData.jobs.title,
       created_at: jobData.jobs.created_at,

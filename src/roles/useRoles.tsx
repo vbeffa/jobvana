@@ -19,14 +19,20 @@ const useRoles = (): Roles => {
   } = useQuery({
     queryKey: ['roles'],
     queryFn: async () => {
-      const { error, data } = await supabase.from('roles').select();
-      return { error, data };
+      const { data, error } = await supabase.from('roles').select();
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      return { data };
     }
   });
 
   const roles = useMemo(
     () =>
-      rolesData?.data?.sort((role1, role2) =>
+      rolesData?.data.sort((role1, role2) =>
         role1.name.localeCompare(role2.name)
       ),
     [rolesData]

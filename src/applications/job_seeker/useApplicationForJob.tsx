@@ -25,17 +25,23 @@ const useApplicationForJob = ({
     [jobId, jobSeekerId]
   );
 
-  const { data, isPending, error, refetch } = useQuery({
+  const { data, isPending, refetch, error } = useQuery({
     queryKey,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('applications')
         .select('id, created_at, status')
         .filter('job_seeker_id', 'eq', jobSeekerId)
         .filter('job_id', 'eq', jobId);
       // .in('status', ['submitted', 'accepted']);
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
       // console.log(data);
-      return data?.[0] ?? null;
+      return data[0] ?? null;
     }
   });
 
