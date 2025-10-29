@@ -118,11 +118,11 @@ const JobFilters = ({
       {isSaving && <Modal type="saving" />}
       <div className="h-full px-2 py-4 w-full flex flex-row gap-x-4">
         <div className="flex flex-col justify-between">
-          <div className="grid grid-cols-[39%_61%] w-[500px] gap-y-2">
+          <div className="grid grid-cols-[32%_68%] w-[480px] gap-y-2">
             <Label htmlFor="company_filter" label="Company Name" />
             <Filter
               id="company_filter"
-              width="w-54"
+              width="w-full"
               maxLength={25}
               placeholder="Filter by company"
               value={newFilters.company}
@@ -135,7 +135,7 @@ const JobFilters = ({
             <CompanySizeFilters
               low={newFilters.minSize}
               high={newFilters.maxSize}
-              width="w-24"
+              width="w-full"
               onChangeLow={(size) => {
                 if (!size) {
                   return;
@@ -160,7 +160,7 @@ const JobFilters = ({
             <Label htmlFor="industry" label="Industry" />
             <IndustrySelect
               industryId={newFilters.industryId}
-              width="w-54"
+              width="w-full"
               showAny={true}
               onChange={(industryId) => {
                 setNewFilters({ ...newFilters, industryId });
@@ -169,7 +169,7 @@ const JobFilters = ({
             <Label htmlFor="job_title_filter" label="Job Title" />
             <Filter
               id="job_title_filter"
-              width="w-54"
+              width="w-full"
               maxLength={50}
               placeholder="Enter keywords"
               value={newFilters.title}
@@ -181,7 +181,7 @@ const JobFilters = ({
             <Label htmlFor="description" label="Description" />
             <Filter
               id="description"
-              width="w-54"
+              width="w-full"
               maxLength={50}
               placeholder="Enter keywords"
               value={newFilters.description}
@@ -194,7 +194,7 @@ const JobFilters = ({
             <RoleSelect
               id="role"
               roleId={newFilters.roleId}
-              width="w-54"
+              width="w-full"
               onChange={(roleId) => {
                 if (!roleId) {
                   setNewFilters({ ...newFilters, roleId: undefined });
@@ -206,7 +206,7 @@ const JobFilters = ({
             <Label htmlFor="job_type" label="Job Type" />
             <JobTypeSelect
               value={newFilters.jobType}
-              width="w-54"
+              width="w-full"
               showAny={true}
               onChange={(jobType) => {
                 setNewFilters({ ...newFilters, jobType });
@@ -215,7 +215,7 @@ const JobFilters = ({
             <Label htmlFor="salary_type" label="Salary Type" />
             <SalaryTypeSelect
               value={newFilters.salaryType}
-              width="w-24"
+              width="w-[calc(50%-11px)]"
               onChange={(salaryType) => {
                 const updatedFilters = {
                   ...newFilters,
@@ -231,7 +231,7 @@ const JobFilters = ({
               type={newFilters.salaryType}
               low={newFilters.minSalary}
               high={newFilters.maxSalary}
-              width="w-29"
+              width="w-full"
               onChangeLow={(minSalary) => {
                 const updatedFilters = {
                   ...newFilters,
@@ -259,11 +259,13 @@ const JobFilters = ({
             <CreatedSelect
               id="created"
               value={newFilters.created}
-              width="w-28"
+              // width="w-[calc(50%-11px)]"
+              width="w-full"
               onChange={(created) => {
                 setNewFilters({ ...newFilters, created });
               }}
             />
+            <div className="col-span-2 py-1 border-b-[0.5px] border-blue-300" />
             <div>Additional Filters:</div>
             <div className="flex flex-row gap-1">
               <input
@@ -295,11 +297,11 @@ const JobFilters = ({
               <label htmlFor="hide_saved">Hide saved</label>
             </div>
           </div>
-          <div className="grid grid-cols-[39%_45%_16%] w-[500px]">
+          <div className="grid grid-cols-[32%_52%_16%] w-[480px]">
             <Label htmlFor="save_search" label="Save this search" />
             <Filter
               id="save_search"
-              width="w-54"
+              width="w-[calc(100%-2px)]"
               maxLength={25}
               placeholder="Enter a name"
               value={searchName}
@@ -317,8 +319,8 @@ const JobFilters = ({
           <SkillsSelect
             selectedSkillIds={newFilters.skillIds ?? []}
             width="w-full"
-            outerHeight="h-68.5"
-            innerHeight="max-h-67.5"
+            outerHeight="h-88.75"
+            innerHeight="max-h-87.75"
             onChange={(skillIds) => {
               setNewFilters({ ...newFilters, skillIds: skillIds });
             }}
