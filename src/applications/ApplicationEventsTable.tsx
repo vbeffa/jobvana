@@ -1,7 +1,9 @@
+import type { ApplicationEvent as DbApplicationEvent } from '../types';
 import { descDateComparator } from '../utils';
 import Status from './Status';
-import type { ApplicationEvent } from './useApplicationEvents';
 import { applicationEventUser, type Company } from './utils';
+
+export type ApplicationEvent = Pick<DbApplicationEvent, 'created_at' | 'event'>;
 
 const ApplicationEventsTable = ({
   events,
