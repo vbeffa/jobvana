@@ -5,7 +5,6 @@ import Button from '../../controls/Button';
 import Filter from '../../inputs/Filter';
 import Label from '../../inputs/Label';
 import IndustrySelect from '../IndustrySelect';
-import CompanyInterviewRoundsFilters from './CompanyInterviewRoundsFilters';
 import CompanySizeFilters from './CompanySizeFilters';
 import { type SearchFilters } from './useCompanies';
 
@@ -29,11 +28,11 @@ const CompanyFilters = ({
     <FiltersSelectContainer>
       <div className="p-2">
         <div className="flex flex-row gap-x-4">
-          <div className="grid grid-cols-[37%63%] w-86 gap-y-2">
+          <div className="grid grid-cols-[37%_63%] w-[480px] gap-y-2">
             <Label htmlFor="company_filter" label="Company Name" />
             <Filter
               id="company_filter"
-              width="w-54"
+              width="w-full"
               placeholder="Filter by company"
               value={newFilters.name}
               onChange={(name) => {
@@ -45,7 +44,7 @@ const CompanyFilters = ({
             <CompanySizeFilters
               low={newFilters.minSize}
               high={newFilters.maxSize}
-              width="w-24"
+              width="w-full"
               onChangeLow={(size) => {
                 if (!size) {
                   return;
@@ -70,45 +69,12 @@ const CompanyFilters = ({
             <Label htmlFor="industry" label="Industry" />
             <IndustrySelect
               industryId={newFilters.industryId}
-              width="w-54"
+              width="w-full"
               showAny={true}
               onChange={(industryId) => {
                 setNewFilters({ ...newFilters, industryId });
               }}
             />
-          </div>
-          <div className="grid grid-cols-[25%_65%] w-86 gap-y-2">
-            <CompanyInterviewRoundsFilters
-              low={newFilters.minRounds}
-              high={newFilters.maxRounds}
-              onChangeLow={(rounds) => {
-                if (!rounds) {
-                  return;
-                }
-                setNewFilters({
-                  ...newFilters,
-                  minRounds: rounds,
-                  maxRounds:
-                    rounds > newFilters.maxRounds
-                      ? rounds
-                      : newFilters.maxRounds
-                });
-              }}
-              onChangeHigh={(rounds) => {
-                if (!rounds) {
-                  return;
-                }
-                setNewFilters({
-                  ...newFilters,
-                  maxRounds: rounds,
-                  minRounds:
-                    rounds < newFilters.maxRounds
-                      ? rounds
-                      : newFilters.minRounds
-                });
-              }}
-            />
-            <div className="col-span-2 row-span-10" />
           </div>
         </div>
       </div>
