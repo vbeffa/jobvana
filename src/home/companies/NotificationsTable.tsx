@@ -241,7 +241,7 @@ const NotificationsTable = ({
                 </div>
               </td>
               <td>
-                <div className="px-2 flex justify-center">
+                <div className="px-2 flex justify-center whitespace-nowrap">
                   <Status status={notification.type} />
                 </div>
               </td>
