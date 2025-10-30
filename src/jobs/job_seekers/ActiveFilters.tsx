@@ -275,11 +275,15 @@ const ActiveFilters = ({
       {selectedSkills && (
         <div className={divStyle}>
           <div className="content-center">Skills:</div>
-          {selectedSkills.map((skill) => (
-            <div key={skill.id}>
-              <PillContainer>{skill.abbreviation ?? skill.name}</PillContainer>
-            </div>
-          ))}
+          <div className="flex flex-row gap-1">
+            {selectedSkills.map((skill) => (
+              <div key={skill.id}>
+                <PillContainer>
+                  {skill.abbreviation ?? skill.name}
+                </PillContainer>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
