@@ -65,7 +65,7 @@ const useApplication = ({ id }: { id: number }): ApplicationH => {
   const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
     queryKey: [
       'applications',
-      'company', // ensure different query key from companies useApplication hook (mostly for dev when switching accounts)
+      'company', // ensure different query key from job_seekers useApplication hook (mostly for dev when switching accounts)
       { id }
     ],
     queryFn: async () => {
