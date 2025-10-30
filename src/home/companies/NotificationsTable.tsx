@@ -109,6 +109,25 @@ const NotificationsTable = ({
     [selected]
   );
 
+  const selectedNotifications = useMemo(
+    () =>
+      Array.from(selected.entries())
+        .filter(([, selected]) => selected)
+        .map(([id]) => id),
+    [selected]
+  );
+
+  const someSelected = useMemo(() => !noneSelected, [noneSelected]);
+
+  const bulkMarkReadEnabled = useMemo(
+    () =>
+      someSelected &&
+      selectedNotifications.every(
+        (id) => notifications.find((n) => n.id === id)?.status !== 'read'
+      ),
+    [notifications, selectedNotifications, someSelected]
+  );
+
   return (
     <div>
       {isUpdating && <Modal type="updating" />}
@@ -117,25 +136,39 @@ const NotificationsTable = ({
         <div className="pl-2 text-sm text-gray-400 content-center justify-start">
           Select notifications to perform bulk actions
         </div>
-        <div
-          className={`w-20 border-l-[0.5px] border-blue-400 py-1 flex justify-center flex-row gap-1 items-center ${noneSelected ? 'text-gray-500' : 'text-blue-500'}`}
-        >
+        <div className="w-20 border-l-[0.5px] border-blue-400 py-1 flex justify-center flex-row gap-1 items-center">
           {type !== 'archived' && (
             <>
-              <FaEnvelope
+              <FaEnvelopeOpen
                 className={
-                  noneSelected ? '' : `hover:text-blue-400 cursor-pointer`
+                  bulkMarkReadEnabled
+                    ? 'text-blue-500 hover:text-blue-400 cursor-pointer'
+                    : 'text-gray-500'
+                }
+                onClick={() =>
+                  bulkMarkReadEnabled &&
+                  Promise.all(selectedNotifications.map((id) => onMarkRead(id)))
                 }
               />
               <MdArchive
-                className={`text-xl ${noneSelected ? '' : 'hover:text-blue-400 cursor-pointer'}`}
+                className={`text-xl ${someSelected ? 'text-blue-500 hover:text-blue-400 cursor-pointer' : 'text-gray-500'}`}
+                onClick={() =>
+                  someSelected &&
+                  Promise.all(selectedNotifications.map((id) => onArchive(id)))
+                }
               />
             </>
           )}
           {type === 'archived' && (
             <>
               <MdUnarchive
-                className={`text-xl ${noneSelected ? '' : 'hover:text-blue-400 cursor-pointer'}`}
+                className={`text-xl ${someSelected ? 'text-blue-500 hover:text-blue-400 cursor-pointer' : 'text-gray-500'}`}
+                onClick={() =>
+                  someSelected &&
+                  Promise.all(
+                    selectedNotifications.map((id) => onUnarchive(id))
+                  )
+                }
               />
             </>
           )}
