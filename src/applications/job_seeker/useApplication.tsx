@@ -65,7 +65,11 @@ export type ApplicationH = {
 
 const useApplication = ({ id }: { id: number }): ApplicationH => {
   const { data, isPending, isPlaceholderData, error, refetch } = useQuery({
-    queryKey: ['applications', { id }],
+    queryKey: [
+      'applications',
+      'job_seeker', // ensure different query key from companies useApplication hook (mostly for dev when switching accounts)
+      { id }
+    ],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('applications')
