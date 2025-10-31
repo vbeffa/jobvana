@@ -66,7 +66,7 @@ const MyCompanyNewAddress = ({
   }, [newAddress, onCreate, setError]);
 
   return (
-    <MyCompanyAddressContainer>
+    <MyCompanyAddressContainer isEditing={true}>
       <ActionMenuContainer justify="justify-end">
         <RightSide>
           <SaveCancelIcons

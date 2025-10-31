@@ -182,7 +182,7 @@ const MyCompanyAddress = ({
   }, [editAddress, onUpdate, setError]);
 
   return (
-    <MyCompanyAddressContainer>
+    <MyCompanyAddressContainer isEditing={isEditing}>
       <ActionMenuContainer>
         <LeftSide>
           {address.type === 'headquarters' && (

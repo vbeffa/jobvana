@@ -38,7 +38,7 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}
-      <div className="h-full px-4 pb-8 pt-4 overflow-auto ">
+      <div className="h-full px-4 pb-8 pt-4 overflow-auto">
         <div className="grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
           {addresses.map((address, idx) => (
             <div key={idx}>
