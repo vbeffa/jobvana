@@ -38,8 +38,9 @@ const MyCompanyAddresses = ({ companyId }: MyCompanyAddressesProps) => {
       </ActionMenuContainer>
       {error && <JobvanaError error={error} />}
       {updating && <Modal type="updating" />}
-      <div className="h-full px-4 pb-8 pt-4 overflow-auto">
-        <div className="grid grid-flow-col w-fit grid-rows-2 gap-4 mb-4">
+      {/* TODO why is div going beyond bottom and hiding horizontal scrollbar */}
+      <div className="h-[96%] px-4 pt-4 pb-8 overflow-auto">
+        <div className="grid grid-flow-col w-fit grid-rows-3 gap-4">
           {addresses.map((address, idx) => (
             <div key={idx}>
               <MyCompanyAddress
