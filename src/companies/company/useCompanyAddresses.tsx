@@ -2,6 +2,7 @@ import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
 import type { CompanyAddress } from '../../types';
+import { addressComparator } from '../../utils';
 
 export type CompanyAddresses = {
   addresses: Array<CompanyAddress> | undefined;
@@ -33,10 +34,7 @@ const useCompanyAddresses = (companyId: number): CompanyAddresses => {
   });
 
   const addresses = useMemo(
-    () =>
-      addressesData?.data.sort((address1, address2) =>
-        address1.zip.localeCompare(address2.zip)
-      ),
+    () => addressesData?.data.sort(addressComparator),
     [addressesData]
   );
 

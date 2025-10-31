@@ -8,6 +8,7 @@ import type {
   Job as DbJob,
   SkillVersion as DbSkillVersion
 } from '../../types';
+import { addressComparator } from '../../utils';
 import type { InterviewProcess } from '../company/utils';
 
 export type CompanyJob = Pick<DbJob, 'id' | 'title'>;
@@ -78,7 +79,7 @@ const useCompany = (id?: number): CompanyH => {
       contact_email: company.contact_email,
       interview_process: company.interview_process as InterviewProcess | null,
       jobs: company.jobs,
-      addresses: company.company_addresses,
+      addresses: company.company_addresses.sort(addressComparator),
       industry: company.industries
     };
   }, [data?.company]);

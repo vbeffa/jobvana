@@ -1,4 +1,4 @@
-import { PAGES, type CurrPage } from './types';
+import { PAGES, type CompanyAddress, type CurrPage } from './types';
 
 export type CreatedAt = {
   created_at: string;
@@ -14,6 +14,16 @@ const descDateComparator = (obj1: CreatedAt, obj2: CreatedAt) => {
   return (
     new Date(obj2.created_at).getTime() - new Date(obj1.created_at).getTime()
   );
+};
+
+const addressComparator = (addr1: CompanyAddress, addr2: CompanyAddress) => {
+  if (addr1.type === 'headquarters') {
+    return -1;
+  }
+  if (addr2.type === 'headquarters') {
+    return 1;
+  }
+  return addr1.zip.localeCompare(addr2.zip);
 };
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -38,6 +48,7 @@ const isValidPage = (page: string): page is CurrPage => {
 };
 
 export {
+  addressComparator,
   dateComparator,
   descDateComparator,
   formatCurrency,
