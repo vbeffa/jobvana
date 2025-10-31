@@ -46,7 +46,7 @@ const useCompany = (id?: number): CompanyH => {
         .select(
           `id, name, description, industry_id, num_employees, user_id, contact_email, interview_process,
           industries(id, name),
-          company_addresses(id, city, street, street_2, zip, state, phone, type),
+          company_addresses(*),
           jobs(id, title)`
         )
         .filter('id', 'eq', id)
