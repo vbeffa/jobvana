@@ -10,34 +10,34 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/storage-js": "^2.76.1",
-    "@supabase/supabase-js": "^2.76.1",
-    "@tailwindcss/vite": "^4.1.15",
+    "@supabase/storage-js": "^2.78.0",
+    "@supabase/supabase-js": "^2.78.0",
+    "@tailwindcss/vite": "^4.1.16",
     "@tanstack/react-query": "^5.90.5",
-    "@tanstack/react-router": "^1.133.22",
-    "@tanstack/react-router-devtools": "^1.133.22",
-    "dayjs": "^1.11.18",
+    "@tanstack/react-router": "^1.134.4",
+    "@tanstack/react-router-devtools": "^1.134.4",
+    "dayjs": "^1.11.19",
     "lodash": "^4.17.21",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
-    "tailwindcss": "^4.1.15",
+    "tailwindcss": "^4.1.16",
     "use-debounce": "^10.0.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.38.0",
-    "@tanstack/router-plugin": "^1.133.22",
+    "@eslint/js": "^9.39.0",
+    "@tanstack/router-plugin": "^1.134.4",
     "@types/lodash": "^4.17.20",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react-swc": "^4.1.0",
-    "eslint": "^9.38.0",
+    "@vitejs/plugin-react-swc": "^4.2.0",
+    "eslint": "^9.39.0",
     "eslint-plugin-react-hooks": "^6.1.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.4.0",
-    "supabase": "^2.53.6",
+    "supabase": "^2.54.11",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.2",
-    "vite": "^7.1.11"
+    "vite": "^7.1.12"
   }
 }
