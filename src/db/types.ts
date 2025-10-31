@@ -163,6 +163,7 @@ export type Database = {
           city: string
           company_id: number
           id: number
+          location: unknown
           phone: string | null
           state: string
           street: string
@@ -174,6 +175,7 @@ export type Database = {
           city: string
           company_id: number
           id?: number
+          location?: unknown
           phone?: string | null
           state: string
           street: string
@@ -185,6 +187,7 @@ export type Database = {
           city?: string
           company_id?: number
           id?: number
+          location?: unknown
           phone?: string | null
           state?: string
           street?: string

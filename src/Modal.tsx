@@ -7,7 +7,8 @@ export type ModalType =
   | 'applying'
   | 'uploading'
   | 'downloading'
-  | 'deleting';
+  | 'deleting'
+  | 'validating';
 
 const Modal = ({ type }: { type: ModalType }) => {
   return (

@@ -12,6 +12,7 @@ import {
 } from '../../containers/ActionMenuContainer';
 import EditDeleteIcons from '../../controls/EditDeleteIcons';
 import supabase from '../../db/supabase';
+import Modal from '../../Modal';
 import type { CompanyAddress } from '../../types';
 import { isValidAddress } from '../utils';
 import MyCompanyAddressContainer from './MyCompanyAddressContainer';
@@ -30,6 +31,7 @@ const MyCompanyAddress = ({
 }) => {
   const [editAddress, setEditAddress] = useState<CompanyAddress>(address);
   const [isEditing, setIsEditing] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -41,10 +43,74 @@ const MyCompanyAddress = ({
     [address, editAddress]
   );
 
+  const validateAddress = useCallback(async () => {
+    const url = new URL(
+      'https://forward-reverse-geocoding.p.rapidapi.com/v1/forward'
+    );
+    url.searchParams.append('format', 'json');
+    url.searchParams.append('street', editAddress.street);
+    url.searchParams.append('city', editAddress.city);
+    url.searchParams.append('state', editAddress.state);
+    url.searchParams.append('postalcode', editAddress.zip);
+    url.searchParams.append('country', 'USA');
+    url.searchParams.append('addressdetails', '1');
+    url.searchParams.append('accept-language', 'en');
+    url.searchParams.append('namedetails', '0');
+    url.searchParams.append('limit', '1');
+    url.searchParams.append('bounded', '0');
+    url.searchParams.append('polygon_text', '0');
+    url.searchParams.append('polygon_kml', '0');
+    url.searchParams.append('polygon_svg', '0');
+    url.searchParams.append('polygon_geojson', '0');
+    url.searchParams.append('polygon_threshold', '0.0');
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': '1965928fb7msh924dfaa0130dcd4p1537b5jsn88568eeda361',
+        'x-rapidapi-host': 'forward-reverse-geocoding.p.rapidapi.com'
+      }
+    };
+
+    try {
+      const response = await fetch(url, options);
+      // console.log(response);
+      const result = await response.json();
+      // console.log('result:', result);
+      return {
+        lat: result?.[0]?.lat,
+        long: result?.[0]?.lon
+      };
+    } catch (error) {
+      console.log(error);
+      setError(error as Error);
+      return { lat: undefined, long: undefined };
+    }
+  }, [
+    editAddress.city,
+    editAddress.state,
+    editAddress.street,
+    editAddress.zip,
+    setError
+  ]);
+
   const updateAddress = useCallback(async () => {
     if (!isValidAddress(editAddress)) {
       return;
     }
+    setIsValidating(true);
+    const { lat, long } = await validateAddress();
+    setIsValidating(false);
+    if (!lat || !long) {
+      if (
+        !confirm(
+          'Address could not be validated. If it is used in jobs, they may not be properly searchable. Save anyway?'
+        )
+      ) {
+        return;
+      }
+    }
+    editAddress.location = `POINT(${long} ${lat})`;
     setIsSubmitting(true);
     setError(undefined);
     try {
@@ -62,7 +128,7 @@ const MyCompanyAddress = ({
     } finally {
       setIsSubmitting(false);
     }
-  }, [editAddress, onUpdate, setError]);
+  }, [editAddress, onUpdate, setError, validateAddress]);
 
   const setHeadquarters = useCallback(async () => {
     console.log('-');
@@ -168,6 +234,8 @@ const MyCompanyAddress = ({
         </RightSide>
       </ActionMenuContainer>
       <div className="p-4">
+        {isValidating && <Modal type="validating" />}
+        {isSubmitting && <Modal type="saving" />}
         {!isEditing && (
           <div>
             <div>{editAddress.street}</div>
