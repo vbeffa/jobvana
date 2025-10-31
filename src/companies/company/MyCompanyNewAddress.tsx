@@ -30,7 +30,8 @@ const MyCompanyNewAddress = ({
       state: '',
       zip: '',
       phone: null,
-      type: 'office'
+      type: 'office',
+      location: null
     }),
     [companyId]
   );
