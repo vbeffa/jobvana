@@ -17,6 +17,7 @@ import type { CompanyAddress } from '../../types';
 import { isValidAddress } from '../utils';
 import MyCompanyAddressContainer from './MyCompanyAddressContainer';
 import MyCompanyEditAddress from './MyCompanyEditAddress';
+import { validateAddress } from './utils';
 
 const MyCompanyAddress = ({
   address,
@@ -29,7 +30,7 @@ const MyCompanyAddress = ({
   setError: (err: Error | undefined) => void;
   onUpdate: () => void;
 }) => {
-  const [editAddress, setEditAddress] = useState<CompanyAddress>(address);
+  const [editAddress, setEditAddress] = useState<CompanyAddress>(address); // TODO rename, this is used for display too
   const [isEditing, setIsEditing] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,74 +44,36 @@ const MyCompanyAddress = ({
     [address, editAddress]
   );
 
-  const validateAddress = useCallback(async () => {
-    const url = new URL(
-      'https://forward-reverse-geocoding.p.rapidapi.com/v1/forward'
-    );
-    url.searchParams.append('format', 'json');
-    url.searchParams.append('street', editAddress.street);
-    url.searchParams.append('city', editAddress.city);
-    url.searchParams.append('state', editAddress.state);
-    url.searchParams.append('postalcode', editAddress.zip);
-    url.searchParams.append('country', 'USA');
-    url.searchParams.append('addressdetails', '1');
-    url.searchParams.append('accept-language', 'en');
-    url.searchParams.append('namedetails', '0');
-    url.searchParams.append('limit', '1');
-    url.searchParams.append('bounded', '0');
-    url.searchParams.append('polygon_text', '0');
-    url.searchParams.append('polygon_kml', '0');
-    url.searchParams.append('polygon_svg', '0');
-    url.searchParams.append('polygon_geojson', '0');
-    url.searchParams.append('polygon_threshold', '0.0');
-
-    const options = {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': '1965928fb7msh924dfaa0130dcd4p1537b5jsn88568eeda361',
-        'x-rapidapi-host': 'forward-reverse-geocoding.p.rapidapi.com'
-      }
-    };
-
-    try {
-      const response = await fetch(url, options);
-      // console.log(response);
-      const result = await response.json();
-      // console.log('result:', result);
-      return {
-        lat: result?.[0]?.lat,
-        long: result?.[0]?.lon
-      };
-    } catch (error) {
-      console.log(error);
-      setError(error as Error);
-      return { lat: undefined, long: undefined };
-    }
-  }, [
-    editAddress.city,
-    editAddress.state,
-    editAddress.street,
-    editAddress.zip,
-    setError
-  ]);
+  const isAddressDirty = useMemo(
+    () =>
+      !_.isEqual(
+        _.pick(address, 'street', 'city', 'state', 'zip'),
+        _.pick(editAddress, 'street', 'city', 'state', 'zip')
+      ),
+    [address, editAddress]
+  );
 
   const updateAddress = useCallback(async () => {
     if (!isValidAddress(editAddress)) {
       return;
     }
     setIsValidating(true);
-    const { lat, long } = await validateAddress();
-    setIsValidating(false);
-    if (!lat || !long) {
-      if (
-        !confirm(
-          'Address could not be validated. If it is used in jobs, they may not be properly searchable. Save anyway?'
-        )
-      ) {
-        return;
+    if (isAddressDirty) {
+      const { lat, long } = await validateAddress(editAddress);
+      setIsValidating(false);
+      if (!lat || !long) {
+        if (
+          !confirm(
+            'Address could not be validated. If it is used in jobs, they may not be properly searchable. Save anyway?'
+          )
+        ) {
+          setIsEditing(true);
+          return;
+        }
+      } else {
+        editAddress.location = `POINT(${long} ${lat})`;
       }
     }
-    editAddress.location = `POINT(${long} ${lat})`;
     setIsSubmitting(true);
     setError(undefined);
     try {
@@ -128,7 +91,7 @@ const MyCompanyAddress = ({
     } finally {
       setIsSubmitting(false);
     }
-  }, [editAddress, onUpdate, setError, validateAddress]);
+  }, [editAddress, isAddressDirty, onUpdate, setError]);
 
   const setHeadquarters = useCallback(async () => {
     console.log('-');
@@ -246,12 +209,12 @@ const MyCompanyAddress = ({
                 <div>{editAddress.state}</div>
               </div>
               <div>{editAddress.zip}</div>
-              <div className="flex flex-row gap-1">
-                <div className="content-center">
+              {editAddress.phone && (
+                <div className="flex flex-row gap-1 items-center">
                   <FaPhone />
+                  {editAddress.phone}
                 </div>
-                {editAddress.phone}
-              </div>
+              )}
             </div>
           </div>
         )}

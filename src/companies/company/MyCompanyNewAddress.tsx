@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import {
   ActionMenuContainer,
@@ -6,9 +5,11 @@ import {
 } from '../../containers/ActionMenuContainer';
 import SaveCancelIcons from '../../controls/SaveCancelIcons';
 import supabase from '../../db/supabase';
+import Modal from '../../Modal';
 import { isValidAddress } from '../utils';
 import MyCompanyAddressContainer from './MyCompanyAddressContainer';
 import MyCompanyEditAddress, { type ToInsert } from './MyCompanyEditAddress';
+import { validateAddress } from './utils';
 
 const MyCompanyNewAddress = ({
   companyId,
@@ -36,17 +37,28 @@ const MyCompanyNewAddress = ({
     [companyId]
   );
   const [newAddress, setNewAddress] = useState<ToInsert>(emptyAddress);
+  const [isValidating, setIsValidating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const isDirty = useMemo(
-    () => !_.isEqual(emptyAddress, newAddress),
-    [emptyAddress, newAddress]
-  );
 
   const createAddress = useCallback(async () => {
     if (!isValidAddress(newAddress)) {
       return;
     }
+    setIsValidating(true);
+    const { lat, long } = await validateAddress(newAddress);
+    setIsValidating(false);
+    if (!lat || !long) {
+      if (
+        !confirm(
+          'Address could not be validated. If it is used in jobs, they may not be properly searchable. Save anyway?'
+        )
+      ) {
+        return;
+      }
+    } else {
+      newAddress.location = `POINT(${long} ${lat})`;
+    }
+
     setIsSubmitting(true);
     setError(undefined);
     try {
@@ -70,13 +82,15 @@ const MyCompanyNewAddress = ({
       <ActionMenuContainer justify="justify-end">
         <RightSide>
           <SaveCancelIcons
-            disabled={!isValidAddress(newAddress) || !isDirty || isSubmitting}
+            disabled={!isValidAddress(newAddress) || isSubmitting}
             onCancel={onCancel}
             onSave={createAddress}
           />
         </RightSide>
       </ActionMenuContainer>
       <div className="p-4">
+        {isValidating && <Modal type="validating" />}
+        {isSubmitting && <Modal type="saving" />}
         <MyCompanyEditAddress
           idx="new"
           address={newAddress}

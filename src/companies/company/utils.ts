@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash';
-import type { Company as DbCompany } from '../../types';
+import type { CompanyAddress, Company as DbCompany } from '../../types';
 
 export type ToDisplay = Pick<
   DbCompany,
@@ -53,5 +53,51 @@ export const roundTypeToString = (type: RoundType) => {
       return 'Take Home';
     default:
       return capitalize(type);
+  }
+};
+
+export const validateAddress = async (
+  address: Pick<CompanyAddress, 'street' | 'city' | 'state' | 'zip'>
+) => {
+  const url = new URL(
+    'https://forward-reverse-geocoding.p.rapidapi.com/v1/forward'
+  );
+  url.searchParams.append('format', 'json');
+  url.searchParams.append('street', address.street);
+  url.searchParams.append('city', address.city);
+  url.searchParams.append('state', address.state);
+  url.searchParams.append('postalcode', address.zip);
+  url.searchParams.append('country', 'USA');
+  url.searchParams.append('addressdetails', '1');
+  url.searchParams.append('accept-language', 'en');
+  url.searchParams.append('namedetails', '0');
+  url.searchParams.append('limit', '1');
+  url.searchParams.append('bounded', '0');
+  url.searchParams.append('polygon_text', '0');
+  url.searchParams.append('polygon_kml', '0');
+  url.searchParams.append('polygon_svg', '0');
+  url.searchParams.append('polygon_geojson', '0');
+  url.searchParams.append('polygon_threshold', '0.0');
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': '1965928fb7msh924dfaa0130dcd4p1537b5jsn88568eeda361',
+      'x-rapidapi-host': 'forward-reverse-geocoding.p.rapidapi.com'
+    }
+  };
+
+  try {
+    const response = await fetch(url, options);
+    // console.log(response);
+    const result = await response.json();
+    // console.log('result:', result);
+    return {
+      lat: result?.[0]?.lat,
+      long: result?.[0]?.lon
+    };
+  } catch (error) {
+    console.log(error);
+    return { lat: undefined, long: undefined };
   }
 };
