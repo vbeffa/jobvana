@@ -29,7 +29,7 @@ const useJobApplications = ({ jobId }: { jobId: number }): JobApplications => {
   });
 
   return {
-    total: data?.[0].count ?? undefined,
+    total: data?.[0]?.count ?? undefined,
     isPending,
     error: error ?? undefined,
     refetch
