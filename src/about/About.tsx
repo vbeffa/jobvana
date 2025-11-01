@@ -41,10 +41,10 @@ const About = () => {
             />
           </SummaryCardsContainer>
         </ResourceListContainer>
-        <ResourceDetailsContainer>
+        <ResourceDetailsContainer padding="">
           <>
-            {card === 'about' && <>About</>}
-            {card === 'contact' && <>Contact Us</>}
+            {card === 'about' && <div className="p-4">About</div>}
+            {card === 'contact' && <div className="p-4">Contact Us</div>}
             {card === 'definitions' && <Definitions />}
           </>
         </ResourceDetailsContainer>

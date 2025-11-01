@@ -13,7 +13,7 @@ import { getIcon } from '../applications/utils';
 
 const Definitions = () => {
   return (
-    <div className="mb-130">
+    <div className="h-full px-4 pt-4 overflow-auto">
       <Section
         title={
           <div className="flex flex-row gap-1 items-center">
@@ -203,33 +203,35 @@ const Definitions = () => {
           </div>
         </div>
       </Section>
-      <Section
-        id="interview_rounds"
-        title={
-          <div className="flex flex-row gap-1 items-center">
-            <MdRoundaboutRight /> Interview Rounds
+      <div className="mb-130">
+        <Section
+          id="interview_rounds"
+          title={
+            <div className="flex flex-row gap-1 items-center">
+              <MdRoundaboutRight /> Interview Rounds
+            </div>
+          }
+          isLast={true}
+        >
+          <div className="flex flex-col gap-2">
+            Interview rounds have a status which is one of:
+            <ul>
+              <li className="w-fit flex flex-row gap-2 items-center whitespace-nowrap">
+                • {getIcon('pending')} pending - awaiting feedback from either
+                the job seeker or the company or both
+              </li>
+              <li className="w-fit flex flex-row gap-2 items-center whitespace-nowrap">
+                • {getIcon('accepted')} accepted - both job seerk and company
+                have accepted the round
+              </li>
+              <li className="w-fit flex flex-row gap-2 items-center whitespace-nowrap">
+                • {getIcon('declined')} declined - either the job seeker or the
+                company has declined the round
+              </li>
+            </ul>
           </div>
-        }
-        isLast={true}
-      >
-        <div className="flex flex-col gap-2">
-          Interview rounds have a status which is one of:
-          <ul>
-            <li className="w-fit flex flex-row gap-2 items-center whitespace-nowrap">
-              • {getIcon('pending')} pending - awaiting feedback from either the
-              job seeker or the company or both
-            </li>
-            <li className="w-fit flex flex-row gap-2 items-center whitespace-nowrap">
-              • {getIcon('accepted')} accepted - both job seerk and company have
-              accepted the round
-            </li>
-            <li className="w-fit flex flex-row gap-2 items-center whitespace-nowrap">
-              • {getIcon('declined')} declined - either the job seeker or the
-              company has declined the round
-            </li>
-          </ul>
-        </div>
-      </Section>
+        </Section>
+      </div>
     </div>
   );
 };
