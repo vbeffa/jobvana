@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import supabase from '../../db/supabase';
@@ -64,7 +64,8 @@ const useApplications = (
 
       // console.log(data);
       return { applications: data, count };
-    }
+    },
+    placeholderData: keepPreviousData
   });
 
   const applications: Array<ApplicationSummary> | undefined = useMemo(() => {
