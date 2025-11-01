@@ -7,51 +7,48 @@ import {
   getUserType,
   refreshSession
 } from './auth/utils';
-import type { SearchFilters as CompanySearchFilters } from './companies/job_seeker/useCompanies';
 import { findCompany } from './companies/utils';
 import {
   CompanyContext,
   defaultCompanyContext,
+  defaultContext,
   defaultJobSeekerContext,
   JobSeekerContext,
   JobvanaContext,
   type Company,
-  type CompanyContextProps,
-  type JobSeeker,
-  type JobSeekerContextProps
+  type JobSeeker
 } from './Context';
 import supabase from './db/supabase';
 import Header from './Header';
 import { findJobSeeker } from './job_seekers/utils';
-import type { SearchFilters as JobSearchFilters } from './jobs/job_seekers/useJobs';
 import type { CurrPage } from './types';
 
 const Root = () => {
   const [currPage, setCurrPage] = useState<CurrPage>('home');
+  const [accountNav, setAccountNav] = useState(defaultContext.accountNav);
 
-  const [myCompanyNav, setMyCompanyNav] = useState<
-    CompanyContextProps['myCompanyNav']
-  >(defaultCompanyContext.myCompanyNav);
-  const [myJobsNav, setMyJobsNav] = useState<CompanyContextProps['myJobsNav']>(
-    defaultCompanyContext.myJobsNav
+  const [myCompanyNav, setMyCompanyNav] = useState(
+    defaultCompanyContext.myCompanyNav
   );
-  const [jobApplicationsNav, setJobApplicationsNav] = useState<
-    CompanyContextProps['jobApplicationsNav']
-  >(defaultCompanyContext.jobApplicationsNav);
+  const [myJobsNav, setMyJobsNav] = useState(defaultCompanyContext.myJobsNav);
+  const [jobApplicationsNav, setJobApplicationsNav] = useState(
+    defaultCompanyContext.jobApplicationsNav
+  );
 
-  const [jobSearchFilters, setJobSearchFilters] = useState<JobSearchFilters>(
+  const [homeNav, setHomeNav] = useState(defaultJobSeekerContext.homeNav);
+  const [jobSearchFilters, setJobSearchFilters] = useState(
     defaultJobSeekerContext.jobSearchFilters
   );
-  const [jobNav, setJobNav] = useState<JobSeekerContextProps['jobNav']>(
-    defaultJobSeekerContext.jobNav
+  const [jobNav, setJobNav] = useState(defaultJobSeekerContext.jobNav);
+  const [companySearchFilters, setCompanySearchFilters] = useState(
+    defaultJobSeekerContext.companySearchFilters
   );
-  const [companySearchFilters, setCompanySearchFilters] =
-    useState<CompanySearchFilters>(
-      defaultJobSeekerContext.companySearchFilters
-    );
-  const [companyNav, setCompanyNav] = useState<
-    JobSeekerContextProps['companyNav']
-  >(defaultJobSeekerContext.companyNav);
+  const [companyNav, setCompanyNav] = useState(
+    defaultJobSeekerContext.companyNav
+  );
+  const [myApplicationsNav, setMyApplicationsNav] = useState(
+    defaultJobSeekerContext.myApplicationsNav
+  );
 
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
@@ -75,6 +72,13 @@ const Root = () => {
   }, [isLoggedIn]);
 
   const userType = getUserType();
+
+  useEffect(() => {
+    if (userType === 'company') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAccountNav('account');
+    }
+  }, [userType]);
 
   useEffect(() => {
     (async () => {
@@ -119,6 +123,8 @@ const Root = () => {
         value={{
           currPage,
           setCurrPage,
+          accountNav,
+          setAccountNav,
           loggedIn,
           loggingOut,
           logout,
@@ -153,6 +159,8 @@ const Root = () => {
       value={{
         currPage,
         setCurrPage,
+        accountNav,
+        setAccountNav,
         loggedIn,
         loggingOut,
         logout,
@@ -164,6 +172,8 @@ const Root = () => {
         value={{
           jobSeeker,
           setJobSeeker,
+          homeNav,
+          setHomeNav,
           jobSearchFilters,
           setJobSearchFilters,
           jobNav,
@@ -171,7 +181,9 @@ const Root = () => {
           companySearchFilters,
           setCompanySearchFilters,
           companyNav,
-          setCompanyNav
+          setCompanyNav,
+          myApplicationsNav,
+          setMyApplicationsNav
         }}
       >
         <Header />

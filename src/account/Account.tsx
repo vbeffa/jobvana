@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { FaTools } from 'react-icons/fa';
 import { FaFile, FaLock, FaPerson } from 'react-icons/fa6';
 import { getUserType } from '../auth/utils';
@@ -6,7 +6,7 @@ import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
 import SummaryCardsContainer from '../containers/SummaryCardsContainer';
-import { JobSeekerContext } from '../Context';
+import { JobSeekerContext, JobvanaContext } from '../Context';
 import useSkillsForJobSeeker from '../job_seekers/useSkillsForJobSeeker';
 import SummaryCard from '../SummaryCard';
 import ChangePassword from './ChangePassword';
@@ -16,9 +16,7 @@ import Profile from './Profile';
 
 const Account = () => {
   const userType = getUserType();
-  const [card, setCard] = useState<
-    'account' | 'profile' | 'skills' | 'resumes'
-  >(userType === 'company' ? 'account' : 'resumes');
+  const { accountNav, setAccountNav } = useContext(JobvanaContext);
   const { jobSeeker } = useContext(JobSeekerContext);
   const { count: skillsCount } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
 
@@ -36,8 +34,8 @@ const Account = () => {
               <>
                 <SummaryCard
                   key={4}
-                  selected={card === 'resumes'}
-                  onClick={() => setCard('resumes')}
+                  selected={accountNav === 'resumes'}
+                  onClick={() => setAccountNav('resumes')}
                   title={
                     <div className="flex flex-row gap-1">
                       <div className="content-center">
@@ -51,8 +49,8 @@ const Account = () => {
                 />
                 <SummaryCard
                   key={3}
-                  selected={card === 'skills'}
-                  onClick={() => setCard('skills')}
+                  selected={accountNav === 'skills'}
+                  onClick={() => setAccountNav('skills')}
                   title={
                     <div className="flex flex-row gap-1">
                       <div className="content-center">
@@ -70,8 +68,8 @@ const Account = () => {
                 />
                 <SummaryCard
                   key={2}
-                  selected={card === 'profile'}
-                  onClick={() => setCard('profile')}
+                  selected={accountNav === 'profile'}
+                  onClick={() => setAccountNav('profile')}
                   title={
                     <div className="flex flex-row gap-1">
                       <div className="content-center">
@@ -89,8 +87,8 @@ const Account = () => {
             )}
             <SummaryCard
               key={1}
-              selected={card === 'account'}
-              onClick={() => setCard('account')}
+              selected={accountNav === 'account'}
+              onClick={() => setAccountNav('account')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
@@ -106,12 +104,14 @@ const Account = () => {
         </ResourceListContainer>
         <ResourceDetailsContainer>
           <>
-            {card === 'account' && <ChangePassword />}
+            {accountNav === 'account' && <ChangePassword />}
             {jobSeeker && (
               <>
-                {card === 'profile' && <Profile jobSeeker={jobSeeker} />}
-                {card === 'skills' && <JobSeekerSkills jobSeeker={jobSeeker} />}
-                {card === 'resumes' && (
+                {accountNav === 'profile' && <Profile jobSeeker={jobSeeker} />}
+                {accountNav === 'skills' && (
+                  <JobSeekerSkills jobSeeker={jobSeeker} />
+                )}
+                {accountNav === 'resumes' && (
                   <JobSeekerResumes jobSeeker={jobSeeker} />
                 )}
               </>

@@ -14,6 +14,18 @@ export type UserType = 'company' | 'job_seeker';
 export type Company = Omit<DbCompany, 'created_at'>;
 export type JobSeeker = Omit<DbJobSeeker, 'created_at'>;
 
+export type JobvanaContextProps = {
+  currPage: CurrPage;
+  setCurrPage: (page: CurrPage) => void;
+  accountNav: 'resumes' | 'skills' | 'profile' | 'account';
+  setAccountNav: Dispatch<SetStateAction<JobvanaContextProps['accountNav']>>;
+  loggedIn?: boolean;
+  loggingOut?: boolean;
+  logout: () => Promise<void>;
+  resetPassword?: boolean;
+  setResetPassword: (resetPassword: boolean) => void;
+};
+
 export type CompanyContextProps = {
   company?: Company | null;
   setCompany: (company: Company) => void;
@@ -37,6 +49,8 @@ export type CompanyContextProps = {
 
 export type JobSeekerContextProps = {
   jobSeeker?: JobSeeker | null;
+  homeNav: 'notifications' | 'saved_searches' | 'my_jobs';
+  setHomeNav: Dispatch<SetStateAction<JobSeekerContextProps['homeNav']>>;
   setJobSeeker: (jobSeeker: JobSeeker) => void;
   jobSearchFilters: JobSearchFilters;
   setJobSearchFilters: Dispatch<SetStateAction<JobSearchFilters>>;
@@ -52,21 +66,20 @@ export type JobSeekerContextProps = {
     companyId?: number;
   };
   setCompanyNav: Dispatch<SetStateAction<JobSeekerContextProps['companyNav']>>;
-};
-
-export type JobvanaContextProps = {
-  currPage: CurrPage;
-  setCurrPage: (page: CurrPage) => void;
-  loggedIn?: boolean;
-  loggingOut?: boolean;
-  logout: () => Promise<void>;
-  resetPassword?: boolean;
-  setResetPassword: (resetPassword: boolean) => void;
+  myApplicationsNav: {
+    page: number;
+    applicationId?: number;
+  };
+  setMyApplicationsNav: Dispatch<
+    SetStateAction<JobSeekerContextProps['myApplicationsNav']>
+  >;
 };
 
 export const defaultContext: JobvanaContextProps = {
   currPage: 'home',
   setCurrPage: () => {},
+  accountNav: 'resumes',
+  setAccountNav: () => {},
   logout: () => Promise.resolve(),
   setResetPassword: () => {}
 };
@@ -87,6 +100,8 @@ export const defaultCompanyContext: CompanyContextProps = {
 
 export const defaultJobSeekerContext: JobSeekerContextProps = {
   setJobSeeker: () => {},
+  homeNav: 'notifications',
+  setHomeNav: () => {},
   jobSearchFilters: INITIAL_JOB_SEARCH_FILTERS,
   setJobSearchFilters: () => {},
   jobNav: {
@@ -98,7 +113,11 @@ export const defaultJobSeekerContext: JobSeekerContextProps = {
   companyNav: {
     page: 1
   },
-  setCompanyNav: () => {}
+  setCompanyNav: () => {},
+  myApplicationsNav: {
+    page: 1
+  },
+  setMyApplicationsNav: () => {}
 };
 
 export const JobvanaContext =

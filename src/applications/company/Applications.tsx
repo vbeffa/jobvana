@@ -20,13 +20,10 @@ import useApplications, {
 } from './useApplications';
 
 const Applications = ({ companyId }: { companyId: number }) => {
-  const { jobApplicationsNav, setJobApplicationsNav } =
+  const { jobApplicationsNav: nav, setJobApplicationsNav: setNav } =
     useContext(CompanyContext);
   const [debouncePage, setDebouncePage] = useState(false);
-  const [debouncedPage] = useDebounce(
-    jobApplicationsNav.page,
-    debouncePage ? 500 : 0
-  );
+  const [debouncedPage] = useDebounce(nav.page, debouncePage ? 500 : 0);
 
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     status: 'all'
@@ -41,19 +38,19 @@ const Applications = ({ companyId }: { companyId: number }) => {
 
   useEffect(() => {
     if (!applications?.length) {
-      setJobApplicationsNav({
+      setNav({
         page: 1
       });
     } else if (
-      !jobApplicationsNav.applicationId ||
-      !applications.find((app) => app.id === jobApplicationsNav.applicationId)
+      !nav.applicationId ||
+      !applications.find((app) => app.id === nav.applicationId)
     ) {
-      setJobApplicationsNav((jobApplicationsNav) => ({
-        ...jobApplicationsNav,
+      setNav((nav) => ({
+        ...nav,
         applicationId: applications[0].id
       }));
     }
-  }, [jobApplicationsNav.applicationId, applications, setJobApplicationsNav]);
+  }, [nav.applicationId, applications, setNav]);
 
   return (
     <>
@@ -76,10 +73,10 @@ const Applications = ({ companyId }: { companyId: number }) => {
       <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
-            page={jobApplicationsNav.page}
+            page={nav.page}
             total={total}
             onSetPage={(page, debounce) => {
-              setJobApplicationsNav({
+              setNav({
                 page
               });
               setDebouncePage(debounce);
@@ -92,10 +89,10 @@ const Applications = ({ companyId }: { companyId: number }) => {
               return (
                 <SummaryCard
                   key={application.id}
-                  selected={jobApplicationsNav.applicationId === application.id}
+                  selected={nav.applicationId === application.id}
                   onClick={() => {
-                    setJobApplicationsNav((jobApplicationsNav) => ({
-                      ...jobApplicationsNav,
+                    setNav((nav) => ({
+                      ...nav,
                       applicationId: application.id
                     }));
                   }}
@@ -119,8 +116,8 @@ const Applications = ({ companyId }: { companyId: number }) => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
-          {jobApplicationsNav.applicationId ? (
-            <ApplicationDetails id={jobApplicationsNav.applicationId} />
+          {nav.applicationId ? (
+            <ApplicationDetails id={nav.applicationId} />
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>

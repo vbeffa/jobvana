@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import {
   FaEyeSlash,
   FaFlag,
@@ -11,7 +11,7 @@ import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer'
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
-import { type JobSeeker } from '../../Context';
+import { JobSeekerContext, type JobSeeker } from '../../Context';
 import useSavedSearches from '../../jobs/job_seekers/useSavedSearches';
 import useApplicationNotifications from '../../notifications/job_seekers/useApplicationNotifications';
 import SummaryCard from '../../SummaryCard';
@@ -21,9 +21,7 @@ import SavedSearchesTable from './SavedSearchesTable';
 import useMarkedJobs from './useMarkedJobs';
 
 const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
-  const [card, setCard] = useState<'inbox' | 'saved_searches' | 'my_jobs'>(
-    'inbox'
-  );
+  const { homeNav, setHomeNav } = useContext(JobSeekerContext);
 
   const paging = {
     page: 1,
@@ -54,8 +52,8 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
           <SummaryCardsContainer>
             <SummaryCard
               key={1}
-              selected={card === 'inbox'}
-              onClick={() => setCard('inbox')}
+              selected={homeNav === 'notifications'}
+              onClick={() => setHomeNav('notifications')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
@@ -74,8 +72,8 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
             />
             <SummaryCard
               key={2}
-              selected={card === 'saved_searches'}
-              onClick={() => setCard('saved_searches')}
+              selected={homeNav === 'saved_searches'}
+              onClick={() => setHomeNav('saved_searches')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
@@ -94,8 +92,8 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
             />
             <SummaryCard
               key={3}
-              selected={card === 'my_jobs'}
-              onClick={() => setCard('my_jobs')}
+              selected={homeNav === 'my_jobs'}
+              onClick={() => setHomeNav('my_jobs')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
@@ -122,16 +120,16 @@ const Dashboard = ({ jobSeeker }: { jobSeeker: JobSeeker }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
           <div className="h-full overflow-auto">
-            {card === 'inbox' && (
+            {homeNav === 'notifications' && (
               <Notifications
                 jobSeekerId={jobSeeker.id}
                 onUpdate={refetchUnreadNotificationsCount}
               />
             )}
-            {card === 'saved_searches' && (
+            {homeNav === 'saved_searches' && (
               <SavedSearchesTable jobSeekerId={jobSeeker.id} />
             )}
-            {card === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
+            {homeNav === 'my_jobs' && <MyJobs jobSeekerId={jobSeeker.id} />}
           </div>
         </ResourceDetailsContainer>
       </ResourcesContainer>

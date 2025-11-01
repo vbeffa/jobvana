@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FaBuilding } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersContainer from '../../containers/FiltersContainer';
@@ -6,6 +6,7 @@ import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer'
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
+import { JobSeekerContext } from '../../Context';
 import JobvanaError from '../../JobvanaError';
 import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
@@ -19,32 +20,37 @@ import useApplications, {
 } from './useApplications';
 
 const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
-  const [page, setPage] = useState<number>(1);
+  const { myApplicationsNav: nav, setMyApplicationsNav: setNav } =
+    useContext(JobSeekerContext);
   const [debouncePage, setDebouncePage] = useState(false);
-  const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [debouncedPage] = useDebounce(nav.page, debouncePage ? 500 : 0);
+
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
+    status: 'all'
+  });
+
   const paging: ApplicationsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
     [debouncedPage]
   );
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    status: 'all'
-  });
-  const [applicationId, setApplicationId] = useState<number | null>(null);
-
   const { applications, isPending, isPlaceholderData, total, error } =
     useApplications(jobSeekerId, { paging, filters: searchFilters });
 
   useEffect(() => {
     if (!applications?.length) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setApplicationId(null);
+      setNav({
+        page: 1
+      });
     } else if (
-      !applicationId ||
-      !applications.find((app) => app.id === applicationId)
+      !nav.applicationId ||
+      !applications.find((app) => app.id === nav.applicationId)
     ) {
-      setApplicationId(applications[0].id);
+      setNav((nav) => ({
+        ...nav,
+        applicationId: applications[0].id
+      }));
     }
-  }, [applicationId, applications]);
+  }, [nav.applicationId, applications, setNav]);
 
   return (
     <>
@@ -67,10 +73,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
       <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
-            page={page}
+            page={nav.page}
             total={total}
             onSetPage={(page, debounce) => {
-              setPage(page);
+              setNav({
+                page
+              });
               setDebouncePage(debounce);
             }}
             isLoading={isPending || isPlaceholderData}
@@ -81,9 +89,12 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
               return (
                 <SummaryCard
                   key={application.id}
-                  selected={applicationId === application.id}
+                  selected={nav.applicationId === application.id}
                   onClick={() => {
-                    setApplicationId(application.id);
+                    setNav((nav) => ({
+                      ...nav,
+                      applicationId: application.id
+                    }));
                   }}
                   title={application.jobTitle}
                   text={
@@ -105,8 +116,8 @@ const Applications = ({ jobSeekerId }: { jobSeekerId: number }) => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
-          {applicationId ? (
-            <ApplicationDetails id={applicationId} />
+          {nav.applicationId ? (
+            <ApplicationDetails id={nav.applicationId} />
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
