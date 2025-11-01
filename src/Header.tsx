@@ -93,7 +93,7 @@ const Header = () => {
 
   return (
     <div
-      className={`bg-blue-300 w-[100%] overflow-auto whitespace-nowrap h-${HEADER_HEIGHT} items-center justify-center mb-${HEADER_MARGIN_BOTTOM} top-0 left-0 sticky z-999 flex gap-[2%]`}
+      className={`bg-blue-300 w-full overflow-auto whitespace-nowrap h-${HEADER_HEIGHT} items-center justify-center mb-${HEADER_MARGIN_BOTTOM} top-0 left-0 sticky z-999 flex gap-[2%]`}
     >
       {linkHeaderItem({
         page: 'home',
