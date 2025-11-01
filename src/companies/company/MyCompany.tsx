@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import { FaBuilding, FaChessKnight, FaLocationArrow } from 'react-icons/fa6';
-import { type Company } from '../../Context';
+import { CompanyContext, type Company } from '../../Context';
 import SummaryCard from '../../SummaryCard';
 import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../../containers/ResourceListContainer';
@@ -13,21 +13,19 @@ import useCompanyAddresses from './useCompanyAddresses';
 import { EMPTY_PROCESS, type InterviewProcess } from './utils';
 
 const MyCompany = ({ company }: { company: Company }) => {
-  const [card, setCard] = useState<
-    'overview' | 'addresses' | 'interview_process'
-  >('overview');
+  const { myCompanyNav, setMyCompanyNav } = useContext(CompanyContext);
   const { count } = useCompanyAddresses(company.id);
 
   const currComponent = useMemo(() => {
-    switch (card) {
+    switch (myCompanyNav) {
       case 'overview':
         return <MyCompanyOverview company={company} />;
-      case 'addresses':
+      case 'locations':
         return <MyCompanyAddresses companyId={company.id} />;
       case 'interview_process':
         return <MyCompanyInterviewProcess company={company} />;
     }
-  }, [card, company]);
+  }, [company, myCompanyNav]);
 
   const numRounds = useMemo(
     () =>
@@ -51,8 +49,8 @@ const MyCompany = ({ company }: { company: Company }) => {
           <SummaryCardsContainer bannerType="title" hasPageNav={false}>
             <SummaryCard
               key={1}
-              selected={card === 'overview'}
-              onClick={() => setCard('overview')}
+              selected={myCompanyNav === 'overview'}
+              onClick={() => setMyCompanyNav('overview')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
@@ -66,8 +64,8 @@ const MyCompany = ({ company }: { company: Company }) => {
             />
             <SummaryCard
               key={2}
-              selected={card === 'addresses'}
-              onClick={() => setCard('addresses')}
+              selected={myCompanyNav === 'locations'}
+              onClick={() => setMyCompanyNav('locations')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">
@@ -81,8 +79,8 @@ const MyCompany = ({ company }: { company: Company }) => {
             />
             <SummaryCard
               key={3}
-              selected={card === 'interview_process'}
-              onClick={() => setCard('interview_process')}
+              selected={myCompanyNav === 'interview_process'}
+              onClick={() => setMyCompanyNav('interview_process')}
               title={
                 <div className="flex flex-row gap-1">
                   <div className="content-center">

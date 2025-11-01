@@ -11,10 +11,12 @@ import type { SearchFilters as CompanySearchFilters } from './companies/job_seek
 import { findCompany } from './companies/utils';
 import {
   CompanyContext,
+  defaultCompanyContext,
   defaultJobSeekerContext,
   JobSeekerContext,
   JobvanaContext,
   type Company,
+  type CompanyContextProps,
   type JobSeeker,
   type JobSeekerContextProps
 } from './Context';
@@ -26,6 +28,17 @@ import type { CurrPage } from './types';
 
 const Root = () => {
   const [currPage, setCurrPage] = useState<CurrPage>('home');
+
+  const [myCompanyNav, setMyCompanyNav] = useState<
+    CompanyContextProps['myCompanyNav']
+  >(defaultCompanyContext.myCompanyNav);
+  const [myJobsNav, setMyJobsNav] = useState<CompanyContextProps['myJobsNav']>(
+    defaultCompanyContext.myJobsNav
+  );
+  const [jobApplicationsNav, setJobApplicationsNav] = useState<
+    CompanyContextProps['jobApplicationsNav']
+  >(defaultCompanyContext.jobApplicationsNav);
+
   const [companySearchFilters, setCompanySearchFilters] =
     useState<CompanySearchFilters>(
       defaultJobSeekerContext.companySearchFilters
@@ -116,7 +129,13 @@ const Root = () => {
         <CompanyContext.Provider
           value={{
             company,
-            setCompany
+            setCompany,
+            myCompanyNav,
+            setMyCompanyNav,
+            myJobsNav,
+            setMyJobsNav,
+            jobApplicationsNav,
+            setJobApplicationsNav
           }}
         >
           <Header />

@@ -17,6 +17,22 @@ export type JobSeeker = Omit<DbJobSeeker, 'created_at'>;
 export type CompanyContextProps = {
   company?: Company | null;
   setCompany: (company: Company) => void;
+  myCompanyNav: 'overview' | 'locations' | 'interview_process';
+  setMyCompanyNav: Dispatch<
+    SetStateAction<CompanyContextProps['myCompanyNav']>
+  >;
+  myJobsNav: {
+    page: number;
+    jobId?: number;
+  };
+  setMyJobsNav: Dispatch<SetStateAction<CompanyContextProps['myJobsNav']>>;
+  jobApplicationsNav: {
+    page: number;
+    applicationId?: number;
+  };
+  setJobApplicationsNav: Dispatch<
+    SetStateAction<CompanyContextProps['jobApplicationsNav']>
+  >;
 };
 
 export type JobSeekerContextProps = {
@@ -56,7 +72,17 @@ export const defaultContext: JobvanaContextProps = {
 };
 
 export const defaultCompanyContext: CompanyContextProps = {
-  setCompany: () => {}
+  setCompany: () => {},
+  myCompanyNav: 'overview',
+  setMyCompanyNav: () => {},
+  myJobsNav: {
+    page: 1
+  },
+  setMyJobsNav: () => {},
+  jobApplicationsNav: {
+    page: 1
+  },
+  setJobApplicationsNav: () => {}
 };
 
 export const defaultJobSeekerContext: JobSeekerContextProps = {

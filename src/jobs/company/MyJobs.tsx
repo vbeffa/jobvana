@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { getIcon } from '../../applications/utils';
 import FiltersContainer from '../../containers/FiltersContainer';
@@ -6,7 +6,7 @@ import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer'
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
-import type { Company } from '../../Context';
+import { CompanyContext, type Company } from '../../Context';
 import Button from '../../controls/Button';
 import JobvanaError from '../../JobvanaError';
 import PageNav from '../../PageNav';
@@ -17,9 +17,9 @@ import StatusSelect from './StatusSelect';
 import useJobs, { type JobsParams, type SearchFilters } from './useJobs';
 
 const MyJobs = ({ company }: { company: Company }) => {
-  const [page, setPage] = useState<number>(1);
+  const { myJobsNav, setMyJobsNav } = useContext(CompanyContext);
   const [debouncePage, setDebouncePage] = useState(false);
-  const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [debouncedPage] = useDebounce(myJobsNav.page, debouncePage ? 500 : 0);
 
   const initialSearchFilters: SearchFilters = {
     companyId: company.id,
@@ -27,14 +27,12 @@ const MyJobs = ({ company }: { company: Company }) => {
   };
   const [searchFilters, setSearchFilters] =
     useState<SearchFilters>(initialSearchFilters);
-  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
   const paging: JobsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
     [debouncedPage]
   );
-
   const { jobs, isPlaceholderData, isPending, total, error, refetch } = useJobs(
     {
       paging,
@@ -47,15 +45,19 @@ const MyJobs = ({ company }: { company: Company }) => {
       return;
     }
     if (!jobs?.length) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedJobId(null);
+      setMyJobsNav({
+        page: 1
+      });
     } else if (
-      !selectedJobId ||
-      !jobs.find((job) => job.id === selectedJobId)
+      !myJobsNav.jobId ||
+      !jobs.find((job) => job.id === myJobsNav.jobId)
     ) {
-      setSelectedJobId(jobs[0].id);
+      setMyJobsNav((myJobsNav) => ({
+        ...myJobsNav,
+        jobId: jobs[0].id
+      }));
     }
-  }, [isAddingNew, jobs, selectedJobId]);
+  }, [isAddingNew, jobs, myJobsNav.jobId, setMyJobsNav]);
 
   const noInterviewProcess = useMemo(
     () => !company.interview_process?.rounds.length,
@@ -81,12 +83,13 @@ const MyJobs = ({ company }: { company: Company }) => {
       <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
-            page={page}
+            page={myJobsNav.page}
             disabled={isAddingNew}
             total={total}
             onSetPage={(page, debounce) => {
-              setPage(page);
-              setSelectedJobId(null);
+              setMyJobsNav({
+                page
+              });
               setDebouncePage(debounce);
             }}
             isLoading={isPending || isPlaceholderData}
@@ -97,10 +100,13 @@ const MyJobs = ({ company }: { company: Company }) => {
               ?.map((job, idx) => (
                 <SummaryCard
                   key={idx}
-                  selected={selectedJobId === job.id}
+                  selected={myJobsNav.jobId === job.id}
                   disabled={isAddingNew}
                   onClick={() => {
-                    setSelectedJobId(job.id);
+                    setMyJobsNav((myJobsNav) => ({
+                      ...myJobsNav,
+                      jobId: job.id
+                    }));
                   }}
                   title={job.title}
                   text={
@@ -134,7 +140,10 @@ const MyJobs = ({ company }: { company: Company }) => {
                           disabled={noInterviewProcess}
                           onClick={() => {
                             setIsAddingNew(true);
-                            setSelectedJobId(0);
+                            setMyJobsNav((myJobsNav) => ({
+                              ...myJobsNav,
+                              jobId: 0
+                            }));
                           }}
                         />
                       </div>
@@ -146,16 +155,17 @@ const MyJobs = ({ company }: { company: Company }) => {
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
           <>
-            {selectedJobId !== null ? (
+            {myJobsNav.jobId !== undefined ? (
               <JobDetails
-                jobId={selectedJobId}
+                jobId={myJobsNav.jobId}
                 company={company}
                 isNew={isAddingNew}
                 onFinishUpdate={async () => {
                   setIsAddingNew(false);
                   await refetch();
-                  setPage(1);
-                  setSelectedJobId(null);
+                  setMyJobsNav({
+                    page: 1
+                  });
                 }}
                 onCancelNewJob={() => {
                   setIsAddingNew(false);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FaPerson } from 'react-icons/fa6';
 import { useDebounce } from 'use-debounce';
 import FiltersContainer from '../../containers/FiltersContainer';
@@ -6,6 +6,7 @@ import ResourceDetailsContainer from '../../containers/ResourceDetailsContainer'
 import ResourceListContainer from '../../containers/ResourceListContainer';
 import ResourcesContainer from '../../containers/ResourcesContainer';
 import SummaryCardsContainer from '../../containers/SummaryCardsContainer';
+import { CompanyContext } from '../../Context';
 import JobvanaError from '../../JobvanaError';
 import PageNav from '../../PageNav';
 import SummaryCard from '../../SummaryCard';
@@ -19,31 +20,40 @@ import useApplications, {
 } from './useApplications';
 
 const Applications = ({ companyId }: { companyId: number }) => {
-  const [page, setPage] = useState<number>(1);
+  const { jobApplicationsNav, setJobApplicationsNav } =
+    useContext(CompanyContext);
   const [debouncePage, setDebouncePage] = useState(false);
-  const [debouncedPage] = useDebounce(page, debouncePage ? 500 : 0);
+  const [debouncedPage] = useDebounce(
+    jobApplicationsNav.page,
+    debouncePage ? 500 : 0
+  );
+
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
+    status: 'all'
+  });
+
   const paging: ApplicationsParams['paging'] = useMemo(
     () => ({ page: debouncedPage, pageSize: 10 }),
     [debouncedPage]
   );
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    status: 'all'
-  });
-  const [applicationId, setApplicationId] = useState<number | null>(null);
   const { applications, isPending, isPlaceholderData, total, error } =
     useApplications(companyId, { paging, filters: searchFilters });
 
   useEffect(() => {
     if (!applications?.length) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setApplicationId(null);
+      setJobApplicationsNav({
+        page: 1
+      });
     } else if (
-      !applicationId ||
-      !applications.find((app) => app.id === applicationId)
+      !jobApplicationsNav.applicationId ||
+      !applications.find((app) => app.id === jobApplicationsNav.applicationId)
     ) {
-      setApplicationId(applications[0].id);
+      setJobApplicationsNav((jobApplicationsNav) => ({
+        ...jobApplicationsNav,
+        applicationId: applications[0].id
+      }));
     }
-  }, [applicationId, applications]);
+  }, [jobApplicationsNav.applicationId, applications, setJobApplicationsNav]);
 
   return (
     <>
@@ -66,10 +76,12 @@ const Applications = ({ companyId }: { companyId: number }) => {
       <ResourcesContainer bannerType="filters">
         <ResourceListContainer>
           <PageNav
-            page={page}
+            page={jobApplicationsNav.page}
             total={total}
             onSetPage={(page, debounce) => {
-              setPage(page);
+              setJobApplicationsNav({
+                page
+              });
               setDebouncePage(debounce);
             }}
             isLoading={isPending || isPlaceholderData}
@@ -80,9 +92,12 @@ const Applications = ({ companyId }: { companyId: number }) => {
               return (
                 <SummaryCard
                   key={application.id}
-                  selected={applicationId === application.id}
+                  selected={jobApplicationsNav.applicationId === application.id}
                   onClick={() => {
-                    setApplicationId(application.id);
+                    setJobApplicationsNav((jobApplicationsNav) => ({
+                      ...jobApplicationsNav,
+                      applicationId: application.id
+                    }));
                   }}
                   title={application.jobTitle}
                   text={
@@ -104,8 +119,8 @@ const Applications = ({ companyId }: { companyId: number }) => {
           </SummaryCardsContainer>
         </ResourceListContainer>
         <ResourceDetailsContainer padding="">
-          {applicationId ? (
-            <ApplicationDetails id={applicationId} />
+          {jobApplicationsNav.applicationId ? (
+            <ApplicationDetails id={jobApplicationsNav.applicationId} />
           ) : undefined}
         </ResourceDetailsContainer>
       </ResourcesContainer>
