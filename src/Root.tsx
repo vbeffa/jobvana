@@ -39,6 +39,12 @@ const Root = () => {
     CompanyContextProps['jobApplicationsNav']
   >(defaultCompanyContext.jobApplicationsNav);
 
+  const [jobSearchFilters, setJobSearchFilters] = useState<JobSearchFilters>(
+    defaultJobSeekerContext.jobSearchFilters
+  );
+  const [jobNav, setJobNav] = useState<JobSeekerContextProps['jobNav']>(
+    defaultJobSeekerContext.jobNav
+  );
   const [companySearchFilters, setCompanySearchFilters] =
     useState<CompanySearchFilters>(
       defaultJobSeekerContext.companySearchFilters
@@ -46,12 +52,6 @@ const Root = () => {
   const [companyNav, setCompanyNav] = useState<
     JobSeekerContextProps['companyNav']
   >(defaultJobSeekerContext.companyNav);
-  const [jobSearchFilters, setJobSearchFilters] = useState<JobSearchFilters>(
-    defaultJobSeekerContext.jobSearchFilters
-  );
-  const [jobNav, setJobNav] = useState<JobSeekerContextProps['jobNav']>(
-    defaultJobSeekerContext.jobNav
-  );
 
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
@@ -164,18 +164,14 @@ const Root = () => {
         value={{
           jobSeeker,
           setJobSeeker,
-          // companiesContext,
-          // setCompaniesContext,
-          companySearchFilters,
-          setCompanySearchFilters,
-          companyNav,
-          setCompanyNav,
-          // jobsContext,
-          // setJobsContext
           jobSearchFilters,
           setJobSearchFilters,
           jobNav,
-          setJobNav
+          setJobNav,
+          companySearchFilters,
+          setCompanySearchFilters,
+          companyNav,
+          setCompanyNav
         }}
       >
         <Header />

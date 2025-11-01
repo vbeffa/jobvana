@@ -38,13 +38,6 @@ export type CompanyContextProps = {
 export type JobSeekerContextProps = {
   jobSeeker?: JobSeeker | null;
   setJobSeeker: (jobSeeker: JobSeeker) => void;
-  companySearchFilters: CompanySearchFilters;
-  setCompanySearchFilters: Dispatch<SetStateAction<CompanySearchFilters>>;
-  companyNav: {
-    page: number;
-    companyId?: number;
-  };
-  setCompanyNav: Dispatch<SetStateAction<JobSeekerContextProps['companyNav']>>;
   jobSearchFilters: JobSearchFilters;
   setJobSearchFilters: Dispatch<SetStateAction<JobSearchFilters>>;
   jobNav: {
@@ -52,6 +45,13 @@ export type JobSeekerContextProps = {
     jobId?: number;
   };
   setJobNav: Dispatch<SetStateAction<JobSeekerContextProps['jobNav']>>;
+  companySearchFilters: CompanySearchFilters;
+  setCompanySearchFilters: Dispatch<SetStateAction<CompanySearchFilters>>;
+  companyNav: {
+    page: number;
+    companyId?: number;
+  };
+  setCompanyNav: Dispatch<SetStateAction<JobSeekerContextProps['companyNav']>>;
 };
 
 export type JobvanaContextProps = {
@@ -87,28 +87,18 @@ export const defaultCompanyContext: CompanyContextProps = {
 
 export const defaultJobSeekerContext: JobSeekerContextProps = {
   setJobSeeker: () => {},
-  // companiesContext: {
-  //   page: 1,
-  //   ...INITIAL_COMPANY_SEARCH_FILTERS
-  // },
-  // setCompaniesContext: () => {},
-  companySearchFilters: INITIAL_COMPANY_SEARCH_FILTERS,
-  setCompanySearchFilters: () => {},
-  companyNav: {
-    page: 1
-  },
-  setCompanyNav: () => {},
-  // jobsContext: {
-  //   page: 1,
-  //   ...INITIAL_JOB_SEARCH_FILTERS
-  // },
-  // setJobsContext: () => {}
   jobSearchFilters: INITIAL_JOB_SEARCH_FILTERS,
   setJobSearchFilters: () => {},
   jobNav: {
     page: 1
   },
-  setJobNav: () => {}
+  setJobNav: () => {},
+  companySearchFilters: INITIAL_COMPANY_SEARCH_FILTERS,
+  setCompanySearchFilters: () => {},
+  companyNav: {
+    page: 1
+  },
+  setCompanyNav: () => {}
 };
 
 export const JobvanaContext =
