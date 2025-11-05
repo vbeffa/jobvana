@@ -13,7 +13,6 @@ const Roles = () => {
   const [roleId, setRoleId] = useState<number | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRoleId(roles?.[0].id ?? null);
   }, [roles]);
 

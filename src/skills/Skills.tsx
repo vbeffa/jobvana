@@ -34,7 +34,6 @@ const Skills = () => {
     useSkills({ paging, filters: searchFilters });
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSkillId(skills?.[0]?.id ?? null);
   }, [skills]);
 

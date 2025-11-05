@@ -17,7 +17,6 @@ const SkillCategories = () => {
   const [skillCategoryId, setSkillCategoryId] = useState<number | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSkillCategoryId(skillCategories?.[0].id ?? null);
   }, [skillCategories]);
 
