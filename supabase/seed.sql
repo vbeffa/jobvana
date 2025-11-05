@@ -37,7 +37,7 @@ INSERT INTO
       'authenticated',
       'authenticated',
       'vbeffa@mac.com',
-      crypt ('abc123', gen_salt ('bf')),
+      extensions.crypt ('abc123', extensions.gen_salt ('bf')),
       current_timestamp,
       current_timestamp,
       current_timestamp,
@@ -55,7 +55,7 @@ INSERT INTO
       'authenticated',
       'authenticated',
       'vbeffa@yahoo.com',
-      crypt ('abc123', gen_salt ('bf')),
+      extensions.crypt ('abc123', extensions.gen_salt ('bf')),
       current_timestamp,
       current_timestamp,
       current_timestamp,
@@ -81,7 +81,7 @@ INSERT INTO
         updated_at
     ) (
         select
-            uuid_generate_v4(),
+            extensions.uuid_generate_v4(),
             id,
             id as user_id,
             format('{"sub":"%s","email":"%s"}', id::text, email)::jsonb,
