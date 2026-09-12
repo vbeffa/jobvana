@@ -1,16 +1,15 @@
 import type { FileObject, StorageError } from '@supabase/storage-js';
-import type StorageFileApi from '@supabase/storage-js/dist/module/packages/StorageFileApi';
 import { useQuery, type QueryObserverResult } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import supabase from '../db/supabase';
 
+type StorageBucket = ReturnType<typeof supabase.storage.from>;
+type UploadResult = ReturnType<StorageBucket['upload']>;
+
 export type Resumes = {
   resumes: Array<FileObject> | undefined;
   isPending: boolean;
-  upload: (
-    file: File,
-    replace?: boolean
-  ) => ReturnType<StorageFileApi['upload']>;
+  upload: (file: File, replace?: boolean) => UploadResult;
   download: (name: string) => Promise<{
     data: Blob | null;
     error: StorageError | null;
