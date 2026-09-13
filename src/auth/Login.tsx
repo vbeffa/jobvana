@@ -79,21 +79,6 @@ const Login = () => {
         return;
       }
 
-      // console.log(signupData);
-
-      const { error: userRegErr } = await supabase
-        .from('user_registrations')
-        .insert({
-          user_id: signupData.user.id,
-          user_type: userType
-        });
-
-      if (userRegErr) {
-        console.log(userRegErr);
-        setError(userRegErr);
-        return;
-      }
-
       setSuccessMessage(
         'Success! Please check your email for a verification link.'
       );
