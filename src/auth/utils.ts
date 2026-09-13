@@ -1,4 +1,4 @@
-import type { Session } from '@supabase/supabase-js';
+import type { AuthError, Session } from '@supabase/supabase-js';
 import {
   MAX_EMAIL_LENGTH,
   MIN_EMAIL_LENGTH
@@ -67,11 +67,19 @@ const refreshSession = async () => {
     refresh_token: refreshToken
   });
   if (authResponse.error) {
-    console.log(
-      `Could not refresh session with token ${refreshToken}: ${authResponse.error}`
+    console.error(
+      'Could not refresh session',
+      authErrorDetails(authResponse.error)
     );
   }
 };
+
+const authErrorDetails = (error: AuthError) => ({
+  name: error.name,
+  code: error.code,
+  status: error.status,
+  message: error.message
+});
 
 const isPasswordValid = (password: string) =>
   password.length >= MIN_PASSWORD_LENGTH &&
@@ -82,6 +90,7 @@ const isEmailValid = (email: string) =>
   email.length >= MIN_EMAIL_LENGTH && email.length <= MAX_EMAIL_LENGTH;
 
 export {
+  authErrorDetails,
   checkIsLoggedIn,
   getSession,
   getUserType,
