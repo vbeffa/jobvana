@@ -9,7 +9,6 @@ import {
   FaUser,
   FaWrench
 } from 'react-icons/fa6';
-import { getUserType } from './auth/utils';
 import { CompanyContext, JobSeekerContext, JobvanaContext } from './Context';
 import { type CurrPage } from './types';
 import { isValidPage } from './utils';
@@ -21,7 +20,7 @@ export const HEADER_TOTAL_HEIGHT_PX =
 
 const Header = () => {
   const location = useLocation();
-  const { logout, loggedIn, currPage, setCurrPage } =
+  const { logout, loggedIn, userType, currPage, setCurrPage } =
     useContext(JobvanaContext);
   const { company } = useContext(CompanyContext);
   const { jobSeeker } = useContext(JobSeekerContext);
@@ -45,8 +44,6 @@ const Header = () => {
     () => location.pathname.substring(9).includes('/'),
     [location.pathname]
   );
-
-  const userType = getUserType();
 
   const linkHeaderItem = ({
     page,

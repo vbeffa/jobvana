@@ -16,10 +16,12 @@ import {
   JobSeekerContext,
   JobvanaContext,
   type Company,
-  type JobSeeker
+  type JobSeeker,
+  type UserType
 } from './Context';
 import supabase from './db/supabase';
 import Header from './Header';
+import JobvanaError from './JobvanaError';
 import { findJobSeeker } from './job_seekers/utils';
 import type { CurrPage } from './types';
 
@@ -53,12 +55,14 @@ const Root = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [loggingOut, setLoggingOut] = useState<boolean>();
   const [resetPassword, setResetPassword] = useState(false);
+  const [userType, setUserType] = useState<UserType>();
+  const [userTypeError, setUserTypeError] = useState<Error | null>(null);
 
   const [company, setCompany] = useState<Company | null>();
   const [jobSeeker, setJobSeeker] = useState<JobSeeker | null>();
 
   const session = getSession();
-
+  const userId = session?.user.id;
   const isLoggedIn = checkIsLoggedIn();
 
   if (loggedIn === undefined) {
@@ -71,7 +75,38 @@ const Root = () => {
     }
   }, [isLoggedIn]);
 
-  const userType = getUserType();
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!isLoggedIn || !userId) {
+      setUserType(undefined);
+      setUserTypeError(null);
+      return;
+    }
+
+    setUserType(undefined);
+    setUserTypeError(null);
+
+    getUserType(userId)
+      .then((type) => {
+        if (!cancelled) {
+          setUserType(type);
+        }
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setUserTypeError(
+            error instanceof Error
+              ? error
+              : new Error('Could not determine account type.')
+          );
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoggedIn, userId]);
 
   useEffect(() => {
     if (userType === 'company') {
@@ -108,29 +143,46 @@ const Root = () => {
     await supabase.auth.signOut({ scope: 'local' });
     setCompany(undefined);
     setJobSeeker(undefined);
+    setUserType(undefined);
+    setUserTypeError(null);
     setLoggedIn(false);
     setLoggingOut(false);
   }, []);
 
-  // window.addEventListener('login', () => {
-  //   setLoggedIn(true);
-  // });
+  const jobvanaContext = {
+    currPage,
+    setCurrPage,
+    accountNav,
+    setAccountNav,
+    loggedIn,
+    userType,
+    loggingOut,
+    logout,
+    resetPassword,
+    setResetPassword
+  };
+
+  if (isLoggedIn && userType === undefined) {
+    return (
+      <JobvanaContext.Provider value={jobvanaContext}>
+        <Header />
+        <div className="flex justify-center">
+          {userTypeError ? (
+            <JobvanaError
+              prefix="Error loading account type"
+              error={userTypeError}
+            />
+          ) : (
+            'Loading...'
+          )}
+        </div>
+      </JobvanaContext.Provider>
+    );
+  }
 
   if (userType === 'company') {
     return (
-      <JobvanaContext.Provider
-        value={{
-          currPage,
-          setCurrPage,
-          accountNav,
-          setAccountNav,
-          loggedIn,
-          loggingOut,
-          logout,
-          resetPassword,
-          setResetPassword
-        }}
-      >
+      <JobvanaContext.Provider value={jobvanaContext}>
         <CompanyContext.Provider
           value={{
             company,
@@ -154,19 +206,7 @@ const Root = () => {
   }
 
   return (
-    <JobvanaContext.Provider
-      value={{
-        currPage,
-        setCurrPage,
-        accountNav,
-        setAccountNav,
-        loggedIn,
-        loggingOut,
-        logout,
-        resetPassword,
-        setResetPassword
-      }}
-    >
+    <JobvanaContext.Provider value={jobvanaContext}>
       <JobSeekerContext.Provider
         value={{
           jobSeeker,

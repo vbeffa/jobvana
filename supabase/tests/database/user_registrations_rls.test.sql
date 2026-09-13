@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(8);
+select plan(9);
 
 create function pg_temp.registration_insert_succeeds(
   p_user_id uuid,
@@ -58,6 +58,18 @@ select results_eq(
     where user_id = '11111111-1111-4111-8111-111111111111'$$,
   array['company'::text],
   'company registration is created by the auth.users trigger'
+);
+
+update auth.users
+set raw_user_meta_data = '{"type":"job_seeker"}'::jsonb
+where id = '11111111-1111-4111-8111-111111111111';
+
+select results_eq(
+  $$select user_type::text
+    from public.user_registrations
+    where user_id = '11111111-1111-4111-8111-111111111111'$$,
+  array['company'::text],
+  'changing user metadata does not change authoritative registration type'
 );
 
 insert into auth.users (id, email, raw_user_meta_data)

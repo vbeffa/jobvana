@@ -1,14 +1,13 @@
 import { useContext } from 'react';
-import { getUserType } from '../auth/utils';
 import ResourceContainer from '../containers/ResourceContainer';
-import { CompanyContext, JobSeekerContext } from '../Context';
+import { CompanyContext, JobSeekerContext, JobvanaContext } from '../Context';
 import { Route } from '../routes/jobvana.jobs.$id';
 import CompanyJobDetails from './company/JobDetails';
 import JobSeekerJobDetails from './job_seekers/JobDetails';
 
 const JobRoute = () => {
   const { id } = Route.useLoaderData();
-  const userType = getUserType();
+  const { userType } = useContext(JobvanaContext);
   const { jobSeeker } = useContext(JobSeekerContext);
   const { company } = useContext(CompanyContext);
 
