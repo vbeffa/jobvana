@@ -1,0 +1,34 @@
+name: Database Tests
+
+on:
+  pull_request:
+    branches: ['master']
+    paths:
+      - 'supabase/**'
+      - '.github/workflows/database-tests.yml'
+  push:
+    branches: ['master']
+    paths:
+      - 'supabase/**'
+      - '.github/workflows/database-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  database-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Start local Supabase
+        run: supabase start
+
+      - name: Run database tests
+        run: supabase test db
