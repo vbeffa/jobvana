@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { FaTools } from 'react-icons/fa';
 import { FaFile, FaLock, FaPerson } from 'react-icons/fa6';
-import { getUserType } from '../auth/utils';
 import ResourceDetailsContainer from '../containers/ResourceDetailsContainer';
 import ResourceListContainer from '../containers/ResourceListContainer';
 import ResourcesContainer from '../containers/ResourcesContainer';
@@ -15,8 +14,7 @@ import JobSeekerSkills from './job_seekers/Skills';
 import Profile from './Profile';
 
 const Account = () => {
-  const userType = getUserType();
-  const { accountNav, setAccountNav } = useContext(JobvanaContext);
+  const { accountNav, setAccountNav, userType } = useContext(JobvanaContext);
   const { jobSeeker } = useContext(JobSeekerContext);
   const { count: skillsCount } = useSkillsForJobSeeker(jobSeeker?.id ?? 0);
 
