@@ -11,7 +11,7 @@ import TextInput from '../inputs/TextInput';
 import JobvanaError from '../JobvanaError';
 import { authErrorDetails, isEmailValid, isPasswordValid } from './utils';
 
-export const MIN_PASSWORD_LENGTH = 6;
+export const MIN_PASSWORD_LENGTH = 8;
 export const MAX_PASSWORD_LENGTH = 32;
 const MAX_FIRST_NAME_LENGTH = 100;
 const MAX_LAST_NAME_LENGTH = 100;
