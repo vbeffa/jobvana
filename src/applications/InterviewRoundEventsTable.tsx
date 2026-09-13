@@ -1,5 +1,6 @@
+import { useContext } from 'react';
 import { FaBuilding, FaUser } from 'react-icons/fa6';
-import { getUserType } from '../auth/utils';
+import { JobvanaContext } from '../Context';
 import { descDateComparator } from '../utils';
 import Status from './Status';
 import type { InterviewRoundEvent } from './useInterviewRoundEvents';
@@ -16,7 +17,7 @@ const InterviewRoundEventsTable = ({
   jobSeekerName: string;
   company: Company;
 }) => {
-  const userType = getUserType();
+  const { userType } = useContext(JobvanaContext);
 
   const interviewRoundEventUser = (eventUserId: string) => {
     const eventUser =
