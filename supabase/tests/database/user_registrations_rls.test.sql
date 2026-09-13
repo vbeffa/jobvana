@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(7);
+select plan(8);
 
 insert into auth.users (id, email, raw_user_meta_data)
 values (
@@ -58,49 +58,39 @@ select throws_ok(
   'missing registration type is rejected by the database'
 );
 
-set local role authenticated;
-
-select set_config(
-  'request.jwt.claims',
-  '{"sub":"11111111-1111-4111-8111-111111111111","role":"authenticated"}',
-  true
+select ok(
+  not has_table_privilege(
+    'authenticated',
+    'public.user_registrations',
+    'insert'
+  ),
+  'authenticated users do not have direct INSERT privilege'
 );
 
-select throws_ok(
-  $$insert into public.user_registrations (user_id, user_type)
-    values ('11111111-1111-4111-8111-111111111111', 'company')$$,
-  '42501',
-  'permission denied for table user_registrations',
-  'authenticated users cannot insert registration state directly'
+select ok(
+  not has_table_privilege(
+    'authenticated',
+    'public.user_registrations',
+    'update'
+  ),
+  'authenticated users do not have direct UPDATE privilege'
 );
 
-select throws_ok(
-  $$update public.user_registrations
-    set user_type = 'job_seeker'
-    where user_id = '11111111-1111-4111-8111-111111111111'$$,
-  '42501',
-  'permission denied for table user_registrations',
-  'authenticated users cannot modify registration state'
+select ok(
+  not has_table_privilege(
+    'anon',
+    'public.user_registrations',
+    'insert'
+  ),
+  'anonymous users do not have direct INSERT privilege'
 );
 
-reset role;
-set local role anon;
-
-select set_config(
-  'request.jwt.claims',
-  '{"role":"anon"}',
-  true
+select policies_are(
+  'public',
+  'user_registrations',
+  array['Users can select their user type'],
+  'user_registrations has only the authenticated SELECT policy'
 );
-
-select throws_ok(
-  $$insert into public.user_registrations (user_id, user_type)
-    values ('11111111-1111-4111-8111-111111111111', 'company')$$,
-  '42501',
-  'permission denied for table user_registrations',
-  'anonymous users cannot insert registration state directly'
-);
-
-reset role;
 
 select * from finish();
 
