@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useContext, useMemo } from 'react';
-import { getSession, getUserType } from './auth/utils';
+import { getSession } from './auth/utils';
 import CompanyOnboarding from './companies/company/Onboarding';
 import { CompanyContext, JobSeekerContext, JobvanaContext } from './Context';
 import CompanyDashboard from './home/companies/Dashboard';
@@ -8,11 +8,10 @@ import JobSeekerDashboard from './home/job_seekers/Dashboard';
 import JobSeekerOnboarding from './job_seekers/Onboarding';
 
 const Index = () => {
-  const { resetPassword, loggingOut } = useContext(JobvanaContext);
+  const { resetPassword, loggingOut, userType } = useContext(JobvanaContext);
   const { company } = useContext(CompanyContext);
   const { jobSeeker } = useContext(JobSeekerContext);
   const session = getSession();
-  const userType = getUserType();
 
   const isCompanyOnboarding = useMemo(
     () => userType === 'company' && company === null,
