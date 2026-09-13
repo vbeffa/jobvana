@@ -37,7 +37,7 @@ const useApplicationResume = ({
     queryKey: ['application_resumes', queryKey],
     queryFn: async () => {
       const { data, error } = await supabase.storage
-        .from('applications')
+        .from('application_resumes')
         .info(resumePath);
 
       if (error) {
@@ -52,7 +52,7 @@ const useApplicationResume = ({
 
   const download = useCallback(async () => {
     const { data, error } = await supabase.storage
-      .from('applications')
+      .from('application_resumes')
       .download(resumePath);
     if (error) {
       console.log(error);

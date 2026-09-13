@@ -46,7 +46,7 @@ const apply = async (
   const { /* data: storageData, */ error: storageErr } = await supabase.storage
     .from('resumes')
     .copy(fromFile, toFile, {
-      destinationBucket: 'applications'
+      destinationBucket: 'application_resumes'
     });
   if (storageErr) {
     console.log(storageErr);
