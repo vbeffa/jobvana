@@ -20,6 +20,7 @@ export type JobvanaContextProps = {
   accountNav: 'resumes' | 'skills' | 'profile' | 'account';
   setAccountNav: Dispatch<SetStateAction<JobvanaContextProps['accountNav']>>;
   loggedIn?: boolean;
+  userType?: UserType;
   loggingOut?: boolean;
   logout: () => Promise<void>;
   resetPassword?: boolean;
