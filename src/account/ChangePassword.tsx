@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../auth/Login';
-import { getSession, isPasswordValid } from '../auth/utils';
+import { authErrorDetails, getSession, isPasswordValid } from '../auth/utils';
 import { JobvanaContext } from '../Context';
 import Button from '../controls/Button';
 import supabase from '../db/supabase';
@@ -53,8 +53,17 @@ const ChangePassword = () => {
         });
 
         if (result.error) {
-          console.log(result.error);
-          setError(Error('Current password invalid'));
+          if (result.error.code === 'invalid_credentials') {
+            setError(Error('Current password invalid'));
+          } else {
+            console.error('Could not verify current password', {
+              name: result.error.name,
+              code: result.error.code,
+              status: result.error.status,
+              message: result.error.message
+            });
+            setError(Error('Could not verify current password'));
+          }
           return;
         }
       }
@@ -64,7 +73,7 @@ const ChangePassword = () => {
       });
 
       if (result.error) {
-        console.log(result.error);
+        console.error('Change password error', authErrorDetails(result.error));
         setError(result.error);
         return;
       }

@@ -9,7 +9,7 @@ import Button from '../controls/Button';
 import supabase from '../db/supabase';
 import TextInput from '../inputs/TextInput';
 import JobvanaError from '../JobvanaError';
-import { isEmailValid, isPasswordValid } from './utils';
+import { authErrorDetails, isEmailValid, isPasswordValid } from './utils';
 
 export const MIN_PASSWORD_LENGTH = 6;
 export const MAX_PASSWORD_LENGTH = 32;
@@ -71,7 +71,7 @@ const Login = () => {
         });
 
       if (signupError) {
-        console.log(signupError);
+        console.error('Signup error', authErrorDetails(signupError));
         setError(signupError);
         return;
       }
@@ -103,7 +103,7 @@ const Login = () => {
       });
 
       if (error) {
-        console.log(error);
+        console.error('Login error', authErrorDetails(error));
         setError(error);
       }
     } finally {
@@ -126,7 +126,7 @@ const Login = () => {
       });
 
       if (error) {
-        console.log(error);
+        console.log('Reset password error', authErrorDetails(error));
         setError(error);
         return;
       }
