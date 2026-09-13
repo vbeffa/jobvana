@@ -60,6 +60,8 @@ const Login = () => {
             data: {
               first_name: firstName,
               last_name: lastName,
+              // Bootstrap input only. The database trigger validates and
+              // persists the authoritative account type in user_registrations.
               type: userType
             },
             emailRedirectTo: import.meta.env.DEV
