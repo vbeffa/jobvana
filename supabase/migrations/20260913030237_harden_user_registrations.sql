@@ -36,6 +36,7 @@ execute function private.handle_new_jobvana_user();
 drop policy if exists "New users can register"
 on public.user_registrations;
 
+revoke all on table public.user_registrations from public;
 revoke all on table public.user_registrations from anon;
 revoke all on table public.user_registrations from authenticated;
 grant select on table public.user_registrations to authenticated;
