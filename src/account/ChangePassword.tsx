@@ -56,12 +56,10 @@ const ChangePassword = () => {
           if (result.error.code === 'invalid_credentials') {
             setError(Error('Current password invalid'));
           } else {
-            console.error('Could not verify current password', {
-              name: result.error.name,
-              code: result.error.code,
-              status: result.error.status,
-              message: result.error.message
-            });
+            console.error(
+              'Could not verify current password',
+              authErrorDetails(result.error)
+            );
             setError(Error('Could not verify current password'));
           }
           return;

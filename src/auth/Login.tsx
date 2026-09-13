@@ -126,7 +126,7 @@ const Login = () => {
       });
 
       if (error) {
-        console.log('Reset password error', authErrorDetails(error));
+        console.error('Reset password error', authErrorDetails(error));
         setError(error);
         return;
       }
