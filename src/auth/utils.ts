@@ -33,10 +33,18 @@ const isStale = (seconds: number) => {
   );
 };
 
-const getUserType = (): UserType | undefined => {
-  const session = getSession();
+const getUserType = async (userId: string): Promise<UserType> => {
+  const { data, error } = await supabase
+    .from('user_registrations')
+    .select('user_type')
+    .eq('user_id', userId)
+    .single();
 
-  return session?.user.user_metadata.type as UserType;
+  if (error) {
+    throw error;
+  }
+
+  return data.user_type;
 };
 
 // refresh session every five minutes, checking if stale every five seconds
