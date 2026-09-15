@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(28);
+select plan(29);
 
 select is(
   (
@@ -148,11 +148,46 @@ select lives_ok(
 );
 
 select results_eq(
-  $$select code
+  $select code
     from public.industries
-    where name = 'Renamed Taxonomy Schema Test Industry'$$,
+    where name = 'Renamed Taxonomy Schema Test Industry'$,
   array['taxonomy-schema-test-industry'::text],
   'taxonomy code remains stable after a name change'
+);
+
+insert into public.companies (
+  name,
+  description,
+  num_employees,
+  industry_id
+)
+select
+  'Taxonomy Schema Test Company',
+  'Database test company',
+  1,
+  id
+from public.industries
+where code = 'taxonomy-schema-test-industry';
+
+create function pg_temp.referenced_industry_delete_succeeds()
+returns boolean
+language plpgsql
+security invoker
+as $
+begin
+  delete from public.industries
+  where code = 'taxonomy-schema-test-industry';
+  return true;
+exception
+  when foreign_key_violation then
+    return false;
+end;
+$;
+
+select is(
+  pg_temp.referenced_industry_delete_succeeds(),
+  false,
+  'referenced taxonomy rows cannot be deleted from under business data'
 );
 
 select lives_ok(
