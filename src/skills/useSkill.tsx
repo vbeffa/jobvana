@@ -48,7 +48,7 @@ const useSkill = (id: number): SkillH => {
       const { data, error } = await supabase
         .from('skills')
         .select(
-          `name, abbreviation, description, notes, reference,
+          `name, abbreviation, code, description, notes, reference, retired_at,
           skill_category_memberships(skill_categories(id, name)),
           skill_versions(id, ordinal, skill_id, version),
           skill_relations!skill_id(skills!related_skill_id(id, name, abbreviation))`
