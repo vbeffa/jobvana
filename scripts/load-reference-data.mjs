@@ -259,7 +259,10 @@ function generateSql(data) {
     '-- Source: reference-data/*.json',
     '-- Regenerate with: npm run reference-data:write',
     '',
-    'do $jobvana_reference_data
+    'do $jobvana_reference_data$',
+    'begin',
+    ''
+  ];
 
   for (const item of data.industries) {
     statements.push(upsertValues(
