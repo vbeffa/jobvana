@@ -814,15 +814,12 @@ export type Database = {
       }
       skill_category_memberships: {
         Row: {
-          skill_category_id: number
           skill_id: number
         }
         Insert: {
-          skill_category_id: number
           skill_id: number
         }
         Update: {
-          skill_category_id?: number
           skill_id?: number
         }
         Relationships: [
@@ -929,7 +926,6 @@ export type Database = {
           notes: string | null
           reference: string | null
           retired_at: string | null
-          skill_category_id: number
         }
         Insert: {
           abbreviation?: string | null
@@ -940,7 +936,6 @@ export type Database = {
           notes?: string | null
           reference?: string | null
           retired_at?: string | null
-          skill_category_id: number
         }
         Update: {
           abbreviation?: string | null
@@ -951,17 +946,8 @@ export type Database = {
           notes?: string | null
           reference?: string | null
           retired_at?: string | null
-          skill_category_id?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: 'skills_skill_category_id_fkey'
-            columns: ['skill_category_id']
-            isOneToOne: false
-            referencedRelation: 'skill_categories'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       user_registrations: {
         Row: {
