@@ -156,12 +156,14 @@ select results_eq(
 );
 
 insert into public.companies (
+  id,
   name,
   description,
   num_employees,
   industry_id
 )
 select
+  900000001,
   'Taxonomy Schema Test Company',
   'Database test company',
   1,
