@@ -13,7 +13,7 @@ export type SearchFilters = {
 };
 
 export type FullSkill = Skill & {
-  category: SkillCategory;
+  categories: Array<SkillCategory>;
   versions: Array<SkillVersion>;
   relatedSkills: Array<RelatedSkill>;
 };
@@ -26,7 +26,7 @@ export type SkillVersion = Pick<
 >;
 export type RelatedSkill = Pick<
   DbSkill,
-  'id' | 'skill_category_id' | 'name' | 'abbreviation'
+  'id' | 'name' | 'abbreviation'
 >;
 
 export type SkillH = {
@@ -48,10 +48,10 @@ const useSkill = (id: number): SkillH => {
       const { data, error } = await supabase
         .from('skills')
         .select(
-          `name, abbreviation, description, notes, reference, skill_category_id,
-          skill_categories(id, name),
+          `name, abbreviation, code, description, notes, reference, retired_at,
+          skill_category_memberships(skill_categories(id, name)),
           skill_versions(id, ordinal, skill_id, version),
-          skill_relations!skill_id(skills!related_skill_id(id, skill_category_id, name, abbreviation))`
+          skill_relations!skill_id(skills!related_skill_id(id, name, abbreviation))`
         )
         .filter('id', 'eq', id);
 
@@ -71,7 +71,9 @@ const useSkill = (id: number): SkillH => {
     const skill = skillData.data[0];
     return {
       ...skill,
-      category: skill.skill_categories,
+      categories: skill.skill_category_memberships.map(
+        (membership) => membership.skill_categories
+      ),
       versions: skill.skill_versions,
       relatedSkills: skill.skill_relations.map((sr) => sr.skills)
     };

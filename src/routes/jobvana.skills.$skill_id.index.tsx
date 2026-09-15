@@ -1,11 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import SkillRoute from '../skills/SkillRoute';
 
-export const Route = createFileRoute(
-  '/jobvana/skill_categories/$id/skills/$skill_id/'
-)({
-  loader: ({ params: { id, skill_id } }) => ({
-    id: parseInt(id),
+export const Route = createFileRoute('/jobvana/skills/$skill_id/')({
+  loader: ({ params: { skill_id } }) => ({
     skillId: parseInt(skill_id)
   }),
   component: SkillRoute

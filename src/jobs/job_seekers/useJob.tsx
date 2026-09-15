@@ -44,10 +44,7 @@ export type Job = Pick<
 > & {
   interviewProcess: InterviewProcess | null;
 };
-export type Skill = Pick<
-  DbSkill,
-  'id' | 'skill_category_id' | 'name' | 'abbreviation'
->;
+export type Skill = Pick<DbSkill, 'id' | 'name' | 'abbreviation'>;
 export type JobRole = Pick<DbJobRole, 'role_id' | 'percent' | 'role_level'>;
 
 export type JobH = {
@@ -69,7 +66,7 @@ const useJob = (id: number): JobH => {
           company_addresses(*),
           companies!inner(id, name, interview_process, user_id),
           job_roles(role_id, percent, role_level),
-          skills(id, name, skill_category_id, abbreviation),
+          skills(id, name, abbreviation),
           applications(status),
           saved_jobs(*)`
         )
@@ -80,7 +77,6 @@ const useJob = (id: number): JobH => {
         throw error;
       }
 
-      // console.log(data);
       return { job: data[0] };
     },
     placeholderData: keepPreviousData

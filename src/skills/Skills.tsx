@@ -88,7 +88,7 @@ const Skills = () => {
                   selected={skillId === skill.id}
                   onClick={() => setSkillId(skill.id)}
                   title={skill.name}
-                  text={<div>{skill.skillCategory}</div>}
+                  text={<div>{skill.skillCategories.join(', ')}</div>}
                   borderBottom={idx < skills.length - 1}
                 />
               );

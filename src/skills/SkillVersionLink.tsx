@@ -1,12 +1,10 @@
 import { Link } from '@tanstack/react-router';
 import type { Skill, SkillVersion } from '../types';
 
-// TODO redo these props, too confusing
-export type SkillVersionLinkProps = Pick<Skill, 'skill_category_id' | 'name'> &
+export type SkillVersionLinkProps = Pick<Skill, 'name'> &
   Pick<SkillVersion, 'id' | 'skill_id' | 'version'>;
 
 const SkillVersionLink = ({
-  skill_category_id,
   name,
   id: skillVersionId,
   skill_id,
@@ -14,9 +12,8 @@ const SkillVersionLink = ({
 }: SkillVersionLinkProps) => {
   return (
     <Link
-      to="/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id"
+      to="/jobvana/skills/$skill_id/skill_versions/$skill_version_id"
       params={{
-        id: skill_category_id.toString(),
         skill_id: skill_id.toString(),
         skill_version_id: skillVersionId.toString()
       }}

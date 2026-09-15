@@ -3,7 +3,7 @@ import type { Skill, SkillVersion } from './useSkill';
 
 export type SkillVersionsListProps = {
   skillVersions: Array<SkillVersion>;
-  skill: Pick<Skill, 'skill_category_id' | 'name'>;
+  skill: Pick<Skill, 'name'>;
 };
 
 const SkillVersionsList = ({

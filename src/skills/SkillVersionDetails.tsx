@@ -39,7 +39,7 @@ const SkillVersionDetails = ({
       <div className="whitespace-pre-wrap">{skillVersion.notes}</div>
       <Hr />
       <h2>Released</h2>
-      <div>{skillVersion.release_date}</div>
+      <div>{skillVersion.release_date ?? 'Not specified'}</div>
       <Hr />
       <h2>Jobs</h2>
       {/* <div>{jobs && <JobsList jobs={jobs} />}</div> */}
