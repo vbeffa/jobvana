@@ -49,11 +49,15 @@ const useSkillsForCategory = ({
     queryFn: async () => {
       let q = supabase
         .from('skills')
-        .select('*', {
+        .select('*, skill_category_memberships!inner(skill_category_id)', {
           count: 'exact',
           head: countOnly
         })
-        .filter('skill_category_id', 'eq', skillCategoryId);
+        .filter(
+          'skill_category_memberships.skill_category_id',
+          'eq',
+          skillCategoryId
+        );
       const { filters } = params;
       if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
@@ -70,7 +74,6 @@ const useSkillsForCategory = ({
         throw error;
       }
 
-      // console.log(data);
       return { data, count };
     }
   });
@@ -79,14 +82,10 @@ const useSkillsForCategory = ({
     if (!skillsData?.data) {
       return undefined;
     }
-    const skills: Array<Skill> = skillsData.data.sort((skill1, skill2) => {
-      if (skill1.skill_category_id === skill2.skill_category_id) {
-        return skill1.name.localeCompare(skill2.name);
-      }
 
-      return skill1.skill_category_id - skill2.skill_category_id;
-    });
-    return skills;
+    return skillsData.data
+      .map(({ skill_category_memberships: _memberships, ...skill }) => skill)
+      .sort((skill1, skill2) => skill1.name.localeCompare(skill2.name));
   }, [skillsData]);
 
   const skillsCount = useMemo(
