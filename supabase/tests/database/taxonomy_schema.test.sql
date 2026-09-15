@@ -370,20 +370,31 @@ select policies_are(
 );
 
 select ok(
-  not exists (
-    select 1
-    from information_schema.role_table_grants
-    where table_schema = 'public'
-      and table_name = 'skill_category_memberships'
-      and grantee = 'anon'
+  has_table_privilege(
+    'authenticated',
+    'public.skill_category_memberships',
+    'SELECT'
   )
-  and (
-    select array_agg(privilege_type::text order by privilege_type::text)
-    from information_schema.role_table_grants
-    where table_schema = 'public'
-      and table_name = 'skill_category_memberships'
-      and grantee = 'authenticated'
-  ) = array['SELECT'::text],
+  and not has_table_privilege(
+    'authenticated',
+    'public.skill_category_memberships',
+    'INSERT'
+  )
+  and not has_table_privilege(
+    'authenticated',
+    'public.skill_category_memberships',
+    'UPDATE'
+  )
+  and not has_table_privilege(
+    'authenticated',
+    'public.skill_category_memberships',
+    'DELETE'
+  )
+  and not has_table_privilege(
+    'anon',
+    'public.skill_category_memberships',
+    'SELECT'
+  ),
   'skill category membership grants are least-privilege for API roles'
 );
 
