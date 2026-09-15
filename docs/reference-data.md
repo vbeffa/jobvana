@@ -29,7 +29,7 @@ npm run reference-data:write
 npm run reference-data:check
 ```
 
-The generated SQL runs in a transaction, upserts rows by stable code, resolves taxonomy relationships by code, and preserves existing database IDs when a matching code already exists.
+The generated SQL is one atomic PostgreSQL `DO` statement, upserts rows by stable code, resolves taxonomy relationships by code, and preserves existing database IDs when a matching code already exists.
 
 The loader does not delete taxonomy rows, memberships, versions, or relations merely because they disappear from JSON. Normal lifecycle removal is explicit through `retiredAt` (stored as `retired_at`) or, later, through admin tooling.
 
