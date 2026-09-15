@@ -8,9 +8,8 @@ export type SkillLinkProps = {
 const SkillLink = ({ skill }: SkillLinkProps) => {
   return (
     <Link
-      to="/jobvana/skill_categories/$id/skills/$skill_id"
+      to="/jobvana/skills/$skill_id"
       params={{
-        id: skill.skill_category_id.toString(),
         skill_id: skill.id.toString()
       }}
     >
