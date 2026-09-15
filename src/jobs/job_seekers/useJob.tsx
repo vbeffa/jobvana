@@ -44,10 +44,7 @@ export type Job = Pick<
 > & {
   interviewProcess: InterviewProcess | null;
 };
-export type Skill = Pick<
-  DbSkill,
-  'id' | 'name' | 'abbreviation'
->;
+export type Skill = Pick<DbSkill, 'id' | 'name' | 'abbreviation'>;
 export type JobRole = Pick<DbJobRole, 'role_id' | 'percent' | 'role_level'>;
 
 export type JobH = {
