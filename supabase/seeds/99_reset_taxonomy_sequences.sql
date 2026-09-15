@@ -32,3 +32,11 @@ select setval(
   max(id) is not null
 )
 from public.skill_versions;
+
+-- The legacy seed.sql grants broad table privileges after migrations run.
+-- Restore least-privilege access for the taxonomy membership table.
+revoke all on table public.skill_category_memberships
+from anon, authenticated, service_role;
+
+grant select on table public.skill_category_memberships to authenticated;
+grant all on table public.skill_category_memberships to service_role;
