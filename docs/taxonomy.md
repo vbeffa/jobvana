@@ -26,11 +26,9 @@ Internal taxonomy-only relationships may still cascade where deleting a parent c
 
 ## Skill categories
 
-`skills.skill_category_id` remains the primary/display category so existing application queries continue to work.
+`skill_category_memberships` is the authoritative many-to-many mapping between skills and categories. A skill has no intrinsic primary category and may belong to any number of categories.
 
-`skill_category_memberships` stores all categories assigned to a skill. The primary/display category is automatically inserted into the membership table whenever a skill is created or its primary category changes. Changing the primary category does not automatically remove the previous membership, allowing it to remain as a secondary category.
-
-This supports concepts such as XML belonging to both a markup-language category and a data-interchange-format category without duplicating the skill itself.
+This supports concepts such as XML belonging to both a markup-language category and a data-interchange-format category without duplicating the skill itself. Category-specific pages filter through memberships, while skill detail routes are category-independent.
 
 ## Skill relations
 
