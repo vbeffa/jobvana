@@ -83,9 +83,10 @@ const useSkillsForCategory = ({
       return undefined;
     }
 
-    return skillsData.data
-      .map(({ skill_category_memberships: _memberships, ...skill }) => skill)
-      .sort((skill1, skill2) => skill1.name.localeCompare(skill2.name));
+    const skills: Array<Skill> = skillsData.data;
+    return skills.sort((skill1, skill2) =>
+      skill1.name.localeCompare(skill2.name)
+    );
   }, [skillsData]);
 
   const skillsCount = useMemo(
