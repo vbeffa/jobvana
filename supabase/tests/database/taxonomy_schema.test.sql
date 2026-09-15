@@ -148,9 +148,9 @@ select lives_ok(
 );
 
 select results_eq(
-  $select code
+  $query$select code
     from public.industries
-    where name = 'Renamed Taxonomy Schema Test Industry'$,
+    where name = 'Renamed Taxonomy Schema Test Industry'$query$,
   array['taxonomy-schema-test-industry'::text],
   'taxonomy code remains stable after a name change'
 );
@@ -173,7 +173,7 @@ create function pg_temp.referenced_industry_delete_succeeds()
 returns boolean
 language plpgsql
 security invoker
-as $
+as $body$
 begin
   delete from public.industries
   where code = 'taxonomy-schema-test-industry';
@@ -182,7 +182,7 @@ exception
   when foreign_key_violation then
     return false;
 end;
-$;
+$body$;
 
 select is(
   pg_temp.referenced_industry_delete_succeeds(),
