@@ -2,7 +2,8 @@
 -- Source: reference-data/*.json
 -- Regenerate with: npm run reference-data:write
 
-begin;
+do $jobvana_reference_data$
+begin
 
 insert into public.industries (id, code, name, retired_at)
 values (1, 'b2b-software', 'B2B Software', null)
@@ -2136,4 +2137,5 @@ where s.code = 'transmission-control-protocol'
 on conflict (skill_id, related_skill_id) do update set
   is_bidirectional = excluded.is_bidirectional;
 
-commit;
+end;
+$jobvana_reference_data$;
