@@ -89,6 +89,10 @@ insert into public.skill_category_memberships (skill_id, skill_category_id)
 select id, skill_category_id
 from public.skills;
 
+alter table public.skills
+drop constraint skills_skill_category_id_fkey,
+drop column skill_category_id;
+
 alter table public.skill_category_memberships enable row level security;
 
 revoke all on table public.skill_category_memberships
@@ -157,28 +161,6 @@ create trigger skill_versions_set_taxonomy_code
 before insert on public.skill_versions
 for each row execute function private.set_taxonomy_code();
 
-create function private.ensure_primary_skill_category_membership()
-returns trigger
-language plpgsql
-security invoker
-set search_path = ''
-as $$
-begin
-  insert into public.skill_category_memberships (skill_id, skill_category_id)
-  values (new.id, new.skill_category_id)
-  on conflict do nothing;
-
-  return new;
-end;
-$$;
-
-revoke all on function private.ensure_primary_skill_category_membership()
-from public, anon, authenticated, service_role;
-
-create trigger skills_ensure_primary_category_membership
-after insert or update of skill_category_id on public.skills
-for each row execute function private.ensure_primary_skill_category_membership();
-
 alter table public.companies
 drop constraint companies_industry_id_fkey,
 add constraint companies_industry_id_fkey
@@ -199,14 +181,6 @@ alter table public.skill_categories
 drop constraint skill_categories_parent_skill_category_id_fkey,
 add constraint skill_categories_parent_skill_category_id_fkey
 foreign key (parent_skill_category_id)
-references public.skill_categories (id)
-on update cascade
-on delete restrict;
-
-alter table public.skills
-drop constraint skills_skill_category_id_fkey,
-add constraint skills_skill_category_id_fkey
-foreign key (skill_category_id)
 references public.skill_categories (id)
 on update cascade
 on delete restrict;
@@ -247,11 +221,8 @@ alter table public.skill_relations
 add constraint skill_relations_no_self_relation_check
 check (skill_id <> related_skill_id);
 
-comment on column public.skills.skill_category_id is
-'Primary/display category for backward-compatible application queries. Additional categories are stored in skill_category_memberships.';
-
 comment on table public.skill_category_memberships is
-'All category memberships for a skill. The skills.skill_category_id primary/display category is inserted automatically.';
+'Authoritative category assignments for skills. A skill may belong to multiple categories.';
 
 comment on table public.skill_relations is
 'Authored directed skill relationship. Consumers treat the reverse edge as present only when is_bidirectional is true.';
