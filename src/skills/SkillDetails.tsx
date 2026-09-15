@@ -1,8 +1,7 @@
-import PillContainer from '../containers/PillContainer';
 import JobvanaError from '../JobvanaError';
 import Modal from '../Modal';
 import Section from '../Section';
-import SkillCategoryLink from '../skill_categories/SkillCategoryLink';
+import SkillCategoriesList from '../skill_categories/SkillCategoriesList';
 import SkillsList from './SkillsList';
 import SkillVersionsList from './SkillVersionsList';
 import useSkill from './useSkill';
@@ -43,11 +42,9 @@ const SkillDetails = ({ id }: { id: number }) => {
       >
         {skill.description}
       </Section>
-      <Section title="Category">
+      <Section title="Categories">
         <div className="mt-2">
-          <PillContainer>
-            <SkillCategoryLink {...skill.category} />
-          </PillContainer>
+          <SkillCategoriesList skillCategories={skill.categories} />
         </div>
       </Section>
       {/* <h2>Jobs</h2>
