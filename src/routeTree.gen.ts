@@ -23,8 +23,8 @@ import { Route as JobvanaJobsIdRouteImport } from './routes/jobvana.jobs.$id'
 import { Route as JobvanaCompaniesIdRouteImport } from './routes/jobvana.companies.$id'
 import { Route as JobvanaApplicationsIdRouteImport } from './routes/jobvana.applications.$id'
 import { Route as JobvanaSkill_categoriesIdIndexRouteImport } from './routes/jobvana.skill_categories.$id.index'
-import { Route as JobvanaSkill_categoriesIdSkillsSkill_idIndexRouteImport } from './routes/jobvana.skill_categories.$id.skills.$skill_id.index'
-import { Route as JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRouteImport } from './routes/jobvana.skill_categories.$id.skills.$skill_id.skill_versions.$skill_version_id'
+import { Route as JobvanaSkillsSkill_idIndexRouteImport } from './routes/jobvana.skills.$skill_id.index'
+import { Route as JobvanaSkillsSkill_idSkill_versionsSkill_version_idRouteImport } from './routes/jobvana.skills.$skill_id.skill_versions.$skill_version_id'
 
 const JobvanaIndexRoute = JobvanaIndexRouteImport.update({
   id: '/jobvana/',
@@ -99,17 +99,17 @@ const JobvanaSkill_categoriesIdIndexRoute =
     path: '/jobvana/skill_categories/$id/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute =
-  JobvanaSkill_categoriesIdSkillsSkill_idIndexRouteImport.update({
-    id: '/jobvana/skill_categories/$id/skills/$skill_id/',
-    path: '/jobvana/skill_categories/$id/skills/$skill_id/',
+const JobvanaSkillsSkill_idIndexRoute =
+  JobvanaSkillsSkill_idIndexRouteImport.update({
+    id: '/jobvana/skills/$skill_id/',
+    path: '/jobvana/skills/$skill_id/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute =
-  JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRouteImport.update(
+const JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute =
+  JobvanaSkillsSkill_idSkill_versionsSkill_version_idRouteImport.update(
     {
-      id: '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id',
-      path: '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id',
+      id: '/jobvana/skills/$skill_id/skill_versions/$skill_version_id',
+      path: '/jobvana/skills/$skill_id/skill_versions/$skill_version_id',
       getParentRoute: () => rootRouteImport,
     } as any,
   )
@@ -129,8 +129,8 @@ export interface FileRoutesByFullPath {
   '/jobvana/skill_categories': typeof JobvanaSkill_categoriesIndexRoute
   '/jobvana/skills': typeof JobvanaSkillsIndexRoute
   '/jobvana/skill_categories/$id': typeof JobvanaSkill_categoriesIdIndexRoute
-  '/jobvana/skill_categories/$id/skills/$skill_id': typeof JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute
-  '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id': typeof JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute
+  '/jobvana/skills/$skill_id': typeof JobvanaSkillsSkill_idIndexRoute
+  '/jobvana/skills/$skill_id/skill_versions/$skill_version_id': typeof JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute
 }
 export interface FileRoutesByTo {
   '/jobvana/about': typeof JobvanaAboutRoute
@@ -147,8 +147,8 @@ export interface FileRoutesByTo {
   '/jobvana/skill_categories': typeof JobvanaSkill_categoriesIndexRoute
   '/jobvana/skills': typeof JobvanaSkillsIndexRoute
   '/jobvana/skill_categories/$id': typeof JobvanaSkill_categoriesIdIndexRoute
-  '/jobvana/skill_categories/$id/skills/$skill_id': typeof JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute
-  '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id': typeof JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute
+  '/jobvana/skills/$skill_id': typeof JobvanaSkillsSkill_idIndexRoute
+  '/jobvana/skills/$skill_id/skill_versions/$skill_version_id': typeof JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -166,8 +166,8 @@ export interface FileRoutesById {
   '/jobvana/skill_categories/': typeof JobvanaSkill_categoriesIndexRoute
   '/jobvana/skills/': typeof JobvanaSkillsIndexRoute
   '/jobvana/skill_categories/$id/': typeof JobvanaSkill_categoriesIdIndexRoute
-  '/jobvana/skill_categories/$id/skills/$skill_id/': typeof JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute
-  '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id': typeof JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute
+  '/jobvana/skills/$skill_id/': typeof JobvanaSkillsSkill_idIndexRoute
+  '/jobvana/skills/$skill_id/skill_versions/$skill_version_id': typeof JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -186,8 +186,8 @@ export interface FileRouteTypes {
     | '/jobvana/skill_categories'
     | '/jobvana/skills'
     | '/jobvana/skill_categories/$id'
-    | '/jobvana/skill_categories/$id/skills/$skill_id'
-    | '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id'
+    | '/jobvana/skills/$skill_id'
+    | '/jobvana/skills/$skill_id/skill_versions/$skill_version_id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/jobvana/about'
@@ -204,8 +204,8 @@ export interface FileRouteTypes {
     | '/jobvana/skill_categories'
     | '/jobvana/skills'
     | '/jobvana/skill_categories/$id'
-    | '/jobvana/skill_categories/$id/skills/$skill_id'
-    | '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id'
+    | '/jobvana/skills/$skill_id'
+    | '/jobvana/skills/$skill_id/skill_versions/$skill_version_id'
   id:
     | '__root__'
     | '/jobvana/about'
@@ -222,8 +222,8 @@ export interface FileRouteTypes {
     | '/jobvana/skill_categories/'
     | '/jobvana/skills/'
     | '/jobvana/skill_categories/$id/'
-    | '/jobvana/skill_categories/$id/skills/$skill_id/'
-    | '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id'
+    | '/jobvana/skills/$skill_id/'
+    | '/jobvana/skills/$skill_id/skill_versions/$skill_version_id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -241,8 +241,8 @@ export interface RootRouteChildren {
   JobvanaSkill_categoriesIndexRoute: typeof JobvanaSkill_categoriesIndexRoute
   JobvanaSkillsIndexRoute: typeof JobvanaSkillsIndexRoute
   JobvanaSkill_categoriesIdIndexRoute: typeof JobvanaSkill_categoriesIdIndexRoute
-  JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute: typeof JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute
-  JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute: typeof JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute
+  JobvanaSkillsSkill_idIndexRoute: typeof JobvanaSkillsSkill_idIndexRoute
+  JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute: typeof JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -345,18 +345,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JobvanaSkill_categoriesIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/jobvana/skill_categories/$id/skills/$skill_id/': {
-      id: '/jobvana/skill_categories/$id/skills/$skill_id/'
-      path: '/jobvana/skill_categories/$id/skills/$skill_id'
-      fullPath: '/jobvana/skill_categories/$id/skills/$skill_id'
-      preLoaderRoute: typeof JobvanaSkill_categoriesIdSkillsSkill_idIndexRouteImport
+    '/jobvana/skills/$skill_id/': {
+      id: '/jobvana/skills/$skill_id/'
+      path: '/jobvana/skills/$skill_id'
+      fullPath: '/jobvana/skills/$skill_id'
+      preLoaderRoute: typeof JobvanaSkillsSkill_idIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id': {
-      id: '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id'
-      path: '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id'
-      fullPath: '/jobvana/skill_categories/$id/skills/$skill_id/skill_versions/$skill_version_id'
-      preLoaderRoute: typeof JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRouteImport
+    '/jobvana/skills/$skill_id/skill_versions/$skill_version_id': {
+      id: '/jobvana/skills/$skill_id/skill_versions/$skill_version_id'
+      path: '/jobvana/skills/$skill_id/skill_versions/$skill_version_id'
+      fullPath: '/jobvana/skills/$skill_id/skill_versions/$skill_version_id'
+      preLoaderRoute: typeof JobvanaSkillsSkill_idSkill_versionsSkill_version_idRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -377,10 +377,10 @@ const rootRouteChildren: RootRouteChildren = {
   JobvanaSkill_categoriesIndexRoute: JobvanaSkill_categoriesIndexRoute,
   JobvanaSkillsIndexRoute: JobvanaSkillsIndexRoute,
   JobvanaSkill_categoriesIdIndexRoute: JobvanaSkill_categoriesIdIndexRoute,
-  JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute:
-    JobvanaSkill_categoriesIdSkillsSkill_idIndexRoute,
-  JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute:
-    JobvanaSkill_categoriesIdSkillsSkill_idSkill_versionsSkill_version_idRoute,
+  JobvanaSkillsSkill_idIndexRoute:
+    JobvanaSkillsSkill_idIndexRoute,
+  JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute:
+    JobvanaSkillsSkill_idSkill_versionsSkill_version_idRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
