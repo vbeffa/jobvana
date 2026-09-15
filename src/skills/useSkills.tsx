@@ -41,13 +41,20 @@ const useSkills = (params: SkillsParams): Skills => {
   const { isPending, isPlaceholderData, data, error } = useQuery({
     queryKey: ['skills', queryKey],
     queryFn: async () => {
-      let q = supabase
-        .from('skills')
-        .select(
-          'id, name, skill_category_memberships!inner(skill_category_id, skill_categories(name))',
-          { count: 'exact' }
-        );
       const { filters } = params;
+      let q = filters.skillCategoryId
+        ? supabase
+            .from('skills')
+            .select(
+              'id, name, skill_category_memberships!inner(skill_category_id, skill_categories(name))',
+              { count: 'exact' }
+            )
+        : supabase
+            .from('skills')
+            .select(
+              'id, name, skill_category_memberships(skill_category_id, skill_categories(name))',
+              { count: 'exact' }
+            );
       if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
