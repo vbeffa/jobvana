@@ -1,0 +1,302 @@
+[
+  {
+    "code": "general-purpose-programming-language",
+    "name": "General-purpose programming language",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "programming-language",
+    "bootstrapId": 1,
+    "description": null
+  },
+  {
+    "code": "runtime-system",
+    "name": "Runtime system",
+    "notes": "AKA runtime environment",
+    "reference": "https://en.wikipedia.org/wiki/Runtime_system",
+    "retiredAt": null,
+    "parentCode": "software-system",
+    "bootstrapId": 2,
+    "description": "A software system that provides an environment in which software programs run."
+  },
+  {
+    "code": "kernel",
+    "name": "Kernel",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Kernel_(operating_system)",
+    "retiredAt": null,
+    "parentCode": "software-program",
+    "bootstrapId": 3,
+    "description": "A computer program at the core of a computer's operating system."
+  },
+  {
+    "code": "software-library",
+    "name": "Software library",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "software",
+    "bootstrapId": 4,
+    "description": null
+  },
+  {
+    "code": "software-framework",
+    "name": "Software framework",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Software_framework",
+    "retiredAt": null,
+    "parentCode": "software",
+    "bootstrapId": 5,
+    "description": "Software that provides reusable, generic functionality which developers can extend or customize to create complete solutions.\n\nUnlike a library, where user code controls the program's control flow, a framework implements inversion of control by dictating the overall structure and calling user code at predefined extension points (e.g., through template methods or hooks). Frameworks also provide default behaviors that work out-of-the-box, structured mechanisms for extensibility, and a fixed core that accepts extensions (e.g., plugins or subclasses) without direct modification. "
+  },
+  {
+    "code": "domain-specific-programming-language",
+    "name": "Domain-specific programming language",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "programming-language",
+    "bootstrapId": 6,
+    "description": null
+  },
+  {
+    "code": "markup-language",
+    "name": "Markup language",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "structural-language",
+    "bootstrapId": 7,
+    "description": null
+  },
+  {
+    "code": "data-interchange-format",
+    "name": "Data-interchange format",
+    "notes": "Data-interchange format implies a corresponding file format.",
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "electronic-data-interchange",
+    "bootstrapId": 8,
+    "description": null
+  },
+  {
+    "code": "application-protocol",
+    "name": "Application protocol",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "communication-protocol",
+    "bootstrapId": 9,
+    "description": null
+  },
+  {
+    "code": "communication-protocol",
+    "name": "Communication protocol",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Communication_protocol",
+    "retiredAt": null,
+    "parentCode": "electronic-data-interchange",
+    "bootstrapId": 10,
+    "description": "A system of rules that allows two or more entities of a communications system to transmit information via any variation of a physical quantity. The protocol defines the rules, syntax, semantics, and synchronization of communication and possible error recovery methods. Protocols may be implemented by hardware, software, or a combination of both."
+  },
+  {
+    "code": "software-platform",
+    "name": "Software platform",
+    "notes": "unneeded?",
+    "reference": "https://en.wikipedia.org/wiki/Computing_platform",
+    "retiredAt": null,
+    "parentCode": "software",
+    "bootstrapId": 11,
+    "description": "The infrastructure on which software is executed."
+  },
+  {
+    "code": "database-management-system",
+    "name": "Database management system",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Database#Database_management_system",
+    "retiredAt": null,
+    "parentCode": "software-system",
+    "bootstrapId": 12,
+    "description": "A software system that enables users to define, create, maintain and control access to the database."
+  },
+  {
+    "code": "computer-language",
+    "name": "Computer language",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Computer_language",
+    "retiredAt": null,
+    "parentCode": null,
+    "bootstrapId": 13,
+    "description": null
+  },
+  {
+    "code": "software-system",
+    "name": "Software system",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Software_system",
+    "retiredAt": null,
+    "parentCode": "software",
+    "bootstrapId": 14,
+    "description": "A system of intercommunicating components based on software forming part of a computer system (a combination of hardware and software).\n"
+  },
+  {
+    "code": "relational-database-management-system",
+    "name": "Relational database management system",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Relational_database",
+    "retiredAt": null,
+    "parentCode": "database-management-system",
+    "bootstrapId": 15,
+    "description": "A type of database management system that stores data in a structured format using rows and columns."
+  },
+  {
+    "code": "document-database-management-system",
+    "name": "Document database management system",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "database-management-system",
+    "bootstrapId": 16,
+    "description": null
+  },
+  {
+    "code": "multi-model-database-management-system",
+    "name": "Multi-model database management system",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "database-management-system",
+    "bootstrapId": 17,
+    "description": null
+  },
+  {
+    "code": "software",
+    "name": "Software",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": null,
+    "bootstrapId": 18,
+    "description": null
+  },
+  {
+    "code": "programming-language",
+    "name": "Programming language",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "computer-language",
+    "bootstrapId": 19,
+    "description": null
+  },
+  {
+    "code": "structural-language",
+    "name": "Structural language",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "computer-language",
+    "bootstrapId": 20,
+    "description": null
+  },
+  {
+    "code": "style-sheet-language",
+    "name": "Style sheet language",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "structural-language",
+    "bootstrapId": 21,
+    "description": null
+  },
+  {
+    "code": "software-program",
+    "name": "Software program",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Computer_program",
+    "retiredAt": null,
+    "parentCode": "software",
+    "bootstrapId": 22,
+    "description": "A sequence or set of instructions in a programming language for a computer to execute. It is one component of software, which also includes documentation and other intangible components."
+  },
+  {
+    "code": "software-programming-tool",
+    "name": "Software programming tool",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Programming_tool",
+    "retiredAt": null,
+    "parentCode": "software-program",
+    "bootstrapId": 23,
+    "description": "A programming tool or software development tool is a computer program that is used to develop another computer program, usually by helping the developer manage computer files."
+  },
+  {
+    "code": "software-build-tool",
+    "name": "Software build tool",
+    "notes": null,
+    "reference": null,
+    "retiredAt": null,
+    "parentCode": "software-programming-tool",
+    "bootstrapId": 24,
+    "description": null
+  },
+  {
+    "code": "system-software",
+    "name": "System software",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/System_software",
+    "retiredAt": null,
+    "parentCode": "software",
+    "bootstrapId": 25,
+    "description": "Software that provides a platform for other software."
+  },
+  {
+    "code": "operating-system",
+    "name": "Operating system",
+    "notes": "",
+    "reference": "https://en.wikipedia.org/wiki/Operating_system",
+    "retiredAt": null,
+    "parentCode": "software-system",
+    "bootstrapId": 26,
+    "description": "System software that manages computer hardware and software resources, and provides common services for computer programs."
+  },
+  {
+    "code": "web-development-framework",
+    "name": "Web development framework",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Web_framework",
+    "retiredAt": null,
+    "parentCode": "software-framework",
+    "bootstrapId": 27,
+    "description": "A software framework that is designed to support the development of web applications including web services, web resources, and web APIs."
+  },
+  {
+    "code": "css-framework",
+    "name": "CSS framework",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/CSS_framework",
+    "retiredAt": null,
+    "parentCode": "software-library",
+    "bootstrapId": 28,
+    "description": "A library allowing for easier, more standards-compliant web design using the Cascading Style Sheets language."
+  },
+  {
+    "code": "middleware",
+    "name": "Middleware",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Middleware",
+    "retiredAt": null,
+    "parentCode": "software-framework",
+    "bootstrapId": 29,
+    "description": "A type of software framework that provides services to software applications beyond those available from the operating system. It is sometimes described as \"software glue.\""
+  },
+  {
+    "code": "electronic-data-interchange",
+    "name": "Electronic data interchange",
+    "notes": null,
+    "reference": "https://en.wikipedia.org/wiki/Electronic_data_interchange",
+    "retiredAt": null,
+    "parentCode": null,
+    "bootstrapId": 30,
+    "description": "Electronic data interchange (EDI) is the concept of businesses electronically communicating information that was traditionally communicated on paper, such as purchase orders, advance ship notices, and invoices. Technical standards for EDI exist to facilitate parties transacting such instruments without having to make special arrangements."
+  }
+]

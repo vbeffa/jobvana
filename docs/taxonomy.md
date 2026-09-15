@@ -26,7 +26,7 @@ Internal taxonomy-only relationships may still cascade where deleting a parent c
 
 ## Skill categories
 
-`skill_category_memberships` is the authoritative many-to-many mapping between skills and categories. A skill has no intrinsic primary category and may belong to any number of categories.
+`skill_category_memberships` is the authoritative many-to-many mapping between skills and categories. A skill has no intrinsic primary category, must belong to at least one category, and may belong to multiple categories.
 
 This supports concepts such as XML belonging to both a markup-language category and a data-interchange-format category without duplicating the skill itself. Category-specific pages filter through memberships, while skill detail routes are category-independent.
 
@@ -61,4 +61,4 @@ A skill version has:
 
 ## Future admin tooling
 
-The eventual admin application should operate on this relational model. Until that exists, version-controlled reference-data files can be loaded by stable code. Once production taxonomy changes are made through the admin system, the database becomes authoritative and JSON should be treated as bootstrap/export data rather than something that overwrites production edits.
+The eventual admin application should operate on this relational model. Until that exists, the version-controlled files under `reference-data/` can be validated and loaded by stable code; see [Reference taxonomy data](reference-data.md). Once production taxonomy changes are made through the admin system, the database becomes authoritative and JSON should be treated as bootstrap/export data rather than something that overwrites production edits.

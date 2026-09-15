@@ -5,11 +5,17 @@ on:
     branches: ['master']
     paths:
       - 'supabase/**'
+      - 'reference-data/**'
+      - 'scripts/load-reference-data.mjs'
+      - 'package.json'
       - '.github/workflows/database-tests.yml'
   push:
     branches: ['master']
     paths:
       - 'supabase/**'
+      - 'reference-data/**'
+      - 'scripts/load-reference-data.mjs'
+      - 'package.json'
       - '.github/workflows/database-tests.yml'
   workflow_dispatch:
 
@@ -24,6 +30,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Validate reference taxonomy
+        run: npm run reference-data:check
+
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
@@ -31,6 +45,9 @@ jobs:
 
       - name: Start local Supabase
         run: supabase start
+
+      - name: Verify reference-data loader
+        run: npm run reference-data:local
 
       - name: Run database tests
         run: supabase test db

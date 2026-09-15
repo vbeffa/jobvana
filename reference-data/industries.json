@@ -1,0 +1,44 @@
+[
+  {
+    "code": "b2b-software",
+    "name": "B2B Software",
+    "retiredAt": null,
+    "bootstrapId": 1
+  },
+  {
+    "code": "consumer",
+    "name": "Consumer",
+    "retiredAt": null,
+    "bootstrapId": 2
+  },
+  {
+    "code": "education",
+    "name": "Education",
+    "retiredAt": null,
+    "bootstrapId": 3
+  },
+  {
+    "code": "financial-technology",
+    "name": "Financial Technology",
+    "retiredAt": null,
+    "bootstrapId": 4
+  },
+  {
+    "code": "healthcare",
+    "name": "Healthcare",
+    "retiredAt": null,
+    "bootstrapId": 5
+  },
+  {
+    "code": "industrials",
+    "name": "Industrials",
+    "retiredAt": null,
+    "bootstrapId": 6
+  },
+  {
+    "code": "real-estate-construction",
+    "name": "Real Estate & Construction",
+    "retiredAt": null,
+    "bootstrapId": 7
+  }
+]
