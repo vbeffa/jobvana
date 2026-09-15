@@ -14,7 +14,7 @@ import type { InterviewProcess } from '../company/utils';
 export type CompanyJob = Pick<DbJob, 'id' | 'title'>;
 
 export type FullCompany = Company & {
-  industry: DbIndustry;
+  industry: Pick<DbIndustry, 'id' | 'name'>;
   addresses: Array<CompanyAddress>;
   // techStack: Array<SkillVersion>;
   jobs: Array<CompanyJob>;
