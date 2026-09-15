@@ -378,7 +378,7 @@ select ok(
       and grantee = 'anon'
   )
   and (
-    select array_agg(privilege_type order by privilege_type)
+    select array_agg(privilege_type::text order by privilege_type::text)
     from information_schema.role_table_grants
     where table_schema = 'public'
       and table_name = 'skill_category_memberships'
