@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(27);
+select plan(28);
 
 select is(
   (
@@ -76,24 +76,20 @@ select lives_ok(
 
 select lives_ok(
   $$insert into public.skill_categories (name)
-    values ('Taxonomy Schema Test Primary Category')$$,
-  'primary skill category can be inserted without explicit ID or code'
+    values ('Taxonomy Schema Test Category One')$$,
+  'first skill category can be inserted without explicit ID or code'
 );
 
 select lives_ok(
   $$insert into public.skill_categories (name)
-    values ('Taxonomy Schema Test Secondary Category')$$,
-  'secondary skill category can be inserted without explicit ID or code'
+    values ('Taxonomy Schema Test Category Two')$$,
+  'second skill category can be inserted without explicit ID or code'
 );
 
 select lives_ok(
-  $$insert into public.skills (name, skill_category_id)
-    select
-      'Taxonomy Schema Test Skill',
-      id
-    from public.skill_categories
-    where code = 'taxonomy-schema-test-primary-category'$$,
-  'skill can be inserted without explicit ID or code'
+  $$insert into public.skills (name)
+    values ('Taxonomy Schema Test Skill')$$,
+  'skill can be inserted without explicit ID, code, or category'
 );
 
 select lives_ok(
@@ -122,8 +118,8 @@ select is(
       select code
       from public.skill_categories
       where code in (
-        'taxonomy-schema-test-primary-category',
-        'taxonomy-schema-test-secondary-category'
+        'taxonomy-schema-test-category-one',
+        'taxonomy-schema-test-category-two'
       )
       union all
       select code
@@ -159,28 +155,24 @@ select results_eq(
   'taxonomy code remains stable after a name change'
 );
 
-select is(
-  (
-    select count(*)::integer
-    from public.skill_category_memberships scm
-    join public.skills s on s.id = scm.skill_id
-    join public.skill_categories sc on sc.id = scm.skill_category_id
+select lives_ok(
+  $$insert into public.skill_category_memberships (skill_id, skill_category_id)
+    select s.id, c.id
+    from public.skills s
+    cross join public.skill_categories c
     where s.code = 'taxonomy-schema-test-skill'
-      and sc.code = 'taxonomy-schema-test-primary-category'
-  ),
-  1,
-  'a new skill automatically receives its primary category membership'
+      and c.code = 'taxonomy-schema-test-category-one'$$,
+  'a skill can be assigned to a category'
 );
 
 select lives_ok(
-  $$update public.skills
-    set skill_category_id = (
-      select id
-      from public.skill_categories
-      where code = 'taxonomy-schema-test-secondary-category'
-    )
-    where code = 'taxonomy-schema-test-skill'$$,
-  'primary skill category can be changed'
+  $$insert into public.skill_category_memberships (skill_id, skill_category_id)
+    select s.id, c.id
+    from public.skills s
+    cross join public.skill_categories c
+    where s.code = 'taxonomy-schema-test-skill'
+      and c.code = 'taxonomy-schema-test-category-two'$$,
+  'a skill can be assigned to multiple categories'
 );
 
 select is(
@@ -191,7 +183,19 @@ select is(
     where s.code = 'taxonomy-schema-test-skill'
   ),
   2,
-  'changing the primary category preserves the previous membership and adds the new one'
+  'skill category memberships are many-to-many'
+);
+
+select is(
+  (
+    select count(*)::integer
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'skills'
+      and column_name = 'skill_category_id'
+  ),
+  0,
+  'skills no longer stores a primary category'
 );
 
 select is(
@@ -340,7 +344,7 @@ select is(
       'companies_industry_id_fkey',
       'job_roles_role_id_fkey',
       'skill_categories_parent_skill_category_id_fkey',
-      'skills_skill_category_id_fkey',
+      'skill_category_memberships_skill_category_id_fkey',
       'tech_stacks_skill_version_id_fkey',
       'job_skill_versions_skill_version_id_fkey',
       'job_seeker_skills_skill_id_fkey',
