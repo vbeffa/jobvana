@@ -11,7 +11,7 @@ export type SearchFilters = {
 export type SkillSummary = {
   id: number;
   name: string;
-  skillCategory: string;
+  skillCategories: Array<string>;
 };
 
 export type Skills = {
@@ -21,8 +21,6 @@ export type Skills = {
   isPlaceholderData: boolean;
   skillsCount: number | undefined;
   findSkill: (id: number) => SkillSummary | undefined;
-
-  // findSiblingSkills: (skill: SkillSummary) => Array<SkillSummary> | undefined;
 };
 
 export type SkillsParams = Params<SearchFilters>;
@@ -45,15 +43,20 @@ const useSkills = (params: SkillsParams): Skills => {
     queryFn: async () => {
       let q = supabase
         .from('skills')
-        .select('id, name, skill_categories!inner(name)', {
-          count: 'exact'
-        });
+        .select(
+          'id, name, skill_category_memberships!inner(skill_category_id, skill_categories(name))',
+          { count: 'exact' }
+        );
       const { filters } = params;
       if (filters.name) {
         q = q.ilike('name', `%${filters.name}%`);
       }
       if (filters.skillCategoryId) {
-        q = q.filter('skill_category_id', 'eq', filters.skillCategoryId);
+        q = q.filter(
+          'skill_category_memberships.skill_category_id',
+          'eq',
+          filters.skillCategoryId
+        );
       }
       const { data, count, error } = await q
         .range(
@@ -67,7 +70,6 @@ const useSkills = (params: SkillsParams): Skills => {
         throw error;
       }
 
-      // console.log(data);
       return { skills: data, count };
     }
   });
@@ -79,12 +81,13 @@ const useSkills = (params: SkillsParams): Skills => {
 
     return data.skills
       .map((skill) => ({
-        ...skill,
-        skillCategory: skill.skill_categories.name
+        id: skill.id,
+        name: skill.name,
+        skillCategories: skill.skill_category_memberships
+          .map((membership) => membership.skill_categories.name)
+          .sort((name1, name2) => name1.localeCompare(name2))
       }))
-      .sort((skill1, skill2) => {
-        return skill1.name.localeCompare(skill2.name);
-      });
+      .sort((skill1, skill2) => skill1.name.localeCompare(skill2.name));
   }, [data]);
 
   const skillsCount = useMemo(() => data?.count ?? undefined, [data?.count]);
@@ -96,13 +99,6 @@ const useSkills = (params: SkillsParams): Skills => {
     isPlaceholderData,
     skillsCount,
     findSkill: (id: number) => skills?.find((skill) => skill.id === id)
-
-    // TODO fix - skills are paginated
-    // findSiblingSkills: (skill: SkillSummary) =>
-    //   skills?.filter(
-    //     (s) =>
-    //       s.skill_category_id === skill.skill_category_id && s.id !== skill.id
-    //   )
   };
 };
 
