@@ -312,16 +312,22 @@ export type Database = {
       }
       industries: {
         Row: {
+          code: string
           id: number
           name: string
+          retired_at: string | null
         }
         Insert: {
+          code: string
           id?: number
           name: string
+          retired_at?: string | null
         }
         Update: {
+          code?: string
           id?: number
           name?: string
+          retired_at?: string | null
         }
         Relationships: []
       }
@@ -710,22 +716,28 @@ export type Database = {
       }
       roles: {
         Row: {
+          code: string
           description: string
           id: number
           name: string
           reference: string | null
+          retired_at: string | null
         }
         Insert: {
+          code: string
           description: string
           id?: number
           name: string
           reference?: string | null
+          retired_at?: string | null
         }
         Update: {
+          code?: string
           description?: string
           id?: number
           name?: string
           reference?: string | null
+          retired_at?: string | null
         }
         Relationships: []
       }
@@ -761,28 +773,34 @@ export type Database = {
       }
       skill_categories: {
         Row: {
+          code: string
           description: string | null
           id: number
           name: string
           notes: string | null
           parent_skill_category_id: number | null
           reference: string | null
+          retired_at: string | null
         }
         Insert: {
+          code: string
           description?: string | null
           id?: number
           name: string
           notes?: string | null
           parent_skill_category_id?: number | null
           reference?: string | null
+          retired_at?: string | null
         }
         Update: {
+          code?: string
           description?: string | null
           id?: number
           name?: string
           notes?: string | null
           parent_skill_category_id?: number | null
           reference?: string | null
+          retired_at?: string | null
         }
         Relationships: [
           {
@@ -790,6 +808,36 @@ export type Database = {
             columns: ['parent_skill_category_id']
             isOneToOne: false
             referencedRelation: 'skill_categories'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      skill_category_memberships: {
+        Row: {
+          skill_category_id: number
+          skill_id: number
+        }
+        Insert: {
+          skill_category_id: number
+          skill_id: number
+        }
+        Update: {
+          skill_category_id?: number
+          skill_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'skill_category_memberships_skill_category_id_fkey'
+            columns: ['skill_category_id']
+            isOneToOne: false
+            referencedRelation: 'skill_categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'skill_category_memberships_skill_id_fkey'
+            columns: ['skill_id']
+            isOneToOne: false
+            referencedRelation: 'skills'
             referencedColumns: ['id']
           },
         ]
@@ -829,29 +877,35 @@ export type Database = {
       }
       skill_versions: {
         Row: {
+          code: string
           id: number
           notes: string | null
           ordinal: number
           reference: string | null
-          release_date: string
+          release_date: string | null
+          retired_at: string | null
           skill_id: number
           version: string
         }
         Insert: {
+          code: string
           id?: number
           notes?: string | null
           ordinal: number
           reference?: string | null
-          release_date: string
+          release_date?: string | null
+          retired_at?: string | null
           skill_id: number
           version: string
         }
         Update: {
+          code?: string
           id?: number
           notes?: string | null
           ordinal?: number
           reference?: string | null
-          release_date?: string
+          release_date?: string | null
+          retired_at?: string | null
           skill_id?: number
           version?: string
         }
@@ -868,29 +922,35 @@ export type Database = {
       skills: {
         Row: {
           abbreviation: string | null
+          code: string
           description: string | null
           id: number
           name: string
           notes: string | null
           reference: string | null
+          retired_at: string | null
           skill_category_id: number
         }
         Insert: {
           abbreviation?: string | null
+          code: string
           description?: string | null
           id?: number
           name: string
           notes?: string | null
           reference?: string | null
+          retired_at?: string | null
           skill_category_id: number
         }
         Update: {
           abbreviation?: string | null
+          code?: string
           description?: string | null
           id?: number
           name?: string
           notes?: string | null
           reference?: string | null
+          retired_at?: string | null
           skill_category_id?: number
         }
         Relationships: [
