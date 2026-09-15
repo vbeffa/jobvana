@@ -814,12 +814,15 @@ export type Database = {
       }
       skill_category_memberships: {
         Row: {
+          skill_category_id: number
           skill_id: number
         }
         Insert: {
+          skill_category_id: number
           skill_id: number
         }
         Update: {
+          skill_category_id?: number
           skill_id?: number
         }
         Relationships: [
