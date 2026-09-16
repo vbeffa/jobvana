@@ -1,0 +1,76 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:weekly",
+    ":enableVulnerabilityAlerts"
+  ],
+  "dependencyDashboard": true,
+  "automerge": false,
+  "packageRules": [
+    {
+      "description": "Group routine npm updates",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "npm dependencies"
+    },
+    {
+      "description": "Group routine GitHub Actions and runtime updates",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "GitHub Actions and runtimes"
+    },
+    {
+      "description": "Group routine CI tool updates",
+      "matchPackageNames": [
+        "sqlfluff",
+        "supabase/cli"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "CI tooling"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github\\/workflows\\/database-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "pip install sqlfluff==(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "sqlfluff",
+      "datasourceTemplate": "pypi"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github\\/workflows\\/database-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "uses:\\s*supabase/setup-cli@v\\d+\\s*\\n\\s*with:\\s*\\n\\s*version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "supabase/cli",
+      "packageNameTemplate": "supabase/cli",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced"
+    }
+  ]
+}
