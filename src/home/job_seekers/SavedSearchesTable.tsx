@@ -51,7 +51,7 @@ const SavedSearchesTable = ({
     async (searchFilters: SearchFilters) => {
       setJobSearchFilters(searchFilters);
       navigate({
-        from: '/jobvana',
+        from: '/jobvana/',
         to: '/jobvana/jobs',
         search: {
           page: 1,
