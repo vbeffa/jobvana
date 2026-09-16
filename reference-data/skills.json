@@ -10,7 +10,6 @@
         "ordinal": 1,
         "version": "SQL Server 2017",
         "reference": "https://learn.microsoft.com/en-us/troubleshoot/sql/releases/sqlserver-2017/build-versions",
-        "retiredAt": null,
         "bootstrapId": 3,
         "releaseDate": "2017-09-29"
       },
@@ -20,7 +19,6 @@
         "ordinal": 2,
         "version": "SQL Server 2019",
         "reference": "https://learn.microsoft.com/en-us/troubleshoot/sql/releases/sqlserver-2019/build-versions",
-        "retiredAt": null,
         "bootstrapId": 2,
         "releaseDate": "2019-11-04"
       },
@@ -30,13 +28,11 @@
         "ordinal": 3,
         "version": "SQL Server 2022",
         "reference": "https://learn.microsoft.com/en-us/troubleshoot/sql/releases/sqlserver-2022/build-versions",
-        "retiredAt": null,
         "bootstrapId": 1,
         "releaseDate": "2022-11-16"
       }
     ],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 1,
     "description": null,
     "abbreviation": null,
@@ -55,7 +51,6 @@
         "ordinal": 1,
         "version": "v20",
         "reference": "https://nodejs.org/en/blog/release/v20.9.0/",
-        "retiredAt": null,
         "bootstrapId": 6,
         "releaseDate": "2023-10-24"
       },
@@ -65,7 +60,6 @@
         "ordinal": 2,
         "version": "v22",
         "reference": "https://nodejs.org/en/blog/release/v22.0.0",
-        "retiredAt": null,
         "bootstrapId": 5,
         "releaseDate": "2024-04-24"
       },
@@ -75,13 +69,11 @@
         "ordinal": 3,
         "version": "v24",
         "reference": "https://nodejs.org/en/blog/release/v24.0.0",
-        "retiredAt": null,
         "bootstrapId": 4,
         "releaseDate": "2025-05-06"
       }
     ],
     "reference": "https://nodejs.org/",
-    "retiredAt": null,
     "bootstrapId": 2,
     "description": "Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.",
     "abbreviation": null,
@@ -100,7 +92,6 @@
         "ordinal": 1,
         "version": "JDK 22",
         "reference": "https://www.oracle.com/java/technologies/javase/22all-relnotes.html",
-        "retiredAt": null,
         "bootstrapId": 9,
         "releaseDate": "2024-07-16"
       },
@@ -110,7 +101,6 @@
         "ordinal": 2,
         "version": "JDK 23",
         "reference": "https://www.oracle.com/java/technologies/javase/23all-relnotes.html",
-        "retiredAt": null,
         "bootstrapId": 8,
         "releaseDate": "2025-01-21"
       },
@@ -120,13 +110,11 @@
         "ordinal": 3,
         "version": "JDK 24",
         "reference": "https://www.oracle.com/java/technologies/javase/24all-relnotes.html",
-        "retiredAt": null,
         "bootstrapId": 7,
         "releaseDate": "2025-07-15"
       }
     ],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 3,
     "description": "Created by James Gosling",
     "abbreviation": null,
@@ -145,7 +133,6 @@
         "ordinal": 1,
         "version": "ES2023",
         "reference": "https://github.com/tc39/ecma262/releases/tag/es2023",
-        "retiredAt": null,
         "bootstrapId": 12,
         "releaseDate": "2023-06-07"
       },
@@ -155,7 +142,6 @@
         "ordinal": 2,
         "version": "ES2024",
         "reference": "https://github.com/tc39/ecma262/releases/tag/es2024",
-        "retiredAt": null,
         "bootstrapId": 11,
         "releaseDate": "2024-06-26"
       },
@@ -165,13 +151,11 @@
         "ordinal": 3,
         "version": "ES2025",
         "reference": "https://github.com/tc39/ecma262/releases/tag/es2025",
-        "retiredAt": null,
         "bootstrapId": 10,
         "releaseDate": "2025-06-29"
       }
     ],
     "reference": "https://262.ecma-international.org/",
-    "retiredAt": null,
     "bootstrapId": 4,
     "description": null,
     "abbreviation": null,
@@ -190,7 +174,6 @@
         "ordinal": 1,
         "version": "19c",
         "reference": "https://blogs.oracle.com/database/post/oracle-database-19c-now-available-on-oracle-exadata",
-        "retiredAt": null,
         "bootstrapId": 15,
         "releaseDate": "2019-02-13"
       },
@@ -200,7 +183,6 @@
         "ordinal": 2,
         "version": "21c",
         "reference": "https://blogs.oracle.com/database/post/introducing-oracle-database-21c",
-        "retiredAt": null,
         "bootstrapId": 14,
         "releaseDate": "2021-01-13"
       },
@@ -210,13 +192,11 @@
         "ordinal": 3,
         "version": "23ai",
         "reference": "https://blogs.oracle.com/database/post/oracle-23ai-now-generally-available",
-        "retiredAt": null,
         "bootstrapId": 13,
         "releaseDate": "2024-05-02"
       }
     ],
     "reference": "https://docs.oracle.com/en/database/oracle/oracle-database/index.html",
-    "retiredAt": null,
     "bootstrapId": 5,
     "description": null,
     "abbreviation": null,
@@ -235,7 +215,6 @@
         "ordinal": 1,
         "version": "15",
         "reference": "https://www.postgresql.org/support/versioning/",
-        "retiredAt": null,
         "bootstrapId": 18,
         "releaseDate": "2022-10-13"
       },
@@ -245,7 +224,6 @@
         "ordinal": 2,
         "version": "16",
         "reference": "https://www.postgresql.org/support/versioning/",
-        "retiredAt": null,
         "bootstrapId": 17,
         "releaseDate": "2023-09-14"
       },
@@ -255,13 +233,11 @@
         "ordinal": 3,
         "version": "17",
         "reference": "https://www.postgresql.org/support/versioning/",
-        "retiredAt": null,
         "bootstrapId": 16,
         "releaseDate": "2024-09-26"
       }
     ],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 6,
     "description": null,
     "abbreviation": null,
@@ -280,7 +256,6 @@
         "ordinal": 1,
         "version": "1.87.0",
         "reference": "https://blog.rust-lang.org/2025/05/15/Rust-1.87.0/",
-        "retiredAt": null,
         "bootstrapId": 21,
         "releaseDate": "2025-05-15"
       },
@@ -290,7 +265,6 @@
         "ordinal": 2,
         "version": "1.88.0",
         "reference": "https://blog.rust-lang.org/2025/06/26/Rust-1.88.0/",
-        "retiredAt": null,
         "bootstrapId": 20,
         "releaseDate": "2025-06-26"
       },
@@ -300,13 +274,11 @@
         "ordinal": 3,
         "version": "1.89.0",
         "reference": "https://blog.rust-lang.org/2025/08/07/Rust-1.89.0/",
-        "retiredAt": null,
         "bootstrapId": 19,
         "releaseDate": "2025-08-07"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/Rust_(programming_language)",
-    "retiredAt": null,
     "bootstrapId": 7,
     "description": "Rust is a general-purpose programming language noted for its emphasis on performance, type safety, concurrency, and memory safety.",
     "abbreviation": null,
@@ -325,7 +297,6 @@
         "ordinal": 1,
         "version": "Sonoma 14",
         "reference": "https://support.apple.com/en-us/120950",
-        "retiredAt": null,
         "bootstrapId": 24,
         "releaseDate": "2023-09-26"
       },
@@ -335,7 +306,6 @@
         "ordinal": 2,
         "version": "Sequoia 15",
         "reference": "https://support.apple.com/en-us/121238",
-        "retiredAt": null,
         "bootstrapId": 23,
         "releaseDate": "2024-09-16"
       },
@@ -345,13 +315,11 @@
         "ordinal": 3,
         "version": "Tahoe 26",
         "reference": "https://en.wikipedia.org/wiki/MacOS_Tahoe",
-        "retiredAt": null,
         "bootstrapId": 22,
         "releaseDate": "2025-09-15"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/MacOS",
-    "retiredAt": null,
     "bootstrapId": 8,
     "description": null,
     "abbreviation": null,
@@ -370,7 +338,6 @@
         "ordinal": 1,
         "version": "8",
         "reference": "https://web.archive.org/web/20121027202517/https://blogs.windows.com/windows/b/bloggingwindows/archive/2012/10/25/windows-reimagined-windows8.aspx",
-        "retiredAt": null,
         "bootstrapId": 27,
         "releaseDate": "2012-10-25"
       },
@@ -380,7 +347,6 @@
         "ordinal": 2,
         "version": "10",
         "reference": "https://en.wikipedia.org/wiki/Windows_10_version_history",
-        "retiredAt": null,
         "bootstrapId": 26,
         "releaseDate": "2015-07-29"
       },
@@ -390,13 +356,11 @@
         "ordinal": 3,
         "version": "11",
         "reference": "https://blogs.windows.com/windowsexperience/2021/10/04/windows-11-a-new-era-for-the-pc-begins-today/",
-        "retiredAt": null,
         "bootstrapId": 25,
         "releaseDate": "2021-10-04"
       }
     ],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 9,
     "description": null,
     "abbreviation": null,
@@ -415,7 +379,6 @@
         "ordinal": 1,
         "version": "4",
         "reference": "https://lkml.org/lkml/2015/4/12/178",
-        "retiredAt": null,
         "bootstrapId": 30,
         "releaseDate": "2015-04-12"
       },
@@ -425,7 +388,6 @@
         "ordinal": 2,
         "version": "5",
         "reference": "https://lkml.iu.edu/hypermail/linux/kernel/1903.0/01288.html",
-        "retiredAt": null,
         "bootstrapId": 29,
         "releaseDate": "2019-03-03"
       },
@@ -435,13 +397,11 @@
         "ordinal": 3,
         "version": "6",
         "reference": "https://lore.kernel.org/lkml/CAHk-=wiaGf66EQOq1FwM6p9c3mGOjzm9stGeUTfC5Txx4yoxgg@mail.gmail.com/T/#u",
-        "retiredAt": null,
         "bootstrapId": 28,
         "releaseDate": "2022-10-02"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/Linux",
-    "retiredAt": null,
     "bootstrapId": 10,
     "description": "A family of open source Unix-like operating systems based on the Linux kernel.",
     "abbreviation": null,
@@ -460,7 +420,6 @@
         "ordinal": 1,
         "version": "8",
         "reference": "https://web.archive.org/web/20201130234314/https://access.redhat.com/announcements/4110231",
-        "retiredAt": null,
         "bootstrapId": 33,
         "releaseDate": "2019-05-07"
       },
@@ -470,7 +429,6 @@
         "ordinal": 2,
         "version": "9",
         "reference": "https://www.redhat.com/en/about/press-releases/red-hat-defines-new-epicenter-innovation-red-hat-enterprise-linux-9",
-        "retiredAt": null,
         "bootstrapId": 32,
         "releaseDate": "2022-05-10"
       },
@@ -480,13 +438,11 @@
         "ordinal": 3,
         "version": "10.0",
         "reference": "https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux",
-        "retiredAt": null,
         "bootstrapId": 31,
         "releaseDate": "2025-05-13"
       }
     ],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 11,
     "description": null,
     "abbreviation": "RHEL",
@@ -505,7 +461,6 @@
         "ordinal": 1,
         "version": "17",
         "reference": "https://legacy.reactjs.org/blog/2020/10/20/react-v17.html",
-        "retiredAt": null,
         "bootstrapId": 36,
         "releaseDate": "2020-10-20"
       },
@@ -515,7 +470,6 @@
         "ordinal": 2,
         "version": "18",
         "reference": "https://18.react.dev/blog/2022/03/29/react-v18",
-        "retiredAt": null,
         "bootstrapId": 35,
         "releaseDate": "2022-03-29"
       },
@@ -525,13 +479,11 @@
         "ordinal": 3,
         "version": "19",
         "reference": "https://react.dev/blog/2024/12/05/react-19",
-        "retiredAt": null,
         "bootstrapId": 34,
         "releaseDate": "2024-12-05"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/React_(software)",
-    "retiredAt": null,
     "bootstrapId": 12,
     "description": "A front-end JavaScript library for building user interfaces based on components. It is maintained by Meta (formerly Facebook) and a community of individual developers and companies.",
     "abbreviation": null,
@@ -550,7 +502,6 @@
         "ordinal": 1,
         "version": "13",
         "reference": "https://nextjs.org/blog/next-13",
-        "retiredAt": null,
         "bootstrapId": 39,
         "releaseDate": "2022-10-25"
       },
@@ -560,7 +511,6 @@
         "ordinal": 2,
         "version": "14",
         "reference": "https://github.com/vercel/next.js/releases/tag/v14.0.0",
-        "retiredAt": null,
         "bootstrapId": 38,
         "releaseDate": "2023-10-26"
       },
@@ -570,13 +520,11 @@
         "ordinal": 3,
         "version": "15",
         "reference": "https://github.com/vercel/next.js/releases/tag/v15.0.0",
-        "retiredAt": null,
         "bootstrapId": 37,
         "releaseDate": "2024-10-21"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/Next.js",
-    "retiredAt": null,
     "bootstrapId": 13,
     "description": null,
     "abbreviation": null,
@@ -595,7 +543,6 @@
         "ordinal": 1,
         "version": "1.19.3",
         "reference": "https://github.com/remix-run/remix/releases/tag/remix%401.19.3",
-        "retiredAt": null,
         "bootstrapId": 41,
         "releaseDate": "2023-08-09"
       },
@@ -605,13 +552,11 @@
         "ordinal": 2,
         "version": "2.17.0",
         "reference": "https://github.com/remix-run/remix/releases/tag/remix%402.17.0",
-        "retiredAt": null,
         "bootstrapId": 40,
         "releaseDate": "2025-07-25"
       }
     ],
     "reference": "https://remix.run/",
-    "retiredAt": null,
     "bootstrapId": 14,
     "description": null,
     "abbreviation": null,
@@ -630,7 +575,6 @@
         "ordinal": 1,
         "version": "SQL:2011",
         "reference": "https://en.wikipedia.org/wiki/SQL:2011",
-        "retiredAt": null,
         "bootstrapId": 44,
         "releaseDate": "2011-12-01"
       },
@@ -640,7 +584,6 @@
         "ordinal": 2,
         "version": "SQL:2016",
         "reference": "https://www.iso.org/standard/63555.html",
-        "retiredAt": null,
         "bootstrapId": 43,
         "releaseDate": "2016-12-01"
       },
@@ -650,13 +593,11 @@
         "ordinal": 3,
         "version": "SQL:2023",
         "reference": "https://www.iso.org/standard/76586.html",
-        "retiredAt": null,
         "bootstrapId": 42,
         "releaseDate": "2023-06-01"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/SQL",
-    "retiredAt": null,
     "bootstrapId": 15,
     "description": null,
     "abbreviation": "SQL",
@@ -675,7 +616,6 @@
         "ordinal": 1,
         "version": "4 (1999)",
         "reference": "https://www.w3.org/TR/html40/",
-        "retiredAt": null,
         "bootstrapId": 53,
         "releaseDate": "1999-12-24"
       },
@@ -685,7 +625,6 @@
         "ordinal": 2,
         "version": "5 (2017)",
         "reference": "https://www.w3.org/TR/2021/SPSD-html52-20210128/",
-        "retiredAt": null,
         "bootstrapId": 52,
         "releaseDate": "2021-01-28"
       },
@@ -695,13 +634,11 @@
         "ordinal": 3,
         "version": "LS",
         "reference": "https://html.spec.whatwg.org/",
-        "retiredAt": null,
         "bootstrapId": 51,
         "releaseDate": "2025-09-13"
       }
     ],
     "reference": "https://html.spec.whatwg.org/",
-    "retiredAt": null,
     "bootstrapId": 16,
     "description": "Hypertext Markup Language (HTML) is the standard markup language[a] for documents designed to be displayed in a web browser. It defines the content and structure of web content. It is often assisted by technologies such as Cascading Style Sheets (CSS) and scripting languages such as JavaScript.",
     "abbreviation": "HTML",
@@ -720,7 +657,6 @@
         "ordinal": 1,
         "version": "1.1",
         "reference": "https://www.w3.org/TR/2006/REC-xml11-20060816/",
-        "retiredAt": null,
         "bootstrapId": 46,
         "releaseDate": "2006-08-16"
       },
@@ -730,13 +666,11 @@
         "ordinal": 2,
         "version": "1.0",
         "reference": "https://www.w3.org/TR/2008/REC-xml-20081126/",
-        "retiredAt": null,
         "bootstrapId": 45,
         "releaseDate": "2008-11-26"
       }
     ],
     "reference": "https://www.w3.org/XML/",
-    "retiredAt": null,
     "bootstrapId": 17,
     "description": "Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.",
     "abbreviation": "XML",
@@ -755,13 +689,11 @@
         "ordinal": 1,
         "version": "2017",
         "reference": "https://www.rfc-editor.org/rfc/rfc8259.txt",
-        "retiredAt": null,
         "bootstrapId": 50,
         "releaseDate": "2017-12-01"
       }
     ],
     "reference": "https://www.json.org/",
-    "retiredAt": null,
     "bootstrapId": 18,
     "description": "JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is based on a subset of the JavaScript Programming Language Standard ECMA-262 3rd Edition - December 1999.",
     "abbreviation": "JSON",
@@ -780,13 +712,11 @@
         "ordinal": 1,
         "version": "1",
         "reference": "https://www.rfc-editor.org/rfc/rfc2849",
-        "retiredAt": null,
         "bootstrapId": 49,
         "releaseDate": "2000-06-01"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format",
-    "retiredAt": null,
     "bootstrapId": 19,
     "description": null,
     "abbreviation": "LDIF",
@@ -800,7 +730,6 @@
     "notes": null,
     "versions": [],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 20,
     "description": null,
     "abbreviation": "TCP/IP",
@@ -814,7 +743,6 @@
     "notes": null,
     "versions": [],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 21,
     "description": null,
     "abbreviation": "TCP",
@@ -828,7 +756,6 @@
     "notes": null,
     "versions": [],
     "reference": null,
-    "retiredAt": null,
     "bootstrapId": 22,
     "description": null,
     "abbreviation": "IP",
@@ -847,7 +774,6 @@
         "ordinal": 1,
         "version": "version 2",
         "reference": "https://www.rfc-editor.org/rfc/rfc1777",
-        "retiredAt": null,
         "bootstrapId": 48,
         "releaseDate": "1995-03-01"
       },
@@ -857,13 +783,11 @@
         "ordinal": 2,
         "version": "version 3",
         "reference": "  https://datatracker.ietf.org/doc/html/rfc4511",
-        "retiredAt": null,
         "bootstrapId": 47,
         "releaseDate": "2006-06-01"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol",
-    "retiredAt": null,
     "bootstrapId": 23,
     "description": null,
     "abbreviation": "LDAP",
@@ -882,7 +806,6 @@
         "ordinal": 1,
         "version": "Level 1",
         "reference": "https://www.w3.org/TR/2008/REC-CSS1-20080411/",
-        "retiredAt": null,
         "bootstrapId": 56,
         "releaseDate": "1996-12-17"
       },
@@ -892,7 +815,6 @@
         "ordinal": 2,
         "version": "Level 2",
         "reference": "https://www.w3.org/TR/2008/REC-CSS2-20080411/",
-        "retiredAt": null,
         "bootstrapId": 55,
         "releaseDate": "1998-05-12"
       },
@@ -902,13 +824,11 @@
         "ordinal": 3,
         "version": "Level 3",
         "reference": "https://www.w3.org/TR/2025/NOTE-css-2025-20250909/",
-        "retiredAt": null,
         "bootstrapId": 54,
         "releaseDate": "2025-09-09"
       }
     ],
     "reference": "https://www.w3.org/TR/css/",
-    "retiredAt": null,
     "bootstrapId": 24,
     "description": null,
     "abbreviation": "CSS",
@@ -927,7 +847,6 @@
         "ordinal": 1,
         "version": "2019",
         "reference": "https://en.wikipedia.org/wiki/Windows_Server_2019",
-        "retiredAt": null,
         "bootstrapId": 59,
         "releaseDate": "2018-10-02"
       },
@@ -937,7 +856,6 @@
         "ordinal": 2,
         "version": "2022",
         "reference": "https://en.wikipedia.org/wiki/Windows_Server_2022",
-        "retiredAt": null,
         "bootstrapId": 58,
         "releaseDate": "2021-08-18"
       },
@@ -947,13 +865,11 @@
         "ordinal": 3,
         "version": "2025",
         "reference": "https://en.wikipedia.org/wiki/Windows_Server_2025",
-        "retiredAt": null,
         "bootstrapId": 57,
         "releaseDate": "2024-11-01"
       }
     ],
     "reference": "",
-    "retiredAt": null,
     "bootstrapId": 25,
     "description": null,
     "abbreviation": null,
@@ -972,7 +888,6 @@
         "ordinal": 1,
         "version": "6.0",
         "reference": "https://www.mongodb.com/docs/v6.0/release-notes/",
-        "retiredAt": null,
         "bootstrapId": 62,
         "releaseDate": "2022-07-19"
       },
@@ -982,7 +897,6 @@
         "ordinal": 2,
         "version": "7.0",
         "reference": "https://www.mongodb.com/docs/v7.0/release-notes/7.0/",
-        "retiredAt": null,
         "bootstrapId": 61,
         "releaseDate": "2023-08-15"
       },
@@ -992,13 +906,11 @@
         "ordinal": 3,
         "version": "8.0",
         "reference": "https://www.mongodb.com/docs/manual/release-notes/8.0/",
-        "retiredAt": null,
         "bootstrapId": 60,
         "releaseDate": "2024-10-02"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/MongoDB",
-    "retiredAt": null,
     "bootstrapId": 26,
     "description": "MongoDB is a source-available, cross-platform, document-oriented database program. Classified as a NoSQL database product, MongoDB uses JSON-like documents with optional schemas.",
     "abbreviation": null,
@@ -1017,7 +929,6 @@
         "ordinal": 1,
         "version": "v5",
         "reference": "https://github.com/vitejs/vite/releases/tag/v5.0.0",
-        "retiredAt": null,
         "bootstrapId": 65,
         "releaseDate": "2023-11-16"
       },
@@ -1027,7 +938,6 @@
         "ordinal": 2,
         "version": "v6",
         "reference": "https://github.com/vitejs/vite/releases/tag/v6.0.0",
-        "retiredAt": null,
         "bootstrapId": 64,
         "releaseDate": "2024-11-26"
       },
@@ -1037,13 +947,11 @@
         "ordinal": 3,
         "version": "v7",
         "reference": "https://github.com/vitejs/vite/releases/tag/v7.0.0",
-        "retiredAt": null,
         "bootstrapId": 63,
         "releaseDate": "2025-06-24"
       }
     ],
     "reference": "https://vite.dev/guide/",
-    "retiredAt": null,
     "bootstrapId": 27,
     "description": "A build tool that aims to provide a faster and leaner development experience for modern web projects.",
     "abbreviation": null,
@@ -1062,7 +970,6 @@
         "ordinal": 1,
         "version": "v2.2.19",
         "reference": "https://github.com/tailwindlabs/tailwindcss/releases/tag/v2.2.19",
-        "retiredAt": null,
         "bootstrapId": 68,
         "releaseDate": "2021-10-29"
       },
@@ -1072,7 +979,6 @@
         "ordinal": 2,
         "version": "v3.4.17",
         "reference": "https://github.com/tailwindlabs/tailwindcss/releases/tag/v3.4.17",
-        "retiredAt": null,
         "bootstrapId": 67,
         "releaseDate": "2024-12-17"
       },
@@ -1082,13 +988,11 @@
         "ordinal": 3,
         "version": "v4.1.12",
         "reference": "https://github.com/tailwindlabs/tailwindcss/releases/tag/v4.1.12",
-        "retiredAt": null,
         "bootstrapId": 66,
         "releaseDate": "2025-08-14"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/Tailwind_CSS",
-    "retiredAt": null,
     "bootstrapId": 28,
     "description": "A utility-first CSS framework.",
     "abbreviation": "Tailwind",
@@ -1107,7 +1011,6 @@
         "ordinal": 1,
         "version": "2.4.2",
         "reference": "https://github.com/lodash/lodash/releases/tag/2.0.0",
-        "retiredAt": null,
         "bootstrapId": 71,
         "releaseDate": "2013-09-14"
       },
@@ -1117,7 +1020,6 @@
         "ordinal": 2,
         "version": "3.10.1",
         "reference": "https://github.com/lodash/lodash/releases/tag/3.0.0",
-        "retiredAt": null,
         "bootstrapId": 70,
         "releaseDate": "2015-01-26"
       },
@@ -1127,13 +1029,11 @@
         "ordinal": 3,
         "version": "4.0.0",
         "reference": "https://github.com/lodash/lodash/releases/tag/4.0.0",
-        "retiredAt": null,
         "bootstrapId": 69,
         "releaseDate": "2016-01-12"
       }
     ],
     "reference": "https://lodash.com/",
-    "retiredAt": null,
     "bootstrapId": 29,
     "description": "A modern JavaScript utility library delivering modularity, performance & extras.",
     "abbreviation": null,
@@ -1152,7 +1052,6 @@
         "ordinal": 1,
         "version": "go1.23.0",
         "reference": "https://go.dev/doc/go1.23",
-        "retiredAt": null,
         "bootstrapId": 74,
         "releaseDate": "2024-08-13"
       },
@@ -1162,7 +1061,6 @@
         "ordinal": 2,
         "version": "go1.24.0",
         "reference": "https://go.dev/doc/go1.24",
-        "retiredAt": null,
         "bootstrapId": 73,
         "releaseDate": "2025-02-11"
       },
@@ -1172,13 +1070,11 @@
         "ordinal": 3,
         "version": "go1.25.0",
         "reference": "https://go.dev/doc/go1.25",
-        "retiredAt": null,
         "bootstrapId": 72,
         "releaseDate": "2025-08-12"
       }
     ],
     "reference": "https://go.dev/",
-    "retiredAt": null,
     "bootstrapId": 30,
     "description": "Go is a high-level general purpose programming language that is statically typed and compiled.",
     "abbreviation": null,
@@ -1192,7 +1088,6 @@
     "notes": null,
     "versions": [],
     "reference": "https://en.wikipedia.org/wiki/Linux_kernel",
-    "retiredAt": null,
     "bootstrapId": 31,
     "description": "A free and open-source  Unix-like kernel that is used in many computer systems worldwide. The kernel was created by Linus Torvalds in 1991 and was soon adopted as the kernel for the GNU operating system (OS) which was created to be a free replacement for Unix.",
     "abbreviation": null,
@@ -1206,7 +1101,6 @@
     "notes": null,
     "versions": [],
     "reference": "https://en.wikipedia.org/wiki/Java_virtual_machine",
-    "retiredAt": null,
     "bootstrapId": 32,
     "description": "A virtual machine that enables a computer to run Java programs as well as programs written in other languages that are also compiled to Java bytecode.",
     "abbreviation": "JVM",
@@ -1225,7 +1119,6 @@
         "ordinal": 2,
         "version": "4.1.6",
         "reference": "https://github.com/microsoft/TypeScript/releases/tag/v4.1.6",
-        "retiredAt": null,
         "bootstrapId": 76,
         "releaseDate": "2021-06-17"
       },
@@ -1235,13 +1128,11 @@
         "ordinal": 3,
         "version": "5.9.2",
         "reference": "https://github.com/microsoft/TypeScript/releases/tag/v5.9.2",
-        "retiredAt": null,
         "bootstrapId": 75,
         "releaseDate": "2025-07-31"
       }
     ],
     "reference": "https://en.wikipedia.org/wiki/TypeScript",
-    "retiredAt": null,
     "bootstrapId": 33,
     "description": "A high-level programming language that adds static typing with optional type annotations to JavaScript.",
     "abbreviation": null,
@@ -1255,7 +1146,6 @@
     "notes": "This duplicates a corresponding skill under Data-interchange formats.",
     "versions": [],
     "reference": "https://www.w3.org/XML/",
-    "retiredAt": null,
     "bootstrapId": 34,
     "description": "Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.",
     "abbreviation": "XML",
