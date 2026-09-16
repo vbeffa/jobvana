@@ -7,6 +7,9 @@
   ],
   "dependencyDashboard": true,
   "automerge": false,
+  "constraints": {
+    "npm": ">=11 <12"
+  },
   "packageRules": [
     {
       "description": "Group routine npm updates",
