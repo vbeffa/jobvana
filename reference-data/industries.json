@@ -1,0 +1,37 @@
+[
+  {
+    "code": "b2b-software",
+    "name": "B2B Software",
+    "bootstrapId": 1
+  },
+  {
+    "code": "consumer",
+    "name": "Consumer",
+    "bootstrapId": 2
+  },
+  {
+    "code": "education",
+    "name": "Education",
+    "bootstrapId": 3
+  },
+  {
+    "code": "financial-technology",
+    "name": "Financial Technology",
+    "bootstrapId": 4
+  },
+  {
+    "code": "healthcare",
+    "name": "Healthcare",
+    "bootstrapId": 5
+  },
+  {
+    "code": "industrials",
+    "name": "Industrials",
+    "bootstrapId": 6
+  },
+  {
+    "code": "real-estate-construction",
+    "name": "Real Estate & Construction",
+    "bootstrapId": 7
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "skillCode": "internet-protocol",
+    "isBidirectional": true,
+    "relatedSkillCode": "internet-protocol-suite"
+  },
+  {
+    "skillCode": "ldap-data-interchange-format",
+    "isBidirectional": true,
+    "relatedSkillCode": "lightweight-directory-access-protocol"
+  },
+  {
+    "skillCode": "microsoft-sql-server",
+    "isBidirectional": false,
+    "relatedSkillCode": "structured-query-language"
+  },
+  {
+    "skillCode": "next-js",
+    "isBidirectional": false,
+    "relatedSkillCode": "react"
+  },
+  {
+    "skillCode": "node-js",
+    "isBidirectional": false,
+    "relatedSkillCode": "javascript"
+  },
+  {
+    "skillCode": "oracle",
+    "isBidirectional": false,
+    "relatedSkillCode": "structured-query-language"
+  },
+  {
+    "skillCode": "postgres",
+    "isBidirectional": false,
+    "relatedSkillCode": "structured-query-language"
+  },
+  {
+    "skillCode": "react",
+    "isBidirectional": false,
+    "relatedSkillCode": "javascript"
+  },
+  {
+    "skillCode": "red-hat-enterprise-linux",
+    "isBidirectional": false,
+    "relatedSkillCode": "linux"
+  },
+  {
+    "skillCode": "remix",
+    "isBidirectional": false,
+    "relatedSkillCode": "react"
+  },
+  {
+    "skillCode": "tailwind-css",
+    "isBidirectional": false,
+    "relatedSkillCode": "cascading-style-sheets"
+  },
+  {
+    "skillCode": "transmission-control-protocol",
+    "isBidirectional": true,
+    "relatedSkillCode": "internet-protocol-suite"
+  }
+]

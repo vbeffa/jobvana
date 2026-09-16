@@ -1,0 +1,72 @@
+[
+  {
+    "code": "software-engineer",
+    "name": "Software Engineer",
+    "reference": "https://en.wikipedia.org/wiki/Software_engineering",
+    "bootstrapId": 1,
+    "description": "Software engineering is a branch of both computer science and engineering focused on designing, developing, testing, and maintaining software applications. It involves applying engineering principles and computer programming expertise to develop software systems that meet user needs.\n\nThe terms programmer and coder overlap software engineer, but they imply only the construction aspect of a typical software engineer workload.\n\nA software engineer applies a software development process, which involves defining, implementing, testing, managing, and maintaining software systems, as well as developing the software development process itself."
+  },
+  {
+    "code": "devops-engineer",
+    "name": "DevOps Engineer",
+    "reference": "https://en.wikipedia.org/wiki/DevOps",
+    "bootstrapId": 2,
+    "description": "DevOps is the integration and automation of the software development and information technology operations."
+  },
+  {
+    "code": "database-administrator",
+    "name": "Database Administrator",
+    "reference": "https://en.wikipedia.org/wiki/Database_administrator",
+    "bootstrapId": 3,
+    "description": "A database administrator (DBA) manages computer databases. The role may include capacity planning, installation, configuration, database design, migration, performance monitoring, security, troubleshooting, as well as backup and data recovery."
+  },
+  {
+    "code": "database-developer",
+    "name": "Database Developer",
+    "reference": null,
+    "bootstrapId": 4,
+    "description": "A software developer who writes database-specific code, such as SQL queries."
+  },
+  {
+    "code": "qa-engineer",
+    "name": "QA Engineer",
+    "reference": null,
+    "bootstrapId": 5,
+    "description": "A software engineer focused on writing tests and ensuring the quality of a software system."
+  },
+  {
+    "code": "software-developer",
+    "name": "Software Developer",
+    "reference": "https://en.wikipedia.org/wiki/Software_development",
+    "bootstrapId": 6,
+    "description": "Software development is the process of designing and implementing a software solution to satisfy a user. The process is more encompassing than programming, writing code, in that it includes conceiving the goal, evaluating feasibility, analyzing requirements, design, testing and release. The process is part of software engineering which also includes organizational management, project management, configuration management and other aspects."
+  },
+  {
+    "code": "site-reliability-engineer",
+    "name": "Site Reliability Engineer",
+    "reference": "https://en.wikipedia.org/wiki/Site_reliability_engineering",
+    "bootstrapId": 7,
+    "description": "Site Reliability Engineering (SRE) is a discipline in the field of Software Engineering and IT infrastructure support that monitors and improves the availability and performance of deployed software systems and large software services."
+  },
+  {
+    "code": "delivery-boy",
+    "name": "Delivery Boy",
+    "reference": "https://futurama.fandom.com/wiki/Philip_J._Fry",
+    "bootstrapId": 8,
+    "description": "Eats pizza and watches TV on the couch."
+  },
+  {
+    "code": "systems-programmer",
+    "name": "Systems Programmer",
+    "reference": "https://www.ibm.com/docs/en/zos-basic-skills?topic=world-who-is-system-programmer",
+    "bootstrapId": 9,
+    "description": "The system programmer installs, customizes, and maintains the operating system, and also installs or upgrades products that run on the system."
+  },
+  {
+    "code": "embedded-systems-programmer",
+    "name": "Embedded Systems Programmer",
+    "reference": "https://en.wikipedia.org/wiki/Embedded_software",
+    "bootstrapId": 10,
+    "description": "Embedded software is computer software, written to control machines or devices that are not typically thought of as computers, commonly known as embedded systems. It is typically specialized for the particular hardware that it runs on and has time and memory constraints. This term is sometimes used interchangeably with firmware."
+  }
+]

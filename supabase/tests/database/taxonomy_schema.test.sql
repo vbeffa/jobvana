@@ -89,7 +89,7 @@ select lives_ok(
 select lives_ok(
   $$insert into public.skills (name)
     values ('Taxonomy Schema Test Skill')$$,
-  'skill can be inserted without explicit ID, code, or category'
+  'skill can be inserted without explicit ID or code before category membership is assigned'
 );
 
 select lives_ok(
