@@ -5,11 +5,13 @@ on:
     branches: ['master']
     paths:
       - 'supabase/**'
+      - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   push:
     branches: ['master']
     paths:
       - 'supabase/**'
+      - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   workflow_dispatch:
 
@@ -23,6 +25,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install SQLFluff
+        run: pip install sqlfluff==4.3.0
+
+      - name: Lint SQL
+        run: sqlfluff lint supabase
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
