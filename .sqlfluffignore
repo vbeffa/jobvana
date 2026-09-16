@@ -1,2 +1,0 @@
-# Keep already-applied migration contents immutable.
-supabase/migrations/20260915020954_harden_taxonomy_schema.sql
