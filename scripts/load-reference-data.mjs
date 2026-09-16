@@ -60,9 +60,9 @@ function assertBootstrapId(value, context) {
 }
 
 function assertRetiredAt(value, context) {
-  if (value === null) return;
+  if (value === undefined || value === null) return;
   assertString(value, context, { nonempty: true });
-  if (Number.isNaN(Date.parse(value))) fail(`${context} must be an ISO timestamp or null`);
+  if (Number.isNaN(Date.parse(value))) fail(`${context} must be an ISO timestamp or null when provided`);
 }
 
 function assertReleaseDate(value, context) {
@@ -99,7 +99,7 @@ function validateReferenceData(data) {
     const context = `industries[${index}]`;
     assertObject(item, context);
     assertAllowedKeys(item, ['bootstrapId', 'code', 'name', 'retiredAt'], context);
-    assertRequiredKeys(item, ['code', 'name', 'retiredAt'], context);
+    assertRequiredKeys(item, ['code', 'name'], context);
     assertBootstrapId(item.bootstrapId, `${context}.bootstrapId`);
     assertCode(item.code, `${context}.code`);
     assertString(item.name, `${context}.name`, { nonempty: true });
@@ -110,7 +110,7 @@ function validateReferenceData(data) {
     const context = `roles[${index}]`;
     assertObject(item, context);
     assertAllowedKeys(item, ['bootstrapId', 'code', 'name', 'description', 'reference', 'retiredAt'], context);
-    assertRequiredKeys(item, ['code', 'name', 'description', 'reference', 'retiredAt'], context);
+    assertRequiredKeys(item, ['code', 'name', 'description', 'reference'], context);
     assertBootstrapId(item.bootstrapId, `${context}.bootstrapId`);
     assertCode(item.code, `${context}.code`);
     assertString(item.name, `${context}.name`, { nonempty: true });
@@ -123,7 +123,7 @@ function validateReferenceData(data) {
     const context = `skillCategories[${index}]`;
     assertObject(item, context);
     assertAllowedKeys(item, ['bootstrapId', 'code', 'name', 'parentCode', 'description', 'reference', 'notes', 'retiredAt'], context);
-    assertRequiredKeys(item, ['code', 'name', 'parentCode', 'description', 'reference', 'notes', 'retiredAt'], context);
+    assertRequiredKeys(item, ['code', 'name', 'parentCode', 'description', 'reference', 'notes'], context);
     assertBootstrapId(item.bootstrapId, `${context}.bootstrapId`);
     assertCode(item.code, `${context}.code`);
     assertString(item.name, `${context}.name`, { nonempty: true });
@@ -139,7 +139,7 @@ function validateReferenceData(data) {
     const context = `skills[${index}]`;
     assertObject(item, context);
     assertAllowedKeys(item, ['bootstrapId', 'code', 'name', 'description', 'abbreviation', 'reference', 'notes', 'retiredAt', 'categoryCodes', 'versions'], context);
-    assertRequiredKeys(item, ['code', 'name', 'description', 'abbreviation', 'reference', 'notes', 'retiredAt', 'categoryCodes', 'versions'], context);
+    assertRequiredKeys(item, ['code', 'name', 'description', 'abbreviation', 'reference', 'notes', 'categoryCodes', 'versions'], context);
     assertBootstrapId(item.bootstrapId, `${context}.bootstrapId`);
     assertCode(item.code, `${context}.code`);
     assertString(item.name, `${context}.name`, { nonempty: true });
@@ -160,7 +160,7 @@ function validateReferenceData(data) {
       const versionContext = `${context}.versions[${versionIndex}]`;
       assertObject(version, versionContext);
       assertAllowedKeys(version, ['bootstrapId', 'code', 'version', 'ordinal', 'releaseDate', 'reference', 'notes', 'retiredAt'], versionContext);
-      assertRequiredKeys(version, ['code', 'version', 'ordinal', 'releaseDate', 'reference', 'notes', 'retiredAt'], versionContext);
+      assertRequiredKeys(version, ['code', 'version', 'ordinal', 'releaseDate', 'reference', 'notes'], versionContext);
       assertBootstrapId(version.bootstrapId, `${versionContext}.bootstrapId`);
       if (version.bootstrapId != null) versionBootstrapIds.push(version.bootstrapId);
       assertCode(version.code, `${versionContext}.code`);
@@ -246,10 +246,14 @@ function upsertValues(table, item, fields, conflictFields, updateFields) {
     values.push(item.bootstrapId);
   }
   for (const [column, key] of fields) {
+    if (!(key in item)) continue;
     columns.push(column);
     values.push(item[key]);
   }
-  const updates = updateFields.map((column) => `${column} = excluded.${column}`).join(',\n  ');
+  const updates = updateFields
+    .filter((column) => columns.includes(column))
+    .map((column) => `${column} = excluded.${column}`)
+    .join(',\n  ');
   return `insert into ${table} (${columns.join(', ')})\nvalues (${values.map(sqlLiteral).join(', ')})\non conflict (${conflictFields.join(', ')}) do update set\n  ${updates};`;
 }
 
@@ -319,22 +323,33 @@ function generateSql(data) {
     for (const version of skill.versions) {
       const columns = [];
       const selectValues = [];
+      const updates = [
+        'version = excluded.version',
+        'reference = excluded.reference',
+        'notes = excluded.notes',
+        'release_date = excluded.release_date',
+        'ordinal = excluded.ordinal'
+      ];
       if (version.bootstrapId != null) {
         columns.push('id');
         selectValues.push(String(version.bootstrapId));
       }
-      columns.push('skill_id', 'code', 'version', 'reference', 'notes', 'release_date', 'ordinal', 'retired_at');
+      columns.push('skill_id', 'code', 'version', 'reference', 'notes', 'release_date', 'ordinal');
       selectValues.push(
         's.id', sqlLiteral(version.code), sqlLiteral(version.version), sqlLiteral(version.reference),
-        sqlLiteral(version.notes), sqlLiteral(version.releaseDate), String(version.ordinal), sqlLiteral(version.retiredAt)
+        sqlLiteral(version.notes), sqlLiteral(version.releaseDate), String(version.ordinal)
       );
+      if ('retiredAt' in version) {
+        columns.push('retired_at');
+        selectValues.push(sqlLiteral(version.retiredAt));
+        updates.push('retired_at = excluded.retired_at');
+      }
       statements.push(
-        `insert into public.skill_versions (${columns.join(', ')})\nselect ${selectValues.join(', ')}\nfrom public.skills s\nwhere s.code = ${sqlLiteral(skill.code)}\non conflict (skill_id, code) do update set\n  version = excluded.version,\n  reference = excluded.reference,\n  notes = excluded.notes,\n  release_date = excluded.release_date,\n  ordinal = excluded.ordinal,\n  retired_at = excluded.retired_at;`,
+        `insert into public.skill_versions (${columns.join(', ')})\nselect ${selectValues.join(', ')}\nfrom public.skills s\nwhere s.code = ${sqlLiteral(skill.code)}\non conflict (skill_id, code) do update set\n  ${updates.join(',\n  ')};`,
         ''
       );
     }
   }
-
   for (const relation of data.skillRelations) {
     statements.push(
       `insert into public.skill_relations (skill_id, related_skill_id, is_bidirectional)\nselect s.id, r.id, ${sqlLiteral(relation.isBidirectional)}\nfrom public.skills s\njoin public.skills r on r.code = ${sqlLiteral(relation.relatedSkillCode)}\nwhere s.code = ${sqlLiteral(relation.skillCode)}\non conflict (skill_id, related_skill_id) do update set\n  is_bidirectional = excluded.is_bidirectional;`,
