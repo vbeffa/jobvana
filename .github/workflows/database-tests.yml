@@ -6,7 +6,9 @@ on:
     paths:
       - 'supabase/**'
       - 'reference-data/**'
+      - 'fixture-data/**'
       - 'scripts/load-reference-data.mjs'
+      - 'scripts/load-fixture-data.mjs'
       - 'package.json'
       - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
@@ -39,6 +41,9 @@ jobs:
 
       - name: Validate reference taxonomy
         run: npm run reference-data:check
+
+      - name: Validate fixture data
+        run: npm run fixture-data:check
 
       - name: Setup Python
         uses: actions/setup-python@v7
