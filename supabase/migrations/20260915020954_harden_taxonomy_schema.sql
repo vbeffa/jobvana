@@ -67,26 +67,28 @@ add constraint skill_versions_ordinal_positive_check
 check (ordinal > 0);
 
 create table public.skill_category_memberships (
-  skill_id bigint not null,
-  skill_category_id bigint not null,
-  primary key (skill_id, skill_category_id),
-  constraint skill_category_memberships_skill_id_fkey
-  foreign key (skill_id)
-  references public.skills (id)
-  on update cascade
-  on delete cascade,
-  constraint skill_category_memberships_skill_category_id_fkey
-  foreign key (skill_category_id)
-  references public.skill_categories (id)
-  on update cascade
-  on delete restrict
+    skill_id bigint not null,
+    skill_category_id bigint not null,
+    primary key (skill_id, skill_category_id),
+    constraint skill_category_memberships_skill_id_fkey
+    foreign key (skill_id)
+    references public.skills (id)
+    on update cascade
+    on delete cascade,
+    constraint skill_category_memberships_skill_category_id_fkey
+    foreign key (skill_category_id)
+    references public.skill_categories (id)
+    on update cascade
+    on delete restrict
 );
 
 create index skill_category_memberships_skill_category_id_idx
 on public.skill_category_memberships (skill_category_id);
 
 insert into public.skill_category_memberships (skill_id, skill_category_id)
-select id, skill_category_id
+select
+    id,
+    skill_category_id
 from public.skills;
 
 alter table public.skills
@@ -236,37 +238,42 @@ comment on column public.skill_versions.release_date is
 comment on column public.skill_versions.ordinal is
 'Required positive per-skill ordering value. Higher ordinals represent later versions.';
 
-select setval(
-  pg_get_serial_sequence('public.industries', 'id'),
-  coalesce(max(id), 1),
-  max(id) is not null
-)
+select
+    setval(
+        pg_get_serial_sequence('public.industries', 'id'),
+        coalesce(max(id), 1),
+        max(id) is not null
+    )
 from public.industries;
 
-select setval(
-  pg_get_serial_sequence('public.roles', 'id'),
-  coalesce(max(id), 1),
-  max(id) is not null
-)
+select
+    setval(
+        pg_get_serial_sequence('public.roles', 'id'),
+        coalesce(max(id), 1),
+        max(id) is not null
+    )
 from public.roles;
 
-select setval(
-  pg_get_serial_sequence('public.skill_categories', 'id'),
-  coalesce(max(id), 1),
-  max(id) is not null
-)
+select
+    setval(
+        pg_get_serial_sequence('public.skill_categories', 'id'),
+        coalesce(max(id), 1),
+        max(id) is not null
+    )
 from public.skill_categories;
 
-select setval(
-  pg_get_serial_sequence('public.skills', 'id'),
-  coalesce(max(id), 1),
-  max(id) is not null
-)
+select
+    setval(
+        pg_get_serial_sequence('public.skills', 'id'),
+        coalesce(max(id), 1),
+        max(id) is not null
+    )
 from public.skills;
 
-select setval(
-  pg_get_serial_sequence('public.skill_versions', 'id'),
-  coalesce(max(id), 1),
-  max(id) is not null
-)
+select
+    setval(
+        pg_get_serial_sequence('public.skill_versions', 'id'),
+        coalesce(max(id), 1),
+        max(id) is not null
+    )
 from public.skill_versions;

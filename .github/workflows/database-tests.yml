@@ -8,6 +8,7 @@ on:
       - 'reference-data/**'
       - 'scripts/load-reference-data.mjs'
       - 'package.json'
+      - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   push:
     branches: ['master']
@@ -16,6 +17,7 @@ on:
       - 'reference-data/**'
       - 'scripts/load-reference-data.mjs'
       - 'package.json'
+      - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   workflow_dispatch:
 
@@ -37,6 +39,17 @@ jobs:
 
       - name: Validate reference taxonomy
         run: npm run reference-data:check
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install SQLFluff
+        run: pip install sqlfluff==4.3.0
+
+      - name: Lint SQL
+        run: sqlfluff lint supabase/migrations supabase/seeds
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
