@@ -31,7 +31,7 @@ npm run reference-data:check
 
 The generated SQL is one atomic PostgreSQL `DO` statement, upserts rows by stable code, resolves taxonomy relationships by code, and preserves existing database IDs when a matching code already exists.
 
-The loader does not delete taxonomy rows, memberships, versions, or relations merely because they disappear from JSON. Normal lifecycle removal is explicit through `retiredAt` (stored as `retired_at`) or, later, through admin tooling.
+The loader does not delete taxonomy rows, memberships, versions, or relations merely because they disappear from JSON. Retirement state is also explicit: omit `retiredAt` to leave an existing row's retirement state unchanged (new rows default to active/`NULL`), use `"retiredAt": null` to explicitly reactivate a row, or provide an ISO timestamp to retire it. Later, the admin tooling will manage the same `retired_at` lifecycle field.
 
 ## Local and CI loading
 
