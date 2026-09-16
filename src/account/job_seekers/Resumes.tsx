@@ -1,4 +1,4 @@
-import { StorageError } from '@supabase/storage-js';
+import { StorageError, type FileObject } from '@supabase/storage-js';
 import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FaCheck, FaDownload, FaTrash } from 'react-icons/fa6';
@@ -161,6 +161,9 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
     [activeResume?.name, deleteResume, refetch, resumes]
   );
 
+  const resumeTimestamp = (resume: FileObject) =>
+    resume.updated_at ?? resume.created_at;
+
   return (
     <>
       {isPending && <Modal type="loading" />}
@@ -183,11 +186,15 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
             </thead>
             <tbody>
               {resumes
-                ?.sort(
-                  (r1, r2) =>
-                    new Date(r2.updated_at).getTime() -
-                    new Date(r1.updated_at).getTime()
-                )
+                ?.sort((r1, r2) => {
+                  const t1 = resumeTimestamp(r1);
+                  const t2 = resumeTimestamp(r2);
+
+                  return (
+                    (t2 ? new Date(t2).getTime() : 0) -
+                    (t1 ? new Date(t1).getTime() : 0)
+                  );
+                })
                 .map((resume, idx) => (
                   <tr key={idx} className={idx % 2 === 1 ? 'bg-gray-200' : ''}>
                     <td>
@@ -202,7 +209,11 @@ const Resumes = ({ jobSeeker }: ResumeProps) => {
                     </td>
                     <td>
                       <div className="flex justify-center">
-                        {new Date(resume.updated_at).toLocaleDateString()}
+                        {resumeTimestamp(resume)
+                          ? new Date(
+                              resumeTimestamp(resume)!
+                            ).toLocaleDateString()
+                          : '—'}
                       </div>
                     </td>
                     <td className="content-center">
