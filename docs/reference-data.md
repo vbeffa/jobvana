@@ -8,7 +8,7 @@ The authored Jobvana taxonomy lives under `reference-data/`:
 - `skills.json`
 - `skill-relations.json`
 
-Relationships are authored with stable taxonomy codes rather than database IDs. Current records also carry an optional `bootstrapId`. Those IDs are transitional compatibility data so the existing synthetic marketplace fixtures keep referring to the same taxonomy rows until issue #24 removes their hard-coded taxonomy IDs. New relationships must not use `bootstrapId`.
+Relationships are authored with stable taxonomy codes rather than database IDs. Some current records still carry an optional `bootstrapId` for bootstrap compatibility, but the synthetic marketplace fixtures no longer depend on those IDs. New relationships must not use `bootstrapId`.
 
 ## Validate and generate the SQL seed
 
