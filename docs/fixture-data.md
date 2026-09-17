@@ -43,14 +43,14 @@ npm run fixture-data:check
 
 ## Auth fixtures
 
-The converted Auth fixture rows preserve the existing fixture UUIDs, emails, profile metadata, and identity rows, but the generated seed does not contain reusable plaintext/default passwords. They provide ownership/profile relationships for the synthetic dataset rather than password-login test accounts.
+Issue #45 preserves the existing Auth behavior while changing how the marketplace fixtures are represented. The converted Auth rows keep their existing fixture UUIDs, emails, profile metadata, identity rows, and the legacy shared password-login behavior.
 
-Issue #46 will separate the production-safe, small demo/test, and bulk load-test loading workflows. Issue #11 still owns cleanup of predictable identities already present in the hosted environment.
+`supabase/seed.sql` creates the Auth rows from the structured fixture data. The post-seed compatibility block in `supabase/seeds/99_reset_taxonomy_sequences.sql` then stores bcrypt hashes for the same legacy fixture password used before this conversion. This is intentionally transitional: issue #11 owns removal or isolation of predictable test identities, and issue #46 will separate production-safe, demo/test, and bulk load-test seed workflows.
 
 ## Current loading behavior
 
-This issue changes the source representation, not the seed path. `supabase/config.toml` still loads `supabase/seed.sql` during the normal local seed process, after the generated reference taxonomy seed.
+This issue changes the source representation, not the seed path. `supabase/config.toml` still loads `supabase/seed.sql` during the normal local seed process, after the generated reference taxonomy seed and before the post-seed compatibility cleanup.
 
-A clean `supabase start` or `supabase db reset` therefore loads the complete generated fixture against the actual schema and taxonomy. Database CI also runs fixture-count checks to guard against accidental loss of the load-test dataset.
+A clean `supabase start` or `supabase db reset` therefore loads the complete generated fixture against the actual schema and taxonomy while retaining the previous fixture-login behavior. Database CI also runs fixture-count and Auth-compatibility checks to guard against accidental behavioral changes or loss of the load-test dataset.
 
 The generated fixture seed is intended for clean development/test initialization and is not idempotent.
