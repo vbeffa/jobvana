@@ -49,7 +49,7 @@ jobs:
         run: pip install sqlfluff==4.3.0
 
       - name: Lint SQL
-        run: sqlfluff lint supabase/migrations supabase/seeds
+        run: npm run lint:sql
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v3
