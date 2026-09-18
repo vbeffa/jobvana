@@ -39,17 +39,5 @@ export default defineConfig(
       '@typescript-eslint/no-unnecessary-condition': 'error',
       quotes: [2, 'single', { avoidEscape: true, allowTemplateLiterals: true }]
 		}
-	},
-  {
-    files: ['src/routes/**/*.tsx'],
-    rules: {
-      'react-refresh/only-export-components': [
-        'error',
-        {
-          allowConstantExport: true,
-          allowExportNames: ['Route']
-        }
-      ]
-    }
-  }
+	}
 );
