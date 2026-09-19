@@ -1,0 +1,42 @@
+[
+  {
+    "id": "e7345065-0baf-42cc-bbc1-5e663b063bfe",
+    "email": "vbeffa@mac.com",
+    "type": "company",
+    "firstName": "Vlad",
+    "lastName": "Beffa",
+    "key": "vlad-beffa-mac-com-company"
+  },
+  {
+    "id": "83612c89-7bf4-4553-82ad-c71b6c81a7ca",
+    "email": "vbeffa@yahoo.com",
+    "type": "job_seeker",
+    "firstName": "Vlad",
+    "lastName": "Beffa",
+    "key": "vlad-beffa-yahoo-com-job-seeker"
+  },
+  {
+    "id": "1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69",
+    "email": "vbeffa@protonmail.com",
+    "type": "job_seeker",
+    "firstName": "Vlad",
+    "lastName": "Beffa",
+    "key": "vlad-beffa-protonmail-com-job-seeker"
+  },
+  {
+    "id": "3bde49b1-5277-4da7-8851-f322ec1858b3",
+    "email": "mbeffa@gmail.com",
+    "type": "company",
+    "firstName": "Mihai",
+    "lastName": "Beffa",
+    "key": "mihai-beffa-gmail-com-company"
+  },
+  {
+    "id": "8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a",
+    "email": "johndoe@test.com",
+    "type": "job_seeker",
+    "firstName": "John",
+    "lastName": "Doe",
+    "key": "john-doe-test-com-job-seeker"
+  }
+]

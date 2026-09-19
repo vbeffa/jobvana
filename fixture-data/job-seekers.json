@@ -1,0 +1,26 @@
+[
+  {
+    "key": "job-seeker-vlad-beffa-yahoo-com-job-seeker",
+    "createdAt": "2025-10-02 17:52:21.055148+00",
+    "authUserKey": "vlad-beffa-yahoo-com-job-seeker",
+    "firstName": "Vlad",
+    "lastName": "Beffa",
+    "activeResumeId": null
+  },
+  {
+    "key": "job-seeker-john-doe-test-com-job-seeker",
+    "createdAt": "2025-10-06 21:14:18.735268+00",
+    "authUserKey": "john-doe-test-com-job-seeker",
+    "firstName": "John",
+    "lastName": "Doe",
+    "activeResumeId": null
+  },
+  {
+    "key": "job-seeker-vlad-beffa-protonmail-com-job-seeker",
+    "createdAt": "2025-10-15 23:07:32.161909+00",
+    "authUserKey": "vlad-beffa-protonmail-com-job-seeker",
+    "firstName": "Vlad",
+    "lastName": "Beffa",
+    "activeResumeId": null
+  }
+]
