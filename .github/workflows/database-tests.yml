@@ -50,6 +50,15 @@ jobs:
       - name: Install SQLFluff
         run: pip install sqlfluff==4.3.0
 
+      - name: Format legacy schema migration
+        run: sqlfluff fix supabase/migrations/20251105230638_remote_schema.sql --force
+
+      - name: Upload formatted legacy schema migration
+        uses: actions/upload-artifact@v4
+        with:
+          name: sqlfluff-fixed-legacy-schema
+          path: supabase/migrations/20251105230638_remote_schema.sql
+
       - name: Lint SQL
         run: npm run lint:sql
 
