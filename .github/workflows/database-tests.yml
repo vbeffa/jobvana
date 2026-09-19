@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   database-tests:
@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: issue-48-lint
 
       - name: Set up Node
         uses: actions/setup-node@v7
@@ -53,11 +55,16 @@ jobs:
       - name: Format legacy schema migration
         run: sqlfluff fix supabase/migrations/20251105230638_remote_schema.sql --force
 
-      - name: Upload formatted legacy schema migration
-        uses: actions/upload-artifact@v4
-        with:
-          name: sqlfluff-fixed-legacy-schema
-          path: supabase/migrations/20251105230638_remote_schema.sql
+      - name: Commit formatted legacy schema migration
+        run: |
+          if git diff --quiet -- supabase/migrations/20251105230638_remote_schema.sql; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add supabase/migrations/20251105230638_remote_schema.sql
+          git commit -m "Format legacy schema migration with SQLFluff"
+          git push origin HEAD:issue-48-lint
 
       - name: Lint SQL
         run: npm run lint:sql
