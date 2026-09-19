@@ -1,0 +1,5 @@
+# Historical Supabase dump; preserve as generated/imported migration.
+supabase/migrations/20251105230638_remote_schema.sql
+
+# Generated from reference-data/*.json; validate the source and generated SQL separately.
+supabase/seeds/01_reference_data.sql
