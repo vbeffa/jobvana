@@ -50,10 +50,11 @@ grant all on table public.skill_category_memberships to service_role;
 -- Keep the legacy shared fixture password working until #11/#46 explicitly
 -- remove or isolate these predictable test identities.
 update auth.users
-set encrypted_password = extensions.crypt(
-    'abc123',
-    extensions.gen_salt('bf')
-)
+set
+    encrypted_password = extensions.crypt(
+        'abc123',
+        extensions.gen_salt('bf')
+    )
 where id in (
     'e7345065-0baf-42cc-bbc1-5e663b063bfe',
     '83612c89-7bf4-4553-82ad-c71b6c81a7ca',
