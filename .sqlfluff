@@ -1,5 +1,6 @@
 [sqlfluff]
 dialect = postgres
 max_line_length = 160
+large_file_skip_byte_limit = 200000
 large_file_skip_fail = true
 exclude_rules = RF01, RF04, RF05
