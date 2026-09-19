@@ -9,6 +9,7 @@ on:
       - 'scripts/load-reference-data.mjs'
       - 'package.json'
       - '.sqlfluff'
+      - '.sqlfluffignore'
       - '.github/workflows/database-tests.yml'
   push:
     branches: ['master']
@@ -18,6 +19,7 @@ on:
       - 'scripts/load-reference-data.mjs'
       - 'package.json'
       - '.sqlfluff'
+      - '.sqlfluffignore'
       - '.github/workflows/database-tests.yml'
   workflow_dispatch:
 
