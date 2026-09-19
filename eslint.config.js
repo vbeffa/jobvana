@@ -6,7 +6,10 @@ import eslintParser from '@typescript-eslint/parser';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default defineConfig(
-  globalIgnores(['src/routeTree.gen.ts'], 'Ignore Generated Route File'),
+  globalIgnores(
+    ['src/routeTree.gen.ts', 'dist/'],
+    'Ignore Generated Files and Build Output'
+  ),
 	{
 		files: ['**/*.ts', '**/*.tsx', '**/*.js'],
     languageOptions: {

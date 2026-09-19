@@ -11,7 +11,9 @@
     "reference-data:check": "node scripts/load-reference-data.mjs --check",
     "reference-data:write": "node scripts/load-reference-data.mjs --write",
     "reference-data:local": "node scripts/load-reference-data.mjs --local",
-    "reference-data:linked": "node scripts/load-reference-data.mjs --linked"
+    "reference-data:linked": "node scripts/load-reference-data.mjs --linked",
+    "lint:sql": "sqlfluff lint supabase/migrations supabase/seeds",
+    "lint:all": "npm run lint && npm run lint:sql"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.89.0",
