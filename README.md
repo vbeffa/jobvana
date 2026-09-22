@@ -81,7 +81,15 @@ gh auth status
 gh auth refresh -s project
 ```
 
-The refresh command is only needed when the existing login does not already have project access.
+The refresh command is only needed when the existing login does not already have project access. The script also verifies that the configured repository is accessible before creating the project.
+
+Optional environment variables can override the defaults:
+
+```bash
+OWNER=vbeffa
+REPO=vbeffa/jobvana
+PROJECT_TITLE=Jobvana
+```
 
 ### Run the setup
 
@@ -91,7 +99,7 @@ bash scripts/setup-github-project.sh
 
 The script:
 
-- refuses to create a duplicate while an open project named `Jobvana` already exists;
+- refuses to create a duplicate while an open project with the configured title already exists;
 - creates the project and links it to `vbeffa/jobvana`;
 - configures the `Status`, `Priority`, and `Area` fields;
 - imports all currently open issues;
