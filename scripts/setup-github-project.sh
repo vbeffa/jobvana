@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OWNER="vbeffa"
-REPO="jobvana"
-FULL_REPO="$OWNER/$REPO"
-PROJECT_TITLE="Jobvana"
-API_VERSION="2026-03-10"
+# Create a user-owned GitHub Project for Jobvana engineering work.
++#
++# Requirements:
++#   - GitHub CLI (`gh`)
++#   - authentication with the `project` scope
++#
++# Optional environment variables:
++#   OWNER=vbeffa
++#   REPO=vbeffa/jobvana
++#   PROJECT_TITLE=Jobvana
++
++OWNER="${OWNER:-vbeffa}"
++REPO="${REPO:-vbeffa/jobvana}"
++FULL_REPO="$REPO"
++PROJECT_TITLE="${PROJECT_TITLE:-Jobvana}"
++API_VERSION="2026-03-10"
 
 # Jobvana-specific project taxonomy.
 PRIORITY_HIGH=(11 12 21 24 45 46)
@@ -30,6 +41,7 @@ need gh
 
 echo "Checking GitHub authentication..."
 gh auth status >/dev/null
+gh repo view "$FULL_REPO" >/dev/null
 if ! gh project list --owner "$OWNER" --limit 1 >/dev/null 2>&1; then
   echo "error: GitHub CLI authentication does not appear to have project access" >&2
   echo "run: gh auth refresh -s project" >&2
@@ -67,7 +79,7 @@ PROJECT_URL="https://github.com/users/$OWNER/projects/$PROJECT_NUMBER"
 echo "Created project #$PROJECT_NUMBER: $PROJECT_URL"
 
 echo "Linking project to $FULL_REPO..."
-gh project link "$PROJECT_NUMBER" --owner "$OWNER" --repo "$REPO"
+gh project link "$PROJECT_NUMBER" --owner "$OWNER" --repo "$FULL_REPO"
 
 echo "Creating Priority and Area fields..."
 gh project field-create "$PROJECT_NUMBER" \
