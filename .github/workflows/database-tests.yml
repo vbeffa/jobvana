@@ -9,6 +9,7 @@ on:
       - 'fixture-data/**'
       - 'scripts/load-reference-data.mjs'
       - 'scripts/load-fixture-data.mjs'
+      - 'scripts/test-fixture-login.mjs'
       - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   push:
@@ -17,6 +18,7 @@ on:
       - 'supabase/**'
       - 'reference-data/**'
       - 'scripts/load-reference-data.mjs'
+      - 'scripts/test-fixture-login.mjs'
       - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   workflow_dispatch:
@@ -67,36 +69,7 @@ jobs:
         run: supabase start
 
       - name: Verify fixture login
-        shell: bash
-        run: |
-          status="$(supabase status -o env)"
-          api_url="$(printf '%s\n' "$status" | sed -n 's/^API_URL="\([^"]*\)"$/\1/p')"
-          anon_key="$(printf '%s\n' "$status" | sed -n 's/^ANON_KEY="\([^"]*\)"$/\1/p')"
-
-          test -n "$api_url"
-          test -n "$anon_key"
-
-          response="$(
-            curl --fail-with-body --silent --show-error \
-              --request POST \
-              --url "$api_url/auth/v1/token?grant_type=password" \
-              --header "apikey: $anon_key" \
-              --header 'Content-Type: application/json' \
-              --data '{"email":"johndoe@test.com","password":"abcd1234"}'
-          )"
-
-          printf '%s' "$response" | node -e '
-            const fs = require("node:fs");
-            const response = JSON.parse(fs.readFileSync(0, "utf8"));
-            if (
-              !response.access_token ||
-              response.user?.email !== "johndoe@test.com"
-            ) {
-              throw new Error(
-                "Fixture login did not return the expected authenticated user."
-              );
-            }
-          '
+        run: node scripts/test-fixture-login.mjs
 
       - name: Verify reference-data loader
         run: node scripts/load-reference-data.mjs --local
