@@ -58,6 +58,16 @@
         "typescript"
       ],
       "allowedVersions": "!/^7\\.0\\./"
+    },
+    {
+      "description": "Skip npm 12 for Renovate's npm tool constraint until Mend-hosted Renovate no longer reproduces EALLOWREMOTE",
+      "matchManagers": [
+        "renovate-config"
+      ],
+      "matchPackageNames": [
+        "npm"
+      ],
+      "allowedVersions": "!/^12\\./"
     }
   ],
   "customManagers": [
