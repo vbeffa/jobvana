@@ -43,9 +43,9 @@ npm run fixture-data:check
 
 ## Auth fixtures
 
-Issue #45 preserves the existing Auth behavior while changing how the marketplace fixtures are represented. The converted Auth rows keep their existing fixture UUIDs, emails, profile metadata, identity rows, and the legacy shared password-login behavior.
+Issue #45 preserves the existing Auth behavior while changing how the marketplace fixtures are represented. The converted Auth rows keep their existing fixture UUIDs, emails, profile metadata, identity rows, and the shared fixture password-login behavior.
 
-`supabase/seed.sql` creates the Auth rows from the structured fixture data. The post-seed compatibility block in `supabase/seeds/99_reset_taxonomy_sequences.sql` then stores bcrypt hashes for the same legacy fixture password used before this conversion. This is intentionally transitional: issue #11 owns removal or isolation of predictable test identities, and issue #46 will separate production-safe, demo/test, and bulk load-test seed workflows.
+`supabase/seed.sql` creates the Auth rows from the structured fixture data. The post-seed compatibility block in `supabase/seeds/99_reset_taxonomy_sequences.sql` then stores bcrypt hashes for the shared eight-character fixture password used for development/test logins. This is intentionally transitional: issue #11 owns removal or isolation of predictable test identities, and issue #46 will separate production-safe, demo/test, and bulk load-test seed workflows.
 
 ## Current loading behavior
 
