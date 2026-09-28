@@ -48,6 +48,16 @@
         "patch"
       ],
       "groupName": "CI tooling"
+    },
+    {
+      "description": "Skip TypeScript 7.0.x until tooling support is available",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "!/^7\\.0\\./"
     }
   ],
   "customManagers": [
