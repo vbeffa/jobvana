@@ -52,7 +52,7 @@ grant all on table public.skill_category_memberships to service_role;
 update auth.users
 set
     encrypted_password = extensions.crypt(
-        'abc123',
+        'abcd1234',
         extensions.gen_salt('bf')
     )
 where id in (
