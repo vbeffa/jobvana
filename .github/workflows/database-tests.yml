@@ -7,7 +7,6 @@ on:
       - 'supabase/**'
       - 'reference-data/**'
       - 'scripts/load-reference-data.mjs'
-      - 'package.json'
       - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   push:
@@ -16,13 +15,16 @@ on:
       - 'supabase/**'
       - 'reference-data/**'
       - 'scripts/load-reference-data.mjs'
-      - 'package.json'
       - '.sqlfluff'
       - '.github/workflows/database-tests.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   database-tests:
@@ -38,7 +40,7 @@ jobs:
           node-version: 24
 
       - name: Validate reference taxonomy
-        run: npm run reference-data:check
+        run: node scripts/load-reference-data.mjs --check
 
       - name: Setup Python
         uses: actions/setup-python@v7
@@ -49,7 +51,7 @@ jobs:
         run: pip install sqlfluff==4.3.0
 
       - name: Lint SQL
-        run: npm run lint:sql
+        run: sqlfluff lint supabase/migrations supabase/seeds
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v3
@@ -60,7 +62,7 @@ jobs:
         run: supabase start
 
       - name: Verify reference-data loader
-        run: npm run reference-data:local
+        run: node scripts/load-reference-data.mjs --local
 
       - name: Run database tests
         run: supabase test db
