@@ -8,7 +8,7 @@
   "dependencyDashboard": true,
   "automerge": false,
   "constraints": {
-    "npm": ">=11 <12"
+    "npm": "<13"
   },
   "packageRules": [
     {
