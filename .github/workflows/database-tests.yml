@@ -79,7 +79,7 @@ jobs:
 
       - name: Verify production-safe reference seed
         run: |
-          supabase db query --local 'do $ begin if exists (select 1 from auth.users) or exists (select 1 from public.companies) or exists (select 1 from public.jobs) or exists (select 1 from public.job_seekers) then raise exception using message = $msg$default seed loaded synthetic marketplace data$msg$; end if; end $;'
+          supabase db query --local 'do $jobvana$ begin if exists (select 1 from auth.users) or exists (select 1 from public.companies) or exists (select 1 from public.jobs) or exists (select 1 from public.job_seekers) then raise exception using message = $msg$default seed loaded synthetic marketplace data$msg$; end if; end $jobvana$;'
 
       - name: Load demo fixture
         run: |
