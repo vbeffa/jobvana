@@ -1,7 +1,14 @@
 import { execFileSync } from 'node:child_process';
 
 const FIXTURE_PASSWORD = 'abcd1234';
-const FIXTURE_EMAILS = ['admin@jobvana.test', 'fry@example.test'];
+const FIXTURE_EMAILS = [
+  'admin@jobvana.test',
+  'admin@planet-express.test',
+  'fry@example.test',
+  'leela@example.test',
+  'new-company@jobvana.test',
+  'new-job-seeker@jobvana.test'
+];
 
 const parseSupabaseStatus = (output) =>
   Object.fromEntries(
