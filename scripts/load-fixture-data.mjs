@@ -139,6 +139,8 @@ function validateFixtureData(data,reference){
     assertString(job.title,`${context}.title`,{nonempty:true});assertEnum(job.status,JOB_STATUSES,`${context}.status`);assertString(job.description,`${context}.description`,{nullable:true});
     assertInteger(job.salaryLow,`${context}.salaryLow`,{min:0});assertInteger(job.salaryHigh,`${context}.salaryHigh`,{min:0});if(job.salaryLow>job.salaryHigh)fail(`${context}.salaryLow must not exceed salaryHigh`);
     assertTimestamp(job.updatedAt,`${context}.updatedAt`);assertEnum(job.type,JOB_TYPES,`${context}.type`);assertEnum(job.salaryType,SALARY_TYPES,`${context}.salaryType`);
+    if(job.salaryType==="annual"&&(job.salaryLow<10000||job.salaryHigh>200000))fail(`${context} annual salary must be between 10000 and 200000`);
+    if(job.salaryType==="hourly"&&(job.salaryLow<20||job.salaryHigh>200))fail(`${context} hourly salary must be between 20 and 200`);
     if(job.companyAddressKey!==null){
       assertFixtureKey(job.companyAddressKey,`${context}.companyAddressKey`);const owner=addressOwnerByKey.get(job.companyAddressKey);
       if(!owner)fail(`${context}.companyAddressKey references missing address ${job.companyAddressKey}`);if(owner!==job.companyKey)fail(`${context}.companyAddressKey belongs to ${owner}, not ${job.companyKey}`);
