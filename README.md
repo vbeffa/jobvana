@@ -78,6 +78,14 @@ nvm use
 
 If Node 24 is not installed yet, run `nvm install` first. GitHub Actions reads the same `.nvmrc`, so local development and CI stay on the same Node major version.
 
+By default, `npm run dev` continues to use the repository's existing Vite environment configuration, which currently points at the hosted pre-launch database. To run the frontend against an already-running local Supabase stack instead, use:
+
+```bash
+npm run dev:local
+```
+
+`dev:local` reads the local API URL and publishable/anon key from `supabase status` and does not start Docker automatically.
+
 ### Database seed workflows
 
 The default database reset is production-safe and loads only durable reference/taxonomy data. Synthetic marketplace data is opt-in:
