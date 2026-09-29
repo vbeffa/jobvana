@@ -98,7 +98,7 @@ npm run dev:local
 
 ### Database seed workflows
 
-The default database reset is production-safe and loads only durable reference/taxonomy data. Synthetic marketplace data is opt-in:
+The local seed commands perform a clean local rebuild by stopping Supabase with `--no-backup` and restarting it through the localhost-bound `jobvana-local` network. This avoids the host-side `supabase db reset` connection path that can be blocked by a VPN. Synthetic marketplace data remains opt-in:
 
 ```bash
 npm run seed:reference
@@ -106,7 +106,7 @@ npm run seed:demo
 npm run seed:bulk
 ```
 
-Use `seed:demo` for the small login-capable development/test dataset and `seed:bulk` only when realistic synthetic volume is needed. See [docs/fixture-data.md](docs/fixture-data.md) for fixture generation, credentials, CI behavior, and hosted pre-launch loading.
+Use `seed:reference` for the production-safe reference/taxonomy baseline, `seed:demo` for the small login-capable development/test dataset, and `seed:bulk` only when realistic synthetic volume is needed. These commands discard existing local database state. See [docs/fixture-data.md](docs/fixture-data.md) for fixture generation, credentials, CI behavior, and hosted pre-launch loading.
 
 ## GitHub Project setup
 
