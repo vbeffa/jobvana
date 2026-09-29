@@ -78,6 +78,16 @@ nvm use
 
 If Node 24 is not installed yet, run `nvm install` first. GitHub Actions reads the same `.nvmrc`, so local development and CI stay on the same Node major version.
 
+### Local Supabase
+
+Start the local Supabase stack with:
+
+```bash
+npm run supabase:start:local
+```
+
+This command creates or reuses the `jobvana-local` Docker network, binds published Supabase ports to `127.0.0.1`, and starts Supabase with that network. Keeping the local services on loopback avoids VPN interference with Docker's default all-interface bindings and prevents the development stack from being exposed to the LAN. If Supabase is already running from a plain `supabase start`, stop it once before switching to this command.
+
 By default, `npm run dev` continues to use the repository's existing Vite environment configuration, which currently points at the hosted pre-launch database. To run the frontend against an already-running local Supabase stack instead, use:
 
 ```bash
