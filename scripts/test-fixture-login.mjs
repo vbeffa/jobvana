@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 
-const FIXTURE_EMAIL = 'johndoe@test.com';
 const FIXTURE_PASSWORD = 'abcd1234';
+const FIXTURE_EMAILS = ['admin@jobvana.test', 'fry@example.test'];
 
 const parseSupabaseStatus = (output) =>
   Object.fromEntries(
@@ -21,34 +21,36 @@ if (!apiUrl || !anonKey) {
   throw new Error('Supabase status did not provide API_URL and ANON_KEY.');
 }
 
-const response = await fetch(
-  `${apiUrl}/auth/v1/token?grant_type=password`,
-  {
-    method: 'POST',
-    headers: {
-      apikey: anonKey,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email: FIXTURE_EMAIL,
-      password: FIXTURE_PASSWORD
-    })
+for (const email of FIXTURE_EMAILS) {
+  const response = await fetch(
+    `${apiUrl}/auth/v1/token?grant_type=password`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: anonKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password: FIXTURE_PASSWORD
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(
+      `Fixture login failed for ${email} with HTTP ${response.status}: ${body}`
+    );
   }
-);
 
-if (!response.ok) {
-  const body = await response.text();
-  throw new Error(
-    `Fixture login failed with HTTP ${response.status}: ${body}`
-  );
+  const result = await response.json();
+
+  if (!result.access_token || result.user?.email !== email) {
+    throw new Error(
+      `Fixture login did not return the expected authenticated user for ${email}.`
+    );
+  }
+
+  console.log(`Fixture login succeeded for ${email}.`);
 }
-
-const result = await response.json();
-
-if (!result.access_token || result.user?.email !== FIXTURE_EMAIL) {
-  throw new Error(
-    'Fixture login did not return the expected authenticated user.'
-  );
-}
-
-console.log(`Fixture login succeeded for ${FIXTURE_EMAIL}.`);
