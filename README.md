@@ -68,6 +68,16 @@ export default tseslint.config([
 ])
 ```
 
+## Development environment
+
+The repository tracks its Node.js major version in `.nvmrc`. With nvm installed, run:
+
+```bash
+nvm use
+```
+
+If Node 24 is not installed yet, run `nvm install` first. GitHub Actions reads the same `.nvmrc`, so local development and CI stay on the same Node major version.
+
 ## GitHub Project setup
 
 The repository includes `scripts/setup-github-project.sh` to create and seed the user-owned **Jobvana** GitHub Project.
