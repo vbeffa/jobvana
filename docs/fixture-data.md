@@ -22,9 +22,9 @@ The small demo fixture uses the same schema under `fixture-data/demo/`.
 The demo dataset contains:
 
 - 2 companies: Jobvana and Planet Express;
-- 2 company Auth identities;
-- 2 job-seeker Auth identities;
-- 2 job seekers;
+- 3 company Auth identities, including one intentionally left in onboarding state;
+- 3 job-seeker Auth identities, including one intentionally left in onboarding state;
+- 2 fully onboarded job seekers;
 - 4 jobs, including Planet Express's Delivery Boy role.
 
 `scripts/load-fixture-data.mjs` validates both datasets. It generates:
@@ -101,7 +101,18 @@ npm run seed:demo
 
 This resets the local database to the reference-only baseline, loads `supabase/seeds/10_demo_data.sql`, and reapplies the post-seed taxonomy/privilege cleanup.
 
-The four demo Auth identities are deliberately login-capable with the shared development/test password `abcd1234`. Predictable login credentials exist only in this explicit demo workflow.
+All six demo Auth identities are deliberately login-capable with the shared development/test password `abcd1234`:
+
+| Purpose | Email | Initial state |
+| --- | --- | --- |
+| Jobvana company | `admin@jobvana.test` | Fully onboarded |
+| Planet Express company | `admin@planet-express.test` | Fully onboarded |
+| Philip Fry | `fry@example.test` | Fully onboarded job seeker |
+| Turanga Leela | `leela@example.test` | Fully onboarded job seeker |
+| Company onboarding | `new-company@jobvana.test` | Auth + company registration only; no company profile |
+| Job-seeker onboarding | `new-job-seeker@jobvana.test` | Auth + job-seeker registration only; no job-seeker profile |
+
+The two onboarding identities deliberately omit their corresponding marketplace profile rows so logging in enters the company or job-seeker onboarding UI. Running `npm run seed:demo` restores that initial state after either onboarding flow has been completed. Predictable login credentials exist only in this explicit demo workflow.
 
 ### Bulk load-test data
 
