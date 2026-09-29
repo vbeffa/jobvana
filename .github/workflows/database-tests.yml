@@ -83,8 +83,8 @@ jobs:
 
       - name: Load demo fixture
         run: |
-          supabase db query --local --file supabase/seeds/10_demo_data.sql
-          supabase db query --local --file supabase/seeds/99_reset_taxonomy_sequences.sql
+          docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/10_demo_data.sql
+          docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql
 
       - name: Verify fixture login
         run: node scripts/test-fixture-login.mjs
