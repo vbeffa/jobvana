@@ -84,7 +84,7 @@ This is the default and production-safe initialization path:
 npm run seed:reference
 ```
 
-It runs `supabase db reset`. The configured default seed files are only:
+It performs a clean local rebuild by running `supabase stop --no-backup` and restarting through `npm run supabase:start:local`. This preserves the localhost-bound Docker network used to avoid VPN interference. The configured default seed files are only:
 
 1. `supabase/seeds/01_reference_data.sql`
 2. `supabase/seeds/99_reset_taxonomy_sequences.sql`
@@ -99,7 +99,7 @@ For a small local development/test environment:
 npm run seed:demo
 ```
 
-This resets the local database to the reference-only baseline, loads `supabase/seeds/10_demo_data.sql`, and reapplies the post-seed taxonomy/privilege cleanup.
+This cleanly rebuilds the local database to the reference-only baseline, loads `supabase/seeds/10_demo_data.sql`, and reapplies the post-seed taxonomy/privilege cleanup.
 
 All six demo Auth identities are deliberately login-capable with the shared development/test password `abcd1234`:
 
@@ -122,11 +122,11 @@ For the large synthetic dataset:
 npm run seed:bulk
 ```
 
-This resets the local database to the reference-only baseline, then explicitly loads `supabase/seed.sql`. The bulk fixture keeps its synthetic Auth rows for relational ownership, but they are not assigned the shared login password.
+This cleanly rebuilds the local database to the reference-only baseline, then explicitly loads `supabase/seed.sql`. The bulk fixture keeps its synthetic Auth rows for relational ownership, but they are not assigned the shared login password.
 
 The bulk load is intentionally opt-in and can take substantially longer than the demo/reference workflows on slower machines.
 
-The generated fixture seeds are intended for clean initialization and are not idempotent. Reset before switching between reference, demo, and bulk states.
+The generated fixture seeds are intended for clean initialization and are not idempotent. Each local seed command discards the current local database state before rebuilding it, so switching between reference, demo, and bulk states is explicit and repeatable.
 
 ## Hosted pre-launch load testing
 
