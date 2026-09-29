@@ -25,7 +25,9 @@ values
   ('jobvana-admin-company', '11111111-1111-4111-8111-111111111111'),
   ('planet-express-admin-company', '22222222-2222-4222-8222-222222222222'),
   ('philip-fry-job-seeker', '33333333-3333-4333-8333-333333333333'),
-  ('turanga-leela-job-seeker', '44444444-4444-4444-8444-444444444444')
+  ('turanga-leela-job-seeker', '44444444-4444-4444-8444-444444444444'),
+  ('new-company-onboarding', '55555555-5555-4555-8555-555555555555'),
+  ('new-job-seeker-onboarding', '66666666-6666-4666-8666-666666666666')
 ;
 
 insert into auth.users (
@@ -51,7 +53,9 @@ values
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111111', 'authenticated', 'authenticated', 'admin@jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"11111111-1111-4111-8111-111111111111","type":"company","email":"admin@jobvana.test","last_name":"Admin","first_name":"Jobvana","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '22222222-2222-4222-8222-222222222222', 'authenticated', 'authenticated', 'admin@planet-express.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"22222222-2222-4222-8222-222222222222","type":"company","email":"admin@planet-express.test","last_name":"Admin","first_name":"Planet Express","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '33333333-3333-4333-8333-333333333333', 'authenticated', 'authenticated', 'fry@example.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"33333333-3333-4333-8333-333333333333","type":"job_seeker","email":"fry@example.test","last_name":"Fry","first_name":"Philip","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
-  ('00000000-0000-0000-0000-000000000000', '44444444-4444-4444-8444-444444444444', 'authenticated', 'authenticated', 'leela@example.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"44444444-4444-4444-8444-444444444444","type":"job_seeker","email":"leela@example.test","last_name":"Leela","first_name":"Turanga","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', '')
+  ('00000000-0000-0000-0000-000000000000', '44444444-4444-4444-8444-444444444444', 'authenticated', 'authenticated', 'leela@example.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"44444444-4444-4444-8444-444444444444","type":"job_seeker","email":"leela@example.test","last_name":"Leela","first_name":"Turanga","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '55555555-5555-4555-8555-555555555555', 'authenticated', 'authenticated', 'new-company@jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"55555555-5555-4555-8555-555555555555","type":"company","email":"new-company@jobvana.test","last_name":"Company","first_name":"New","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '66666666-6666-4666-8666-666666666666', 'authenticated', 'authenticated', 'new-job-seeker@jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"66666666-6666-4666-8666-666666666666","type":"job_seeker","email":"new-job-seeker@jobvana.test","last_name":"Job Seeker","first_name":"New","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', '')
 ;
 
 insert into auth.identities (
