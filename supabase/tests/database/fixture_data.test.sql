@@ -2,16 +2,17 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(9);
+select plan(10);
 
-select is((select count(*)::integer from public.companies), 1005, 'fixture keeps 1005 companies');
-select is((select count(*)::integer from public.company_addresses), 2004, 'fixture keeps 2004 company addresses');
-select is((select count(*)::integer from public.company_tech_stacks), 1006, 'fixture keeps 1006 company tech-stack versions');
-select is((select count(*)::integer from public.jobs), 504, 'fixture keeps 504 jobs');
-select is((select count(*)::integer from public.job_roles), 508, 'fixture keeps 508 job roles');
-select is((select count(*)::integer from public.job_skills), 551, 'fixture keeps 551 job skills');
-select is((select count(*)::integer from public.job_skill_versions), 276, 'fixture keeps 276 job skill versions');
-select is((select count(*)::integer from public.job_seekers), 3, 'fixture keeps 3 job seekers');
+select is((select count(*)::integer from auth.users), 4, 'demo fixture keeps 4 auth users');
+select is((select count(*)::integer from public.companies), 2, 'demo fixture keeps 2 companies');
+select is((select count(*)::integer from public.company_addresses), 2, 'demo fixture keeps 2 company addresses');
+select is((select count(*)::integer from public.company_tech_stacks), 2, 'demo fixture keeps 2 company tech-stack versions');
+select is((select count(*)::integer from public.jobs), 4, 'demo fixture keeps 4 jobs');
+select is((select count(*)::integer from public.job_roles), 4, 'demo fixture keeps 4 job roles');
+select is((select count(*)::integer from public.job_skills), 3, 'demo fixture keeps 3 job skills');
+select is((select count(*)::integer from public.job_skill_versions), 3, 'demo fixture keeps 3 job skill versions');
+select is((select count(*)::integer from public.job_seekers), 2, 'demo fixture keeps 2 job seekers');
 
 select is(
   (
@@ -21,7 +22,7 @@ select is(
     where a.company_id <> j.company_id
   ),
   0,
-  'fixture job addresses belong to the same company as their jobs'
+  'demo fixture job addresses belong to the same company as their jobs'
 );
 
 select * from finish();
