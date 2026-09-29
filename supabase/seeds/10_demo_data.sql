@@ -161,7 +161,7 @@ insert into jobvana_fixture_jobs (fixture_key, created_at, company_key, title, j
 values
   ('jobvana-full-stack-software-engineer', '2026-09-02T12:00:00Z', 'jobvana', 'Full Stack Software Engineer', 'open', 'Build and maintain the Jobvana application.', 120000, 170000, '2026-09-02T12:00:00Z', 'full_time', 'annual', 'jobvana-hq'),
   ('jobvana-database-developer', '2026-09-02T12:00:00Z', 'jobvana', 'Database Developer', 'draft', 'Develop and optimize relational database features.', 110000, 150000, '2026-09-02T12:00:00Z', 'full_time', 'annual', 'jobvana-hq'),
-  ('planet-express-delivery-boy', '2026-09-02T12:00:00Z', 'planet-express', 'Delivery Boy', 'open', 'Deliver packages safely and eventually.', 18, 25, '2026-09-02T12:00:00Z', 'full_time', 'hourly', 'planet-express-hq'),
+  ('planet-express-delivery-boy', '2026-09-02T12:00:00Z', 'planet-express', 'Delivery Boy', 'open', 'Deliver packages safely and eventually.', 20, 25, '2026-09-02T12:00:00Z', 'full_time', 'hourly', 'planet-express-hq'),
   ('planet-express-systems-programmer', '2026-09-02T12:00:00Z', 'planet-express', 'Systems Programmer', 'open', 'Maintain the software that keeps Planet Express systems running.', 105000, 145000, '2026-09-02T12:00:00Z', 'full_time', 'annual', 'planet-express-hq')
 ;
 
