@@ -30,5 +30,21 @@
     "firstName": "Turanga",
     "lastName": "Leela",
     "key": "turanga-leela-job-seeker"
+  },
+  {
+    "id": "55555555-5555-4555-8555-555555555555",
+    "email": "new-company@jobvana.test",
+    "type": "company",
+    "firstName": "New",
+    "lastName": "Company",
+    "key": "new-company-onboarding"
+  },
+  {
+    "id": "66666666-6666-4666-8666-666666666666",
+    "email": "new-job-seeker@jobvana.test",
+    "type": "job_seeker",
+    "firstName": "New",
+    "lastName": "Job Seeker",
+    "key": "new-job-seeker-onboarding"
   }
 ]
