@@ -119,14 +119,15 @@ The generated fixture seeds are intended for clean initialization and are not id
 
 ## Hosted pre-launch load testing
 
-The bulk SQL can still be loaded into a linked pre-launch/test project when synthetic scale is needed:
+The bulk SQL can still be loaded into a linked pre-launch/test project when synthetic scale is needed. Because the generated fixture contains multiple SQL statements, use a native Postgres connection rather than `supabase db query --file`:
 
 ```bash
-supabase db query --linked --file supabase/seed.sql
-supabase db query --linked --file supabase/seeds/99_reset_taxonomy_sequences.sql
+psql "$JOBVANA_PRELAUNCH_DB_URL" -v ON_ERROR_STOP=1 \
+  -f supabase/seed.sql \
+  -f supabase/seeds/99_reset_taxonomy_sequences.sql
 ```
 
-Use this only for an explicitly selected non-production project. The normal deployment path should apply migrations/reference data without automatically loading synthetic marketplace fixtures.
+Set `JOBVANA_PRELAUNCH_DB_URL` to the direct or session-pooler connection string for the explicitly selected non-production project. The normal deployment path should apply migrations/reference data without automatically loading synthetic marketplace fixtures.
 
 ## CI behavior
 
