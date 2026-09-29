@@ -1,13 +1,38 @@
 # Synthetic fixture data
 
-The authored synthetic marketplace fixtures live under `fixture-data/`:
+Jobvana has three distinct database initialization paths:
+
+- **reference-only** — the production-safe default;
+- **demo/test** — a small explicit dataset for normal development and CI;
+- **bulk** — the large synthetic marketplace dataset for pagination, scrolling, query, and UI-load testing.
+
+The normal Supabase seed configuration does not create synthetic Auth users, companies, jobs, or job seekers.
+
+## Authored fixture data
+
+The bulk fixture source remains under `fixture-data/`:
 
 - `auth-users.json`
 - `companies.json`
 - `jobs.json`
 - `job-seekers.json`
 
-`scripts/load-fixture-data.mjs` validates those files and generates `supabase/seed.sql`. The JSON files are the maintained source; the generated SQL must not be edited by hand.
+The small demo fixture uses the same schema under `fixture-data/demo/`.
+
+The demo dataset contains:
+
+- 2 companies: Jobvana and Planet Express;
+- 2 company Auth identities;
+- 2 job-seeker Auth identities;
+- 2 job seekers;
+- 4 jobs, including Planet Express's Delivery Boy role.
+
+`scripts/load-fixture-data.mjs` validates both datasets. It generates:
+
+- `supabase/seed.sql` from the bulk fixture;
+- `supabase/seeds/10_demo_data.sql` from the demo fixture.
+
+The JSON files are the maintained source. Generated SQL must not be edited by hand.
 
 ## Stable references
 
@@ -15,10 +40,10 @@ Synthetic records use readable fixture-local keys for Auth users, companies, add
 
 Taxonomy references use stable taxonomy codes:
 
-- companies use `industryCode`
-- job roles use `roleCode`
-- skills use skill codes
-- skill versions use `skillCode` plus `versionCode`
+- companies use `industryCode`;
+- job roles use `roleCode`;
+- skills use skill codes;
+- skill versions use `skillCode` plus `versionCode`.
 
 The generated SQL resolves fixture keys and taxonomy codes when the fixture is loaded. Numeric IDs for companies, addresses, jobs, and job seekers are allocated from the database identity sequences during loading rather than authored in JSON.
 
@@ -26,31 +51,85 @@ Auth fixture UUIDs remain explicit because they identify the Auth users themselv
 
 ## Validation and generation
 
-Run:
+Validate both fixture sets:
 
 ```bash
 npm run fixture-data:check
+npm run demo-data:check
 ```
 
-The check rejects malformed records, unknown fields, duplicate fixture keys, unknown taxonomy codes, missing fixture references, addresses attached to the wrong company, duplicate relationships, invalid enums and timestamps, and unsupported active-resume references. It also fails if `supabase/seed.sql` is stale.
+The checks reject malformed records, unknown fields, duplicate fixture keys, unknown taxonomy codes, missing fixture references, addresses attached to the wrong company, duplicate relationships, invalid enums and timestamps, and unsupported active-resume references. They also fail when the corresponding generated SQL is stale.
 
-After editing fixture JSON:
+After editing bulk fixture JSON:
 
 ```bash
 npm run fixture-data:write
 npm run fixture-data:check
 ```
 
-## Auth fixtures
+After editing demo fixture JSON:
 
-Issue #45 preserves the existing Auth behavior while changing how the marketplace fixtures are represented. The converted Auth rows keep their existing fixture UUIDs, emails, profile metadata, identity rows, and the shared fixture password-login behavior.
+```bash
+npm run demo-data:write
+npm run demo-data:check
+```
 
-`supabase/seed.sql` creates the Auth rows from the structured fixture data. The post-seed compatibility block in `supabase/seeds/99_reset_taxonomy_sequences.sql` then stores bcrypt hashes for the shared eight-character fixture password used for development/test logins. This is intentionally transitional: issue #11 owns removal or isolation of predictable test identities, and issue #46 will separate production-safe, demo/test, and bulk load-test seed workflows.
+## Loading workflows
 
-## Current loading behavior
+### Reference data only
 
-This issue changes the source representation, not the seed path. `supabase/config.toml` still loads `supabase/seed.sql` during the normal local seed process, after the generated reference taxonomy seed and before the post-seed compatibility cleanup.
+This is the default and production-safe initialization path:
 
-A clean `supabase start` or `supabase db reset` therefore loads the complete generated fixture against the actual schema and taxonomy while retaining the previous fixture-login behavior. Database CI also runs fixture-count and Auth-compatibility checks to guard against accidental behavioral changes or loss of the load-test dataset.
+```bash
+npm run seed:reference
+```
 
-The generated fixture seed is intended for clean development/test initialization and is not idempotent.
+It runs `supabase db reset`. The configured default seed files are only:
+
+1. `supabase/seeds/01_reference_data.sql`
+2. `supabase/seeds/99_reset_taxonomy_sequences.sql`
+
+No synthetic Auth identities or marketplace fixtures are loaded.
+
+### Demo/test data
+
+For a small local development/test environment:
+
+```bash
+npm run seed:demo
+```
+
+This resets the local database to the reference-only baseline, loads `supabase/seeds/10_demo_data.sql`, and reapplies the post-seed taxonomy/privilege cleanup.
+
+The four demo Auth identities are deliberately login-capable with the shared development/test password `abcd1234`. Predictable login credentials exist only in this explicit demo workflow.
+
+### Bulk load-test data
+
+For the large synthetic dataset:
+
+```bash
+npm run seed:bulk
+```
+
+This resets the local database to the reference-only baseline, then explicitly loads `supabase/seed.sql`. The bulk fixture keeps its synthetic Auth rows for relational ownership, but they are not assigned the shared login password.
+
+The bulk load is intentionally opt-in and can take substantially longer than the demo/reference workflows on slower machines.
+
+The generated fixture seeds are intended for clean initialization and are not idempotent. Reset before switching between reference, demo, and bulk states.
+
+## Hosted pre-launch load testing
+
+The bulk SQL can still be loaded into a linked pre-launch/test project when synthetic scale is needed:
+
+```bash
+supabase db query --linked --file supabase/seed.sql
+supabase db query --linked --file supabase/seeds/99_reset_taxonomy_sequences.sql
+```
+
+Use this only for an explicitly selected non-production project. The normal deployment path should apply migrations/reference data without automatically loading synthetic marketplace fixtures.
+
+## CI behavior
+
+Routine database CI validates both structured fixture sets but starts Supabase with the reference-only default seed. CI verifies that no synthetic marketplace/Auth rows are present after that initialization, then explicitly loads the small demo fixture for login and database tests.
+
+Routine CI does not load the full bulk dataset. Bulk loading remains available for dedicated/manual load testing.
