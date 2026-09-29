@@ -1,0 +1,113 @@
+[
+  {
+    "key": "jobvana-full-stack-software-engineer",
+    "createdAt": "2026-09-02T12:00:00Z",
+    "companyKey": "jobvana",
+    "title": "Full Stack Software Engineer",
+    "status": "open",
+    "description": "Build and maintain the Jobvana application.",
+    "salaryLow": 120000,
+    "salaryHigh": 170000,
+    "updatedAt": "2026-09-02T12:00:00Z",
+    "type": "full_time",
+    "salaryType": "annual",
+    "companyAddressKey": "jobvana-hq",
+    "roles": [
+      {
+        "roleCode": "software-engineer",
+        "percent": 100,
+        "roleLevel": 3
+      }
+    ],
+    "skills": [
+      "node-js",
+      "javascript"
+    ],
+    "skillVersions": [
+      {
+        "skillCode": "node-js",
+        "versionCode": "v24"
+      },
+      {
+        "skillCode": "javascript",
+        "versionCode": "es2025"
+      }
+    ]
+  },
+  {
+    "key": "jobvana-database-developer",
+    "createdAt": "2026-09-02T12:00:00Z",
+    "companyKey": "jobvana",
+    "title": "Database Developer",
+    "status": "draft",
+    "description": "Develop and optimize relational database features.",
+    "salaryLow": 110000,
+    "salaryHigh": 150000,
+    "updatedAt": "2026-09-02T12:00:00Z",
+    "type": "full_time",
+    "salaryType": "annual",
+    "companyAddressKey": "jobvana-hq",
+    "roles": [
+      {
+        "roleCode": "database-developer",
+        "percent": 100,
+        "roleLevel": 2
+      }
+    ],
+    "skills": [
+      "microsoft-sql-server"
+    ],
+    "skillVersions": [
+      {
+        "skillCode": "microsoft-sql-server",
+        "versionCode": "sql-server-2022"
+      }
+    ]
+  },
+  {
+    "key": "planet-express-delivery-boy",
+    "createdAt": "2026-09-02T12:00:00Z",
+    "companyKey": "planet-express",
+    "title": "Delivery Boy",
+    "status": "open",
+    "description": "Deliver packages safely and eventually.",
+    "salaryLow": 18,
+    "salaryHigh": 25,
+    "updatedAt": "2026-09-02T12:00:00Z",
+    "type": "full_time",
+    "salaryType": "hourly",
+    "companyAddressKey": "planet-express-hq",
+    "roles": [
+      {
+        "roleCode": "delivery-boy",
+        "percent": 100,
+        "roleLevel": 1
+      }
+    ],
+    "skills": [],
+    "skillVersions": []
+  },
+  {
+    "key": "planet-express-systems-programmer",
+    "createdAt": "2026-09-02T12:00:00Z",
+    "companyKey": "planet-express",
+    "title": "Systems Programmer",
+    "status": "open",
+    "description": "Maintain the software that keeps Planet Express systems running.",
+    "salaryLow": 105000,
+    "salaryHigh": 145000,
+    "updatedAt": "2026-09-02T12:00:00Z",
+    "type": "full_time",
+    "salaryType": "annual",
+    "companyAddressKey": "planet-express-hq",
+    "roles": [
+      {
+        "roleCode": "systems-programmer",
+        "percent": 100,
+        "roleLevel": 3
+      }
+    ],
+    "skills": [],
+    "skillVersions": []
+  }
+]
