@@ -19,8 +19,8 @@
     "demo-data:check": "node scripts/load-fixture-data.mjs --dataset=demo --check",
     "demo-data:write": "node scripts/load-fixture-data.mjs --dataset=demo --write",
     "seed:reference": "supabase db reset",
-    "seed:demo": "supabase db reset && supabase db query --local --file supabase/seeds/10_demo_data.sql && supabase db query --local --file supabase/seeds/99_reset_taxonomy_sequences.sql",
-    "seed:bulk": "supabase db reset && supabase db query --local --file supabase/seed.sql && supabase db query --local --file supabase/seeds/99_reset_taxonomy_sequences.sql"
+    "seed:demo": "supabase db reset && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/10_demo_data.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
+    "seed:bulk": "supabase db reset && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seed.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.89.0",
