@@ -78,6 +78,18 @@ nvm use
 
 If Node 24 is not installed yet, run `nvm install` first. GitHub Actions reads the same `.nvmrc`, so local development and CI stay on the same Node major version.
 
+### Database seed workflows
+
+The default database reset is production-safe and loads only durable reference/taxonomy data. Synthetic marketplace data is opt-in:
+
+```bash
+npm run seed:reference
+npm run seed:demo
+npm run seed:bulk
+```
+
+Use `seed:demo` for the small login-capable development/test dataset and `seed:bulk` only when realistic synthetic volume is needed. See [docs/fixture-data.md](docs/fixture-data.md) for fixture generation, credentials, CI behavior, and hosted pre-launch loading.
+
 ## GitHub Project setup
 
 The repository includes `scripts/setup-github-project.sh` to create and seed the user-owned **Jobvana** GitHub Project.
