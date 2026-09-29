@@ -1,0 +1,18 @@
+[
+  {
+    "key": "job-seeker-philip-fry",
+    "createdAt": "2026-09-03T12:00:00Z",
+    "authUserKey": "philip-fry-job-seeker",
+    "firstName": "Philip",
+    "lastName": "Fry",
+    "activeResumeId": null
+  },
+  {
+    "key": "job-seeker-turanga-leela",
+    "createdAt": "2026-09-03T12:00:00Z",
+    "authUserKey": "turanga-leela-job-seeker",
+    "firstName": "Turanga",
+    "lastName": "Leela",
+    "activeResumeId": null
+  }
+]
