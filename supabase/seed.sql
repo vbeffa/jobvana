@@ -22,11 +22,11 @@ create temporary table jobvana_fixture_auth_users (
 
 insert into jobvana_fixture_auth_users (fixture_key, id)
 values
-  ('vlad-beffa-mac-com-company', 'e7345065-0baf-42cc-bbc1-5e663b063bfe'),
-  ('vlad-beffa-yahoo-com-job-seeker', '83612c89-7bf4-4553-82ad-c71b6c81a7ca'),
-  ('vlad-beffa-protonmail-com-job-seeker', '1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69'),
-  ('mihai-beffa-gmail-com-company', '3bde49b1-5277-4da7-8851-f322ec1858b3'),
-  ('john-doe-test-com-job-seeker', '8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a')
+  ('bulk-company-admin-1', 'e7345065-0baf-42cc-bbc1-5e663b063bfe'),
+  ('bulk-job-seeker-1', '83612c89-7bf4-4553-82ad-c71b6c81a7ca'),
+  ('bulk-job-seeker-2', '1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69'),
+  ('bulk-company-admin-2', '3bde49b1-5277-4da7-8851-f322ec1858b3'),
+  ('bulk-job-seeker-3', '8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a')
 ;
 
 insert into auth.users (
@@ -49,11 +49,11 @@ insert into auth.users (
   recovery_token
 )
 values
-  ('00000000-0000-0000-0000-000000000000', 'e7345065-0baf-42cc-bbc1-5e663b063bfe', 'authenticated', 'authenticated', 'vbeffa@mac.com', null, current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"e7345065-0baf-42cc-bbc1-5e663b063bfe","type":"company","email":"vbeffa@mac.com","last_name":"Beffa","first_name":"Vlad","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
-  ('00000000-0000-0000-0000-000000000000', '83612c89-7bf4-4553-82ad-c71b6c81a7ca', 'authenticated', 'authenticated', 'vbeffa@yahoo.com', null, current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"83612c89-7bf4-4553-82ad-c71b6c81a7ca","type":"job_seeker","email":"vbeffa@yahoo.com","last_name":"Beffa","first_name":"Vlad","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
-  ('00000000-0000-0000-0000-000000000000', '1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69', 'authenticated', 'authenticated', 'vbeffa@protonmail.com', null, current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69","type":"job_seeker","email":"vbeffa@protonmail.com","last_name":"Beffa","first_name":"Vlad","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
-  ('00000000-0000-0000-0000-000000000000', '3bde49b1-5277-4da7-8851-f322ec1858b3', 'authenticated', 'authenticated', 'mbeffa@gmail.com', null, current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"3bde49b1-5277-4da7-8851-f322ec1858b3","type":"company","email":"mbeffa@gmail.com","last_name":"Beffa","first_name":"Mihai","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
-  ('00000000-0000-0000-0000-000000000000', '8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a', 'authenticated', 'authenticated', 'johndoe@test.com', null, current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a","type":"job_seeker","email":"johndoe@test.com","last_name":"Doe","first_name":"John","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', '')
+  ('00000000-0000-0000-0000-000000000000', 'e7345065-0baf-42cc-bbc1-5e663b063bfe', 'authenticated', 'authenticated', 'company-1@bulk.jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"e7345065-0baf-42cc-bbc1-5e663b063bfe","type":"company","email":"company-1@bulk.jobvana.test","last_name":"Company Admin 1","first_name":"Bulk","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '83612c89-7bf4-4553-82ad-c71b6c81a7ca', 'authenticated', 'authenticated', 'job-seeker-1@bulk.jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"83612c89-7bf4-4553-82ad-c71b6c81a7ca","type":"job_seeker","email":"job-seeker-1@bulk.jobvana.test","last_name":"Job Seeker 1","first_name":"Bulk","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69', 'authenticated', 'authenticated', 'job-seeker-2@bulk.jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"1bc4ac48-c561-4f6a-bcad-8f5fb5de5f69","type":"job_seeker","email":"job-seeker-2@bulk.jobvana.test","last_name":"Job Seeker 2","first_name":"Bulk","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '3bde49b1-5277-4da7-8851-f322ec1858b3', 'authenticated', 'authenticated', 'company-2@bulk.jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"3bde49b1-5277-4da7-8851-f322ec1858b3","type":"company","email":"company-2@bulk.jobvana.test","last_name":"Company Admin 2","first_name":"Bulk","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a', 'authenticated', 'authenticated', 'job-seeker-3@bulk.jobvana.test', extensions.crypt('abcd1234', extensions.gen_salt('bf')), current_timestamp, null, null, '{"provider":"email","providers":["email"]}'::jsonb, '{"sub":"8ee9ca9b-6b1a-4b85-930e-6ff6c7e8fc9a","type":"job_seeker","email":"job-seeker-3@bulk.jobvana.test","last_name":"Job Seeker 3","first_name":"Bulk","email_verified":true,"phone_verified":false}'::jsonb, current_timestamp, current_timestamp, '', '', '', '')
 ;
 
 insert into auth.identities (
@@ -93,7 +93,7 @@ create temporary table jobvana_fixture_companies (
 
 insert into jobvana_fixture_companies (fixture_key, created_at, name, num_employees, industry_code, description, auth_user_key, contact_email, interview_process)
 values
-  ('jobvana', '2025-08-18 22:43:35.461937+00', 'Jobvana', 4, 'industrials', 'Jobvana brings transparency, speed, and efficiency to the job search process.', 'vlad-beffa-mac-com-company', 'vbeffa@protonmail.com', '{"rounds":[{"type":"recruiter","duration":11.75,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"technical","duration":1,"location":"video","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
+  ('jobvana', '2025-08-18 22:43:35.461937+00', 'Jobvana', 4, 'industrials', 'Jobvana brings transparency, speed, and efficiency to the job search process.', 'bulk-company-admin-1', 'company-1@bulk.jobvana.test', '{"rounds":[{"type":"recruiter","duration":11.75,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"technical","duration":1,"location":"video","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
   ('acme-widgets', '2025-08-18 22:44:06.840679+00', 'Acme Widgets', 27, 'real-estate-construction', 'Acme Widgets makes the widgets for your next project: home, office, anything. Check us out.', null, null, '{"rounds":[{"type":"recruiter","duration":12,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"recruiter","duration":1,"location":"office","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
   ('planet-express', '2025-08-18 22:45:04.262588+00', 'Planet Express', 6, 'consumer', 'Planet Express is a company in the Consumer industry', null, null, '{"rounds":[{"type":"management","duration":60,"location":"office","durationUnit":"minute"}],"pipeline_size":4}'::jsonb),
   ('caresyncx', '2025-08-26 02:35:07.62378+00', 'CareSyncX', 73, 'financial-technology', 'Patient data integration for hospital networks.', null, null, '{"rounds":[{"type":"recruiter","duration":12,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"recruiter","duration":1,"location":"office","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
@@ -1097,7 +1097,7 @@ values
   ('transactlynextcloud', '2025-08-26 02:35:07.62378+00', 'TransactlyNextCloud', 70, 'financial-technology', 'Instant payment APIs for e-commerce platforms.', null, null, '{"rounds":[{"type":"recruiter","duration":12,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"recruiter","duration":1,"location":"office","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
   ('stackpilot360', '2025-08-26 02:35:07.62378+00', 'StackPilot360', 25, 'consumer', 'DevOps monitoring and deployment automation.', null, null, '{"rounds":[{"type":"recruiter","duration":12,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"recruiter","duration":1,"location":"office","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
   ('xyzzy', '2025-09-08 17:00:02.491693+00', 'Xyzzy', 5, 'b2b-software', 'You Are In a Maze of Twisty Little Passages, All Alike', null, null, '{"rounds":[{"type":"recruiter","duration":12,"location":"phone","durationUnit":"hour"},{"type":"take_home","duration":7,"location":"offline","durationUnit":"day"},{"type":"recruiter","duration":1,"location":"office","durationUnit":"hour"},{"type":"management","duration":20,"location":"video","durationUnit":"minute"}],"pipeline_size":10}'::jsonb),
-  ('sequent-microsystems', '2025-09-28 01:54:59.159979+00', 'Sequent Microsystems', 2, 'industrials', 'Connecting Raspberry Pi to the Real World', 'mihai-beffa-gmail-com-company', null, '{"rounds":[{"type":"technical","duration":1,"location":"office","durationUnit":"hour"},{"type":"recruiter","duration":5,"location":"phone","durationUnit":"minute"},{"type":"hr","duration":1,"location":"video","durationUnit":"hour"},{"type":"coding","duration":1,"location":"office","durationUnit":"hour"}]}'::jsonb)
+  ('sequent-microsystems', '2025-09-28 01:54:59.159979+00', 'Sequent Microsystems', 2, 'industrials', 'Connecting Raspberry Pi to the Real World', 'bulk-company-admin-2', null, '{"rounds":[{"type":"technical","duration":1,"location":"office","durationUnit":"hour"},{"type":"recruiter","duration":5,"location":"phone","durationUnit":"minute"},{"type":"hr","duration":1,"location":"video","durationUnit":"hour"},{"type":"coding","duration":1,"location":"office","durationUnit":"hour"}]}'::jsonb)
 ;
 
 insert into public.companies (id, created_at, name, num_employees, industry_id, description, user_id, contact_email, interview_process)
@@ -6054,9 +6054,9 @@ create temporary table jobvana_fixture_job_seekers (
 
 insert into jobvana_fixture_job_seekers (fixture_key, created_at, auth_user_key, first_name, last_name, active_resume_id)
 values
-  ('job-seeker-vlad-beffa-yahoo-com-job-seeker', '2025-10-02 17:52:21.055148+00', 'vlad-beffa-yahoo-com-job-seeker', 'Vlad', 'Beffa', null),
-  ('job-seeker-john-doe-test-com-job-seeker', '2025-10-06 21:14:18.735268+00', 'john-doe-test-com-job-seeker', 'John', 'Doe', null),
-  ('job-seeker-vlad-beffa-protonmail-com-job-seeker', '2025-10-15 23:07:32.161909+00', 'vlad-beffa-protonmail-com-job-seeker', 'Vlad', 'Beffa', null)
+  ('job-seeker-vlad-beffa-yahoo-com-job-seeker', '2025-10-02 17:52:21.055148+00', 'bulk-job-seeker-1', 'Bulk', 'Job Seeker 1', null),
+  ('job-seeker-john-doe-test-com-job-seeker', '2025-10-06 21:14:18.735268+00', 'bulk-job-seeker-3', 'Bulk', 'Job Seeker 3', null),
+  ('job-seeker-vlad-beffa-protonmail-com-job-seeker', '2025-10-15 23:07:32.161909+00', 'bulk-job-seeker-2', 'Bulk', 'Job Seeker 2', null)
 ;
 
 insert into public.job_seekers (id, created_at, user_id, first_name, last_name, active_resume_id)

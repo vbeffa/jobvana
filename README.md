@@ -88,6 +88,26 @@ npm run supabase:start:local
 
 This command creates or reuses the `jobvana-local` Docker network, binds published Supabase ports to `127.0.0.1`, and starts Supabase with that network. Keeping the local services on loopback avoids VPN interference with Docker's default all-interface bindings and prevents the development stack from being exposed to the LAN. If Supabase is already running from a plain `supabase start`, stop it once before switching to this command.
 
+By default, `npm run dev` continues to use the repository's existing Vite environment configuration, which currently points at the hosted pre-launch database. To run the frontend against an already-running local Supabase stack instead, use:
+
+```bash
+npm run dev:local
+```
+
+`dev:local` reads the local API URL and publishable/anon key from `supabase status` and does not start Docker automatically.
+
+### Database seed workflows
+
+The local seed commands perform a clean local rebuild by stopping Supabase with `--no-backup` and restarting it through the localhost-bound `jobvana-local` network. This avoids the host-side `supabase db reset` connection path that can be blocked by a VPN. Synthetic marketplace data remains opt-in:
+
+```bash
+npm run seed:reference
+npm run seed:demo
+npm run seed:bulk
+```
+
+Use `seed:reference` for the production-safe reference/taxonomy baseline, `seed:demo` for the small login-capable development/test dataset, and `seed:bulk` only when realistic synthetic volume is needed. These commands discard existing local database state. See [docs/fixture-data.md](docs/fixture-data.md) for fixture generation, credentials, CI behavior, and hosted pre-launch loading.
+
 ## GitHub Project setup
 
 The repository includes `scripts/setup-github-project.sh` to create and seed the user-owned **Jobvana** GitHub Project.

@@ -16,7 +16,14 @@
     "lint:all": "npm run lint && npm run lint:sql",
     "fixture-data:check": "node scripts/load-fixture-data.mjs --check",
     "fixture-data:write": "node scripts/load-fixture-data.mjs --write",
-    "supabase:start:local": "node scripts/start-local-supabase.mjs"
+    "demo-data:check": "node scripts/load-fixture-data.mjs --dataset=demo --check",
+    "demo-data:write": "node scripts/load-fixture-data.mjs --dataset=demo --write",
+    "seed:reference": "npm run supabase:reset:local",
+    "seed:demo": "npm run supabase:reset:local && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/10_demo_data.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
+    "seed:bulk": "npm run supabase:reset:local && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seed.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
+    "dev:local": "node scripts/dev-local.mjs",
+    "supabase:start:local": "node scripts/start-local-supabase.mjs",
+    "supabase:reset:local": "supabase stop --no-backup && npm run supabase:start:local"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.89.0",
@@ -43,7 +50,7 @@
     "eslint": "^10.0.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.0",
-    "supabase": "^2.67.3",
+    "supabase": "2.118.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.50.1",
     "vite": "^8.0.0"

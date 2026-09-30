@@ -1,0 +1,50 @@
+[
+  {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "email": "admin@jobvana.test",
+    "type": "company",
+    "firstName": "Jobvana",
+    "lastName": "Admin",
+    "key": "jobvana-admin-company"
+  },
+  {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "email": "admin@planet-express.test",
+    "type": "company",
+    "firstName": "Planet Express",
+    "lastName": "Admin",
+    "key": "planet-express-admin-company"
+  },
+  {
+    "id": "33333333-3333-4333-8333-333333333333",
+    "email": "fry@example.test",
+    "type": "job_seeker",
+    "firstName": "Philip",
+    "lastName": "Fry",
+    "key": "philip-fry-job-seeker"
+  },
+  {
+    "id": "44444444-4444-4444-8444-444444444444",
+    "email": "leela@example.test",
+    "type": "job_seeker",
+    "firstName": "Turanga",
+    "lastName": "Leela",
+    "key": "turanga-leela-job-seeker"
+  },
+  {
+    "id": "55555555-5555-4555-8555-555555555555",
+    "email": "new-company@jobvana.test",
+    "type": "company",
+    "firstName": "New",
+    "lastName": "Company",
+    "key": "new-company-onboarding"
+  },
+  {
+    "id": "66666666-6666-4666-8666-666666666666",
+    "email": "new-job-seeker@jobvana.test",
+    "type": "job_seeker",
+    "firstName": "New",
+    "lastName": "Job Seeker",
+    "key": "new-job-seeker-onboarding"
+  }
+]

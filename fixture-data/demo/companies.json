@@ -1,0 +1,61 @@
+[
+  {
+    "key": "jobvana",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "name": "Jobvana",
+    "numEmployees": 4,
+    "industryCode": "b2b-software",
+    "description": "Demo company for exercising Jobvana company-account and hiring workflows.",
+    "authUserKey": "jobvana-admin-company",
+    "contactEmail": "admin@jobvana.test",
+    "interviewProcess": null,
+    "addresses": [
+      {
+        "key": "jobvana-hq",
+        "street": "1 Jobvana Way",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "type": "headquarters",
+        "street2": null,
+        "phone": null,
+        "location": null
+      }
+    ],
+    "techStackVersions": [
+      {
+        "skillCode": "node-js",
+        "versionCode": "v24"
+      },
+      {
+        "skillCode": "javascript",
+        "versionCode": "es2025"
+      }
+    ]
+  },
+  {
+    "key": "planet-express",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "name": "Planet Express",
+    "numEmployees": 12,
+    "industryCode": "consumer",
+    "description": "Synthetic interplanetary delivery company used for demo and test data.",
+    "authUserKey": "planet-express-admin-company",
+    "contactEmail": "admin@planet-express.test",
+    "interviewProcess": null,
+    "addresses": [
+      {
+        "key": "planet-express-hq",
+        "street": "1 Planet Express Plaza",
+        "city": "New New York",
+        "state": "NY",
+        "zip": "10001",
+        "type": "headquarters",
+        "street2": null,
+        "phone": null,
+        "location": null
+      }
+    ],
+    "techStackVersions": []
+  }
+]
