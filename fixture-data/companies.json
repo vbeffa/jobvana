@@ -5,8 +5,8 @@
     "numEmployees": 4,
     "industryCode": "industrials",
     "description": "Jobvana brings transparency, speed, and efficiency to the job search process.",
-    "authUserKey": "vlad-beffa-mac-com-company",
-    "contactEmail": "vbeffa@protonmail.com",
+    "authUserKey": "bulk-company-admin-1",
+    "contactEmail": "company-1@bulk.jobvana.test",
     "interviewProcess": {
       "rounds": [
         {
@@ -69087,7 +69087,7 @@
     "numEmployees": 2,
     "industryCode": "industrials",
     "description": "Connecting Raspberry Pi to the Real World",
-    "authUserKey": "mihai-beffa-gmail-com-company",
+    "authUserKey": "bulk-company-admin-2",
     "contactEmail": null,
     "interviewProcess": {
       "rounds": [

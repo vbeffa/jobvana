@@ -16,7 +16,7 @@ const datasets = {
     },
     sourceLabel: 'fixture-data/*.json',
     regenerateCommand: 'npm run fixture-data:write',
-    loginPassword: null
+    loginPassword: 'abcd1234'
   },
   demo: {
     outputPath: resolve(root, 'supabase/seeds/10_demo_data.sql'),

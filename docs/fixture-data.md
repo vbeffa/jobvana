@@ -112,7 +112,7 @@ All six demo Auth identities are deliberately login-capable with the shared deve
 | Company onboarding | `new-company@jobvana.test` | Auth + company registration only; no company profile |
 | Job-seeker onboarding | `new-job-seeker@jobvana.test` | Auth + job-seeker registration only; no job-seeker profile |
 
-The two onboarding identities deliberately omit their corresponding marketplace profile rows so logging in enters the company or job-seeker onboarding UI. Running `npm run seed:demo` restores that initial state after either onboarding flow has been completed. Predictable login credentials exist only in this explicit demo workflow.
+The two onboarding identities deliberately omit their corresponding marketplace profile rows so logging in enters the company or job-seeker onboarding UI. Running `npm run seed:demo` restores that initial state after either onboarding flow has been completed. These predictable credentials are confined to explicit non-production fixture workflows.
 
 ### Bulk load-test data
 
@@ -122,7 +122,17 @@ For the large synthetic dataset:
 npm run seed:bulk
 ```
 
-This cleanly rebuilds the local database to the reference-only baseline, then explicitly loads `supabase/seed.sql`. The bulk fixture keeps its synthetic Auth rows for relational ownership, but they are not assigned the shared login password.
+This cleanly rebuilds the local database to the reference-only baseline, then explicitly loads `supabase/seed.sql`. The bulk fixture uses separate synthetic identities from the demo dataset and assigns the shared development/test password `abcd1234` so the large dataset can be inspected through the application.
+
+| Purpose | Email |
+| --- | --- |
+| Bulk company admin 1 | `company-1@bulk.jobvana.test` |
+| Bulk company admin 2 | `company-2@bulk.jobvana.test` |
+| Bulk job seeker 1 | `job-seeker-1@bulk.jobvana.test` |
+| Bulk job seeker 2 | `job-seeker-2@bulk.jobvana.test` |
+| Bulk job seeker 3 | `job-seeker-3@bulk.jobvana.test` |
+
+These identities replace the legacy personal-looking bulk fixture addresses and are independent of the stable demo personas used for functional/integration testing.
 
 The bulk load is intentionally opt-in and can take substantially longer than the demo/reference workflows on slower machines.
 
