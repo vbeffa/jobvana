@@ -647,38 +647,6 @@
     ]
   },
   {
-    "code": "extensible-markup-language-format",
-    "name": "Extensible Markup Language (format)",
-    "notes": "This duplicates a corresponding skill under Markup languages.",
-    "versions": [
-      {
-        "code": "1-1",
-        "notes": "XML 1.1 is not very widely implemented and is recommended for use only by those who need its particular features.\n\nSee https://en.wikipedia.org/wiki/XML#Versions.",
-        "ordinal": 1,
-        "version": "1.1",
-        "reference": "https://www.w3.org/TR/2006/REC-xml11-20060816/",
-        "bootstrapId": 46,
-        "releaseDate": "2006-08-16"
-      },
-      {
-        "code": "1-0",
-        "notes": null,
-        "ordinal": 2,
-        "version": "1.0",
-        "reference": "https://www.w3.org/TR/2008/REC-xml-20081126/",
-        "bootstrapId": 45,
-        "releaseDate": "2008-11-26"
-      }
-    ],
-    "reference": "https://www.w3.org/XML/",
-    "bootstrapId": 17,
-    "description": "Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.",
-    "abbreviation": "XML",
-    "categoryCodes": [
-      "data-interchange-format"
-    ]
-  },
-  {
     "code": "javascript-object-notation",
     "name": "JavaScript Object Notation",
     "notes": "RFC 8259 - see https://www.rfc-editor.org/rfc/rfc8259.txt.",
@@ -1143,14 +1111,34 @@
   {
     "code": "extensible-markup-language",
     "name": "Extensible Markup Language",
-    "notes": "This duplicates a corresponding skill under Data-interchange formats.",
-    "versions": [],
+    "notes": null,
+    "versions": [
+      {
+        "code": "1-1",
+        "notes": "XML 1.1 is not very widely implemented and is recommended for use only by those who need its particular features.\n\nSee https://en.wikipedia.org/wiki/XML#Versions.",
+        "ordinal": 1,
+        "version": "1.1",
+        "reference": "https://www.w3.org/TR/2006/REC-xml11-20060816/",
+        "bootstrapId": 46,
+        "releaseDate": "2006-08-16"
+      },
+      {
+        "code": "1-0",
+        "notes": null,
+        "ordinal": 2,
+        "version": "1.0",
+        "reference": "https://www.w3.org/TR/2008/REC-xml-20081126/",
+        "bootstrapId": 45,
+        "releaseDate": "2008-11-26"
+      }
+    ],
     "reference": "https://www.w3.org/XML/",
     "bootstrapId": 34,
     "description": "Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.",
     "abbreviation": "XML",
     "categoryCodes": [
-      "markup-language"
+      "markup-language",
+      "data-interchange-format"
     ]
   }
 ]
