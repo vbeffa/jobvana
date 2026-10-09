@@ -1551,30 +1551,6 @@ on conflict (skill_id, code) do update set
   ordinal = excluded.ordinal;
 
 insert into public.skill_versions (id, skill_id, code, version, reference, notes, release_date, ordinal)
-select 46, s.id, '1-1', '1.1', 'https://www.w3.org/TR/2006/REC-xml11-20060816/', 'XML 1.1 is not very widely implemented and is recommended for use only by those who need its particular features.
-
-See https://en.wikipedia.org/wiki/XML#Versions.', '2006-08-16', 1
-from public.skills s
-where s.code = 'extensible-markup-language'
-on conflict (skill_id, code) do update set
-  version = excluded.version,
-  reference = excluded.reference,
-  notes = excluded.notes,
-  release_date = excluded.release_date,
-  ordinal = excluded.ordinal;
-
-insert into public.skill_versions (id, skill_id, code, version, reference, notes, release_date, ordinal)
-select 45, s.id, '1-0', '1.0', 'https://www.w3.org/TR/2008/REC-xml-20081126/', null, '2008-11-26', 2
-from public.skills s
-where s.code = 'extensible-markup-language'
-on conflict (skill_id, code) do update set
-  version = excluded.version,
-  reference = excluded.reference,
-  notes = excluded.notes,
-  release_date = excluded.release_date,
-  ordinal = excluded.ordinal;
-
-insert into public.skill_versions (id, skill_id, code, version, reference, notes, release_date, ordinal)
 select 50, s.id, '2017', '2017', 'https://www.rfc-editor.org/rfc/rfc8259.txt', null, '2017-12-01', 1
 from public.skills s
 where s.code = 'javascript-object-notation'
@@ -1868,6 +1844,30 @@ insert into public.skill_versions (id, skill_id, code, version, reference, notes
 select 75, s.id, '5-9-2', '5.9.2', 'https://github.com/microsoft/TypeScript/releases/tag/v5.9.2', null, '2025-07-31', 3
 from public.skills s
 where s.code = 'typescript'
+on conflict (skill_id, code) do update set
+  version = excluded.version,
+  reference = excluded.reference,
+  notes = excluded.notes,
+  release_date = excluded.release_date,
+  ordinal = excluded.ordinal;
+
+insert into public.skill_versions (id, skill_id, code, version, reference, notes, release_date, ordinal)
+select 46, s.id, '1-1', '1.1', 'https://www.w3.org/TR/2006/REC-xml11-20060816/', 'XML 1.1 is not very widely implemented and is recommended for use only by those who need its particular features.
+
+See https://en.wikipedia.org/wiki/XML#Versions.', '2006-08-16', 1
+from public.skills s
+where s.code = 'extensible-markup-language'
+on conflict (skill_id, code) do update set
+  version = excluded.version,
+  reference = excluded.reference,
+  notes = excluded.notes,
+  release_date = excluded.release_date,
+  ordinal = excluded.ordinal;
+
+insert into public.skill_versions (id, skill_id, code, version, reference, notes, release_date, ordinal)
+select 45, s.id, '1-0', '1.0', 'https://www.w3.org/TR/2008/REC-xml-20081126/', null, '2008-11-26', 2
+from public.skills s
+where s.code = 'extensible-markup-language'
 on conflict (skill_id, code) do update set
   version = excluded.version,
   reference = excluded.reference,
