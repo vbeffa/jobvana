@@ -639,15 +639,6 @@ on conflict (code) do update set
   notes = excluded.notes;
 
 insert into public.skills (id, code, name, description, abbreviation, reference, notes)
-values (17, 'extensible-markup-language-format', 'Extensible Markup Language (format)', 'Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.', 'XML', 'https://www.w3.org/XML/', 'This duplicates a corresponding skill under Markup languages.')
-on conflict (code) do update set
-  name = excluded.name,
-  description = excluded.description,
-  abbreviation = excluded.abbreviation,
-  reference = excluded.reference,
-  notes = excluded.notes;
-
-insert into public.skills (id, code, name, description, abbreviation, reference, notes)
 values (18, 'javascript-object-notation', 'JavaScript Object Notation', 'JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is based on a subset of the JavaScript Programming Language Standard ECMA-262 3rd Edition - December 1999.', 'JSON', 'https://www.json.org/', 'RFC 8259 - see https://www.rfc-editor.org/rfc/rfc8259.txt.')
 on conflict (code) do update set
   name = excluded.name,
@@ -792,7 +783,7 @@ on conflict (code) do update set
   notes = excluded.notes;
 
 insert into public.skills (id, code, name, description, abbreviation, reference, notes)
-values (34, 'extensible-markup-language', 'Extensible Markup Language', 'Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.', 'XML', 'https://www.w3.org/XML/', 'This duplicates a corresponding skill under Data-interchange formats.')
+values (34, 'extensible-markup-language', 'Extensible Markup Language', 'Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.', 'XML', 'https://www.w3.org/XML/', null)
 on conflict (code) do update set
   name = excluded.name,
   description = excluded.description,
@@ -916,13 +907,6 @@ insert into public.skill_category_memberships (skill_id, skill_category_id)
 select s.id, c.id
 from public.skills s
 join public.skill_categories c on c.code = 'data-interchange-format'
-where s.code = 'extensible-markup-language-format'
-on conflict do nothing;
-
-insert into public.skill_category_memberships (skill_id, skill_category_id)
-select s.id, c.id
-from public.skills s
-join public.skill_categories c on c.code = 'data-interchange-format'
 where s.code = 'javascript-object-notation'
 on conflict do nothing;
 
@@ -1035,6 +1019,13 @@ insert into public.skill_category_memberships (skill_id, skill_category_id)
 select s.id, c.id
 from public.skills s
 join public.skill_categories c on c.code = 'markup-language'
+where s.code = 'extensible-markup-language'
+on conflict do nothing;
+
+insert into public.skill_category_memberships (skill_id, skill_category_id)
+select s.id, c.id
+from public.skills s
+join public.skill_categories c on c.code = 'data-interchange-format'
 where s.code = 'extensible-markup-language'
 on conflict do nothing;
 
@@ -1564,7 +1555,7 @@ select 46, s.id, '1-1', '1.1', 'https://www.w3.org/TR/2006/REC-xml11-20060816/',
 
 See https://en.wikipedia.org/wiki/XML#Versions.', '2006-08-16', 1
 from public.skills s
-where s.code = 'extensible-markup-language-format'
+where s.code = 'extensible-markup-language'
 on conflict (skill_id, code) do update set
   version = excluded.version,
   reference = excluded.reference,
@@ -1575,7 +1566,7 @@ on conflict (skill_id, code) do update set
 insert into public.skill_versions (id, skill_id, code, version, reference, notes, release_date, ordinal)
 select 45, s.id, '1-0', '1.0', 'https://www.w3.org/TR/2008/REC-xml-20081126/', null, '2008-11-26', 2
 from public.skills s
-where s.code = 'extensible-markup-language-format'
+where s.code = 'extensible-markup-language'
 on conflict (skill_id, code) do update set
   version = excluded.version,
   reference = excluded.reference,
