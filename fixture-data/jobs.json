@@ -503,7 +503,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -617,7 +617,7 @@
     ],
     "skillVersions": [
       {
-        "skillCode": "extensible-markup-language-format",
+        "skillCode": "extensible-markup-language",
         "versionCode": "1-0"
       }
     ]
@@ -3102,7 +3102,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": []
   },
@@ -4768,7 +4768,7 @@
         "versionCode": "15"
       },
       {
-        "skillCode": "extensible-markup-language-format",
+        "skillCode": "extensible-markup-language",
         "versionCode": "1-1"
       }
     ]
@@ -4979,7 +4979,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": []
   },
@@ -5034,7 +5034,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": []
   },
@@ -5084,7 +5084,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": []
   },
@@ -5329,7 +5329,7 @@
     ],
     "skillVersions": [
       {
-        "skillCode": "extensible-markup-language-format",
+        "skillCode": "extensible-markup-language",
         "versionCode": "1-1"
       }
     ]
@@ -5355,7 +5355,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -7629,7 +7629,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": []
   },
@@ -7654,11 +7654,11 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
-        "skillCode": "extensible-markup-language-format",
+        "skillCode": "extensible-markup-language",
         "versionCode": "1-1"
       }
     ]
@@ -7938,7 +7938,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -9092,7 +9092,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -9376,7 +9376,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": []
   },
@@ -9810,7 +9810,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -10403,7 +10403,7 @@
     ],
     "skills": [
       "macos",
-      "extensible-markup-language-format",
+      "extensible-markup-language",
       "internet-protocol-suite"
     ],
     "skillVersions": [
@@ -10536,7 +10536,7 @@
     ],
     "skillVersions": [
       {
-        "skillCode": "extensible-markup-language-format",
+        "skillCode": "extensible-markup-language",
         "versionCode": "1-1"
       },
       {
@@ -11218,7 +11218,7 @@
         "versionCode": "17"
       },
       {
-        "skillCode": "extensible-markup-language-format",
+        "skillCode": "extensible-markup-language",
         "versionCode": "1-1"
       },
       {
@@ -12802,7 +12802,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -13133,7 +13133,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {
@@ -13252,7 +13252,7 @@
       }
     ],
     "skills": [
-      "extensible-markup-language-format"
+      "extensible-markup-language"
     ],
     "skillVersions": [
       {

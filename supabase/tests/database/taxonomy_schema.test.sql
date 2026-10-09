@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(29);
+select plan(33);
 
 select is(
   (
@@ -461,6 +461,41 @@ select lives_ok(
     set retired_at = now()
     where code = 'taxonomy-schema-test-skill'$$,
   'taxonomy entities can be retired without deletion'
+);
+
+-- Issue #32: XML is one active skill, classified under both categories.
+select is(
+  (select count(*)::integer from public.skills
+   where code in ('extensible-markup-language', 'extensible-markup-language-format')
+     and retired_at is null),
+  1,
+  'only the canonical XML skill is active'
+);
+
+select results_eq(
+  $query$select c.code
+    from public.skill_category_memberships m
+    join public.skills s on s.id = m.skill_id
+    join public.skill_categories c on c.id = m.skill_category_id
+    where s.code = 'extensible-markup-language'
+    order by c.code$query$,
+  array['data-interchange-format'::text, 'markup-language'::text],
+  'XML belongs to both the interchange-format and markup-language categories'
+);
+
+select results_eq(
+  $query$select code from public.skill_versions
+    where skill_id = (select id from public.skills where code = 'extensible-markup-language')
+    order by ordinal$query$,
+  array['1-1'::text, '1-0'::text],
+  'both XML versions are associated with the canonical skill'
+);
+
+select is(
+  (select count(*)::integer from public.skills
+   where code = 'extensible-markup-language-format' and retired_at is null),
+  0,
+  'the duplicate XML format skill is never loaded as active'
 );
 
 select * from finish();
