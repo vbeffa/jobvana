@@ -64,7 +64,7 @@ jobs:
           python-version: '3.14'
 
       - name: Install SQLFluff
-        run: pip install sqlfluff==4.3.0
+        run: pip install sqlfluff==4.4.0
 
       - name: Lint SQL
         run: sqlfluff lint supabase/migrations supabase/seeds
@@ -72,7 +72,7 @@ jobs:
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v3
         with:
-          version: 2.118.0
+          version: 2.120.0
 
       - name: Start local Supabase
         run: supabase start
