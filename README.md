@@ -96,9 +96,17 @@ npm run dev:local
 
 `dev:local` reads the local API URL and publishable/anon key from `supabase status` and does not start Docker automatically.
 
-### Database seed workflows
+### Local restart and database seed workflows
 
-The local seed commands perform a clean local rebuild by stopping Supabase with `--no-backup` and restarting it through the localhost-bound `jobvana-local` network. This avoids the host-side `supabase db reset` connection path that can be blocked by a VPN. Synthetic marketplace data remains opt-in:
+To restart local Supabase without intentionally discarding the database or Storage data, run:
+
+```bash
+npm run supabase:restart:local
+```
+
+This uses a normal `supabase stop` followed by `supabase:start:local`, preserving the localhost-bound `jobvana-local` Docker network. Do not use `supabase:reset:local` for a data-preserving restart.
+
+The seed commands have different effects: `seed:reference` performs a clean local rebuild, while `seed:demo` and `seed:bulk` load synthetic SQL into the **existing running local database** without automatically resetting it. Synthetic marketplace data remains opt-in:
 
 ```bash
 npm run seed:reference
@@ -106,7 +114,7 @@ npm run seed:demo
 npm run seed:bulk
 ```
 
-Use `seed:reference` for the production-safe reference/taxonomy baseline, `seed:demo` for the small login-capable development/test dataset, and `seed:bulk` only when realistic synthetic volume is needed. These commands discard existing local database state. See [docs/fixture-data.md](docs/fixture-data.md) for fixture generation, credentials, CI behavior, and hosted pre-launch loading.
+Use `seed:reference` for a clean reference/taxonomy baseline, `seed:demo` for the small login-capable development/test dataset, and `seed:bulk` only when realistic synthetic volume is needed. The demo and bulk fixture SQL is **not idempotent**: rerunning either against existing fixtures may fail with duplicate-key or related constraint errors. They do not erase existing users, applications, or stored resumes, but may add records before a later statement fails. To intentionally discard local state, use `supabase:reset:local`. See [docs/fixture-data.md](docs/fixture-data.md) for fixture generation, credentials, CI behavior, and hosted pre-launch loading.
 
 ## GitHub Project setup
 
