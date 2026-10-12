@@ -73,7 +73,7 @@ if (start.status !== 0) {
 }
 
 // Existing local databases do not necessarily contain buckets declared in config.toml.
-const seedBuckets = spawnSync('supabase', ['seed', 'buckets', '--local'], {
+const seedBuckets = spawnSync('supabase', ['seed', 'buckets', '--local', '--yes'], {
   stdio: 'inherit'
 });
 
