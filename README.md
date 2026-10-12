@@ -86,7 +86,7 @@ Start the local Supabase stack with:
 npm run supabase:start:local
 ```
 
-This command creates or reuses the `jobvana-local` Docker network, binds published Supabase ports to `127.0.0.1`, and starts Supabase with that network. Keeping the local services on loopback avoids VPN interference with Docker's default all-interface bindings and prevents the development stack from being exposed to the LAN. If Supabase is already running from a plain `supabase start`, stop it once before switching to this command.
+This command creates or reuses the `jobvana-local` Docker network, binds published Supabase ports to `127.0.0.1`, starts Supabase with that network, and seeds the private `resumes` and `application_resumes` Storage buckets declared in `supabase/config.toml`. Keeping the local services on loopback avoids VPN interference with Docker's default all-interface bindings and prevents the development stack from being exposed to the LAN. If Supabase is already running from a plain `supabase start`, stop it once before switching to this command.
 
 By default, `npm run dev` continues to use the repository's existing Vite environment configuration, which currently points at the hosted pre-launch database. To run the frontend against an already-running local Supabase stack instead, use:
 
