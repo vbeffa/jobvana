@@ -68,4 +68,18 @@ if (start.error) {
   process.exit(1);
 }
 
-process.exit(start.status ?? 0);
+if (start.status !== 0) {
+  process.exit(start.status ?? 1);
+}
+
+// Existing local databases do not necessarily contain buckets declared in config.toml.
+const seedBuckets = spawnSync('supabase', ['seed', 'buckets', '--local'], {
+  stdio: 'inherit'
+});
+
+if (seedBuckets.error) {
+  console.error(seedBuckets.error.message);
+  process.exit(1);
+}
+
+process.exit(seedBuckets.status ?? 1);
