@@ -19,11 +19,12 @@
     "demo-data:check": "node scripts/load-fixture-data.mjs --dataset=demo --check",
     "demo-data:write": "node scripts/load-fixture-data.mjs --dataset=demo --write",
     "seed:reference": "npm run supabase:reset:local",
-    "seed:demo": "npm run supabase:reset:local && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/10_demo_data.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
-    "seed:bulk": "npm run supabase:reset:local && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seed.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
+    "seed:demo": "docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/10_demo_data.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
+    "seed:bulk": "docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seed.sql && docker exec -i supabase_db_jobvana psql -U postgres -d postgres -v ON_ERROR_STOP=1 < supabase/seeds/99_reset_taxonomy_sequences.sql",
     "dev:local": "node scripts/dev-local.mjs",
     "supabase:start:local": "node scripts/start-local-supabase.mjs",
-    "supabase:reset:local": "supabase stop --no-backup && npm run supabase:start:local"
+    "supabase:reset:local": "supabase stop --no-backup && npm run supabase:start:local",
+    "supabase:restart:local": "supabase stop && npm run supabase:start:local"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.89.0",

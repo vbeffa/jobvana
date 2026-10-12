@@ -99,7 +99,7 @@ For a small local development/test environment:
 npm run seed:demo
 ```
 
-This cleanly rebuilds the local database to the reference-only baseline, loads `supabase/seeds/10_demo_data.sql`, and reapplies the post-seed taxonomy/privilege cleanup.
+This loads `supabase/seeds/10_demo_data.sql` into the **existing running local database** and reapplies the post-seed taxonomy/privilege cleanup. It does not reset the database or remove previously uploaded resumes. The fixture is not idempotent, so applying it to a database containing the same demo records can fail with conflicts.
 
 All six demo Auth identities are deliberately login-capable with the shared development/test password `abcd1234`:
 
@@ -112,7 +112,7 @@ All six demo Auth identities are deliberately login-capable with the shared deve
 | Company onboarding | `new-company@jobvana.test` | Auth + company registration only; no company profile |
 | Job-seeker onboarding | `new-job-seeker@jobvana.test` | Auth + job-seeker registration only; no job-seeker profile |
 
-The two onboarding identities deliberately omit their corresponding marketplace profile rows so logging in enters the company or job-seeker onboarding UI. Running `npm run seed:demo` restores that initial state after either onboarding flow has been completed. These predictable credentials are confined to explicit non-production fixture workflows.
+The two onboarding identities deliberately omit their corresponding marketplace profile rows so logging in enters the company or job-seeker onboarding UI. To restore that initial state after completing either onboarding flow, deliberately rebuild the local database with `npm run supabase:reset:local` before running `npm run seed:demo`. These predictable credentials are confined to explicit non-production fixture workflows.
 
 ### Bulk load-test data
 
@@ -122,7 +122,7 @@ For the large synthetic dataset:
 npm run seed:bulk
 ```
 
-This cleanly rebuilds the local database to the reference-only baseline, then explicitly loads `supabase/seed.sql`. The bulk fixture uses separate synthetic identities from the demo dataset and assigns the shared development/test password `abcd1234` so the large dataset can be inspected through the application.
+This loads `supabase/seed.sql` into the **existing running local database** without a reset. The bulk fixture uses separate synthetic identities from the demo dataset and assigns the shared development/test password `abcd1234` so the large dataset can be inspected through the application.
 
 | Purpose | Email |
 | --- | --- |
@@ -136,7 +136,7 @@ These identities replace the legacy personal-looking bulk fixture addresses and 
 
 The bulk load is intentionally opt-in and can take substantially longer than the demo/reference workflows on slower machines.
 
-The generated fixture seeds are intended for clean initialization and are not idempotent. Each local seed command discards the current local database state before rebuilding it, so switching between reference, demo, and bulk states is explicit and repeatable.
+The generated demo and bulk fixture seeds are intended for clean initialization and are not idempotent. `seed:demo` and `seed:bulk` no longer reset the local database, so they preserve existing database and Storage state but can fail if fixture identities or keys already exist; a partially applied fixture may require manual cleanup. To deliberately start over, run `npm run supabase:reset:local` before seeding. `seed:reference` still performs a clean local rebuild. To restart services without discarding local data, use `npm run supabase:restart:local`.
 
 ## Hosted pre-launch load testing
 
