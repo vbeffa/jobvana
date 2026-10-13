@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(33);
+select plan(37);
 
 select is(
   (
@@ -496,6 +496,34 @@ select is(
    where code = 'extensible-markup-language-format' and retired_at is null),
   0,
   'the duplicate XML format skill is never loaded as active'
+);
+
+-- Issue #32: preserve the production XML identity and version row IDs.
+select is(
+  (select id from public.skills where code = 'extensible-markup-language'),
+  17::bigint,
+  'the canonical XML skill retains production ID 17'
+);
+
+select results_eq(
+  $query$select id from public.skill_versions
+    where skill_id = 17 order by id$query$,
+  array[45::bigint, 46::bigint],
+  'the XML versions retain their original IDs 45 and 46'
+);
+
+select is(
+  (select count(*)::integer from public.skill_versions where skill_id = 34),
+  0,
+  'retired XML ID 34 has no versions'
+);
+
+select is(
+  (select count(*)::integer from public.skills
+   where id = 34 and code = 'extensible-markup-language-format'
+     and retired_at is null),
+  0,
+  'the former canonical XML ID 34 cannot remain active'
 );
 
 select * from finish();
