@@ -88,6 +88,8 @@ npm run supabase:start:local
 
 This command creates or reuses the `jobvana-local` Docker network, binds published Supabase ports to `127.0.0.1`, starts Supabase with that network, and seeds the private `resumes` and `application_resumes` Storage buckets declared in `supabase/config.toml`. Keeping the local services on loopback avoids VPN interference with Docker's default all-interface bindings and prevents the development stack from being exposed to the LAN. If Supabase is already running from a plain `supabase start`, stop it once before switching to this command.
 
+Local Supabase Analytics (Logflare) is disabled in `supabase/config.toml` because Logflare initialization can fail with a missing Free Plan and block startup. Database, Auth, Storage, and API services remain enabled; centralized local Analytics log browsing is unavailable. This setting does not change hosted Supabase projects. Docker container logs remain available for debugging.
+
 By default, `npm run dev` continues to use the repository's existing Vite environment configuration, which currently points at the hosted pre-launch database. To run the frontend against an already-running local Supabase stack instead, use:
 
 ```bash
