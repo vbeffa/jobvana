@@ -513,9 +513,12 @@ select results_eq(
 );
 
 select is(
-  (select count(*)::integer from public.skill_versions where skill_id = 34),
+  (select count(*)::integer
+   from public.skill_versions v
+   join public.skills s on s.id = v.skill_id
+   where s.code = 'extensible-markup-language-format'),
   0,
-  'retired XML ID 34 has no versions'
+  'retired XML duplicate has no versions'
 );
 
 select is(
