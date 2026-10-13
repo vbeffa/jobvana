@@ -783,7 +783,7 @@ on conflict (code) do update set
   notes = excluded.notes;
 
 insert into public.skills (id, code, name, description, abbreviation, reference, notes)
-values (34, 'extensible-markup-language', 'Extensible Markup Language', 'Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.', 'XML', 'https://www.w3.org/XML/', null)
+values (17, 'extensible-markup-language', 'Extensible Markup Language', 'Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.', 'XML', 'https://www.w3.org/XML/', null)
 on conflict (code) do update set
   name = excluded.name,
   description = excluded.description,
